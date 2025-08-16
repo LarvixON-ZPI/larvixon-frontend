@@ -7,7 +7,10 @@ class AuthDataSource {
 
   AuthDataSource(this.apiClient);
 
-  Future<Map<String, dynamic>> login(String email, String password) async {
+  Future<Map<String, dynamic>> login({
+    required String email,
+    required String password,
+  }) async {
     final response = await apiClient.dio.post(
       AuthEndpoints.login,
       data: {'email': email, 'password': password},
@@ -15,7 +18,9 @@ class AuthDataSource {
     return response.data;
   }
 
-  Future<Map<String, dynamic>> refreshToken(String refreshToken) async {
+  Future<Map<String, dynamic>> refreshToken({
+    required String refreshToken,
+  }) async {
     final response = await apiClient.dio.post(
       AuthEndpoints.refreshToken,
       data: {'refresh': refreshToken},
@@ -23,14 +28,14 @@ class AuthDataSource {
     return response.data;
   }
 
-  Future<Map<String, dynamic>> register(
-    String username,
-    String email,
-    String password,
-    String passwordConfirm,
-    String firstName,
-    String lastName,
-  ) async {
+  Future<Map<String, dynamic>> register({
+    required String username,
+    required String email,
+    required String password,
+    required String passwordConfirm,
+    required String firstName,
+    required String lastName,
+  }) async {
     final response = await apiClient.dio.post(
       AuthEndpoints.register,
       data: {

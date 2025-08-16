@@ -7,8 +7,8 @@ class AuthRepository {
 
   AuthRepository({required this.dataSource, required this.tokenStorage});
 
-  Future<void> login(String email, String password) async {
-    final data = await dataSource.login(email, password);
+  Future<void> login({required String email, required String password}) async {
+    final data = await dataSource.login(email: email, password: password);
     final accessToken = data['access'];
     final refreshToken = data['refresh'];
     if (accessToken != null && refreshToken != null) {
@@ -27,14 +27,22 @@ class AuthRepository {
     required String firstName,
     required String lastName,
   }) async {
-    await dataSource.register(
-      username,
-      email,
-      password,
-      passwordConfirm,
-      firstName,
-      lastName,
+    final data = await dataSource.register(
+      username: username,
+      email: email,
+      password: password,
+      passwordConfirm: passwordConfirm,
+      firstName: firstName,
+      lastName: lastName,
     );
+    final accessToken = data['access'];
+    final refreshToken = data['refresh'];
+    if (accessToken != null && refreshToken != null) {
+      await tokenStorage.saveAccessToken(accessToken);
+      await tokenStorage.saveRefreshToken(refreshToken);
+    } else {
+      throw Exception('Login failed: tokens missing');
+    }
   }
 
   Future<void> refreshTokens() async {
@@ -43,7 +51,7 @@ class AuthRepository {
       throw Exception('No refresh token available');
     }
 
-    final data = await dataSource.refreshToken(refreshToken);
+    final data = await dataSource.refreshToken(refreshToken: refreshToken);
     final newAccessToken = data['access'];
     final newRefreshToken = data['refresh'];
 
@@ -60,6 +68,10 @@ class AuthRepository {
   }
 
   Future<bool> isLoggedIn() async {
-    return await tokenStorage.hasTokens();
+    // TODO: Implement actual verification logic via api/verify
+    if (await tokenStorage.hasTokens()) {
+      return true;
+    }
+    return false;
   }
 }
