@@ -69,9 +69,9 @@ class AuthInterceptor extends Interceptor {
         data: {'refresh': refreshToken},
       );
       if (res.statusCode != null && res.statusCode == 200) {
-        final newAccessToken = res.data['data']['access'];
+        final newAccessToken = res.data['access'];
         await _tokenStorage.saveAccessToken(newAccessToken);
-        final newRefreshToken = res.data['data']['refresh'];
+        final newRefreshToken = res.data['refresh'];
         await _tokenStorage.saveRefreshToken(newRefreshToken);
         return true;
       } else {
