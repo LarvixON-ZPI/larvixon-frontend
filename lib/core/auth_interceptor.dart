@@ -63,15 +63,15 @@ class AuthInterceptor extends Interceptor {
 
   Future<bool> _refreshToken() async {
     try {
-      final refreshToken = _tokenStorage.getRefreshToken();
+      final refreshToken = await _tokenStorage.getRefreshToken();
       final res = await dio.post(
         AuthEndpoints.refreshToken,
         data: {'refresh': refreshToken},
       );
       if (res.statusCode != null && res.statusCode == 200) {
-        final newAccessToken = res.data['data']['access'];
+        final newAccessToken = res.data['access'];
         await _tokenStorage.saveAccessToken(newAccessToken);
-        final newRefreshToken = res.data['data']['refresh'];
+        final newRefreshToken = res.data['refresh'];
         await _tokenStorage.saveRefreshToken(newRefreshToken);
         return true;
       } else {
