@@ -1,0 +1,23 @@
+{
+  "@_AuthForms": {},
+  "password": "Password",
+  "email": "Email",
+  "firstName": "First name",
+  "lastName": "Last name",
+  "fieldIsRequired": "This field is required",
+  "invalidEmailFormat": "Invalid email format",
+  "passwordIsTooShort": "Password should be at least {length} characters long",
+  "@passwordIsTooShort": {
+    "placeholders": {
+      "length": {
+        "type": "int",
+        "example": "6"
+      }
+    }
+  },
+  "passwordsDoNotMatch": "Passwords do not match",
+  "confirmPassword": "Confirm password",
+  "username": "Username",
+  "signUp": "Sign up",
+  "signIn": "Sign in"
+}

@@ -1,0 +1,23 @@
+{
+  "@_AuthForms": {},
+  "password": "Hasło",
+  "email": "Email",
+  "firstName": "Imię",
+  "lastName": "Nazwisko",
+  "fieldIsRequired": "To pole jest wymagane",
+  "invalidEmailFormat": "Nieprawidłowy format adresu email",
+  "passwordIsTooShort": "Hasło powinno mieć co najmniej {length} znaków",
+  "@passwordIsTooShort": {
+    "placeholders": {
+      "length": {
+        "type": "int",
+        "example": "6"
+      }
+    }
+  },
+  "passwordsDoNotMatch": "Hasła nie pasują do siebie",
+  "confirmPassword": "Potwierdź hasło",
+  "username": "Nazwa użytkownika",
+  "signUp": "Zarejestruj się",
+  "signIn": "Zaloguj się"
+}

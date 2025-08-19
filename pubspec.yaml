@@ -13,6 +13,10 @@ dependencies:
   flutter_bloc: ^9.1.1
   flutter_secure_storage: ^9.2.4
   equatable: ^2.0.7
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  go_router: ^16.1.0
 
 dev_dependencies:
   flutter_test:
@@ -21,3 +25,4 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true 
