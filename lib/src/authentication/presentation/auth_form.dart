@@ -48,9 +48,21 @@ class _AuthFormState extends State<AuthForm>
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 4.0,
           children: [
-            // Toggle buttons
+            Text("Larvixon", style: Theme.of(context).textTheme.headlineLarge),
+            const SizedBox(height: 16.0),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(6.0),
+              ),
+              child: const SizedBox(height: 2, width: double.infinity),
+            ),
+            const SizedBox(height: 16.0),
+
             Row(
               children: [
                 Expanded(
@@ -144,12 +156,10 @@ class _AuthFormState extends State<AuthForm>
               ),
             ),
 
-            // Animated sign-up fields
             AnimatedSize(
               duration: const Duration(milliseconds: 600),
               curve: Curves.ease,
               alignment: Alignment.topCenter,
-
               child: ClipRect(
                 child: SizedBox(
                   width: double.infinity,

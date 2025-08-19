@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widget_previews.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,36 +20,20 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage>
     with SingleTickerProviderStateMixin {
-  late final TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
-    _tabController.addListener(() {
-      if (_tabController.indexIsChanging) setState(() {});
-    });
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final isWide = MediaQuery.of(context).size.width > 800;
-
-    return Scaffold(
-      body: isWide
-          ? Row(
-              children: [
-                Flexible(flex: 3, child: Placeholder()),
-                Flexible(flex: 2, child: AuthForm()),
-              ],
-            )
-          : Padding(padding: const EdgeInsets.all(16), child: AuthForm()),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isWide = constraints.maxWidth > 800;
+        return Scaffold(
+          body: Row(
+            children: [
+              if (isWide) Expanded(flex: 3, child: Placeholder()),
+              Flexible(flex: isWide ? 2 : 1, child: AuthForm()),
+            ],
+          ),
+        );
+      },
     );
   }
 }

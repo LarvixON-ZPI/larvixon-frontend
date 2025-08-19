@@ -42,7 +42,7 @@ class AppRouter {
     redirect: (context, state) {
       final authState = authBloc.state;
       final loggedIn = authState.status == AuthStatus.authenticated;
-      final loggingIn = state.path == AuthPage.route;
+      final loggingIn = state.uri.path == AuthPage.route;
       if (!loggedIn && !loggingIn) {
         return AuthPage.route;
       }
