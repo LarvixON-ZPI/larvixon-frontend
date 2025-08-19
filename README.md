@@ -57,11 +57,3 @@ Here’s an example configuration:
     }
   ]
 }
-=======
-5. Make sure the backend is listening on the correct URL, if needed change it in `lib/core/constants/api_base.dart` // Will make swapping environments easier soon
-6. Run the following commands:
-
-```bash
-flutter pub get
-flutter run -d windows (linux) # other platforms not tested yet
-```
