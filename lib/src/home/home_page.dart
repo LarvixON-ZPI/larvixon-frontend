@@ -4,6 +4,7 @@ import '../authentication/bloc/auth_bloc.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+  static const String route = '/home';
 
   @override
   Widget build(BuildContext context) {
