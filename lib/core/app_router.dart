@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../src/authentication/bloc/auth_bloc.dart';
 import '../src/authentication/presentation/auth_page.dart';
 import '../src/home/home_page.dart';
+import '../src/profile/presentation/account_page.dart';
 
 class GoRouterAuthNotifier extends ChangeNotifier {
   final AuthBloc authBloc;
@@ -38,6 +39,7 @@ class AppRouter {
         },
       ),
       GoRoute(path: HomePage.route, builder: (_, state) => const HomePage()),
+      GoRoute(path: AccountPage.route, builder: (_, _) => const AccountPage()),
     ],
     redirect: (context, state) {
       final authState = authBloc.state;

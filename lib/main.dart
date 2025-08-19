@@ -9,6 +9,9 @@ import 'l10n/app_localizations.dart';
 import 'src/authentication/auth_datasource.dart';
 import 'src/authentication/auth_repository.dart';
 import 'src/authentication/bloc/auth_bloc.dart';
+import 'src/profile/bloc/user_bloc.dart';
+import 'src/profile/user_datasource.dart';
+import 'src/profile/user_repository.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +38,13 @@ class MainApp extends StatelessWidget {
             tokenStorage: context.read<TokenStorage>(),
           ),
         ),
+        RepositoryProvider<UserDataSource>(
+          create: (context) => UserDataSource(context.read<ApiClient>()),
+        ),
+        RepositoryProvider<UserRepository>(
+          create: (context) =>
+              UserRepository(dataSource: context.read<UserDataSource>()),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -43,16 +53,27 @@ class MainApp extends StatelessWidget {
                 AuthBloc(context.read<AuthRepository>())
                   ..add(AuthVerificationRequested()),
           ),
+          BlocProvider(
+            create: (context) => UserBloc(context.read<UserRepository>()),
+          ),
         ],
         child: Builder(
           builder: (context) {
-            final authBloc = context.read<AuthBloc>();
-            final appRouter = AppRouter(authBloc);
-            return MaterialApp.router(
-              routerConfig: appRouter.router,
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              debugShowCheckedModeBanner: false,
+            final appRouter = AppRouter(context.read<AuthBloc>());
+            return BlocListener<AuthBloc, AuthState>(
+              listener: (context, state) {
+                if (state.status == AuthStatus.unauthenticated) {
+                  context.read<UserBloc>().add(UserProfileClearRequested());
+                } else if (state.status == AuthStatus.authenticated) {
+                  context.read<UserBloc>().add(UserProfileDataRequested());
+                }
+              },
+              child: MaterialApp.router(
+                routerConfig: appRouter.router,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
+                debugShowCheckedModeBanner: false,
+              ),
             );
           },
         ),
