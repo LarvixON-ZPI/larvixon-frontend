@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/auth_bloc.dart';
 import '/extensions/translate_extension.dart';
 import 'auth_form_validators.dart';
+import 'package:flutter/widget_previews.dart';
 
 enum AuthFormMode { signUp, signIn }
 
@@ -25,6 +26,8 @@ class _AuthFormState extends State<AuthForm>
   final _lastNameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   @override
   void dispose() {
@@ -45,7 +48,9 @@ class _AuthFormState extends State<AuthForm>
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          spacing: 4.0,
           children: [
+            // Toggle buttons
             Row(
               children: [
                 Expanded(
@@ -54,6 +59,11 @@ class _AuthFormState extends State<AuthForm>
                       setState(() => _formMode = AuthFormMode.signIn);
                     },
                     style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 48),
+                      elevation: 0.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6.0),
+                      ),
                       backgroundColor: _formMode == AuthFormMode.signIn
                           ? Theme.of(context).colorScheme.primary
                           : Colors.grey[300],
@@ -75,6 +85,11 @@ class _AuthFormState extends State<AuthForm>
                       setState(() => _formMode = AuthFormMode.signUp);
                     },
                     style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 48),
+                      elevation: 0.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6.0),
+                      ),
                       backgroundColor: _formMode == AuthFormMode.signUp
                           ? Theme.of(context).colorScheme.primary
                           : Colors.grey[300],
@@ -92,11 +107,12 @@ class _AuthFormState extends State<AuthForm>
               ],
             ),
 
-            const SizedBox(height: 24),
-
             TextFormField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: context.translate.email),
+              decoration: _buildInputDecoration(
+                hintText: context.translate.email,
+                prefixIcon: Icons.email,
+              ),
               autofillHints: [AutofillHints.email],
               validator: (value) =>
                   AuthFormValidators.emailValidator(context, value),
@@ -104,81 +120,125 @@ class _AuthFormState extends State<AuthForm>
             TextFormField(
               controller: _passwordController,
               autofillHints: [AutofillHints.password],
-              decoration: InputDecoration(
-                labelText: context.translate.password,
+              decoration: _buildInputDecoration(
+                hintText: context.translate.password,
+                prefixIcon: Icons.lock,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                    color: Colors.grey[700],
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscurePassword = !_obscurePassword;
+                    });
+                  },
+                ),
               ),
-              obscureText: true,
+
+              obscureText: _obscurePassword,
               validator: (value) => AuthFormValidators.passwordValidator(
                 context,
                 value,
                 onlyCheckEmpty: _formMode == AuthFormMode.signIn,
               ),
             ),
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
 
-              child: _formMode == AuthFormMode.signUp
-                  ? TextFormField(
-                      controller: _confirmPasswordController,
-                      autofillHints: [AutofillHints.newPassword],
-                      decoration: InputDecoration(
-                        labelText: context.translate.confirmPassword,
-                      ),
-                      obscureText: true,
-                      validator: (value) =>
-                          AuthFormValidators.confirmPasswordValidator(
-                            context,
-                            _passwordController.text,
-                            value,
-                          ),
-                    )
-                  : SizedBox.shrink(),
-            ),
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 450),
-              child: _formMode == AuthFormMode.signUp
-                  ? TextFormField(
-                      controller: _usernameController,
-                      decoration: InputDecoration(
-                        labelText: context.translate.username,
-                      ),
-                      autofillHints: [AutofillHints.username],
-                      validator: (value) =>
-                          AuthFormValidators.usernameValidator(context, value),
-                    )
-                  : SizedBox.shrink(),
-            ),
-            AnimatedSwitcher(
+            // Animated sign-up fields
+            AnimatedSize(
               duration: const Duration(milliseconds: 600),
-              child: _formMode == AuthFormMode.signUp
-                  ? TextFormField(
-                      controller: _firstNameController,
-                      autofillHints: [AutofillHints.givenName],
-                      decoration: InputDecoration(
-                        labelText: context.translate.firstName,
-                      ),
-                      validator: (value) =>
-                          AuthFormValidators.firstNameValidator(context, value),
-                    )
-                  : SizedBox.shrink(),
-            ),
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 750),
-              child: _formMode == AuthFormMode.signUp
-                  ? TextFormField(
-                      controller: _lastNameController,
-                      autofillHints: [AutofillHints.familyName],
-                      decoration: InputDecoration(
-                        labelText: context.translate.lastName,
-                      ),
-                      validator: (value) =>
-                          AuthFormValidators.lastNameValidator(context, value),
-                    )
-                  : SizedBox.shrink(),
+              curve: Curves.ease,
+              alignment: Alignment.topCenter,
+
+              child: ClipRect(
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    spacing: 6.0,
+                    children: [
+                      if (_formMode == AuthFormMode.signUp) ...[
+                        TextFormField(
+                          controller: _confirmPasswordController,
+                          autofillHints: [AutofillHints.password],
+                          decoration: _buildInputDecoration(
+                            hintText: context.translate.confirmPassword,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureConfirmPassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: Colors.grey[700],
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _obscureConfirmPassword =
+                                      !_obscureConfirmPassword;
+                                });
+                              },
+                            ),
+                          ),
+                          obscureText: _obscureConfirmPassword,
+                          validator: (value) =>
+                              AuthFormValidators.confirmPasswordValidator(
+                                context,
+                                _passwordController.text,
+                                value,
+                              ),
+                        ),
+                        TextFormField(
+                          controller: _usernameController,
+                          autofillHints: [AutofillHints.username],
+                          decoration: _buildInputDecoration(
+                            hintText: context.translate.username,
+                            prefixIcon: Icons.person,
+                          ),
+                          validator: (value) =>
+                              AuthFormValidators.usernameValidator(
+                                context,
+                                value,
+                              ),
+                        ),
+                        TextFormField(
+                          controller: _firstNameController,
+                          autofillHints: [AutofillHints.givenName],
+                          decoration: _buildInputDecoration(
+                            hintText: context.translate.firstName,
+                          ),
+                          validator: (value) =>
+                              AuthFormValidators.firstNameValidator(
+                                context,
+                                value,
+                              ),
+                        ),
+                        TextFormField(
+                          controller: _lastNameController,
+                          autofillHints: [AutofillHints.familyName],
+                          decoration: _buildInputDecoration(
+                            hintText: context.translate.lastName,
+                          ),
+                          validator: (value) =>
+                              AuthFormValidators.lastNameValidator(
+                                context,
+                                value,
+                              ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
             ),
 
-            const SizedBox(height: 24),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 48),
+                backgroundColor: Colors.grey[300],
+                elevation: 0.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6.0),
+                ),
+              ),
+              key: ValueKey(_formMode),
               onPressed: _submitForm,
               child: Text(
                 _formMode == AuthFormMode.signIn
@@ -189,6 +249,34 @@ class _AuthFormState extends State<AuthForm>
           ],
         ),
       ),
+    );
+  }
+
+  InputDecoration _buildInputDecoration({
+    String? hintText,
+    IconData? prefixIcon,
+    Widget? suffixIcon,
+  }) {
+    return InputDecoration(
+      hintText: hintText,
+      fillColor: Colors.grey[200],
+      filled: true,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(6.0),
+        borderSide: BorderSide.none,
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(6.0),
+        borderSide: BorderSide(color: Colors.blue, width: 2.0),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(6.0),
+        borderSide: BorderSide(color: Colors.red, width: 2.0),
+      ),
+      prefixIcon: prefixIcon != null
+          ? Icon(prefixIcon, color: Colors.grey[700])
+          : null,
+      suffixIcon: suffixIcon,
     );
   }
 

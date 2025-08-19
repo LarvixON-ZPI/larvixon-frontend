@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widget_previews.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:larvixon_frontend/src/authentication/presentation/signin_form.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_form.dart';
 
 import '../bloc/auth_bloc.dart';
@@ -44,15 +44,10 @@ class _AuthPageState extends State<AuthPage>
           ? Row(
               children: [
                 Flexible(flex: 3, child: Placeholder()),
-                Flexible(flex: 2, child: Center(child: AuthForm())),
+                Flexible(flex: 2, child: AuthForm()),
               ],
             )
-          : SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: AuthForm(),
-              ),
-            ),
+          : Padding(padding: const EdgeInsets.all(16), child: AuthForm()),
     );
   }
 }
