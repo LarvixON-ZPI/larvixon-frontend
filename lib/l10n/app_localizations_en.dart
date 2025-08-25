@@ -45,4 +45,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get signIn => 'Sign in';
+
+  @override
+  String get phoneNumber => 'Phone number';
+
+  @override
+  String get organization => 'Organization';
+
+  @override
+  String get bio => 'Bio';
 }

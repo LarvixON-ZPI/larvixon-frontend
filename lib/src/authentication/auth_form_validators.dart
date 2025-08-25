@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:larvixon_frontend/extensions/translate_extension.dart';
+import '../../extensions/translate_extension.dart';
 
 class AuthFormValidators {
   static String? emailValidator(BuildContext context, String? value) {

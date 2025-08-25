@@ -45,4 +45,13 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get signIn => 'Zaloguj się';
+
+  @override
+  String get phoneNumber => 'Numer telefonu';
+
+  @override
+  String get organization => 'Organizacja';
+
+  @override
+  String get bio => 'Bio';
 }

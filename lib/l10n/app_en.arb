@@ -19,5 +19,8 @@
   "confirmPassword": "Confirm password",
   "username": "Username",
   "signUp": "Sign up",
-  "signIn": "Sign in"
+  "signIn": "Sign in",
+  "phoneNumber": "Phone number",
+  "organization": "Organization",
+  "bio": "Bio"
 }

@@ -19,7 +19,39 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   FutureOr<void> _onUserProfileDataUpdateRequested(
     UserProfileDataUpdateRequested event,
     Emitter<UserState> emit,
-  ) async {}
+  ) async {
+    emit(state.copyWith(isUpdating: true));
+
+    try {
+      User updatedUser = await userRepository.updateUserProfile(
+        user: User.copyWith(
+          user: event.user,
+          email: event.email,
+          firstName: event.firstName,
+          lastName: event.lastName,
+          username: event.username,
+          bio: event.bio,
+          organization: event.organization,
+          phoneNumber: event.phoneNumber,
+        ),
+      );
+      emit(
+        state.copyWith(
+          user: updatedUser,
+          status: UserStatus.success,
+          isUpdating: false,
+        ),
+      );
+    } catch (error) {
+      emit(
+        state.copyWith(
+          status: UserStatus.error,
+          errorMessage: error.toString(),
+          isUpdating: false,
+        ),
+      );
+    }
+  }
 
   FutureOr<void> _onUserProfileDataRequested(
     UserProfileDataRequested event,

@@ -8,8 +8,21 @@ class UserRepository {
   UserRepository({required this.dataSource});
 
   Future<User> getUserProfile() async {
-    print('Fetching user profile from repository');
     final data = await dataSource.getUserProfile();
     return User.fromJson(data);
+  }
+
+  Future<User> updateUserProfile({required User user}) async {
+    final data = await dataSource.updateUserProfile(
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+    );
+    final dataDetails = await dataSource.updateUserProfileDetails(
+      bio: user.bio,
+      organization: user.organization,
+      phoneNumber: user.phoneNumber,
+    );
+    return User.fromJson({...data, ...dataDetails});
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/api_client.dart';
 import 'core/app_router.dart';
+import 'core/theme/app_theme.dart';
 import 'core/token_storage.dart';
 import 'l10n/app_localizations.dart';
 import 'src/authentication/auth_datasource.dart';
@@ -69,6 +70,7 @@ class MainApp extends StatelessWidget {
                 }
               },
               child: MaterialApp.router(
+                theme: appTheme,
                 routerConfig: appRouter.router,
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
                 supportedLocales: AppLocalizations.supportedLocales,

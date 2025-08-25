@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-class User {
+import 'package:equatable/equatable.dart';
+
+class User extends Equatable {
   final String email;
   final String username;
   final String? firstName;
@@ -77,4 +79,16 @@ class User {
   String toString() {
     return 'User{email: $email, username: $username, firstName: $firstName, lastName: $lastName, dateJoined: $dateJoined, bio: $bio, phoneNumber: $phoneNumber, organization: $organization}';
   }
+
+  @override
+  List<Object?> get props => [
+    email,
+    username,
+    firstName,
+    lastName,
+    dateJoined,
+    bio,
+    phoneNumber,
+    organization,
+  ];
 }
