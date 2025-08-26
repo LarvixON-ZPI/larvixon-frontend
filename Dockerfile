@@ -14,7 +14,7 @@ ENV FLUTTER_WEB_ONLY=true
 
 # Stage 2: Build Flutter app
 FROM debian:latest AS build-env
-ARG API_BASE_URL=http://backend:8000/api
+ARG API_BASE_URL=http://localhost:8000/api
 ARG APP=/app/
 
 # Copy SDK from previous stage (cached)
