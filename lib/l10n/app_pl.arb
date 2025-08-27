@@ -19,5 +19,10 @@
   "confirmPassword": "Potwierdź hasło",
   "username": "Nazwa użytkownika",
   "signUp": "Zarejestruj się",
-  "signIn": "Zaloguj się"
+  "signIn": "Zaloguj się",
+  "phoneNumber": "Numer telefonu",
+  "organization": "Organizacja",
+  "bio": "Bio",
+  "account": "Konto",
+  "save": "Zapisz"
 }

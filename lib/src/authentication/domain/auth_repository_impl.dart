@@ -1,12 +1,14 @@
-import 'auth_datasource.dart';
-import '../../core/token_storage.dart';
+import '../data/auth_datasource.dart';
+import '../../../core/token_storage.dart';
+import 'auth_repository.dart';
 
-class AuthRepository {
+class AuthRepositoryImpl implements AuthRepository {
   final AuthDataSource dataSource;
   final TokenStorage tokenStorage;
 
-  AuthRepository({required this.dataSource, required this.tokenStorage});
+  AuthRepositoryImpl({required this.dataSource, required this.tokenStorage});
 
+  @override
   Future<void> login({required String email, required String password}) async {
     final data = await dataSource.login(email: email, password: password);
     final accessToken = data['access'];
@@ -19,6 +21,7 @@ class AuthRepository {
     }
   }
 
+  @override
   Future<void> register({
     required String username,
     required String email,
@@ -45,6 +48,7 @@ class AuthRepository {
     }
   }
 
+  @override
   Future<void> refreshTokens() async {
     final refreshToken = await tokenStorage.getRefreshToken();
     if (refreshToken == null) {
@@ -63,10 +67,12 @@ class AuthRepository {
     }
   }
 
+  @override
   Future<void> logout() async {
     await tokenStorage.clearTokens();
   }
 
+  @override
   Future<bool> isLoggedIn() async {
     // TODO: Implement actual verification logic via api/verify
     if (await tokenStorage.hasTokens()) {

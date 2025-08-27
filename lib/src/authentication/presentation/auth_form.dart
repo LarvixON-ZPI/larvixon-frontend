@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/auth_bloc.dart';
 import '/extensions/translate_extension.dart';
-import 'auth_form_validators.dart';
+import '../auth_form_validators.dart';
 import 'package:flutter/widget_previews.dart';
 
 enum AuthFormMode { signUp, signIn }
@@ -71,11 +71,6 @@ class _AuthFormState extends State<AuthForm>
                       setState(() => _formMode = AuthFormMode.signIn);
                     },
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 48),
-                      elevation: 0.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0),
-                      ),
                       backgroundColor: _formMode == AuthFormMode.signIn
                           ? Theme.of(context).colorScheme.primary
                           : Colors.grey[300],
@@ -97,11 +92,6 @@ class _AuthFormState extends State<AuthForm>
                       setState(() => _formMode = AuthFormMode.signUp);
                     },
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 48),
-                      elevation: 0.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0),
-                      ),
                       backgroundColor: _formMode == AuthFormMode.signUp
                           ? Theme.of(context).colorScheme.primary
                           : Colors.grey[300],
@@ -121,9 +111,9 @@ class _AuthFormState extends State<AuthForm>
 
             TextFormField(
               controller: _emailController,
-              decoration: _buildInputDecoration(
+              decoration: InputDecoration(
                 hintText: context.translate.email,
-                prefixIcon: Icons.email,
+                prefixIcon: Icon(Icons.email),
               ),
               autofillHints: [AutofillHints.email],
               validator: (value) =>
@@ -132,9 +122,9 @@ class _AuthFormState extends State<AuthForm>
             TextFormField(
               controller: _passwordController,
               autofillHints: [AutofillHints.password],
-              decoration: _buildInputDecoration(
+              decoration: InputDecoration(
                 hintText: context.translate.password,
-                prefixIcon: Icons.lock,
+                prefixIcon: Icon(Icons.lock),
                 suffixIcon: IconButton(
                   icon: Icon(
                     _obscurePassword ? Icons.visibility_off : Icons.visibility,
@@ -170,7 +160,7 @@ class _AuthFormState extends State<AuthForm>
                         TextFormField(
                           controller: _confirmPasswordController,
                           autofillHints: [AutofillHints.password],
-                          decoration: _buildInputDecoration(
+                          decoration: InputDecoration(
                             hintText: context.translate.confirmPassword,
                             suffixIcon: IconButton(
                               icon: Icon(
@@ -198,9 +188,8 @@ class _AuthFormState extends State<AuthForm>
                         TextFormField(
                           controller: _usernameController,
                           autofillHints: [AutofillHints.username],
-                          decoration: _buildInputDecoration(
+                          decoration: InputDecoration(
                             hintText: context.translate.username,
-                            prefixIcon: Icons.person,
                           ),
                           validator: (value) =>
                               AuthFormValidators.usernameValidator(
@@ -211,7 +200,7 @@ class _AuthFormState extends State<AuthForm>
                         TextFormField(
                           controller: _firstNameController,
                           autofillHints: [AutofillHints.givenName],
-                          decoration: _buildInputDecoration(
+                          decoration: InputDecoration(
                             hintText: context.translate.firstName,
                           ),
                           validator: (value) =>
@@ -223,7 +212,7 @@ class _AuthFormState extends State<AuthForm>
                         TextFormField(
                           controller: _lastNameController,
                           autofillHints: [AutofillHints.familyName],
-                          decoration: _buildInputDecoration(
+                          decoration: InputDecoration(
                             hintText: context.translate.lastName,
                           ),
                           validator: (value) =>
@@ -259,34 +248,6 @@ class _AuthFormState extends State<AuthForm>
           ],
         ),
       ),
-    );
-  }
-
-  InputDecoration _buildInputDecoration({
-    String? hintText,
-    IconData? prefixIcon,
-    Widget? suffixIcon,
-  }) {
-    return InputDecoration(
-      hintText: hintText,
-      fillColor: Colors.grey[200],
-      filled: true,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(6.0),
-        borderSide: BorderSide.none,
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(6.0),
-        borderSide: BorderSide(color: Colors.blue, width: 2.0),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(6.0),
-        borderSide: BorderSide(color: Colors.red, width: 2.0),
-      ),
-      prefixIcon: prefixIcon != null
-          ? Icon(prefixIcon, color: Colors.grey[700])
-          : null,
-      suffixIcon: suffixIcon,
     );
   }
 
