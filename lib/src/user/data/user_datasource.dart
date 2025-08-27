@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:larvixon_frontend/core/api_client.dart';
 
-import '../../core/constants/endpoints_user.dart';
+import '../../../core/constants/endpoints_user.dart';
 
 class UserDataSource {
   final ApiClient apiClient;

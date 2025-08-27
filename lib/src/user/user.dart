@@ -12,7 +12,7 @@ class User extends Equatable {
   final String? phoneNumber;
   final String? organization;
 
-  User({
+  const User({
     required this.email,
     required this.username,
     this.firstName,
@@ -23,8 +23,7 @@ class User extends Equatable {
     this.organization,
   });
 
-  factory User.copyWith({
-    required User user,
+  User copyWith({
     String? email,
     String? username,
     String? firstName,
@@ -35,14 +34,14 @@ class User extends Equatable {
     String? organization,
   }) {
     return User(
-      email: email ?? user.email,
-      username: username ?? user.username,
-      firstName: firstName ?? user.firstName,
-      lastName: lastName ?? user.lastName,
-      dateJoined: dateJoined ?? user.dateJoined,
-      bio: bio ?? user.bio,
-      phoneNumber: phoneNumber ?? user.phoneNumber,
-      organization: organization ?? user.organization,
+      email: email ?? this.email,
+      username: username ?? this.username,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      dateJoined: dateJoined ?? this.dateJoined,
+      bio: bio ?? this.bio,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      organization: organization ?? this.organization,
     );
   }
 

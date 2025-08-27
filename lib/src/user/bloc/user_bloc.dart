@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../domain/user_repository.dart';
 import '../user.dart';
-import '../user_repository.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
@@ -24,8 +24,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     try {
       User updatedUser = await userRepository.updateUserProfile(
-        user: User.copyWith(
-          user: event.user,
+        user: state.user!.copyWith(
           email: event.email,
           firstName: event.firstName,
           lastName: event.lastName,
@@ -35,6 +34,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           phoneNumber: event.phoneNumber,
         ),
       );
+      print("UPDATED USER: $updatedUser");
       emit(
         state.copyWith(
           user: updatedUser,

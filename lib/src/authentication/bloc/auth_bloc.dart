@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart' show Equatable;
-import 'package:larvixon_frontend/src/authentication/auth_repository.dart';
 import 'package:meta/meta.dart';
+
+import '../domain/auth_repository.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

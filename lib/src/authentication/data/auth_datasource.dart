@@ -1,6 +1,6 @@
 import 'package:larvixon_frontend/core/constants/endpoints_auth.dart';
 
-import '../../core/api_client.dart';
+import '../../../core/api_client.dart';
 
 class AuthDataSource {
   final ApiClient apiClient;

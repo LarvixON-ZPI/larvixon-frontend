@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../src/authentication/bloc/auth_bloc.dart';
 import '../src/authentication/presentation/auth_page.dart';
 import '../src/home/home_page.dart';
-import '../src/profile/presentation/account_page.dart';
+import '../src/user/presentation/account_page.dart';
 
 class GoRouterAuthNotifier extends ChangeNotifier {
   final AuthBloc authBloc;

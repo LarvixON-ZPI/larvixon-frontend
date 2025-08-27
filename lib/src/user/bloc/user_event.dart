@@ -12,7 +12,6 @@ final class UserProfileClearRequested extends UserEvent {}
 final class UserProfileDataRequested extends UserEvent {}
 
 final class UserProfileDataUpdateRequested extends UserEvent {
-  final User user;
   final String? firstName;
   final String? lastName;
   final String? username;
@@ -22,7 +21,6 @@ final class UserProfileDataUpdateRequested extends UserEvent {
   final String? email;
 
   const UserProfileDataUpdateRequested({
-    required this.user,
     this.firstName,
     this.lastName,
     this.username,

@@ -1,17 +1,19 @@
-import 'package:larvixon_frontend/src/profile/user.dart';
+import '../data/user_datasource.dart';
+import '../user.dart';
+import 'user_repository.dart';
 
-import 'user_datasource.dart';
-
-class UserRepository {
+class UserRepositoryImpl implements UserRepository {
   final UserDataSource dataSource;
 
-  UserRepository({required this.dataSource});
+  UserRepositoryImpl({required this.dataSource});
 
+  @override
   Future<User> getUserProfile() async {
     final data = await dataSource.getUserProfile();
     return User.fromJson(data);
   }
 
+  @override
   Future<User> updateUserProfile({required User user}) async {
     final data = await dataSource.updateUserProfile(
       firstName: user.firstName,
@@ -23,6 +25,7 @@ class UserRepository {
       organization: user.organization,
       phoneNumber: user.phoneNumber,
     );
-    return User.fromJson({...data, ...dataDetails});
+
+    return User.fromJson({...data, 'profile': dataDetails});
   }
 }

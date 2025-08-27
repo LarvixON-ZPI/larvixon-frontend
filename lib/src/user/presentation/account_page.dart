@@ -19,7 +19,6 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage> {
   bool isEditing = false;
-  User? _lastUser;
   final _formKey = GlobalKey<FormState>();
 
   final _firstNameController = TextEditingController();
@@ -56,7 +55,7 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Account'),
+        title: Text(context.translate.account),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
@@ -72,6 +71,7 @@ class _AccountPageState extends State<AccountPage> {
       body: BlocConsumer<UserBloc, UserState>(
         listenWhen: (previous, current) => previous.user != current.user,
         listener: (context, state) {
+          print("UDATING USER BECAUSE THEY DONT MATCH");
           _setupControllers(user: state.user);
         },
         builder: (context, state) {
@@ -96,6 +96,7 @@ class _AccountPageState extends State<AccountPage> {
                       child: Container(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
+                          spacing: 10.0,
                           children: [
                             TextFormField(
                               readOnly: !isEditing,
@@ -144,7 +145,6 @@ class _AccountPageState extends State<AccountPage> {
                                         if (_formKey.currentState!.validate()) {
                                           context.read<UserBloc>().add(
                                             UserProfileDataUpdateRequested(
-                                              user: state.user!,
                                               firstName:
                                                   _firstNameController.text,
                                               lastName:
@@ -161,7 +161,7 @@ class _AccountPageState extends State<AccountPage> {
                                           });
                                         }
                                       },
-                                child: Text("Placeholder"),
+                                child: Text(context.translate.save),
                               ),
                           ],
                         ),
