@@ -54,4 +54,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bio => 'Bio';
+
+  @override
+  String get account => 'Account';
+
+  @override
+  String get save => 'Save';
 }

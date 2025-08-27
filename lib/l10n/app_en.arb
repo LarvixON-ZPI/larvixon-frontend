@@ -22,5 +22,7 @@
   "signIn": "Sign in",
   "phoneNumber": "Phone number",
   "organization": "Organization",
-  "bio": "Bio"
+  "bio": "Bio",
+  "account": "Account",
+  "save": "Save"
 }

@@ -187,6 +187,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Bio'**
   String get bio;
+
+  /// No description provided for @account.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get account;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
 }
 
 class _AppLocalizationsDelegate
