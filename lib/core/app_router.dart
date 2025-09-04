@@ -1,10 +1,13 @@
 import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 
 import '../src/authentication/bloc/auth_bloc.dart';
+import '../src/authentication/presentation/auth_form.dart';
 import '../src/authentication/presentation/auth_page.dart';
 import '../src/home/home_page.dart';
+import '../src/landing/landing_page.dart';
 import '../src/user/presentation/account_page.dart';
 
 class GoRouterAuthNotifier extends ChangeNotifier {
@@ -28,14 +31,26 @@ class AppRouter {
   AppRouter(this.authBloc);
 
   late final router = GoRouter(
-    initialLocation: HomePage.route,
+    initialLocation: LandingPage.route,
     refreshListenable: GoRouterAuthNotifier(authBloc),
     routes: [
+      GoRoute(
+        name: LandingPage.name,
+        path: LandingPage.route,
+        builder: (context, state) {
+          return const LandingPage();
+        },
+      ),
       GoRoute(
         name: AuthPage.name,
         path: AuthPage.route,
         builder: (context, state) {
-          return AuthPage();
+          final extra = state.extra as Map<String, dynamic>? ?? {};
+
+          return AuthPage(
+            initialMode: extra['mode'] as AuthFormMode? ?? AuthFormMode.signUp,
+            initialEmail: extra['email'] as String?,
+          );
         },
       ),
       GoRoute(path: HomePage.route, builder: (_, state) => const HomePage()),
@@ -43,15 +58,21 @@ class AppRouter {
     ],
     redirect: (context, state) {
       final authState = authBloc.state;
-      final loggedIn = authState.status == AuthStatus.authenticated;
       final loggingIn = state.uri.path == AuthPage.route;
-      if (!loggedIn && !loggingIn) {
-        return AuthPage.route;
+      final onLanding = state.uri.path == LandingPage.route;
+
+      switch (authState.status) {
+        case AuthStatus.initial:
+        case AuthStatus.unauthenticated:
+          if (!loggingIn && !onLanding) return LandingPage.route;
+          return null;
+        case AuthStatus.authenticated:
+          if (loggingIn || onLanding) return HomePage.route;
+          return null;
+        case AuthStatus.error:
+        case AuthStatus.loading:
+          return null;
       }
-      if (loggedIn && loggingIn) {
-        return HomePage.route;
-      }
-      return null;
     },
   );
 }

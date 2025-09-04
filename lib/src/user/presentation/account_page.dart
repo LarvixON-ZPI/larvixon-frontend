@@ -71,7 +71,6 @@ class _AccountPageState extends State<AccountPage> {
       body: BlocConsumer<UserBloc, UserState>(
         listenWhen: (previous, current) => previous.user != current.user,
         listener: (context, state) {
-          print("UDATING USER BECAUSE THEY DONT MATCH");
           _setupControllers(user: state.user);
         },
         builder: (context, state) {
@@ -137,32 +136,52 @@ class _AccountPageState extends State<AccountPage> {
                                 labelText: context.translate.bio,
                               ),
                             ),
-                            if (isEditing)
-                              ElevatedButton(
-                                onPressed: state.isUpdating
-                                    ? null
-                                    : () {
-                                        if (_formKey.currentState!.validate()) {
-                                          context.read<UserBloc>().add(
-                                            UserProfileDataUpdateRequested(
-                                              firstName:
-                                                  _firstNameController.text,
-                                              lastName:
-                                                  _lastNameController.text,
-                                              bio: _bioController.text,
-                                              phoneNumber:
-                                                  _phoneNumberController.text,
-                                              organization:
-                                                  _organizationController.text,
-                                            ),
-                                          );
-                                          setState(() {
-                                            isEditing = false;
-                                          });
-                                        }
-                                      },
-                                child: Text(context.translate.save),
-                              ),
+
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 300),
+                              transitionBuilder: (child, animation) {
+                                final offset = Tween<Offset>(
+                                  begin: const Offset(1, 0),
+                                  end: Offset.zero,
+                                ).animate(animation);
+                                return SlideTransition(
+                                  position: offset,
+                                  child: child,
+                                );
+                              },
+                              child: isEditing
+                                  ? ElevatedButton(
+                                      onPressed: state.isUpdating
+                                          ? null
+                                          : () {
+                                              if (_formKey.currentState!
+                                                  .validate()) {
+                                                context.read<UserBloc>().add(
+                                                  UserProfileDataUpdateRequested(
+                                                    firstName:
+                                                        _firstNameController
+                                                            .text,
+                                                    lastName:
+                                                        _lastNameController
+                                                            .text,
+                                                    bio: _bioController.text,
+                                                    phoneNumber:
+                                                        _phoneNumberController
+                                                            .text,
+                                                    organization:
+                                                        _organizationController
+                                                            .text,
+                                                  ),
+                                                );
+                                                setState(() {
+                                                  isEditing = false;
+                                                });
+                                              }
+                                            },
+                                      child: Text(context.translate.save),
+                                    )
+                                  : null,
+                            ),
                           ],
                         ),
                       ),

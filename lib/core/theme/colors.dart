@@ -14,4 +14,17 @@ class AppColors {
   static const Color success = Colors.green;
 
   static const inputFill = Color(0xFFEFEFEF);
+
+  static const ColorScheme colorScheme = ColorScheme(
+    brightness: Brightness.light,
+    primary: primary,
+    onPrimary: Colors.white,
+    secondary: Colors.tealAccent,
+    onSecondary: Colors.black,
+    error: error,
+    onError: Colors.white,
+
+    surface: card,
+    onSurface: Colors.black87,
+  );
 }

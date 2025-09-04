@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/auth_bloc.dart';
+
 import '/extensions/translate_extension.dart';
 import '../auth_form_validators.dart';
-import 'package:flutter/widget_previews.dart';
+import '../bloc/auth_bloc.dart';
 
 enum AuthFormMode { signUp, signIn }
 
 class AuthForm extends StatefulWidget {
-  static const String tab = 'signup';
-  const AuthForm({super.key});
+  final AuthFormMode initialMode;
+  final String? initialEmail;
+  const AuthForm({
+    super.key,
+    required this.initialMode,
+    this.initialEmail,
+  });
 
   @override
   State<AuthForm> createState() => _AuthFormState();
@@ -18,7 +23,7 @@ class AuthForm extends StatefulWidget {
 class _AuthFormState extends State<AuthForm>
     with AutomaticKeepAliveClientMixin {
   final _formKey = GlobalKey<FormState>();
-  AuthFormMode _formMode = AuthFormMode.signUp;
+  late AuthFormMode _formMode;
 
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -41,6 +46,15 @@ class _AuthFormState extends State<AuthForm>
   }
 
   @override
+  void initState() {
+    super.initState();
+    _formMode = widget.initialMode;
+    if (widget.initialEmail != null) {
+      _emailController.text = widget.initialEmail!;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
     return Form(
@@ -52,7 +66,10 @@ class _AuthFormState extends State<AuthForm>
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 4.0,
           children: [
-            Text("Larvixon", style: Theme.of(context).textTheme.headlineLarge),
+            Text(
+              context.translate.larvixon,
+              style: Theme.of(context).textTheme.headlineLarge,
+            ),
             const SizedBox(height: 16.0),
             DecoratedBox(
               decoration: BoxDecoration(
@@ -111,10 +128,7 @@ class _AuthFormState extends State<AuthForm>
 
             TextFormField(
               controller: _emailController,
-              decoration: InputDecoration(
-                hintText: context.translate.email,
-                prefixIcon: Icon(Icons.email),
-              ),
+              decoration: InputDecoration(hintText: context.translate.email),
               autofillHints: [AutofillHints.email],
               validator: (value) =>
                   AuthFormValidators.emailValidator(context, value),
@@ -124,7 +138,6 @@ class _AuthFormState extends State<AuthForm>
               autofillHints: [AutofillHints.password],
               decoration: InputDecoration(
                 hintText: context.translate.password,
-                prefixIcon: Icon(Icons.lock),
                 suffixIcon: IconButton(
                   icon: Icon(
                     _obscurePassword ? Icons.visibility_off : Icons.visibility,
@@ -229,14 +242,6 @@ class _AuthFormState extends State<AuthForm>
             ),
 
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 48),
-                backgroundColor: Colors.grey[300],
-                elevation: 0.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6.0),
-                ),
-              ),
               key: ValueKey(_formMode),
               onPressed: _submitForm,
               child: Text(

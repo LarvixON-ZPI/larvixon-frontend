@@ -35,7 +35,7 @@ class _MainAppState extends State<MainApp> {
     super.initState();
     _authRepository = AuthRepositoryFake();
     _userRepository = UserRepositoryFake();
-    _authBloc = AuthBloc(_authRepository);
+    _authBloc = AuthBloc(_authRepository)..add(AuthVerificationRequested());
     _userBloc = UserBloc(_userRepository);
     _appRouter = AppRouter(_authBloc);
   }
@@ -62,7 +62,7 @@ class _MainAppState extends State<MainApp> {
           }
         },
         child: MaterialApp.router(
-          theme: appTheme,
+          theme: appThemeLight,
           routerConfig: _appRouter.router,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
@@ -81,8 +81,6 @@ class _MainAppState extends State<MainApp> {
       child: _buildBlocProviders(),
     );
   }
-
-  
 
   @override
   Widget build(BuildContext context) {

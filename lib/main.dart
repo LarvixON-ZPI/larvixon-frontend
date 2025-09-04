@@ -90,7 +90,7 @@ class _MainAppState extends State<MainApp> {
           }
         },
         child: MaterialApp.router(
-          theme: appTheme,
+          theme: appThemeLight,
           routerConfig: _appRouter.router,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,

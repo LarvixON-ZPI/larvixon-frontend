@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+
 import 'colors.dart';
 import 'text_styles.dart';
 
-final ThemeData appTheme = ThemeData(
-  primaryColor: Colors.teal,
-  scaffoldBackgroundColor: Colors.grey[50],
+final ThemeData appThemeLight = ThemeData(
+  colorScheme: AppColors.colorScheme,
+  primaryColor: AppColors.primary,
+  scaffoldBackgroundColor: AppColors.background,
   textTheme: TextStyles.textTheme,
   appBarTheme: const AppBarTheme(
-    backgroundColor: Colors.teal,
+    backgroundColor: AppColors.primary,
     titleTextStyle: TextStyles.title,
   ),
   inputDecorationTheme: InputDecorationTheme(
@@ -28,6 +30,8 @@ final ThemeData appTheme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
+      backgroundColor: AppColors.primary,
+      foregroundColor: AppColors.background,
       minimumSize: const Size(double.infinity, 48),
       elevation: 0.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),

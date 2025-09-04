@@ -17,6 +17,7 @@ dependencies:
     sdk: flutter
   intl: any
   go_router: ^16.1.0
+  video_player: ^2.10.0
 
 dev_dependencies:
   flutter_test:
