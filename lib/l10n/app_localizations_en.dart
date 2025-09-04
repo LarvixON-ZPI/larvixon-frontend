@@ -27,6 +27,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get invalidEmailFormat => 'Invalid email format';
 
   @override
+  String bioIsTooLong(int length) {
+    return 'Bio should not exceed $length characters';
+  }
+
+  @override
+  String organizationIsTooLong(int length) {
+    return 'Organization name should not exceed $length characters';
+  }
+
+  @override
+  String get invalidPhoneNumber => 'Invalid phone number';
+
+  @override
   String passwordIsTooShort(int length) {
     return 'Password should be at least $length characters long';
   }
@@ -60,4 +73,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get save => 'Save';
+
+  @override
+  String get logout => 'Log out';
+
+  @override
+  String welcome(String name) {
+    return 'Welcome, $name!';
+  }
+
+  @override
+  String get getStarted => 'Get Started';
+
+  @override
+  String get larvixon => 'Larvixon';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get contact => 'Contact';
+
+  @override
+  String get enterEmail => 'Enter email';
+
+  @override
+  String get larvixonHeader => 'ML-Powered Diagnostics in Minutes';
+
+  @override
+  String get larvixonSubheader =>
+      'A breakthrough system for rapid detection of toxins and drugs.';
+
+  @override
+  String get larvixonDescription =>
+      'Our platform uses artificial intelligence to analyze subtle movement patterns of various larvae exposed to patient plasma. In less than 20 minutes, it delivers highly accurate insights into the presence of xenobiotics — helping doctors act faster, save lives, and improve treatment outcomes.';
 }

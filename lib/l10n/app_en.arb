@@ -6,6 +6,25 @@
   "lastName": "Last name",
   "fieldIsRequired": "This field is required",
   "invalidEmailFormat": "Invalid email format",
+  "bioIsTooLong": "Bio should not exceed {length} characters",
+  "@bioIsTooLong": {
+    "placeholders": {
+      "length": {
+        "type": "int",
+        "example": "150"
+      }
+    }
+  },
+  "organizationIsTooLong": "Organization name should not exceed {length} characters",
+  "@organizationIsTooLong": {
+    "placeholders": {
+      "length": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "invalidPhoneNumber": "Invalid phone number",
   "passwordIsTooShort": "Password should be at least {length} characters long",
   "@passwordIsTooShort": {
     "placeholders": {
@@ -24,5 +43,24 @@
   "organization": "Organization",
   "bio": "Bio",
   "account": "Account",
-  "save": "Save"
+  "save": "Save",
+  "logout": "Log out",
+  "welcome": "Welcome, {name}!",
+  "@welcome": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "John"
+      }
+    }
+  },
+  "getStarted": "Get Started",
+  "larvixon": "Larvixon",
+  "about": "About",
+  "contact": "Contact",
+  "enterEmail": "Enter email",
+  "@_LandingPage": {},
+  "larvixonHeader": "ML-Powered Diagnostics in Minutes",
+  "larvixonSubheader": "A breakthrough system for rapid detection of toxins and drugs.",
+  "larvixonDescription": "Our platform uses artificial intelligence to analyze subtle movement patterns of various larvae exposed to patient plasma. In less than 20 minutes, it delivers highly accurate insights into the presence of xenobiotics — helping doctors act faster, save lives, and improve treatment outcomes."
 }

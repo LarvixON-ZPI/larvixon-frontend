@@ -134,6 +134,24 @@ abstract class AppLocalizations {
   /// **'Invalid email format'**
   String get invalidEmailFormat;
 
+  /// No description provided for @bioIsTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Bio should not exceed {length} characters'**
+  String bioIsTooLong(int length);
+
+  /// No description provided for @organizationIsTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Organization name should not exceed {length} characters'**
+  String organizationIsTooLong(int length);
+
+  /// No description provided for @invalidPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid phone number'**
+  String get invalidPhoneNumber;
+
   /// No description provided for @passwordIsTooShort.
   ///
   /// In en, this message translates to:
@@ -199,6 +217,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get save;
+
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out'**
+  String get logout;
+
+  /// No description provided for @welcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome, {name}!'**
+  String welcome(String name);
+
+  /// No description provided for @getStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get getStarted;
+
+  /// No description provided for @larvixon.
+  ///
+  /// In en, this message translates to:
+  /// **'Larvixon'**
+  String get larvixon;
+
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// No description provided for @contact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get contact;
+
+  /// No description provided for @enterEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter email'**
+  String get enterEmail;
+
+  /// No description provided for @larvixonHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'ML-Powered Diagnostics in Minutes'**
+  String get larvixonHeader;
+
+  /// No description provided for @larvixonSubheader.
+  ///
+  /// In en, this message translates to:
+  /// **'A breakthrough system for rapid detection of toxins and drugs.'**
+  String get larvixonSubheader;
+
+  /// No description provided for @larvixonDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Our platform uses artificial intelligence to analyze subtle movement patterns of various larvae exposed to patient plasma. In less than 20 minutes, it delivers highly accurate insights into the presence of xenobiotics — helping doctors act faster, save lives, and improve treatment outcomes.'**
+  String get larvixonDescription;
 }
 
 class _AppLocalizationsDelegate
