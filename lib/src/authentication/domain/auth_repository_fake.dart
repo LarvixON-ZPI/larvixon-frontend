@@ -3,7 +3,7 @@ import 'auth_repository.dart';
 class AuthRepositoryFake implements AuthRepository {
   @override
   Future<bool> isLoggedIn() async {
-    return true;
+    return await Future.delayed(const Duration(milliseconds: 100), () => true);
   }
 
   @override
