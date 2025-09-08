@@ -20,7 +20,7 @@ class TextStyles {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle subtitle = TextStyle(
+  static const TextStyle bodySmall = TextStyle(
     fontSize: 14,
     color: AppColors.textSecondary,
   );
@@ -29,6 +29,6 @@ class TextStyles {
     headlineLarge: headline,
     titleMedium: title,
     bodyLarge: body,
-    bodySmall: subtitle,
+    bodySmall: bodySmall,
   );
 }

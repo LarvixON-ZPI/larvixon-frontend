@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '/extensions/translate_extension.dart';
+import '../../common/extensions/translate_extension.dart';
 import '../auth_form_validators.dart';
 import '../bloc/auth_bloc.dart';
 
@@ -10,20 +10,18 @@ enum AuthFormMode { signUp, signIn }
 class AuthForm extends StatefulWidget {
   final AuthFormMode initialMode;
   final String? initialEmail;
-  const AuthForm({
-    super.key,
-    required this.initialMode,
-    this.initialEmail,
-  });
+  const AuthForm({super.key, required this.initialMode, this.initialEmail});
 
   @override
   State<AuthForm> createState() => _AuthFormState();
 }
 
 class _AuthFormState extends State<AuthForm>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   late AuthFormMode _formMode;
+  late final AnimationController _logoController;
+  late final Animation<double> _scaleAnimation;
 
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -42,6 +40,7 @@ class _AuthFormState extends State<AuthForm>
     _lastNameController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _logoController.dispose();
     super.dispose();
   }
 
@@ -52,6 +51,15 @@ class _AuthFormState extends State<AuthForm>
     if (widget.initialEmail != null) {
       _emailController.text = widget.initialEmail!;
     }
+    _logoController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+
+    // Scale pulse
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.2).animate(
+      CurvedAnimation(parent: _logoController, curve: Curves.easeInOut),
+    );
   }
 
   @override
@@ -66,20 +74,32 @@ class _AuthFormState extends State<AuthForm>
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 4.0,
           children: [
-            Text(
-              context.translate.larvixon,
-              style: Theme.of(context).textTheme.headlineLarge,
-            ),
-            const SizedBox(height: 16.0),
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(6.0),
+            BlocListener<AuthBloc, AuthState>(
+              listener: (context, state) {
+                if (state.status == AuthStatus.loading) {
+                  _logoController.repeat(reverse: true); // start animation
+                } else {
+                  _logoController.stop(); // stop animation
+                  _logoController.value = 0.0; // reset scale/color
+                }
+              },
+              child: AnimatedBuilder(
+                animation: _logoController,
+                child: Text(
+                  context.translate.larvixon,
+                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                builder: (context, child) {
+                  return Transform.scale(
+                    scale: _scaleAnimation.value,
+                    child: Center(child: child),
+                  );
+                },
               ),
-              child: const SizedBox(height: 2, width: double.infinity),
             ),
-            const SizedBox(height: 16.0),
-
+            const SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
@@ -131,7 +151,7 @@ class _AuthFormState extends State<AuthForm>
               decoration: InputDecoration(hintText: context.translate.email),
               autofillHints: [AutofillHints.email],
               validator: (value) =>
-                  AuthFormValidators.emailValidator(context, value),
+                  FormValidators.emailValidator(context, value),
             ),
             TextFormField(
               controller: _passwordController,
@@ -152,7 +172,7 @@ class _AuthFormState extends State<AuthForm>
               ),
 
               obscureText: _obscurePassword,
-              validator: (value) => AuthFormValidators.passwordValidator(
+              validator: (value) => FormValidators.passwordValidator(
                 context,
                 value,
                 onlyCheckEmpty: _formMode == AuthFormMode.signIn,
@@ -192,7 +212,7 @@ class _AuthFormState extends State<AuthForm>
                           ),
                           obscureText: _obscureConfirmPassword,
                           validator: (value) =>
-                              AuthFormValidators.confirmPasswordValidator(
+                              FormValidators.confirmPasswordValidator(
                                 context,
                                 _passwordController.text,
                                 value,
@@ -205,10 +225,7 @@ class _AuthFormState extends State<AuthForm>
                             hintText: context.translate.username,
                           ),
                           validator: (value) =>
-                              AuthFormValidators.usernameValidator(
-                                context,
-                                value,
-                              ),
+                              FormValidators.usernameValidator(context, value),
                         ),
                         TextFormField(
                           controller: _firstNameController,
@@ -217,10 +234,7 @@ class _AuthFormState extends State<AuthForm>
                             hintText: context.translate.firstName,
                           ),
                           validator: (value) =>
-                              AuthFormValidators.firstNameValidator(
-                                context,
-                                value,
-                              ),
+                              FormValidators.firstNameValidator(context, value),
                         ),
                         TextFormField(
                           controller: _lastNameController,
@@ -229,10 +243,7 @@ class _AuthFormState extends State<AuthForm>
                             hintText: context.translate.lastName,
                           ),
                           validator: (value) =>
-                              AuthFormValidators.lastNameValidator(
-                                context,
-                                value,
-                              ),
+                              FormValidators.lastNameValidator(context, value),
                         ),
                       ],
                     ],
