@@ -1,7 +1,31 @@
 import 'package:flutter/widgets.dart';
-import '../../extensions/translate_extension.dart';
 
-class AuthFormValidators {
+import '../common/extensions/translate_extension.dart';
+
+class FormValidators {
+  static String? lengthValidator(
+    BuildContext context,
+    String? value, {
+    required String fieldName,
+    required int minLength,
+    required int maxLength,
+    bool allowNull = false,
+  }) {
+    if (allowNull && (value == null || value.isEmpty)) {
+      return null;
+    }
+    if ((value == null || value.isEmpty)) {
+      return context.translate.fieldIsRequired;
+    }
+    if (value.length < minLength) {
+      return context.translate.fieldIsTooShort(fieldName, minLength);
+    }
+    if (value.length > maxLength) {
+      return context.translate.fieldIsTooLong(fieldName, maxLength);
+    }
+    return null;
+  }
+
   static String? emailValidator(BuildContext context, String? value) {
     if (value == null || value.isEmpty) {
       return context.translate.fieldIsRequired;
