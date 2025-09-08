@@ -1,5 +1,6 @@
 # Larvixon App 
 
+[![Flutter CI](https://github.com/LarvixON-ZPI/larvixon-frontend/actions/workflows/flutter_ci.yml/badge.svg)](https://github.com/LarvixON-ZPI/larvixon-frontend/actions/workflows/flutter_ci.yml)
 
 ## Requirements
 
