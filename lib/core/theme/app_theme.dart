@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'colors.dart';
 import 'text_styles.dart';
 
 final ThemeData appThemeLight = ThemeData(
+  fontFamily: GoogleFonts.oswald().fontFamily,
   colorScheme: AppColors.colorScheme,
   primaryColor: AppColors.primary,
   scaffoldBackgroundColor: AppColors.background,
@@ -13,6 +15,7 @@ final ThemeData appThemeLight = ThemeData(
     titleTextStyle: TextStyles.title,
   ),
   inputDecorationTheme: InputDecorationTheme(
+    errorStyle: const TextStyle(height: 1.0),
     filled: true,
     fillColor: AppColors.inputFill,
     border: OutlineInputBorder(

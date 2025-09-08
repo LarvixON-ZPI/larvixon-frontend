@@ -53,6 +53,32 @@
       }
     }
   },
+  "fieldIsTooLong": "{field} nie może przekraczać {length} znaków",
+  "@fieldIsTooLong": {
+    "placeholders": {
+      "field": {
+        "type": "String",
+        "example": "Nazwa użytkownika"
+      },
+      "length": {
+        "type": "int",
+        "example": "50"
+      }
+    }
+  },
+  "fieldIsTooShort": "{field} musi mieć co najmniej {length} znaków",
+  "@fieldIsTooShort": {
+    "placeholders": {
+      "field": {
+        "type": "String",
+        "example": "Nazwa użytkownika"
+      },
+      "length": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "invalidPhoneNumber": "Nieprawidłowy numer telefonu",
   "getStarted": "Zaczynajmy",
   "larvixon": "Larvixon",
@@ -62,5 +88,14 @@
   "larvixonHeader": "Diagnostyka wspomagana AI w kilka minut",
   "larvixonSubheader": "Przełomowy system szybkiego wykrywania toksyn i substancji odurzających.",
   "larvixonDescription": "Nasza platforma wykorzystuje sztuczną inteligencję do analizy subtelnych wzorców ruchu różnych larw wystawionych na działanie osocza pacjenta. W mniej niż 20 minut dostarcza wysoce dokładnych informacji o obecności ksenobiotyków — pomagając lekarzom działać szybciej, ratować życie i poprawiać efekty leczenia.",
-  "enterEmail": "Wprowadź swój email"
+  "enterEmail": "Wprowadź swój email",
+  "@@_ContactUs": {},
+  "contact": "Kontakt",
+  "privacy": "Prywatność",
+  "terms": "Warunki korzystania",
+  "follow": "Obserwuj nas",
+  "reachUs": "Skontaktuj się z nami",
+  "sendUsAMessage": "Wyślij nam wiadomość",
+  "send": "Wyślij",
+  "message": "Wiadomość"
 }

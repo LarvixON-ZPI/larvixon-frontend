@@ -146,6 +146,18 @@ abstract class AppLocalizations {
   /// **'Organization name should not exceed {length} characters'**
   String organizationIsTooLong(int length);
 
+  /// No description provided for @fieldIsTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'{field} should not exceed {length} characters'**
+  String fieldIsTooLong(String field, int length);
+
+  /// No description provided for @fieldIsTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{field} should be at least {length} characters long'**
+  String fieldIsTooShort(String field, int length);
+
   /// No description provided for @invalidPhoneNumber.
   ///
   /// In en, this message translates to:
@@ -277,6 +289,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Our platform uses artificial intelligence to analyze subtle movement patterns of various larvae exposed to patient plasma. In less than 20 minutes, it delivers highly accurate insights into the presence of xenobiotics — helping doctors act faster, save lives, and improve treatment outcomes.'**
   String get larvixonDescription;
+
+  /// No description provided for @privacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy'**
+  String get privacy;
+
+  /// No description provided for @terms.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms'**
+  String get terms;
+
+  /// No description provided for @follow.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow'**
+  String get follow;
+
+  /// No description provided for @reachUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach us'**
+  String get reachUs;
+
+  /// No description provided for @sendUsAMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Send us a message'**
+  String get sendUsAMessage;
+
+  /// No description provided for @send.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get send;
+
+  /// No description provided for @message.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get message;
 }
 
 class _AppLocalizationsDelegate

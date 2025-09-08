@@ -24,6 +24,32 @@
       }
     }
   },
+  "fieldIsTooLong": "{field} should not exceed {length} characters",
+  "@fieldIsTooLong": {
+    "placeholders": {
+      "field": {
+        "type": "String",
+        "example": "Username"
+      },
+      "length": {
+        "type": "int",
+        "example": "50"
+      }
+    }
+  },
+  "fieldIsTooShort": "{field} should be at least {length} characters long",
+  "@fieldIsTooShort": {
+    "placeholders": {
+      "field": {
+        "type": "String",
+        "example": "Username"
+      },
+      "length": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "invalidPhoneNumber": "Invalid phone number",
   "passwordIsTooShort": "Password should be at least {length} characters long",
   "@passwordIsTooShort": {
@@ -62,5 +88,15 @@
   "@_LandingPage": {},
   "larvixonHeader": "ML-Powered Diagnostics in Minutes",
   "larvixonSubheader": "A breakthrough system for rapid detection of toxins and drugs.",
-  "larvixonDescription": "Our platform uses artificial intelligence to analyze subtle movement patterns of various larvae exposed to patient plasma. In less than 20 minutes, it delivers highly accurate insights into the presence of xenobiotics — helping doctors act faster, save lives, and improve treatment outcomes."
+  "larvixonDescription": "Our platform uses artificial intelligence to analyze subtle movement patterns of various larvae exposed to patient plasma. In less than 20 minutes, it delivers highly accurate insights into the presence of xenobiotics — helping doctors act faster, save lives, and improve treatment outcomes.",
+  "@@_ContactUs": {},
+  "contact": "Contact",
+  "privacy": "Privacy",
+  "terms": "Terms",
+  "follow": "Follow",
+  "reachUs": "Reach us",
+  "sendUsAMessage": "Send us a message",
+  "send": "Send",
+  "message": "Message",
+  "@@_AboutUs": {}
 }

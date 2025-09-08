@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:larvixon_frontend/core/auth_interceptor.dart';
-import 'package:larvixon_frontend/core/token_storage.dart';
+
+import 'auth_interceptor.dart';
+import 'token_storage.dart';
 
 final class ApiClient {
   final timeoutDuration = Duration(seconds: 30);
