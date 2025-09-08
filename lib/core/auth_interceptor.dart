@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:larvixon_frontend/core/constants/endpoints_auth.dart';
+
+import 'constants/endpoints_auth.dart';
 import 'token_storage.dart';
 
 class AuthInterceptor extends Interceptor {
