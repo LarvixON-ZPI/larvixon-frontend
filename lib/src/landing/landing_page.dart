@@ -1,16 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:larvixon_frontend/src/landing/presentation/background.dart';
 
-import "../../extensions/translate_extension.dart";
-import '../authentication/auth_form_validators.dart';
-import '../authentication/presentation/auth_form.dart';
 import '../authentication/presentation/auth_page.dart';
+import 'presentation/about_section.dart';
+import 'presentation/contact_section.dart';
+import 'presentation/footer.dart';
+import 'presentation/landing_content.dart';
+import 'presentation/landing_navbar.dart';
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget {
   static const String route = '/';
   static const String name = 'landing';
 
   const LandingPage({super.key});
+
+  @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
+  final ScrollController _scrollController = ScrollController();
+  final GlobalKey _heroKey = GlobalKey();
+  final GlobalKey _aboutKey = GlobalKey();
+  final GlobalKey _contactKey = GlobalKey();
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _scrollToKey(GlobalKey key) async {
+    final ctx = key.currentContext;
+    if (ctx == null) return;
+    await Scrollable.ensureVisible(
+      ctx,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+      alignment: 0.05,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,198 +48,42 @@ class LandingPage extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           Background(),
-          Column(children: [_NavBar(), _Content()]),
-        ],
-      ),
-    );
-  }
-}
-
-class _Content extends StatelessWidget {
-  const _Content({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        margin: const EdgeInsets.all(24),
-        child: Row(
-          spacing: 32,
-          children: [
-            Expanded(
-              child: Column(
-                spacing: 16,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-
-                children: [
-                  Text(
-                    context.translate.larvixonHeader,
-                    style: Theme.of(context).textTheme.headlineLarge,
-                  ),
-                  Text(context.translate.larvixonDescription),
-                  _EmailField(),
-                ],
+          Column(
+            children: [
+              LandingNavBar(
+                onAboutPressed: () => _scrollToKey(_aboutKey),
+                onContactPressed: () => _scrollToKey(_contactKey),
+                onSignInPressed: () => context.push(AuthPage.route),
               ),
-            ),
-            Expanded(child: Placeholder()),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _EmailField extends StatefulWidget {
-  _EmailField({super.key});
-
-  @override
-  State<_EmailField> createState() => _EmailFieldState();
-}
-
-class _EmailFieldState extends State<_EmailField> {
-  final TextEditingController _emailController = TextEditingController();
-
-  final _formKey = GlobalKey<FormState>();
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Flexible(
-            flex: 2,
-            child: SizedBox(
-              height: 100,
-              child: TextFormField(
-                validator: (value) =>
-                    AuthFormValidators.emailValidator(context, value),
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  hintText: context.translate.enterEmail,
-
-                  filled: true,
-                  fillColor: Colors.white,
+              Expanded(
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(key: _heroKey, child: const LandingContent()),
+                      Padding(
+                        key: _aboutKey,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 48,
+                        ),
+                        child: AboutSection(),
+                      ),
+                      Padding(
+                        key: _contactKey,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 48,
+                        ),
+                        child: ContactSection(),
+                      ),
+                      const Footer(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Flexible(
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(56),
-              ),
-              onPressed: () {
-                if (!_formKey.currentState!.validate()) return;
-                context.push(
-                  AuthPage.route,
-                  extra: {
-                    'email': _emailController.text,
-                    'mode': AuthFormMode.signUp,
-                  },
-                );
-              },
-              child: Text(context.translate.getStarted),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class Background extends StatelessWidget {
-  const Background({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Theme.of(context).colorScheme.primary,
-            Theme.of(context).colorScheme.secondary,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-    );
-  }
-}
-
-class _NavBar extends StatelessWidget {
-  const _NavBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(24),
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Expanded(
-            child: Text(
-              context.translate.larvixon,
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge?.copyWith(color: Colors.white),
-            ),
-          ),
-          Expanded(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              spacing: 16,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    context.translate.about,
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    context.translate.contact,
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    context.push(AuthPage.route);
-                  },
-                  child: Text(
-                    context.translate.signIn,
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
+            ],
           ),
         ],
       ),

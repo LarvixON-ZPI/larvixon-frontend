@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:larvixon_frontend/extensions/translate_extension.dart';
 
+import '../../../src/common/extensions/translate_extension.dart';
 import '../bloc/user_bloc.dart';
 import '../user.dart';
 
