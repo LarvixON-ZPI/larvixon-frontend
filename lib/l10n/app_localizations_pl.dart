@@ -37,6 +37,16 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
+  String fieldIsTooLong(String field, int length) {
+    return '$field nie może przekraczać $length znaków';
+  }
+
+  @override
+  String fieldIsTooShort(String field, int length) {
+    return '$field musi mieć co najmniej $length znaków';
+  }
+
+  @override
   String get invalidPhoneNumber => 'Nieprawidłowy numer telefonu';
 
   @override
@@ -107,4 +117,25 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get larvixonDescription =>
       'Nasza platforma wykorzystuje sztuczną inteligencję do analizy subtelnych wzorców ruchu różnych larw wystawionych na działanie osocza pacjenta. W mniej niż 20 minut dostarcza wysoce dokładnych informacji o obecności ksenobiotyków — pomagając lekarzom działać szybciej, ratować życie i poprawiać efekty leczenia.';
+
+  @override
+  String get privacy => 'Prywatność';
+
+  @override
+  String get terms => 'Warunki korzystania';
+
+  @override
+  String get follow => 'Obserwuj nas';
+
+  @override
+  String get reachUs => 'Skontaktuj się z nami';
+
+  @override
+  String get sendUsAMessage => 'Wyślij nam wiadomość';
+
+  @override
+  String get send => 'Wyślij';
+
+  @override
+  String get message => 'Wiadomość';
 }

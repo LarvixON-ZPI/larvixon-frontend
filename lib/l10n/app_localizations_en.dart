@@ -37,6 +37,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String fieldIsTooLong(String field, int length) {
+    return '$field should not exceed $length characters';
+  }
+
+  @override
+  String fieldIsTooShort(String field, int length) {
+    return '$field should be at least $length characters long';
+  }
+
+  @override
   String get invalidPhoneNumber => 'Invalid phone number';
 
   @override
@@ -107,4 +117,25 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get larvixonDescription =>
       'Our platform uses artificial intelligence to analyze subtle movement patterns of various larvae exposed to patient plasma. In less than 20 minutes, it delivers highly accurate insights into the presence of xenobiotics — helping doctors act faster, save lives, and improve treatment outcomes.';
+
+  @override
+  String get privacy => 'Privacy';
+
+  @override
+  String get terms => 'Terms';
+
+  @override
+  String get follow => 'Follow';
+
+  @override
+  String get reachUs => 'Reach us';
+
+  @override
+  String get sendUsAMessage => 'Send us a message';
+
+  @override
+  String get send => 'Send';
+
+  @override
+  String get message => 'Message';
 }
