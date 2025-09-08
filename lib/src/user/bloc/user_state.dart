@@ -17,7 +17,12 @@ final class UserState extends Equatable {
   @override
   List<Object?> get props => [user, errorMessage, status, isUpdating];
 
-  UserState copyWith({User? user, String? errorMessage, UserStatus? status, bool? isUpdating}) {
+  UserState copyWith({
+    User? user,
+    String? errorMessage,
+    UserStatus? status,
+    bool? isUpdating,
+  }) {
     if (status != UserStatus.error) {
       errorMessage = null;
     }
