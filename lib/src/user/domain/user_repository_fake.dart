@@ -1,3 +1,6 @@
+import 'package:fpdart/fpdart.dart';
+import 'package:larvixon_frontend/core/errors/failures.dart' show Failure;
+
 import '../user.dart';
 import 'user_repository.dart';
 
@@ -14,13 +17,13 @@ class UserRepositoryFake implements UserRepository {
   );
 
   @override
-  Future<User> getUserProfile() {
-    return Future.value(_user);
+  TaskEither<Failure, User> getUserProfile() {
+    return TaskEither(() async => Right(_user));
   }
 
   @override
-  Future<User> updateUserProfile({required User user}) {
+  TaskEither<Failure, User> updateUserProfile({required User user}) {
     _user = user;
-    return Future.value(_user);
+    return TaskEither(() async => Right(_user));
   }
 }

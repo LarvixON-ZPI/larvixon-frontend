@@ -5,6 +5,12 @@ import 'colors.dart';
 import 'text_styles.dart';
 
 final ThemeData appThemeLight = ThemeData(
+  pageTransitionsTheme: const PageTransitionsTheme(
+    builders: {
+      TargetPlatform.android: ZoomPageTransitionsBuilder(),
+      TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+    },
+  ),
   fontFamily: GoogleFonts.oswald().fontFamily,
   colorScheme: AppColors.colorScheme,
   primaryColor: AppColors.primary,

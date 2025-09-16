@@ -53,7 +53,7 @@ class _LandingPageState extends State<LandingPage> {
               LandingNavBar(
                 onAboutPressed: () => _scrollToKey(_aboutKey),
                 onContactPressed: () => _scrollToKey(_contactKey),
-                onSignInPressed: () => context.push(AuthPage.route),
+                onSignInPressed: () => context.go(AuthPage.route),
               ),
               Expanded(
                 child: SingleChildScrollView(

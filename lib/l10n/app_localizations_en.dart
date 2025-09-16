@@ -138,4 +138,66 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get message => 'Message';
+
+  @override
+  String get uploadNewVideo => 'Upload new video';
+
+  @override
+  String get uploadVideoDescription =>
+      'Upload a new video to the platform to analyze larval movements.';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get upload => 'Upload';
+
+  @override
+  String get selectVideo => 'Select Video';
+
+  @override
+  String selectedFile(String fileName) {
+    return 'Selected: $fileName';
+  }
+
+  @override
+  String get unknownError => 'An unknown error occurred';
+
+  @override
+  String get enterTitle => 'Enter title';
+
+  @override
+  String get uploading => 'Uploading';
+
+  @override
+  String get uploaded => 'Uploaded';
+
+  @override
+  String get pending => 'Pending';
+
+  @override
+  String get processing => 'Processing';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get failed => 'Failed';
+
+  @override
+  String get analysing => 'Analysing';
+
+  @override
+  String get analysed => 'Analysed';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String andMore(int count) {
+    return '$count more';
+  }
+
+  @override
+  String get loading => 'Loading';
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:larvixon_frontend/src/landing/presentation/custom_card.dart';
+import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
-import '../../common/extensions/translate_extension.dart';
 import '../../../src/authentication/auth_form_validators.dart';
+import '../../common/extensions/translate_extension.dart';
 
 class ContactSection extends StatefulWidget {
   const ContactSection({super.key});
@@ -58,7 +58,7 @@ class _ContactSectionState extends State<ContactSection> {
           width: double.infinity,
           child: CustomCard(
             title: context.translate.sendUsAMessage,
-            widgets: [
+            children: [
               Form(
                 key: _formKey,
                 child: Column(

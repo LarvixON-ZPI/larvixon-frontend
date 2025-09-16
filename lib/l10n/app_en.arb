@@ -98,5 +98,41 @@
   "sendUsAMessage": "Send us a message",
   "send": "Send",
   "message": "Message",
-  "@@_AboutUs": {}
+  "@@_AboutUs": {},
+  "uploadNewVideo": "Upload new video",
+  "uploadVideoDescription": "Upload a new video to the platform to analyze larval movements.",
+  "cancel": "Cancel",
+  "upload": "Upload",
+  "selectVideo": "Select Video",
+  "selectedFile": "Selected: {fileName}",
+  "@selectedFile": {
+    "placeholders": {
+      "fileName": {
+        "type": "String",
+        "example": "video.mp4"
+      }
+    }
+  },
+  "unknownError": "An unknown error occurred",
+  "enterTitle": "Enter title",
+  "@@_VideoStatuses": {},
+  "uploading": "Uploading",
+  "uploaded": "Uploaded",
+  "pending": "Pending",
+  "processing": "Processing",
+  "completed": "Completed",
+  "failed": "Failed",
+  "analysing": "Analysing",
+  "analysed": "Analysed",
+  "error": "Error",
+  "andMore": "{count} more",
+  "@andMore": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "loading": "Loading"
 }

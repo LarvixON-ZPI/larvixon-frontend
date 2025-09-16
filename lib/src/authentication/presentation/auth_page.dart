@@ -1,10 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:larvixon_frontend/core/constants/breakpoints.dart';
-import 'package:larvixon_frontend/src/landing/presentation/background.dart';
-import 'package:larvixon_frontend/src/landing/presentation/custom_card.dart';
+import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 import 'package:larvixon_frontend/src/common/widgets/petri_dish/petri_dish.dart';
+import 'package:larvixon_frontend/src/landing/presentation/background.dart';
 
 import 'auth_form.dart';
 
@@ -30,7 +29,6 @@ class _AuthPageState extends State<AuthPage>
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isWide = constraints.maxWidth > Breakpoints.large;
         return Scaffold(
           backgroundColor: Colors.transparent,
           body: Stack(
@@ -51,7 +49,7 @@ class _AuthPageState extends State<AuthPage>
                         Flexible(
                           flex: 3,
                           child: CustomCard(
-                            widgets: [
+                            children: [
                               AuthForm(
                                 initialMode: widget.initialMode,
                                 initialEmail: widget.initialEmail,

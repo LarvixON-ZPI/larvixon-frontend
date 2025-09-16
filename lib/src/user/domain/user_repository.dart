@@ -1,7 +1,10 @@
+import 'package:fpdart/fpdart.dart';
+import 'package:larvixon_frontend/core/errors/failures.dart';
+
 import '../user.dart';
 
 abstract class UserRepository {
-  Future<User> getUserProfile();
+  TaskEither<Failure, User> getUserProfile();
 
-  Future<User> updateUserProfile({required User user});
+  TaskEither<Failure, User> updateUserProfile({required User user});
 }
