@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:larvixon_frontend/l10n/app_localizations.dart';
 
 import '../../common/extensions/translate_extension.dart';
 
@@ -9,11 +10,15 @@ class LandingNavBar extends StatelessWidget {
     this.onContactPressed,
     this.onSignInPressed,
     this.onLogoPressed,
+    this.onLocaleChanged,
+    this.currentLocale,
   });
   final VoidCallback? onAboutPressed;
   final VoidCallback? onContactPressed;
   final VoidCallback? onSignInPressed;
   final VoidCallback? onLogoPressed;
+  final ValueChanged<Locale?>? onLocaleChanged;
+  final Locale? currentLocale;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +42,6 @@ class LandingNavBar extends StatelessWidget {
               ).textTheme.titleLarge?.copyWith(color: Colors.white),
             ),
           ),
-
           Expanded(
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -57,6 +61,12 @@ class LandingNavBar extends StatelessWidget {
                     context.translate.contact,
                     style: const TextStyle(color: Colors.white),
                   ),
+                ),
+                const SizedBox(width: 2),
+                _buildLanguageDropdown(
+                  currentLocale: currentLocale,
+                  onLocaleChanged: onLocaleChanged,
+                  context: context,
                 ),
               ],
             ),
@@ -78,5 +88,43 @@ class LandingNavBar extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+Widget _buildLanguageDropdown({
+  required Locale? currentLocale,
+  required ValueChanged<Locale?>? onLocaleChanged,
+  required BuildContext context,
+}) {
+  return DropdownButtonHideUnderline(
+    child: DropdownButton<Locale>(
+      dropdownColor: Colors.grey[900],
+      value: _getDropdownValue(currentLocale, context),
+      icon: const Icon(Icons.language, color: Colors.white),
+      items: AppLocalizations.supportedLocales
+          .map(
+            (locale) => DropdownMenuItem(
+              value: locale,
+              child: Text(
+                locale.languageCode.toUpperCase(),
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+          )
+          .toList(),
+      onChanged: onLocaleChanged,
+    ),
+  );
+}
+
+Locale _getDropdownValue(Locale? currentLocale, BuildContext context) {
+  if (AppLocalizations.supportedLocales.contains(currentLocale)) {
+    return currentLocale!;
+  } else if (AppLocalizations.supportedLocales.contains(
+    Localizations.localeOf(context),
+  )) {
+    return Localizations.localeOf(context);
+  } else {
+    return AppLocalizations.supportedLocales.first;
   }
 }

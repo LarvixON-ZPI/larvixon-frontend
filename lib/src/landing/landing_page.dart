@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/src/landing/presentation/background.dart';
+import '../../core/locale_controller.dart';
 
 import '../authentication/presentation/auth_page.dart';
 import 'presentation/about_section.dart';
@@ -43,6 +45,7 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final localeController = LocaleController.of(context);
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -54,6 +57,12 @@ class _LandingPageState extends State<LandingPage> {
                 onAboutPressed: () => _scrollToKey(_aboutKey),
                 onContactPressed: () => _scrollToKey(_contactKey),
                 onSignInPressed: () => context.go(AuthPage.route),
+                onLocaleChanged: (locale) {
+                  if (locale != null && localeController != null) {
+                    localeController.setLocale(locale);
+                  }
+                },
+                currentLocale: localeController?.locale,
               ),
               Expanded(
                 child: SingleChildScrollView(
