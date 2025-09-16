@@ -97,5 +97,41 @@
   "reachUs": "Skontaktuj się z nami",
   "sendUsAMessage": "Wyślij nam wiadomość",
   "send": "Wyślij",
-  "message": "Wiadomość"
+  "message": "Wiadomość",
+  "uploadNewVideo": "Prześlij nowy film do analizy",
+  "uploadVideoDescription": "Prześlij nowy film na platformę, aby przeanalizować ruchy larw.",
+  "cancel": "Anuluj",
+  "upload": "Prześlij",
+  "selectVideo": "Wybierz film",
+  "selectedFile": "Wybrany: {fileName}",
+  "@selectedFile": {
+    "placeholders": {
+      "fileName": {
+        "type": "String",
+        "example": "video.mp4"
+      }
+    }
+  },
+  "unknownError": "Wystąpił nieznany błąd",
+  "enterTitle": "Wprowadź tytuł",
+  "@@_VideoStatuses": {},
+  "uploading": "Przesyłanie",
+  "uploaded": "Przesłano",
+  "pending": "Oczekujące",
+  "processing": "Przetwarzanie",
+  "completed": "Zakończono",
+  "failed": "Niepowodzenie",
+  "analysing": "Analizowanie",
+  "analysed": "Zanalizowano",
+  "error": "Błąd",
+  "andMore": "{count} więcej",
+  "@andMore": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "loading": "Ładowanie"
 }

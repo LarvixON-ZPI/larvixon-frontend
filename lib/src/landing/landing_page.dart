@@ -53,7 +53,7 @@ class _LandingPageState extends State<LandingPage> {
               LandingNavBar(
                 onAboutPressed: () => _scrollToKey(_aboutKey),
                 onContactPressed: () => _scrollToKey(_contactKey),
-                onSignInPressed: () => context.push(AuthPage.route),
+                onSignInPressed: () => context.go(AuthPage.route),
               ),
               Expanded(
                 child: SingleChildScrollView(
@@ -68,7 +68,13 @@ class _LandingPageState extends State<LandingPage> {
                           horizontal: 24,
                           vertical: 48,
                         ),
-                        child: AboutSection(),
+                        child: Align(
+                          alignment: AlignmentGeometry.center,
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: 1000),
+                            child: AboutSection(),
+                          ),
+                        ),
                       ),
                       Padding(
                         key: _contactKey,
@@ -76,7 +82,13 @@ class _LandingPageState extends State<LandingPage> {
                           horizontal: 24,
                           vertical: 48,
                         ),
-                        child: ContactSection(),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: 1000),
+                            child: ContactSection(),
+                          ),
+                        ),
                       ),
                       const Footer(),
                     ],

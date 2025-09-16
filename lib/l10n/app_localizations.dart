@@ -331,6 +331,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Message'**
   String get message;
+
+  /// No description provided for @uploadNewVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload new video'**
+  String get uploadNewVideo;
+
+  /// No description provided for @uploadVideoDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload a new video to the platform to analyze larval movements.'**
+  String get uploadVideoDescription;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @upload.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload'**
+  String get upload;
+
+  /// No description provided for @selectVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Video'**
+  String get selectVideo;
+
+  /// No description provided for @selectedFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected: {fileName}'**
+  String selectedFile(String fileName);
+
+  /// No description provided for @unknownError.
+  ///
+  /// In en, this message translates to:
+  /// **'An unknown error occurred'**
+  String get unknownError;
+
+  /// No description provided for @enterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter title'**
+  String get enterTitle;
+
+  /// No description provided for @uploading.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading'**
+  String get uploading;
+
+  /// No description provided for @uploaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploaded'**
+  String get uploaded;
+
+  /// No description provided for @pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get pending;
+
+  /// No description provided for @processing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing'**
+  String get processing;
+
+  /// No description provided for @completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
+  /// No description provided for @failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get failed;
+
+  /// No description provided for @analysing.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysing'**
+  String get analysing;
+
+  /// No description provided for @analysed.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysed'**
+  String get analysed;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// No description provided for @andMore.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} more'**
+  String andMore(int count);
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading'**
+  String get loading;
 }
 
 class _AppLocalizationsDelegate

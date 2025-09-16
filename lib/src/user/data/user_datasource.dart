@@ -9,13 +9,12 @@ class UserDataSource {
 
   UserDataSource(this.apiClient);
 
-  FutureOr<Map<String, dynamic>> getUserProfile() async {
+  Future<Map<String, dynamic>> getUserProfile() async {
     final response = await apiClient.dio.get(UserEndpoints.profile);
-    print('User profile fetched: ${response.data}');
     return response.data;
   }
 
-  FutureOr<Map<String, dynamic>> updateUserProfile({
+  Future<Map<String, dynamic>> updateUserProfile({
     required String? firstName,
     required String? lastName,
     required String? email,
@@ -31,7 +30,7 @@ class UserDataSource {
     return response.data;
   }
 
-  FutureOr<Map<String, dynamic>> updateUserProfileDetails({
+  Future<Map<String, dynamic>> updateUserProfileDetails({
     required String? bio,
     required String? organization,
     required String? phoneNumber,

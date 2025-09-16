@@ -56,7 +56,6 @@ class _AuthFormState extends State<AuthForm>
       duration: const Duration(milliseconds: 800),
     );
 
-    // Scale pulse
     _scaleAnimation = Tween<double>(begin: 1.0, end: 1.2).animate(
       CurvedAnimation(parent: _logoController, curve: Curves.easeInOut),
     );
@@ -77,10 +76,10 @@ class _AuthFormState extends State<AuthForm>
             BlocListener<AuthBloc, AuthState>(
               listener: (context, state) {
                 if (state.status == AuthStatus.loading) {
-                  _logoController.repeat(reverse: true); // start animation
+                  _logoController.repeat(reverse: true);
                 } else {
-                  _logoController.stop(); // stop animation
-                  _logoController.value = 0.0; // reset scale/color
+                  _logoController.stop();
+                  _logoController.value = 0.0;
                 }
               },
               child: AnimatedBuilder(
@@ -101,6 +100,8 @@ class _AuthFormState extends State<AuthForm>
             ),
             const SizedBox(height: 16),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              spacing: 16,
               children: [
                 Expanded(
                   child: ElevatedButton(
@@ -122,7 +123,6 @@ class _AuthFormState extends State<AuthForm>
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
@@ -252,13 +252,19 @@ class _AuthFormState extends State<AuthForm>
               ),
             ),
 
-            ElevatedButton(
-              key: ValueKey(_formMode),
-              onPressed: _submitForm,
-              child: Text(
-                _formMode == AuthFormMode.signIn
-                    ? context.translate.signIn
-                    : context.translate.signUp,
+            Align(
+              alignment: Alignment.centerRight,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 200),
+                child: ElevatedButton(
+                  key: ValueKey(_formMode),
+                  onPressed: _submitForm,
+                  child: Text(
+                    _formMode == AuthFormMode.signIn
+                        ? context.translate.signIn
+                        : context.translate.signUp,
+                  ),
+                ),
               ),
             ),
           ],

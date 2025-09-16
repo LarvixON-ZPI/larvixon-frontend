@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import 'core/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'l10n/app_localizations.dart';
-import 'src/authentication/domain/auth_repository.dart';
+import 'src/analysis/domain/larva_video_repository.dart';
+import 'src/analysis/domain/larva_video_repository_fake.dart';
 import 'src/authentication/bloc/auth_bloc.dart';
+import 'src/authentication/domain/auth_repository.dart';
 import 'src/authentication/domain/auth_repository_fake.dart';
 import 'src/user/bloc/user_bloc.dart';
 import 'src/user/domain/user_repository.dart';
@@ -13,6 +16,7 @@ import 'src/user/domain/user_repository_fake.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  GoRouter.optionURLReflectsImperativeAPIs = true;
   runApp(const MainApp());
 }
 
@@ -29,11 +33,13 @@ class _MainAppState extends State<MainApp> {
   late final UserBloc _userBloc;
   late final AuthRepository _authRepository;
   late final UserRepository _userRepository;
+  late final LarvaVideoRepository _larvaVideoRepository;
 
   @override
   void initState() {
     super.initState();
     _authRepository = AuthRepositoryFake();
+    _larvaVideoRepository = FakeLarvaVideoRepository();
     _userRepository = UserRepositoryFake();
     _authBloc = AuthBloc(_authRepository)..add(AuthVerificationRequested());
     _userBloc = UserBloc(_userRepository);
@@ -64,6 +70,7 @@ class _MainAppState extends State<MainApp> {
         child: MaterialApp.router(
           theme: appThemeLight,
           routerConfig: _appRouter.router,
+
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           debugShowCheckedModeBanner: false,
@@ -77,6 +84,9 @@ class _MainAppState extends State<MainApp> {
       providers: [
         RepositoryProvider<AuthRepository>.value(value: _authRepository),
         RepositoryProvider<UserRepository>.value(value: _userRepository),
+        RepositoryProvider<LarvaVideoRepository>.value(
+          value: _larvaVideoRepository,
+        ),
       ],
       child: _buildBlocProviders(),
     );

@@ -138,4 +138,66 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get message => 'Wiadomość';
+
+  @override
+  String get uploadNewVideo => 'Prześlij nowy film do analizy';
+
+  @override
+  String get uploadVideoDescription =>
+      'Prześlij nowy film na platformę, aby przeanalizować ruchy larw.';
+
+  @override
+  String get cancel => 'Anuluj';
+
+  @override
+  String get upload => 'Prześlij';
+
+  @override
+  String get selectVideo => 'Wybierz film';
+
+  @override
+  String selectedFile(String fileName) {
+    return 'Wybrany: $fileName';
+  }
+
+  @override
+  String get unknownError => 'Wystąpił nieznany błąd';
+
+  @override
+  String get enterTitle => 'Wprowadź tytuł';
+
+  @override
+  String get uploading => 'Przesyłanie';
+
+  @override
+  String get uploaded => 'Przesłano';
+
+  @override
+  String get pending => 'Oczekujące';
+
+  @override
+  String get processing => 'Przetwarzanie';
+
+  @override
+  String get completed => 'Zakończono';
+
+  @override
+  String get failed => 'Niepowodzenie';
+
+  @override
+  String get analysing => 'Analizowanie';
+
+  @override
+  String get analysed => 'Zanalizowano';
+
+  @override
+  String get error => 'Błąd';
+
+  @override
+  String andMore(int count) {
+    return '$count więcej';
+  }
+
+  @override
+  String get loading => 'Ładowanie';
 }

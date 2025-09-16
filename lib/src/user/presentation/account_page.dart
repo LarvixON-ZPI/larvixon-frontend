@@ -6,7 +6,8 @@ import '../bloc/user_bloc.dart';
 import '../user.dart';
 
 class AccountPage extends StatefulWidget {
-  static final String route = '/account';
+  static const String route = '/account';
+  static const String name = 'account';
   const AccountPage({super.key});
 
   @override

@@ -1,5 +1,7 @@
 import 'dart:async';
+
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../domain/user_repository.dart';
@@ -21,36 +23,36 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     Emitter<UserState> emit,
   ) async {
     emit(state.copyWith(isUpdating: true));
+    var result = await userRepository
+        .updateUserProfile(
+          user: state.user!.copyWith(
+            email: event.email,
+            firstName: event.firstName,
+            lastName: event.lastName,
+            username: event.username,
+            bio: event.bio,
+            organization: event.organization,
+            phoneNumber: event.phoneNumber,
+          ),
+        )
+        .run();
 
-    try {
-      User updatedUser = await userRepository.updateUserProfile(
-        user: state.user!.copyWith(
-          email: event.email,
-          firstName: event.firstName,
-          lastName: event.lastName,
-          username: event.username,
-          bio: event.bio,
-          organization: event.organization,
-          phoneNumber: event.phoneNumber,
-        ),
-      );
-      print("UPDATED USER: $updatedUser");
-      emit(
-        state.copyWith(
-          user: updatedUser,
-          status: UserStatus.success,
-          isUpdating: false,
-        ),
-      );
-    } catch (error) {
-      emit(
+    result.match(
+      (error) => emit(
         state.copyWith(
           status: UserStatus.error,
           errorMessage: error.toString(),
           isUpdating: false,
         ),
-      );
-    }
+      ),
+      (user) => emit(
+        state.copyWith(
+          user: user,
+          status: UserStatus.success,
+          isUpdating: false,
+        ),
+      ),
+    );
   }
 
   FutureOr<void> _onUserProfileDataRequested(
@@ -58,18 +60,16 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     Emitter<UserState> emit,
   ) async {
     emit(state.copyWith(status: UserStatus.loading));
-    try {
-      User user = await userRepository.getUserProfile();
-      emit(state.copyWith(user: user, status: UserStatus.success));
-    } catch (error) {
-      print(error);
-      emit(
+    var result = await userRepository.getUserProfile().run();
+    result.match(
+      (error) => emit(
         state.copyWith(
           status: UserStatus.error,
           errorMessage: error.toString(),
         ),
-      );
-    }
+      ),
+      (user) => emit(state.copyWith(user: user, status: UserStatus.success)),
+    );
   }
 
   FutureOr<void> _onUserProfileClearRequested(
@@ -82,14 +82,18 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   @override
   void onTransition(Transition<UserEvent, UserState> transition) {
     super.onTransition(transition);
-    print(
-      'Transitioning from ${transition.currentState} to ${transition.nextState}',
-    );
+    if (kDebugMode) {
+      print(
+        'Transitioning from ${transition.currentState} to ${transition.nextState}',
+      );
+    }
   }
 
   @override
   void onEvent(UserEvent event) {
     super.onEvent(event);
-    print('Event received: $event');
+    if (kDebugMode) {
+      print('Event received: $event');
+    }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/core/constants/breakpoints.dart';
-import 'package:larvixon_frontend/src/landing/presentation/custom_card.dart';
+import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
+import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
 import '../../common/extensions/translate_extension.dart';
 
@@ -63,11 +64,11 @@ class AboutSection extends StatelessWidget {
           child: CustomCard(
             icon: Icons.group,
             title: 'Our Team',
-            widgets: [
-              _TeamMemberAvatar(name: "Mikołaj Kubś"),
-              _TeamMemberAvatar(name: "Martyna Łopianiak"),
-              _TeamMemberAvatar(name: "Krzysztof Kulka"),
-              _TeamMemberAvatar(name: "Patryk Łuszczek"),
+            children: [
+              _TeamMemberAvatar(name: "Mikołaj Kubś").withOnHoverEffect,
+              _TeamMemberAvatar(name: "Martyna Łopianiak").withOnHoverEffect,
+              _TeamMemberAvatar(name: "Krzysztof Kulka").withOnHoverEffect,
+              _TeamMemberAvatar(name: "Patryk Łuszczek").withOnHoverEffect,
             ],
           ),
         ),
