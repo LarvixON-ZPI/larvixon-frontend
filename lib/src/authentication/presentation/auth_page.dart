@@ -38,26 +38,15 @@ class _AuthPageState extends State<AuthPage>
               Positioned.fill(child: PetriDish(larvaeCount: 6)),
               BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                child: SingleChildScrollView(
+                child: Center(
                   child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: constraints.maxHeight,
-                    ),
-                    child: Row(
+                    constraints: BoxConstraints(maxWidth: 600),
+                    child: CustomCard(
                       children: [
-                        Spacer(),
-                        Flexible(
-                          flex: 3,
-                          child: CustomCard(
-                            children: [
-                              AuthForm(
-                                initialMode: widget.initialMode,
-                                initialEmail: widget.initialEmail,
-                              ),
-                            ],
-                          ),
+                        AuthForm(
+                          initialMode: widget.initialMode,
+                          initialEmail: widget.initialEmail,
                         ),
-                        Spacer(),
                       ],
                     ),
                   ),

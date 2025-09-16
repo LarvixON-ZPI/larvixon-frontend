@@ -9,7 +9,6 @@ import 'package:larvixon_frontend/src/analysis/presentation/detailsCard/status_r
 import 'package:larvixon_frontend/src/analysis/presentation/larva_video_details_page.dart';
 import 'package:larvixon_frontend/src/analysis/video_bloc/larva_video_bloc.dart';
 import 'package:larvixon_frontend/src/common/extensions/date_format_extension.dart';
-import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -38,12 +37,10 @@ class _LarvaVideoCardState extends State<LarvaVideoCard>
         listener: (context, state) {},
         builder: (context, state) {
           final video = state.video;
-          final date = video?.analysedAt ?? video?.uploadedAt;
-          final dateText = date == null
-              ? context.translate.loading
-              : video?.analysedAt != null
-              ? context.translate.analysed
-              : context.translate.uploaded;
+          final hasResults = state.video?.results?.isNotEmpty ?? false;
+          final enabled =
+              state.status == LarvaVideoBlocStatus.loading ||
+              state.video == null;
 
           return GestureDetector(
             onTap: () => context.push(
@@ -55,9 +52,7 @@ class _LarvaVideoCardState extends State<LarvaVideoCard>
             ),
             child: MouseRegion(
               child: Skeletonizer(
-                enabled:
-                    (state.status == LarvaVideoBlocStatus.loading ||
-                    state.video == null),
+                enabled: enabled,
                 child: CustomCard(
                   color: Colors.grey[200],
                   useWrap: false,
@@ -78,7 +73,7 @@ class _LarvaVideoCardState extends State<LarvaVideoCard>
                       Text(
                         "${video.uploadedAt.formattedDateOnly} ${video.uploadedAt.formattedTimeOnly}",
                       ),
-                    if (state.video?.results?.isNotEmpty ?? false)
+                    if (hasResults)
                       ResultsSection(results: state.video!.results!),
                     (state.video?.status == LarvaVideoStatus.error ||
                             state.video?.status == LarvaVideoStatus.analysed)
