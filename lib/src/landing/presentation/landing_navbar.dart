@@ -11,9 +11,11 @@ import '../../common/extensions/translate_extension.dart';
 typedef GetExtraFunction =
     Map<String, dynamic> Function(BuildContext context, String to);
 
+// FIX: When going in the order 1->2->3 it the transition works correctly,
+// but when going 1->2->1 the transition between 2->1 is partially incorrect
+// im losing my mind over this
 class LandingNavBar extends StatelessWidget {
   const LandingNavBar({super.key});
-  // TODO implement this while pushing new routes
   static const List<String> _navbarRoutes = [
     LandingPage.route,
     AboutPage.route,
@@ -45,19 +47,13 @@ class LandingNavBar extends StatelessWidget {
               return Stack(
                 alignment: Alignment.center,
                 children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: _Menu(getExtra: _getExtra),
-                  ),
-                  _LogoButton(getExtra: _getExtra),
+                  Align(alignment: Alignment.centerLeft, child: _Menu()),
+                  _LogoButton(),
                   Align(
                     alignment: Alignment.centerRight,
                     child: _NavBarButton(
                       label: context.translate.signIn,
-                      onPressed: () => context.go(
-                        AuthPage.route,
-                        extra: _getExtra(context, AuthPage.route),
-                      ),
+                      onPressed: () => context.go(AuthPage.route),
                     ),
                   ),
                 ],
@@ -113,8 +109,7 @@ class LandingNavBar extends StatelessWidget {
 }
 
 class _Menu extends StatelessWidget {
-  final GetExtraFunction getExtra;
-  const _Menu({super.key, required this.getExtra});
+  const _Menu({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -125,16 +120,10 @@ class _Menu extends StatelessWidget {
       onSelected: (value) {
         switch (value) {
           case 0:
-            context.go(
-              AboutPage.route,
-              extra: getExtra(context, AboutPage.route),
-            );
+            context.go(AboutPage.route);
             break;
           case 1:
-            context.go(
-              ContactPage.route,
-              extra: getExtra(context, ContactPage.route),
-            );
+            context.go(ContactPage.route);
             break;
         }
       },
@@ -147,15 +136,15 @@ class _Menu extends StatelessWidget {
 }
 
 class _LogoButton extends StatelessWidget {
-  final GetExtraFunction getExtra;
-  const _LogoButton({super.key, required this.getExtra});
+  final GetExtraFunction? getExtra;
+  const _LogoButton({super.key, this.getExtra});
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () => context.go(
         LandingPage.route,
-        extra: getExtra(context, LandingPage.route),
+        extra: getExtra?.call(context, LandingPage.route),
       ),
       child: Text(
         context.translate.larvixon,

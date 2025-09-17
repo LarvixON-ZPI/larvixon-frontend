@@ -70,7 +70,7 @@ extension PageTransitionExtension on Widget {
 
   Page<T> withSlideTransition<T>(
     GoRouterState state, {
-    bool slideRight = true, // optional: control direction
+    bool slideRight = true,
   }) {
     return CustomTransitionPage(
       key: state.pageKey,
@@ -78,21 +78,18 @@ extension PageTransitionExtension on Widget {
       transitionDuration: const Duration(milliseconds: 500),
       reverseTransitionDuration: const Duration(milliseconds: 500),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        // direction for old and new pages
         final offsetEnd = slideRight
-            ? const Offset(1, 0.0)
-            : const Offset(-1, 0.0);
-        final offsetBegin = slideRight
             ? const Offset(-1, 0.0)
             : const Offset(1, 0.0);
+        final offsetBegin = slideRight
+            ? const Offset(1, 0.0)
+            : const Offset(-1, 0.0);
 
-        // old page (secondaryAnimation) slides out
         final oldOffsetTween = Tween<Offset>(
           begin: Offset.zero,
           end: offsetEnd,
         ).chain(CurveTween(curve: Curves.fastOutSlowIn));
 
-        // new page (animation) slides in
         final newOffsetTween = Tween<Offset>(
           begin: offsetBegin,
           end: Offset.zero,

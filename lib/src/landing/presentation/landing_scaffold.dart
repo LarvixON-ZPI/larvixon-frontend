@@ -17,12 +17,7 @@ class LandingScaffold extends StatelessWidget {
           Column(
             children: [
               LandingNavBar(),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: child,
-                ),
-              ),
+              Expanded(child: child),
             ],
           ),
           Align(alignment: Alignment.bottomRight, child: Footer()),
