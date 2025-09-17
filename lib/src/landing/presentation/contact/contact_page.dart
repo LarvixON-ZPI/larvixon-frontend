@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:larvixon_frontend/src/landing/presentation/contact_section.dart';
+import 'package:larvixon_frontend/src/landing/presentation/contact/contact_section.dart';
 
 class ContactPage extends StatelessWidget {
   static const String route = '/contact';

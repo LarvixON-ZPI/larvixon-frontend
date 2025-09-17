@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'presentation/landing_content.dart';
+import 'landing_content.dart';
 
 class LandingPage extends StatefulWidget {
   static const String route = '/';

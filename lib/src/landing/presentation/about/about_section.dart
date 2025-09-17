@@ -3,7 +3,7 @@ import 'package:larvixon_frontend/core/constants/breakpoints.dart';
 import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
-import '../../common/extensions/translate_extension.dart';
+import '../../../common/extensions/translate_extension.dart';
 
 class AboutSection extends StatelessWidget {
   const AboutSection({super.key});

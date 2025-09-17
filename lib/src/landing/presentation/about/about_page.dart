@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:larvixon_frontend/src/landing/presentation/about_section.dart';
+import 'package:larvixon_frontend/src/landing/presentation/about/about_section.dart';
 
 class AboutPage extends StatelessWidget {
   static const String route = '/about';

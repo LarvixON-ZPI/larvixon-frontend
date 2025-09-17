@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_page.dart';
-import 'package:larvixon_frontend/src/landing/about_page.dart';
-import 'package:larvixon_frontend/src/landing/contact_page.dart';
-import 'package:larvixon_frontend/src/landing/landing_page.dart';
+import 'package:larvixon_frontend/src/landing/presentation/about/about_page.dart';
+import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
+import 'package:larvixon_frontend/src/landing/presentation/landing/landing_page.dart';
 
 import '../../common/extensions/translate_extension.dart';
 

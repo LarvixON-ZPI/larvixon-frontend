@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 
 import 'landing_email_form.dart';
-import '../../common/widgets/petri_dish/petri_dish.dart';
+import '../../../common/widgets/petri_dish/petri_dish.dart';
 
 class LandingContent extends StatelessWidget {
   const LandingContent({super.key});

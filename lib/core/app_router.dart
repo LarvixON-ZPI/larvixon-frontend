@@ -8,15 +8,15 @@ import 'package:larvixon_frontend/src/analysis/domain/larva_video_repository.dar
 import 'package:larvixon_frontend/src/analysis/presentation/larva_video_details_page.dart';
 import 'package:larvixon_frontend/src/analysis/video_bloc/larva_video_bloc.dart';
 import 'package:larvixon_frontend/src/analysis/video_list_cubit/larva_video_list_cubit.dart';
-import 'package:larvixon_frontend/src/landing/about_page.dart';
-import 'package:larvixon_frontend/src/landing/contact_page.dart';
-import 'package:larvixon_frontend/src/landing/landing_scaffold.dart';
+import 'package:larvixon_frontend/src/landing/presentation/about/about_page.dart';
+import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
+import 'package:larvixon_frontend/src/landing/presentation/landing_scaffold.dart';
 
 import '../src/authentication/bloc/auth_bloc.dart';
 import '../src/authentication/presentation/auth_form.dart';
 import '../src/authentication/presentation/auth_page.dart';
 import '../src/home/home_page.dart';
-import '../src/landing/landing_page.dart';
+import '../src/landing/presentation/landing/landing_page.dart';
 import '../src/user/presentation/account_page.dart';
 
 class GoRouterAuthNotifier extends ChangeNotifier {
