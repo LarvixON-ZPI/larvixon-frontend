@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:larvixon_frontend/src/common/extensions/default_padding.dart';
 import 'package:larvixon_frontend/src/landing/presentation/contact/contact_section.dart';
 
 class ContactPage extends StatelessWidget {
@@ -13,7 +14,7 @@ class ContactPage extends StatelessWidget {
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: 600),
           child: ContactSection(),
-        ),
+        ).withDefaultPagePadding,
       ),
     );
   }

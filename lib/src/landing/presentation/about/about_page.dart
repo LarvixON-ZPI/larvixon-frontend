@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:larvixon_frontend/src/common/extensions/default_padding.dart';
 import 'package:larvixon_frontend/src/landing/presentation/about/about_section.dart';
 
 class AboutPage extends StatelessWidget {
@@ -13,7 +14,7 @@ class AboutPage extends StatelessWidget {
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: 600),
           child: AboutSection(),
-        ),
+        ).withDefaultPagePadding,
       ),
     );
   }

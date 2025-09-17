@@ -45,6 +45,7 @@ class LandingNavBar extends StatelessWidget {
             final isNarrow = constraints.maxWidth < Breakpoints.medium;
             if (isNarrow) {
               return Stack(
+                fit: StackFit.loose,
                 alignment: Alignment.center,
                 children: [
                   Align(alignment: Alignment.centerLeft, child: _Menu()),

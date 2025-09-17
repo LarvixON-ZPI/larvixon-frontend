@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:larvixon_frontend/src/common/extensions/default_padding.dart';
 
 import 'landing_content.dart';
 
@@ -15,6 +16,8 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(child: const LandingContent());
+    return SingleChildScrollView(
+      child: const LandingContent().withDefaultPagePadding,
+    );
   }
 }
