@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:larvixon_frontend/core/constants/breakpoints.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/about/about_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/landing/landing_page.dart';
 
 import '../../common/extensions/translate_extension.dart';
+
+typedef GetExtraFunction =
+    Map<String, dynamic> Function(BuildContext context, String to);
 
 class LandingNavBar extends StatelessWidget {
   const LandingNavBar({super.key});
@@ -23,55 +27,141 @@ class LandingNavBar extends StatelessWidget {
     return toIndex >= fromIndex;
   }
 
+  GetExtraFunction get _getExtra => (BuildContext context, String to) {
+    final from = GoRouterState.of(context).uri.path;
+    final slideRight = _shouldSlideRight(from, to);
+    return {'slideRight': slideRight};
+  };
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxHeight: 80, minHeight: 60),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Logo
-            TextButton(
-              onPressed: () => context.go(LandingPage.route),
-              child: Text(
-                context.translate.larvixon,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleLarge?.copyWith(color: Colors.white),
-              ),
-            ),
-            Spacer(),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final isNarrow = constraints.maxWidth < Breakpoints.medium;
+            if (isNarrow) {
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: _Menu(getExtra: _getExtra),
+                  ),
+                  _LogoButton(getExtra: _getExtra),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: _NavBarButton(
+                      label: context.translate.signIn,
+                      onPressed: () => context.go(
+                        AuthPage.route,
+                        extra: _getExtra(context, AuthPage.route),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }
 
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              spacing: 16,
-              mainAxisAlignment: MainAxisAlignment.center,
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _NavBarButton(
-                  label: context.translate.about,
-                  onPressed: () => context.go(AboutPage.route),
-                ),
+                // Logo
+                _LogoButton(getExtra: _getExtra),
+                Spacer(),
 
-                _NavBarButton(
-                  label: context.translate.contact,
-                  onPressed: () => context.go(ContactPage.route),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 16,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _NavBarButton(
+                      label: context.translate.about,
+                      onPressed: () => context.go(
+                        AboutPage.route,
+                        extra: _getExtra(context, AboutPage.route),
+                      ),
+                    ),
+
+                    _NavBarButton(
+                      label: context.translate.contact,
+                      onPressed: () => context.go(
+                        ContactPage.route,
+                        extra: _getExtra(context, ContactPage.route),
+                      ),
+                    ),
+                  ],
+                ),
+                Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    _NavBarButton(
+                      label: context.translate.signIn,
+                      onPressed: () => context.go(AuthPage.route),
+                    ),
+                  ],
                 ),
               ],
-            ),
-            Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                _NavBarButton(
-                  label: context.translate.signIn,
-                  onPressed: () => context.go(AuthPage.route),
-                ),
-              ],
-            ),
-          ],
+            );
+          },
         ),
+      ),
+    );
+  }
+}
+
+class _Menu extends StatelessWidget {
+  final GetExtraFunction getExtra;
+  const _Menu({super.key, required this.getExtra});
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<int>(
+      offset: const Offset(0, 40),
+      icon: const Icon(Icons.menu, color: Colors.white),
+      color: Colors.white,
+      onSelected: (value) {
+        switch (value) {
+          case 0:
+            context.go(
+              AboutPage.route,
+              extra: getExtra(context, AboutPage.route),
+            );
+            break;
+          case 1:
+            context.go(
+              ContactPage.route,
+              extra: getExtra(context, ContactPage.route),
+            );
+            break;
+        }
+      },
+      itemBuilder: (context) => [
+        PopupMenuItem(value: 0, child: Text(context.translate.about)),
+        PopupMenuItem(value: 1, child: Text(context.translate.contact)),
+      ],
+    );
+  }
+}
+
+class _LogoButton extends StatelessWidget {
+  final GetExtraFunction getExtra;
+  const _LogoButton({super.key, required this.getExtra});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () => context.go(
+        LandingPage.route,
+        extra: getExtra(context, LandingPage.route),
+      ),
+      child: Text(
+        context.translate.larvixon,
+        style: Theme.of(
+          context,
+        ).textTheme.titleLarge?.copyWith(color: Colors.white),
       ),
     );
   }

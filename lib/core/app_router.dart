@@ -60,33 +60,51 @@ class AppRouter {
             name: LandingPage.name,
             path: LandingPage.route,
             pageBuilder: (context, state) {
-              return const LandingPage().withSlideTransition(state);
+              final extra = state.extra as Map<String, dynamic>? ?? {};
+              final slideRight = extra['slideRight'] as bool? ?? true;
+
+              return const LandingPage().withSlideTransition(
+                state,
+                slideRight: slideRight,
+              );
             },
           ),
           GoRoute(
             name: ContactPage.name,
             path: ContactPage.route,
             pageBuilder: (context, state) {
-              return const ContactPage().withSlideTransition(state);
+              final extra = state.extra as Map<String, dynamic>? ?? {};
+              final slideRight = extra['slideRight'] as bool? ?? true;
+              return const ContactPage().withSlideTransition(
+                state,
+                slideRight: slideRight,
+              );
             },
           ),
           GoRoute(
             name: AboutPage.name,
             path: AboutPage.route,
-            pageBuilder: (context, state) =>
-                const AboutPage().withSlideTransition(state),
+            pageBuilder: (context, state) {
+              final extra = state.extra as Map<String, dynamic>? ?? {};
+              final slideRight = extra['slideRight'] as bool? ?? true;
+              return const AboutPage().withSlideTransition(
+                state,
+                slideRight: slideRight,
+              );
+            },
           ),
           GoRoute(
             name: AuthPage.name,
             path: AuthPage.route,
             pageBuilder: (context, state) {
               final extra = state.extra as Map<String, dynamic>? ?? {};
+              final slideRight = extra['slideRight'] as bool? ?? true;
               final page = AuthPage(
                 initialMode:
                     extra['mode'] as AuthFormMode? ?? AuthFormMode.signUp,
                 initialEmail: extra['email'] as String?,
               );
-              return page.withSlideTransition(state);
+              return page.withSlideTransition(state, slideRight: slideRight);
             },
           ),
         ],
