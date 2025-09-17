@@ -3,10 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:larvixon_frontend/core/transitions.dart';
 import 'package:larvixon_frontend/src/analysis/domain/larva_video_repository.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/larva_video_details_page.dart';
 import 'package:larvixon_frontend/src/analysis/video_bloc/larva_video_bloc.dart';
 import 'package:larvixon_frontend/src/analysis/video_list_cubit/larva_video_list_cubit.dart';
+import 'package:larvixon_frontend/src/landing/about_page.dart';
+import 'package:larvixon_frontend/src/landing/contact_page.dart';
+import 'package:larvixon_frontend/src/landing/landing_scaffold.dart';
 
 import '../src/authentication/bloc/auth_bloc.dart';
 import '../src/authentication/presentation/auth_form.dart';
@@ -34,30 +38,60 @@ class AppRouter {
   final AuthBloc authBloc;
 
   AppRouter(this.authBloc);
+  final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(
+    debugLabel: 'Root',
+  );
+  final GlobalKey<NavigatorState> _landingShellNavigatorKey =
+      GlobalKey<NavigatorState>(debugLabel: 'LandingShell');
 
   late final router = GoRouter(
     initialLocation: LandingPage.route,
+    navigatorKey: _rootNavigatorKey,
     refreshListenable: GoRouterAuthNotifier(authBloc),
     routes: [
-      GoRoute(
-        name: LandingPage.name,
-        path: LandingPage.route,
-        builder: (context, state) {
-          return const LandingPage();
+      ShellRoute(
+        navigatorKey: _landingShellNavigatorKey,
+        pageBuilder: (context, state, child) {
+          return LandingScaffold(child: child).withSlideTransition(state);
         },
+
+        routes: [
+          GoRoute(
+            name: LandingPage.name,
+            path: LandingPage.route,
+            pageBuilder: (context, state) {
+              return const LandingPage().withSlideTransition(state);
+            },
+          ),
+          GoRoute(
+            name: ContactPage.name,
+            path: ContactPage.route,
+            pageBuilder: (context, state) {
+              return const ContactPage().withSlideTransition(state);
+            },
+          ),
+          GoRoute(
+            name: AboutPage.name,
+            path: AboutPage.route,
+            pageBuilder: (context, state) =>
+                const AboutPage().withSlideTransition(state),
+          ),
+          GoRoute(
+            name: AuthPage.name,
+            path: AuthPage.route,
+            pageBuilder: (context, state) {
+              final extra = state.extra as Map<String, dynamic>? ?? {};
+              final page = AuthPage(
+                initialMode:
+                    extra['mode'] as AuthFormMode? ?? AuthFormMode.signUp,
+                initialEmail: extra['email'] as String?,
+              );
+              return page.withSlideTransition(state);
+            },
+          ),
+        ],
       ),
-      GoRoute(
-        name: AuthPage.name,
-        path: AuthPage.route,
-        pageBuilder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>? ?? {};
-          final page = AuthPage(
-            initialMode: extra['mode'] as AuthFormMode? ?? AuthFormMode.signUp,
-            initialEmail: extra['email'] as String?,
-          );
-          return buildPageWithDefaultTransition(context, state, page);
-        },
-      ),
+
       GoRoute(
         path: HomePage.route,
         name: HomePage.name,
@@ -111,11 +145,14 @@ class AppRouter {
       final authState = authBloc.state;
       final loggingIn = state.uri.path == AuthPage.route;
       final onLanding = state.uri.path == LandingPage.route;
+      final onAbout = state.uri.path == AboutPage.route;
+      final onContact = state.uri.path == ContactPage.route;
 
       switch (authState.status) {
         case AuthStatus.initial:
         case AuthStatus.unauthenticated:
-          if (!loggingIn && !onLanding) return LandingPage.route;
+          if (!loggingIn && !onLanding && !onAbout && !onContact)
+            return LandingPage.route;
           return null;
         case AuthStatus.authenticated:
           if (loggingIn || onLanding) return HomePage.route;
