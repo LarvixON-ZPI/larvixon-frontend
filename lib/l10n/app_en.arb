@@ -98,6 +98,8 @@
   "sendUsAMessage": "Send us a message",
   "send": "Send",
   "message": "Message",
+  "messageSentAcknowledgment": "Message sent — thank you!",
+  "contactDescription": "Have a question or want to collaborate? Drop us a message.",
   "@@_AboutUs": {},
   "uploadNewVideo": "Upload new video",
   "uploadVideoDescription": "Upload a new video to the platform to analyze larval movements.",
