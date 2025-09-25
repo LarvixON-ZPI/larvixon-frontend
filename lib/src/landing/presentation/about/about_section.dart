@@ -21,8 +21,7 @@ class AboutSection extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'We are a team of passionate developers building modern, responsive apps. '
-          'Our goal is to deliver high-quality products and collaborate effectively with our clients.',
+          context.translate.aboutDescription,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         const SizedBox(height: 24),
@@ -40,9 +39,8 @@ class AboutSection extends StatelessWidget {
                   flex: isNarrow ? 0 : 1,
                   child: CustomCard(
                     icon: Icons.flag,
-                    title: 'Our Mission',
-                    description:
-                        'To build apps that make life easier and help businesses grow.',
+                    title: context.translate.ourMission,
+                    description: context.translate.ourMissionDescription,
                   ),
                 ),
 
@@ -50,9 +48,8 @@ class AboutSection extends StatelessWidget {
                   flex: isNarrow ? 0 : 1,
                   child: CustomCard(
                     icon: Icons.lightbulb,
-                    title: 'Our Vision',
-                    description:
-                        'To innovate continuously and provide seamless digital experiences.',
+                    title: context.translate.ourVision,
+                    description: context.translate.ourVisionDescription,
                   ),
                 ),
               ],
@@ -63,7 +60,7 @@ class AboutSection extends StatelessWidget {
           width: double.infinity,
           child: CustomCard(
             icon: Icons.group,
-            title: 'Our Team',
+            title: context.translate.ourTeam,
             children: [
               _TeamMemberAvatar(name: "Mikołaj Kubś").withOnHoverEffect,
               _TeamMemberAvatar(name: "Martyna Łopianiak").withOnHoverEffect,

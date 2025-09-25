@@ -332,6 +332,53 @@ abstract class AppLocalizations {
   /// **'Message'**
   String get message;
 
+  /// No description provided for @aboutDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'We are a team of passionate developers building modern, responsive apps. Our goal is to deliver high-quality products and collaborate effectively with our stakeholders.'**
+  String get aboutDescription;
+
+  /// No description provided for @ourMission.
+  ///
+  /// In en, this message translates to:
+  /// **'Our Mission'**
+  String get ourMission;
+
+  /// No description provided for @ourMissionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'To build apps that make life easier for medical staff by providing useful tooling.'**
+  String get ourMissionDescription;
+
+  /// No description provided for @ourVision.
+  ///
+  /// In en, this message translates to:
+  /// **'Our Vision'**
+  String get ourVision;
+
+  /// No description provided for @ourVisionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'To innovate continuously and provide seamless digital experiences.'**
+  String get ourVisionDescription;
+
+  /// No description provided for @ourTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Our Team'**
+  String get ourTeam;
+  /// No description provided for @messageSentAcknowledgment.
+  ///
+  /// In en, this message translates to:
+  /// **'Message sent — thank you!'**
+  String get messageSentAcknowledgment;
+
+  /// No description provided for @contactDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Have a question or want to collaborate? Drop us a message.'**
+  String get contactDescription;
+
   /// No description provided for @uploadNewVideo.
   ///
   /// In en, this message translates to:
