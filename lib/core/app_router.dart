@@ -61,12 +61,8 @@ class AppRouter {
             path: LandingPage.route,
             pageBuilder: (context, state) {
               final extra = state.extra as Map<String, dynamic>? ?? {};
-              final slideRight = extra['slideRight'] as bool? ?? true;
 
-              return const LandingPage().withSlideTransition(
-                state,
-                slideRight: slideRight,
-              );
+              return const LandingPage().withoutTransition(state: state);
             },
           ),
           GoRoute(
@@ -74,11 +70,7 @@ class AppRouter {
             path: ContactPage.route,
             pageBuilder: (context, state) {
               final extra = state.extra as Map<String, dynamic>? ?? {};
-              final slideRight = extra['slideRight'] as bool? ?? true;
-              return const ContactPage().withSlideTransition(
-                state,
-                slideRight: slideRight,
-              );
+              return const ContactPage().withoutTransition(state: state);
             },
           ),
           GoRoute(
@@ -86,11 +78,7 @@ class AppRouter {
             path: AboutPage.route,
             pageBuilder: (context, state) {
               final extra = state.extra as Map<String, dynamic>? ?? {};
-              final slideRight = extra['slideRight'] as bool? ?? true;
-              return const AboutPage().withSlideTransition(
-                state,
-                slideRight: slideRight,
-              );
+              return const AboutPage().withoutTransition(state: state);
             },
           ),
           GoRoute(
@@ -98,13 +86,12 @@ class AppRouter {
             path: AuthPage.route,
             pageBuilder: (context, state) {
               final extra = state.extra as Map<String, dynamic>? ?? {};
-              final slideRight = extra['slideRight'] as bool? ?? true;
               final page = AuthPage(
                 initialMode:
                     extra['mode'] as AuthFormMode? ?? AuthFormMode.signUp,
                 initialEmail: extra['email'] as String?,
               );
-              return page.withSlideTransition(state, slideRight: slideRight);
+              return page.withoutTransition(state: state);
             },
           ),
         ],

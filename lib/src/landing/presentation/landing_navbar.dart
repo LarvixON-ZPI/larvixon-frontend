@@ -12,29 +12,9 @@ import '../../common/extensions/translate_extension.dart';
 typedef GetExtraFunction =
     Map<String, dynamic> Function(BuildContext context, String to);
 
-// FIX: When going in the order 1->2->3 it the transition works correctly,
-// but when going 1->2->1 the transition between 2->1 is partially incorrect
-// im losing my mind over this
 class LandingNavBar extends StatelessWidget {
   const LandingNavBar({super.key});
-  static const List<String> _navbarRoutes = [
-    LandingPage.route,
-    AboutPage.route,
-    ContactPage.route,
-    AuthPage.route,
-  ];
-  bool _shouldSlideRight(String from, String to) {
-    final fromIndex = _navbarRoutes.indexOf(from);
-    final toIndex = _navbarRoutes.indexOf(to);
-    if (fromIndex == -1 || toIndex == -1) return true;
-    return toIndex >= fromIndex;
-  }
 
-  GetExtraFunction get _getExtra => (BuildContext context, String to) {
-    final from = GoRouterState.of(context).uri.path;
-    final slideRight = _shouldSlideRight(from, to);
-    return {'slideRight': slideRight};
-  };
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
@@ -68,7 +48,7 @@ class LandingNavBar extends StatelessWidget {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _LogoButton(getExtra: _getExtra),
+                _LogoButton(),
                 Spacer(),
 
                 Row(
@@ -78,18 +58,12 @@ class LandingNavBar extends StatelessWidget {
                   children: [
                     _NavBarButton(
                       label: context.translate.about,
-                      onPressed: () => context.go(
-                        AboutPage.route,
-                        extra: _getExtra(context, AboutPage.route),
-                      ),
+                      onPressed: () => context.go(AboutPage.route),
                     ),
 
                     _NavBarButton(
                       label: context.translate.contact,
-                      onPressed: () => context.go(
-                        ContactPage.route,
-                        extra: _getExtra(context, ContactPage.route),
-                      ),
+                      onPressed: () => context.go(ContactPage.route),
                     ),
                   ],
                 ),
@@ -144,16 +118,12 @@ class _Menu extends StatelessWidget {
 }
 
 class _LogoButton extends StatelessWidget {
-  final GetExtraFunction? getExtra;
-  const _LogoButton({super.key, this.getExtra});
+  const _LogoButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () => context.go(
-        LandingPage.route,
-        extra: getExtra?.call(context, LandingPage.route),
-      ),
+      onPressed: () => context.go(LandingPage.route),
       child: Text(
         context.translate.larvixon,
         style: Theme.of(
