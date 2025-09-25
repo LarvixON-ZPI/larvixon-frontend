@@ -140,6 +140,26 @@ class AppLocalizationsPl extends AppLocalizations {
   String get message => 'Wiadomość';
 
   @override
+  String get aboutDescription =>
+      'Jesteśmy zespołem ambitnych deweloperów tworzących nowoczesne, responsywne aplikacje. Naszym celem jest dostarczanie wysokiej jakości produktów i efektywna współpraca z naszymi interesariuszami.';
+
+  @override
+  String get ourMission => 'Nasza misja';
+
+  @override
+  String get ourMissionDescription =>
+      'Tworzymy aplikacje, które ułatwiają pracę pracownikom medycznym przez dostarczenie przydatnych narzędzi.';
+
+  @override
+  String get ourVision => 'Nasza wizja';
+
+  @override
+  String get ourVisionDescription =>
+      'Ciągła innowacja i zapewnianie płynnych doświadczeń cyfrowych.';
+
+  @override
+  String get ourTeam => 'Nasz zespół';
+  @override
   String get messageSentAcknowledgment =>
       'Wiadomość została wysłana — dziękujemy!';
 
