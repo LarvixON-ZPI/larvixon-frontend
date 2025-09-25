@@ -98,6 +98,8 @@
   "sendUsAMessage": "Wyślij nam wiadomość",
   "send": "Wyślij",
   "message": "Wiadomość",
+  "messageSentAcknowledgment": "Wiadomość została wysłana — dziękujemy!",
+  "contactDescription": "Masz pytanie lub chcesz współpracować? Napisz do nas wiadomość.",
   "uploadNewVideo": "Prześlij nowy film do analizy",
   "uploadVideoDescription": "Prześlij nowy film na platformę, aby przeanalizować ruchy larw.",
   "cancel": "Anuluj",
