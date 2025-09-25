@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/core/constants/breakpoints.dart';
+import 'package:larvixon_frontend/src/authentication/presentation/auth_form.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/about/about_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
@@ -54,7 +55,10 @@ class LandingNavBar extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: _NavBarButton(
                       label: context.translate.signIn,
-                      onPressed: () => context.go(AuthPage.route),
+                      onPressed: () => context.go(
+                        AuthPage.route,
+                        extra: {'mode': AuthFormMode.signIn},
+                      ),
                     ),
                   ),
                 ],
@@ -64,7 +68,6 @@ class LandingNavBar extends StatelessWidget {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Logo
                 _LogoButton(getExtra: _getExtra),
                 Spacer(),
 
@@ -96,7 +99,10 @@ class LandingNavBar extends StatelessWidget {
                   children: [
                     _NavBarButton(
                       label: context.translate.signIn,
-                      onPressed: () => context.go(AuthPage.route),
+                      onPressed: () => context.go(
+                        AuthPage.route,
+                        extra: {'mode': AuthFormMode.signIn},
+                      ),
                     ),
                   ],
                 ),
@@ -114,23 +120,24 @@ class _Menu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<int>(
+    return PopupMenuButton<String>(
+      tooltip: '',
+
       offset: const Offset(0, 40),
       icon: const Icon(Icons.menu, color: Colors.white),
       color: Colors.white,
       onSelected: (value) {
-        switch (value) {
-          case 0:
-            context.go(AboutPage.route);
-            break;
-          case 1:
-            context.go(ContactPage.route);
-            break;
-        }
+        context.go(value);
       },
       itemBuilder: (context) => [
-        PopupMenuItem(value: 0, child: Text(context.translate.about)),
-        PopupMenuItem(value: 1, child: Text(context.translate.contact)),
+        PopupMenuItem(
+          value: AboutPage.route,
+          child: Text(context.translate.about),
+        ),
+        PopupMenuItem(
+          value: ContactPage.route,
+          child: Text(context.translate.contact),
+        ),
       ],
     );
   }

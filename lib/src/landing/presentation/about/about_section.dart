@@ -87,7 +87,7 @@ class _TeamMemberAvatar extends StatelessWidget {
   });
 
   final Image? image;
-  final double size; // allows different avatar sizes
+  final double size;
   final String name;
   final String? role;
 
@@ -99,7 +99,7 @@ class _TeamMemberAvatar extends StatelessWidget {
         CircleAvatar(
           radius: size / 2,
           backgroundImage: image?.image,
-          backgroundColor: Colors.grey[200], // fallback background
+          backgroundColor: Colors.grey[200],
           child: image == null
               ? Icon(Icons.person, size: size / 2, color: Colors.grey)
               : null,
