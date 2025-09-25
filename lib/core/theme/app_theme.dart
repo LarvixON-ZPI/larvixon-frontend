@@ -5,6 +5,10 @@ import 'colors.dart';
 import 'text_styles.dart';
 
 final ThemeData appThemeLight = ThemeData(
+  splashFactory: NoSplash.splashFactory,
+  hoverColor: Colors.transparent,
+  highlightColor: Colors.transparent,
+  focusColor: Colors.transparent,
   pageTransitionsTheme: const PageTransitionsTheme(
     builders: {
       TargetPlatform.android: ZoomPageTransitionsBuilder(),
@@ -44,6 +48,14 @@ final ThemeData appThemeLight = ThemeData(
       minimumSize: const Size(double.infinity, 48),
       elevation: 0.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
+    ),
+  ),
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      splashFactory: NoSplash.splashFactory,
+      mouseCursor: WidgetStateProperty.resolveWith(
+        (states) => SystemMouseCursors.click,
+      ),
     ),
   ),
 );

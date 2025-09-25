@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
-import '../../../src/authentication/auth_form_validators.dart';
-import '../../common/extensions/translate_extension.dart';
+import '../../../authentication/auth_form_validators.dart';
+import '../../../common/extensions/translate_extension.dart';
 
 class ContactSection extends StatefulWidget {
   const ContactSection({super.key});

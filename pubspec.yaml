@@ -23,6 +23,7 @@ dependencies:
   skeletonizer: ^2.1.0+1
   fpdart: ^1.1.1
   file_picker: ^10.3.3
+  animations: ^2.0.11
 
 dev_dependencies:
   flutter_test:

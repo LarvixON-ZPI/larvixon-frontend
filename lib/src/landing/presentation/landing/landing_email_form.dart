@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../common/extensions/translate_extension.dart';
-import '../../authentication/auth_form_validators.dart';
-import '../../authentication/presentation/auth_form.dart';
-import '../../authentication/presentation/auth_page.dart';
+import '../../../common/extensions/translate_extension.dart';
+import '../../../authentication/auth_form_validators.dart';
+import '../../../authentication/presentation/auth_form.dart';
+import '../../../authentication/presentation/auth_page.dart';
 
 class LandingEmailForm extends StatefulWidget {
   LandingEmailForm({super.key});

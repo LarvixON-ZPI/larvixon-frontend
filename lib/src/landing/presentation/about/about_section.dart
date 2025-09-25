@@ -3,7 +3,7 @@ import 'package:larvixon_frontend/core/constants/breakpoints.dart';
 import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
-import '../../common/extensions/translate_extension.dart';
+import '../../../common/extensions/translate_extension.dart';
 
 class AboutSection extends StatelessWidget {
   const AboutSection({super.key});
@@ -84,7 +84,7 @@ class _TeamMemberAvatar extends StatelessWidget {
   });
 
   final Image? image;
-  final double size; // allows different avatar sizes
+  final double size;
   final String name;
   final String? role;
 
@@ -96,7 +96,7 @@ class _TeamMemberAvatar extends StatelessWidget {
         CircleAvatar(
           radius: size / 2,
           backgroundImage: image?.image,
-          backgroundColor: Colors.grey[200], // fallback background
+          backgroundColor: Colors.grey[200],
           child: image == null
               ? Icon(Icons.person, size: size / 2, color: Colors.grey)
               : null,
