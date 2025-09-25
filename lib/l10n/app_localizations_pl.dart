@@ -159,6 +159,13 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get ourTeam => 'Nasz zespół';
+  @override
+  String get messageSentAcknowledgment =>
+      'Wiadomość została wysłana — dziękujemy!';
+
+  @override
+  String get contactDescription =>
+      'Masz pytanie lub chcesz współpracować? Napisz do nas wiadomość.';
 
   @override
   String get uploadNewVideo => 'Prześlij nowy film do analizy';

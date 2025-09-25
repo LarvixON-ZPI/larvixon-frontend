@@ -159,6 +159,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ourTeam => 'Our Team';
+  @override
+  String get messageSentAcknowledgment => 'Message sent — thank you!';
+
+  @override
+  String get contactDescription =>
+      'Have a question or want to collaborate? Drop us a message.';
 
   @override
   String get uploadNewVideo => 'Upload new video';
