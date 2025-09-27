@@ -140,6 +140,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get message => 'Message';
 
   @override
+  String get aboutDescription =>
+      'We are a team of passionate developers building modern, responsive apps. Our goal is to deliver high-quality products and collaborate effectively with our stakeholders.';
+
+  @override
+  String get ourMission => 'Our Mission';
+
+  @override
+  String get ourMissionDescription =>
+      'To build apps that make life easier for medical staff by providing useful tooling.';
+
+  @override
+  String get ourVision => 'Our Vision';
+
+  @override
+  String get ourVisionDescription =>
+      'To innovate continuously and provide seamless digital experiences.';
+
+  @override
+  String get ourTeam => 'Our Team';
+
+  @override
+  String get messageSentAcknowledgment => 'Message sent — thank you!';
+
+  @override
+  String get contactDescription =>
+      'Have a question or want to collaborate? Drop us a message.';
+
+  @override
   String get uploadNewVideo => 'Upload new video';
 
   @override

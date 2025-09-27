@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
-import '../../../src/authentication/auth_form_validators.dart';
-import '../../common/extensions/translate_extension.dart';
+import '../../../authentication/auth_form_validators.dart';
+import '../../../common/extensions/translate_extension.dart';
 
 class ContactSection extends StatefulWidget {
   const ContactSection({super.key});
@@ -29,9 +29,9 @@ class _ContactSectionState extends State<ContactSection> {
     if (!_formKey.currentState!.validate()) return;
 
     // TODO: Implement actual submission logic
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Message sent — thank you!')));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(context.translate.messageSentAcknowledgment)),
+    );
 
     _nameController.clear();
     _emailController.clear();
@@ -50,7 +50,7 @@ class _ContactSectionState extends State<ContactSection> {
           ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
         ),
         Text(
-          'Have a question or want to collaborate? Drop us a message.',
+          context.translate.contactDescription,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
 

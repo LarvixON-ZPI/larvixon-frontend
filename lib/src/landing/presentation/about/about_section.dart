@@ -3,7 +3,7 @@ import 'package:larvixon_frontend/core/constants/breakpoints.dart';
 import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
-import '../../common/extensions/translate_extension.dart';
+import '../../../common/extensions/translate_extension.dart';
 
 class AboutSection extends StatelessWidget {
   const AboutSection({super.key});
@@ -21,8 +21,7 @@ class AboutSection extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'We are a team of passionate developers building modern, responsive apps. '
-          'Our goal is to deliver high-quality products and collaborate effectively with our clients.',
+          context.translate.aboutDescription,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         const SizedBox(height: 24),
@@ -40,9 +39,8 @@ class AboutSection extends StatelessWidget {
                   flex: isNarrow ? 0 : 1,
                   child: CustomCard(
                     icon: Icons.flag,
-                    title: 'Our Mission',
-                    description:
-                        'To build apps that make life easier and help businesses grow.',
+                    title: context.translate.ourMission,
+                    description: context.translate.ourMissionDescription,
                   ),
                 ),
 
@@ -50,9 +48,8 @@ class AboutSection extends StatelessWidget {
                   flex: isNarrow ? 0 : 1,
                   child: CustomCard(
                     icon: Icons.lightbulb,
-                    title: 'Our Vision',
-                    description:
-                        'To innovate continuously and provide seamless digital experiences.',
+                    title: context.translate.ourVision,
+                    description: context.translate.ourVisionDescription,
                   ),
                 ),
               ],
@@ -63,7 +60,7 @@ class AboutSection extends StatelessWidget {
           width: double.infinity,
           child: CustomCard(
             icon: Icons.group,
-            title: 'Our Team',
+            title: context.translate.ourTeam,
             children: [
               _TeamMemberAvatar(name: "Mikołaj Kubś").withOnHoverEffect,
               _TeamMemberAvatar(name: "Martyna Łopianiak").withOnHoverEffect,
@@ -87,7 +84,7 @@ class _TeamMemberAvatar extends StatelessWidget {
   });
 
   final Image? image;
-  final double size; // allows different avatar sizes
+  final double size;
   final String name;
   final String? role;
 
@@ -99,7 +96,7 @@ class _TeamMemberAvatar extends StatelessWidget {
         CircleAvatar(
           radius: size / 2,
           backgroundImage: image?.image,
-          backgroundColor: Colors.grey[200], // fallback background
+          backgroundColor: Colors.grey[200],
           child: image == null
               ? Icon(Icons.person, size: size / 2, color: Colors.grey)
               : null,

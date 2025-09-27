@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../common/extensions/translate_extension.dart';
+import '../extensions/translate_extension.dart';
 
 class Footer extends StatelessWidget {
   final VoidCallback? onPrivacyPressed;
