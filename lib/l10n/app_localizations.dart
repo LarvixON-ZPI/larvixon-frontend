@@ -367,6 +367,7 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Our Team'**
   String get ourTeam;
+
   /// No description provided for @messageSentAcknowledgment.
   ///
   /// In en, this message translates to:

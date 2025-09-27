@@ -6,6 +6,7 @@ import 'package:larvixon_frontend/src/authentication/presentation/auth_page.dart
 import 'package:larvixon_frontend/src/landing/presentation/about/about_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/landing/landing_page.dart';
+import 'package:larvixon_frontend/l10n/app_localizations.dart';
 
 import '../../common/extensions/translate_extension.dart';
 
@@ -13,7 +14,9 @@ typedef GetExtraFunction =
     Map<String, dynamic> Function(BuildContext context, String to);
 
 class LandingNavBar extends StatelessWidget {
-  const LandingNavBar({super.key});
+  const LandingNavBar({super.key, this.onLocaleChanged, this.currentLocale});
+  final ValueChanged<Locale?>? onLocaleChanged;
+  final Locale? currentLocale;
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +36,23 @@ class LandingNavBar extends StatelessWidget {
                   _LogoButton(),
                   Align(
                     alignment: Alignment.centerRight,
-                    child: _NavBarButton(
-                      label: context.translate.signIn,
-                      onPressed: () => context.go(
-                        AuthPage.route,
-                        extra: {'mode': AuthFormMode.signIn},
-                      ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildLanguageDropdown(
+                          currentLocale: currentLocale,
+                          onLocaleChanged: onLocaleChanged,
+                          context: context,
+                        ),
+                        const SizedBox(width: 8),
+                        _NavBarButton(
+                          label: context.translate.signIn,
+                          onPressed: () => context.go(
+                            AuthPage.route,
+                            extra: {'mode': AuthFormMode.signIn},
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -65,6 +79,12 @@ class LandingNavBar extends StatelessWidget {
                       label: context.translate.contact,
                       onPressed: () => context.go(ContactPage.route),
                     ),
+                    const SizedBox(width: 2),
+                    _buildLanguageDropdown(
+                      currentLocale: currentLocale,
+                      onLocaleChanged: onLocaleChanged,
+                      context: context,
+                    ),
                   ],
                 ),
                 Spacer(),
@@ -90,13 +110,12 @@ class LandingNavBar extends StatelessWidget {
 }
 
 class _Menu extends StatelessWidget {
-  const _Menu({super.key});
+  const _Menu();
 
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
       tooltip: '',
-
       offset: const Offset(0, 40),
       icon: const Icon(Icons.menu, color: Colors.white),
       color: Colors.white,
@@ -106,11 +125,17 @@ class _Menu extends StatelessWidget {
       itemBuilder: (context) => [
         PopupMenuItem(
           value: AboutPage.route,
-          child: Text(context.translate.about),
+          child: Text(
+            context.translate.about,
+            style: const TextStyle(color: Colors.black87),
+          ),
         ),
         PopupMenuItem(
           value: ContactPage.route,
-          child: Text(context.translate.contact),
+          child: Text(
+            context.translate.contact,
+            style: const TextStyle(color: Colors.black87),
+          ),
         ),
       ],
     );
@@ -118,17 +143,22 @@ class _Menu extends StatelessWidget {
 }
 
 class _LogoButton extends StatelessWidget {
-  const _LogoButton({super.key});
+  const _LogoButton();
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () => context.go(LandingPage.route),
+      style: TextButton.styleFrom(
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      ),
       child: Text(
         context.translate.larvixon,
-        style: Theme.of(
-          context,
-        ).textTheme.titleLarge?.copyWith(color: Colors.white),
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
@@ -137,45 +167,97 @@ class _LogoButton extends StatelessWidget {
 class _NavBarButton extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
-  final List<_NavBarButton>? subButtons;
-  final Color? textColor;
 
-  const _NavBarButton({
-    super.key,
-    required this.label,
-    this.onPressed,
-    this.subButtons,
-    this.textColor = Colors.white,
-  });
-  bool get hasSub => subButtons != null && subButtons!.isNotEmpty;
+  const _NavBarButton({required this.label, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
-    if (!hasSub) {
-      return TextButton(
-        onPressed: onPressed,
-        style: TextButton.styleFrom(foregroundColor: textColor),
-        child: Text(label),
-      );
-    }
-    return PopupMenuButton<int>(
-      color: Colors.white,
-      offset: const Offset(-10, 30),
-      tooltip: null,
-      onSelected: (value) {
-        subButtons![value].onPressed?.call();
-      },
-
-      padding: EdgeInsets.zero,
-      menuPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      itemBuilder: (context) {
-        return subButtons!.asMap().entries.map((entry) {
-          final index = entry.key;
-          final button = entry.value;
-          return PopupMenuItem<int>(value: index, child: Text(button.label));
-        }).toList();
-      },
+    return TextButton(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      ),
       child: Text(label),
     );
+  }
+}
+
+Widget _buildLanguageDropdown({
+  required Locale? currentLocale,
+  required ValueChanged<Locale?>? onLocaleChanged,
+  required BuildContext context,
+}) {
+  final currentLanguage = _getDropdownValue(currentLocale, context);
+
+  return PopupMenuButton<Locale>(
+    tooltip: 'Select Language',
+    offset: const Offset(-10, 30),
+    color: Colors.grey[900],
+    onSelected: (Locale selectedLocale) {
+      onLocaleChanged?.call(selectedLocale);
+    },
+    itemBuilder: (context) {
+      return AppLocalizations.supportedLocales.map((locale) {
+        final isSelected = locale == currentLanguage;
+        return PopupMenuItem<Locale>(
+          value: locale,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.language,
+                color: isSelected ? Colors.blue : Colors.white,
+                size: 16,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                locale.languageCode.toUpperCase(),
+                style: TextStyle(
+                  color: isSelected ? Colors.blue : Colors.white,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+              if (isSelected) ...[
+                const SizedBox(width: 8),
+                const Icon(Icons.check, color: Colors.blue, size: 16),
+              ],
+            ],
+          ),
+        );
+      }).toList();
+    },
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.language, color: Colors.white, size: 16),
+          const SizedBox(width: 8),
+          Text(
+            currentLanguage.languageCode.toUpperCase(),
+            style: const TextStyle(color: Colors.white),
+          ),
+          const SizedBox(width: 4),
+          const Icon(Icons.arrow_drop_down, color: Colors.white, size: 18),
+        ],
+      ),
+    ),
+  );
+}
+
+Locale _getDropdownValue(Locale? currentLocale, BuildContext context) {
+  if (AppLocalizations.supportedLocales.contains(currentLocale)) {
+    return currentLocale!;
+  } else if (AppLocalizations.supportedLocales.contains(
+    Localizations.localeOf(context),
+  )) {
+    return Localizations.localeOf(context);
+  } else {
+    return AppLocalizations.supportedLocales.first;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:larvixon_frontend/core/locale_controller.dart';
 import 'package:larvixon_frontend/src/common/widgets/background.dart';
 import 'package:larvixon_frontend/src/common/widgets/footer.dart';
 import 'package:larvixon_frontend/src/landing/presentation/landing_navbar.dart';
@@ -9,6 +10,8 @@ class LandingScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeController = LocaleController.of(context);
+
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -16,7 +19,14 @@ class LandingScaffold extends StatelessWidget {
           BackgroundWithLarvae(),
           Column(
             children: [
-              LandingNavBar(),
+              LandingNavBar(
+                currentLocale: localeController?.locale,
+                onLocaleChanged: (locale) {
+                  if (locale != null) {
+                    localeController?.setLocale(locale);
+                  }
+                },
+              ),
               Expanded(child: child),
             ],
           ),

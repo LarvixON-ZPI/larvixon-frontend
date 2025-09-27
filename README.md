@@ -1,4 +1,4 @@
-# Larvixon App 
+# Larvixon App
 
 [![Flutter CI](https://github.com/LarvixON-ZPI/larvixon-frontend/actions/workflows/flutter_ci.yml/badge.svg)](https://github.com/LarvixON-ZPI/larvixon-frontend/actions/workflows/flutter_ci.yml)
 
@@ -20,7 +20,7 @@ or simply upgrade to the latest stable version.
 flutter upgrade 
 ```
 
-# How to run
+## How to run
 
 To run the Larvixon App, follow these steps:
 
@@ -35,8 +35,7 @@ flutter pub get
 flutter run --dart-define=API_BASE_URL=http://127.0.0.1:8000/api
 ```
 
-If you don't specify the API_BASE_URL, it will fallback to default value *http://127.0.0.1:8000/api*
-
+If you don't specify the API_BASE_URL, it will fallback to default value *<http://127.0.0.1:8000/api>*
 
 ### Running with VS Code (launch.json)
 

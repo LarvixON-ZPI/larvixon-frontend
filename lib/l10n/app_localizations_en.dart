@@ -159,6 +159,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ourTeam => 'Our Team';
+
   @override
   String get messageSentAcknowledgment => 'Message sent — thank you!';
 
