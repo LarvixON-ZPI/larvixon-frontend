@@ -177,6 +177,9 @@ class _AuthFormState extends State<AuthForm>
                 value,
                 onlyCheckEmpty: _formMode == AuthFormMode.signIn,
               ),
+              onFieldSubmitted: _formMode == AuthFormMode.signIn
+                  ? (_) => _submitForm()
+                  : null,
             ),
 
             AnimatedSize(
