@@ -229,4 +229,74 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get loading => 'Ładowanie';
+
+  @override
+  String get signInFailed => 'Logowanie nie powiodło się';
+
+  @override
+  String get accountDisabled => 'Konto zablokowane';
+
+  @override
+  String get mfaRequired => 'Wymagana autoryzacja dwuskładnikowa';
+
+  @override
+  String get authenticationError => 'Błąd autoryzacji';
+
+  @override
+  String get validationError => 'Błąd walidacji';
+
+  @override
+  String get connectionError => 'Błąd połączenia';
+
+  @override
+  String get serverError => 'Błąd serwera';
+
+  @override
+  String get invalidCredentialsMessage =>
+      'Podany email lub hasło jest nieprawidłowe. Spróbuj ponownie.';
+
+  @override
+  String get accountDisabledMessage =>
+      'Twoje konto zostało zablokowane. Skontaktuj się z pomocą techniczną.';
+
+  @override
+  String get mfaRequiredMessage =>
+      'To konto wymaga autoryzacji dwuskładnikowej. Wprowadź swój kod autoryzacyjny.';
+
+  @override
+  String get mfaDeviceNotFoundMessage =>
+      'Nie znaleziono urządzenia autoryzacji dwuskładnikowej dla tego konta.';
+
+  @override
+  String get mfaDeviceNotConfirmedMessage =>
+      'Twoje urządzenie autoryzacji dwuskładnikowej nie zostało potwierdzone. Skontaktuj się z pomocą techniczną.';
+
+  @override
+  String get mfaSecretMissingMessage =>
+      'Autoryzacja dwuskładnikowa nie jest prawidłowo skonfigurowana. Skontaktuj się z pomocą techniczną.';
+
+  @override
+  String get invalidMfaCodeMessage =>
+      'Wprowadzony kod autoryzacyjny jest nieprawidłowy. Spróbuj ponownie.';
+
+  @override
+  String get networkErrorMessage =>
+      'Nie można połączyć się z serwerem. Sprawdź połączenie internetowe i spróbuj ponownie.';
+
+  @override
+  String get serverErrorMessage =>
+      'Serwer napotyka problemy. Spróbuj ponownie później.';
+
+  @override
+  String get enterMfaCode => 'Wprowadź kod MFA';
+
+  @override
+  String get tryAgain => 'Spróbuj ponownie';
+
+  @override
+  String get mfaDialogTitle => 'Autoryzacja dwuskładnikowa';
+
+  @override
+  String get mfaNotImplemented =>
+      'Funkcjonalność MFA nie jest jeszcze zaimplementowana.';
 }
