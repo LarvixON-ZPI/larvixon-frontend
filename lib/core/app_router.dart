@@ -156,12 +156,14 @@ class AppRouter {
       switch (authState.status) {
         case AuthStatus.initial:
         case AuthStatus.unauthenticated:
-          if (!loggingIn && !onLanding && !onAbout && !onContact)
+          if (!loggingIn && !onLanding && !onAbout && !onContact) {
             return LandingPage.route;
+          }
           return null;
         case AuthStatus.authenticated:
           if (loggingIn || onLanding) return HomePage.route;
           return null;
+        case AuthStatus.mfaRequired:
         case AuthStatus.error:
         case AuthStatus.loading:
           return null;
