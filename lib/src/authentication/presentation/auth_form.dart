@@ -34,8 +34,10 @@ class _AuthFormState extends State<AuthForm>
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
-  // Store server-side field errors
-  Map<String, String> _fieldErrors = {};
+  Map<String, String> _serverSideFieldErrors = {};
+
+  // Track which fields have been validated (to enable continuous validation)
+  Set<String> _validatedFields = {};
 
   @override
   void dispose() {
@@ -65,12 +67,14 @@ class _AuthFormState extends State<AuthForm>
       CurvedAnimation(parent: _logoController, curve: Curves.easeInOut),
     );
 
-    // Add listeners to clear field errors when user starts typing
-    _emailController.addListener(() => _clearFieldError('email'));
-    _passwordController.addListener(() => _clearFieldError('password'));
-    _usernameController.addListener(() => _clearFieldError('username'));
-    _firstNameController.addListener(() => _clearFieldError('first_name'));
-    _lastNameController.addListener(() => _clearFieldError('last_name'));
+    _emailController.addListener(() => _onFieldChanged('email'));
+    _passwordController.addListener(() => _onFieldChanged('password'));
+    _confirmPasswordController.addListener(
+      () => _onFieldChanged('confirm_password'),
+    );
+    _usernameController.addListener(() => _onFieldChanged('username'));
+    _firstNameController.addListener(() => _onFieldChanged('first_name'));
+    _lastNameController.addListener(() => _onFieldChanged('last_name'));
   }
 
   @override
@@ -94,23 +98,20 @@ class _AuthFormState extends State<AuthForm>
                   _logoController.value = 0.0;
                 }
 
-                // Handle error states
                 if (state.status == AuthStatus.error && state.error != null) {
-                  // Handle field validation errors differently
                   if (state.error is FieldValidationError) {
                     final fieldError = state.error as FieldValidationError;
                     setState(() {
-                      _fieldErrors = {};
+                      _serverSideFieldErrors = {};
                       for (final entry in fieldError.fieldErrors.entries) {
                         if (entry.value.isNotEmpty) {
-                          _fieldErrors[entry.key] = entry.value.first;
+                          _serverSideFieldErrors[entry.key] = entry.value.first;
                         }
                       }
                     });
-                    // Re-validate the form to show the new errors
+
                     _formKey.currentState?.validate();
                   } else {
-                    // Show dialog for non-field errors
                     AuthErrorDialog.show(
                       context,
                       error: state.error!,
@@ -123,11 +124,10 @@ class _AuthFormState extends State<AuthForm>
                   _showMfaDialog();
                 }
 
-                // Clear field errors when not in error state
                 if (state.status != AuthStatus.error &&
-                    _fieldErrors.isNotEmpty) {
+                    _serverSideFieldErrors.isNotEmpty) {
                   setState(() {
-                    _fieldErrors = {};
+                    _serverSideFieldErrors = {};
                   });
                 }
               },
@@ -197,18 +197,21 @@ class _AuthFormState extends State<AuthForm>
 
             TextFormField(
               controller: _emailController,
-              decoration: InputDecoration(
-                hintText: context.translate.email,
-                errorText: _fieldErrors['email'],
-              ),
+              decoration: InputDecoration(hintText: context.translate.email),
               autofillHints: [AutofillHints.email],
+              autovalidateMode:
+                  (_validatedFields.contains('email') ||
+                      _serverSideFieldErrors.containsKey('email'))
+                  ? AutovalidateMode.always
+                  : AutovalidateMode.disabled,
               validator: (value) {
-                // First check server-side errors
-                if (_fieldErrors['email'] != null) {
-                  return _fieldErrors['email'];
+                if (_serverSideFieldErrors['email'] != null) {
+                  return _serverSideFieldErrors['email'];
                 }
-                // Then check client-side validation
-                return FormValidators.emailValidator(context, value);
+                if (_validatedFields.contains('email')) {
+                  return FormValidators.emailValidator(context, value);
+                }
+                return null;
               },
             ),
             TextFormField(
@@ -216,7 +219,6 @@ class _AuthFormState extends State<AuthForm>
               autofillHints: [AutofillHints.password],
               decoration: InputDecoration(
                 hintText: context.translate.password,
-                errorText: _fieldErrors['password'],
                 suffixIcon: IconButton(
                   icon: Icon(
                     _obscurePassword ? Icons.visibility_off : Icons.visibility,
@@ -230,17 +232,23 @@ class _AuthFormState extends State<AuthForm>
                 ),
               ),
               obscureText: _obscurePassword,
+              autovalidateMode:
+                  (_validatedFields.contains('password') ||
+                      _serverSideFieldErrors.containsKey('password'))
+                  ? AutovalidateMode.always
+                  : AutovalidateMode.disabled,
               validator: (value) {
-                // First check server-side errors
-                if (_fieldErrors['password'] != null) {
-                  return _fieldErrors['password'];
+                if (_serverSideFieldErrors['password'] != null) {
+                  return _serverSideFieldErrors['password'];
                 }
-                // Then check client-side validation
-                return FormValidators.passwordValidator(
-                  context,
-                  value,
-                  onlyCheckEmpty: _formMode == AuthFormMode.signIn,
-                );
+                if (_validatedFields.contains('password')) {
+                  return FormValidators.passwordValidator(
+                    context,
+                    value,
+                    onlyCheckEmpty: _formMode == AuthFormMode.signIn,
+                  );
+                }
+                return null;
               },
               onFieldSubmitted: _formMode == AuthFormMode.signIn
                   ? (_) => _submitForm()
@@ -279,30 +287,42 @@ class _AuthFormState extends State<AuthForm>
                             ),
                           ),
                           obscureText: _obscureConfirmPassword,
-                          validator: (value) =>
-                              FormValidators.confirmPasswordValidator(
+                          autovalidateMode:
+                              _validatedFields.contains('confirm_password')
+                              ? AutovalidateMode.always
+                              : AutovalidateMode.disabled,
+                          validator: (value) {
+                            if (_validatedFields.contains('confirm_password')) {
+                              return FormValidators.confirmPasswordValidator(
                                 context,
                                 _passwordController.text,
                                 value,
-                              ),
+                              );
+                            }
+                            return null;
+                          },
                         ),
                         TextFormField(
                           controller: _usernameController,
                           autofillHints: [AutofillHints.username],
                           decoration: InputDecoration(
                             hintText: context.translate.username,
-                            errorText: _fieldErrors['username'],
                           ),
+                          autovalidateMode:
+                              _validatedFields.contains('username')
+                              ? AutovalidateMode.always
+                              : AutovalidateMode.disabled,
                           validator: (value) {
-                            // First check server-side errors
-                            if (_fieldErrors['username'] != null) {
-                              return _fieldErrors['username'];
+                            if (_serverSideFieldErrors['username'] != null) {
+                              return _serverSideFieldErrors['username'];
                             }
-                            // Then check client-side validation
-                            return FormValidators.usernameValidator(
-                              context,
-                              value,
-                            );
+                            if (_validatedFields.contains('username')) {
+                              return FormValidators.usernameValidator(
+                                context,
+                                value,
+                              );
+                            }
+                            return null;
                           },
                         ),
                         TextFormField(
@@ -310,18 +330,22 @@ class _AuthFormState extends State<AuthForm>
                           autofillHints: [AutofillHints.givenName],
                           decoration: InputDecoration(
                             hintText: context.translate.firstName,
-                            errorText: _fieldErrors['first_name'],
                           ),
+                          autovalidateMode:
+                              _validatedFields.contains('first_name')
+                              ? AutovalidateMode.always
+                              : AutovalidateMode.disabled,
                           validator: (value) {
-                            // First check server-side errors
-                            if (_fieldErrors['first_name'] != null) {
-                              return _fieldErrors['first_name'];
+                            if (_serverSideFieldErrors['first_name'] != null) {
+                              return _serverSideFieldErrors['first_name'];
                             }
-                            // Then check client-side validation
-                            return FormValidators.firstNameValidator(
-                              context,
-                              value,
-                            );
+                            if (_validatedFields.contains('first_name')) {
+                              return FormValidators.firstNameValidator(
+                                context,
+                                value,
+                              );
+                            }
+                            return null;
                           },
                         ),
                         TextFormField(
@@ -329,18 +353,22 @@ class _AuthFormState extends State<AuthForm>
                           autofillHints: [AutofillHints.familyName],
                           decoration: InputDecoration(
                             hintText: context.translate.lastName,
-                            errorText: _fieldErrors['last_name'],
                           ),
+                          autovalidateMode:
+                              _validatedFields.contains('last_name')
+                              ? AutovalidateMode.always
+                              : AutovalidateMode.disabled,
                           validator: (value) {
-                            // First check server-side errors
-                            if (_fieldErrors['last_name'] != null) {
-                              return _fieldErrors['last_name'];
+                            if (_serverSideFieldErrors['last_name'] != null) {
+                              return _serverSideFieldErrors['last_name'];
                             }
-                            // Then check client-side validation
-                            return FormValidators.lastNameValidator(
-                              context,
-                              value,
-                            );
+                            if (_validatedFields.contains('last_name')) {
+                              return FormValidators.lastNameValidator(
+                                context,
+                                value,
+                              );
+                            }
+                            return null;
                           },
                         ),
                       ],
@@ -372,6 +400,16 @@ class _AuthFormState extends State<AuthForm>
   }
 
   void _submitForm() {
+    _validatedFields.addAll(['email', 'password']);
+    if (_formMode == AuthFormMode.signUp) {
+      _validatedFields.addAll([
+        'username',
+        'first_name',
+        'last_name',
+        'confirm_password',
+      ]);
+    }
+
     if (!_formKey.currentState!.validate()) return;
     if (_formMode == AuthFormMode.signIn) {
       context.read<AuthBloc>().add(
@@ -395,10 +433,16 @@ class _AuthFormState extends State<AuthForm>
     );
   }
 
-  void _clearFieldError(String fieldName) {
-    if (_fieldErrors.containsKey(fieldName)) {
+  void _onFieldChanged(String fieldName) {
+    bool serverErrorCleared = false;
+    if (_serverSideFieldErrors.containsKey(fieldName)) {
+      _serverSideFieldErrors.remove(fieldName);
+      serverErrorCleared = true;
+    }
+
+    if (_validatedFields.contains(fieldName) || serverErrorCleared) {
       setState(() {
-        _fieldErrors.remove(fieldName);
+        // This setState will cause the form to rebuild and re-run validators
       });
     }
   }
