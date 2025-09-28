@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../src/common/extensions/translate_extension.dart';
+import '../../common/form_validators.dart';
 import '../bloc/user_bloc.dart';
 import '../user.dart';
 
@@ -102,38 +103,90 @@ class _AccountPageState extends State<AccountPage> {
                               decoration: InputDecoration(
                                 labelText: context.translate.firstName,
                               ),
+                              autovalidateMode: AutovalidateMode.always,
+                              validator: (value) {
+                                return FormValidators.lengthValidator(
+                                  context,
+                                  value,
+                                  fieldName: context.translate.firstName,
+                                  minLength: 0,
+                                  maxLength: 150,
+                                  allowNull: true,
+                                );
+                              },
                             ),
                             TextFormField(
                               readOnly: !isEditing,
-
                               controller: _lastNameController,
                               decoration: InputDecoration(
                                 labelText: context.translate.lastName,
                               ),
+                              autovalidateMode: AutovalidateMode.always,
+                              validator: (value) {
+                                return FormValidators.lengthValidator(
+                                  context,
+                                  value,
+                                  fieldName: context.translate.lastName,
+                                  minLength: 0,
+                                  maxLength: 150,
+                                  allowNull: true,
+                                );
+                              },
                             ),
                             TextFormField(
                               readOnly: !isEditing,
-
                               controller: _phoneNumberController,
                               decoration: InputDecoration(
                                 labelText: context.translate.phoneNumber,
                               ),
+                              autovalidateMode: AutovalidateMode.always,
+                              validator: (value) {
+                                return FormValidators.lengthValidator(
+                                  context,
+                                  value,
+                                  fieldName: context.translate.phoneNumber,
+                                  minLength: 0,
+                                  maxLength: 20,
+                                  allowNull: true,
+                                );
+                              },
                             ),
                             TextFormField(
                               readOnly: !isEditing,
-
                               controller: _organizationController,
                               decoration: InputDecoration(
                                 labelText: context.translate.organization,
                               ),
+                              autovalidateMode: AutovalidateMode.always,
+                              validator: (value) {
+                                return FormValidators.lengthValidator(
+                                  context,
+                                  value,
+                                  fieldName: context.translate.organization,
+                                  minLength: 0,
+                                  maxLength: 255,
+                                  allowNull: true,
+                                );
+                              },
                             ),
                             TextFormField(
                               readOnly: !isEditing,
-
                               controller: _bioController,
+                              maxLines: 3,
                               decoration: InputDecoration(
                                 labelText: context.translate.bio,
                               ),
+                              autovalidateMode: AutovalidateMode.always,
+                              validator: (value) {
+                                return FormValidators.lengthValidator(
+                                  context,
+                                  value,
+                                  fieldName: context.translate.bio,
+                                  minLength: 0,
+                                  maxLength: 500,
+                                  allowNull: true,
+                                );
+                              },
                             ),
 
                             AnimatedSwitcher(

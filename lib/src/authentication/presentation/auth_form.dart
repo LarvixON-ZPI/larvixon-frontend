@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../common/extensions/translate_extension.dart';
-import '../auth_form_validators.dart';
+import '../../common/form_validators.dart';
 import '../bloc/auth_bloc.dart';
 import '../domain/auth_error.dart';
 import 'auth_error_dialog.dart';
