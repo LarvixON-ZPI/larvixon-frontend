@@ -26,50 +26,42 @@ class AuthErrorDialog extends StatelessWidget {
 
   String _getErrorTitle(BuildContext context) {
     return switch (error) {
-      InvalidCredentialsError() => 'Sign In Failed',
-      DisabledAccountError() => 'Account Disabled',
-      MfaRequiredButNoCodeError() => 'Multi-Factor Authentication Required',
-      MfaError() => 'Authentication Error',
-      FieldValidationError() => 'Validation Error',
-      NetworkError() => 'Connection Error',
-      ServerError() => 'Server Error',
+      InvalidCredentialsError() => context.translate.signInFailed,
+      DisabledAccountError() => context.translate.accountDisabled,
+      MfaRequiredButNoCodeError() => context.translate.mfaRequired,
+      MfaError() => context.translate.authenticationError,
+      FieldValidationError() => context.translate.validationError,
+      NetworkError() => context.translate.connectionError,
+      ServerError() => context.translate.serverError,
       _ => context.translate.error,
     };
   }
 
   String _getErrorMessage(BuildContext context) {
     return switch (error) {
-      InvalidCredentialsError() =>
-        'The email or password you entered is incorrect. Please try again.',
+      InvalidCredentialsError() => context.translate.invalidCredentialsMessage,
 
-      DisabledAccountError() =>
-        'Your account has been disabled. Please contact support for assistance.',
+      DisabledAccountError() => context.translate.accountDisabledMessage,
 
-      MfaRequiredButNoCodeError() =>
-        'This account requires multi-factor authentication. Please enter your authentication code.',
+      MfaRequiredButNoCodeError() => context.translate.mfaRequiredMessage,
 
-      MfaDeviceNotFoundError() =>
-        'No multi-factor authentication device found for this account.',
+      MfaDeviceNotFoundError() => context.translate.mfaDeviceNotFoundMessage,
 
       MfaDeviceNotConfirmedError() =>
-        'Your multi-factor authentication device is not confirmed. Please contact support.',
+        context.translate.mfaDeviceNotConfirmedMessage,
 
-      MfaSecretMissingError() =>
-        'Multi-factor authentication is not properly configured. Please contact support.',
+      MfaSecretMissingError() => context.translate.mfaSecretMissingMessage,
 
-      InvalidMfaCodeError() =>
-        'The authentication code you entered is invalid. Please try again.',
+      InvalidMfaCodeError() => context.translate.invalidMfaCodeMessage,
 
       FieldValidationError(:final fieldErrors) => _buildFieldErrorMessage(
         context,
         fieldErrors,
       ),
 
-      NetworkError() =>
-        'Unable to connect to the server. Please check your internet connection and try again.',
+      NetworkError() => context.translate.networkErrorMessage,
 
-      ServerError() =>
-        'The server is experiencing issues. Please try again later.',
+      ServerError() => context.translate.serverErrorMessage,
 
       _ => error.message,
     };
@@ -133,7 +125,7 @@ class AuthErrorDialog extends StatelessWidget {
           onMfaRequired!();
         }
       },
-      child: const Text('Enter MFA Code'),
+      child: Text(context.translate.enterMfaCode),
     );
   }
 
@@ -145,7 +137,7 @@ class AuthErrorDialog extends StatelessWidget {
           onRetry!();
         }
       },
-      child: const Text('Try Again'),
+      child: Text(context.translate.tryAgain),
     );
   }
 

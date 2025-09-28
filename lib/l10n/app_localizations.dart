@@ -493,6 +493,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Loading'**
   String get loading;
+
+  /// No description provided for @signInFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In Failed'**
+  String get signInFailed;
+
+  /// No description provided for @accountDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Disabled'**
+  String get accountDisabled;
+
+  /// No description provided for @mfaRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Multi-Factor Authentication Required'**
+  String get mfaRequired;
+
+  /// No description provided for @authenticationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Authentication Error'**
+  String get authenticationError;
+
+  /// No description provided for @validationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Validation Error'**
+  String get validationError;
+
+  /// No description provided for @connectionError.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection Error'**
+  String get connectionError;
+
+  /// No description provided for @serverError.
+  ///
+  /// In en, this message translates to:
+  /// **'Server Error'**
+  String get serverError;
+
+  /// No description provided for @invalidCredentialsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The email or password you entered is incorrect. Please try again.'**
+  String get invalidCredentialsMessage;
+
+  /// No description provided for @accountDisabledMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account has been disabled. Please contact support for assistance.'**
+  String get accountDisabledMessage;
+
+  /// No description provided for @mfaRequiredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This account requires multi-factor authentication. Please enter your authentication code.'**
+  String get mfaRequiredMessage;
+
+  /// No description provided for @mfaDeviceNotFoundMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No multi-factor authentication device found for this account.'**
+  String get mfaDeviceNotFoundMessage;
+
+  /// No description provided for @mfaDeviceNotConfirmedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your multi-factor authentication device is not confirmed. Please contact support.'**
+  String get mfaDeviceNotConfirmedMessage;
+
+  /// No description provided for @mfaSecretMissingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Multi-factor authentication is not properly configured. Please contact support.'**
+  String get mfaSecretMissingMessage;
+
+  /// No description provided for @invalidMfaCodeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The authentication code you entered is invalid. Please try again.'**
+  String get invalidMfaCodeMessage;
+
+  /// No description provided for @networkErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to connect to the server. Please check your internet connection and try again.'**
+  String get networkErrorMessage;
+
+  /// No description provided for @serverErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The server is experiencing issues. Please try again later.'**
+  String get serverErrorMessage;
+
+  /// No description provided for @enterMfaCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter MFA Code'**
+  String get enterMfaCode;
+
+  /// No description provided for @tryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get tryAgain;
+
+  /// No description provided for @mfaDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Multi-Factor Authentication'**
+  String get mfaDialogTitle;
+
+  /// No description provided for @mfaNotImplemented.
+  ///
+  /// In en, this message translates to:
+  /// **'MFA functionality is not yet implemented.'**
+  String get mfaNotImplemented;
 }
 
 class _AppLocalizationsDelegate

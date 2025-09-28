@@ -142,5 +142,26 @@
       }
     }
   },
-  "loading": "Ładowanie"
+  "loading": "Ładowanie",
+  "@@_AuthErrors": {},
+  "signInFailed": "Logowanie nie powiodło się",
+  "accountDisabled": "Konto zablokowane",
+  "mfaRequired": "Wymagana autoryzacja dwuskładnikowa",
+  "authenticationError": "Błąd autoryzacji",
+  "validationError": "Błąd walidacji",
+  "connectionError": "Błąd połączenia",
+  "serverError": "Błąd serwera",
+  "invalidCredentialsMessage": "Podany email lub hasło jest nieprawidłowe. Spróbuj ponownie.",
+  "accountDisabledMessage": "Twoje konto zostało zablokowane. Skontaktuj się z pomocą techniczną.",
+  "mfaRequiredMessage": "To konto wymaga autoryzacji dwuskładnikowej. Wprowadź swój kod autoryzacyjny.",
+  "mfaDeviceNotFoundMessage": "Nie znaleziono urządzenia autoryzacji dwuskładnikowej dla tego konta.",
+  "mfaDeviceNotConfirmedMessage": "Twoje urządzenie autoryzacji dwuskładnikowej nie zostało potwierdzone. Skontaktuj się z pomocą techniczną.",
+  "mfaSecretMissingMessage": "Autoryzacja dwuskładnikowa nie jest prawidłowo skonfigurowana. Skontaktuj się z pomocą techniczną.",
+  "invalidMfaCodeMessage": "Wprowadzony kod autoryzacyjny jest nieprawidłowy. Spróbuj ponownie.",
+  "networkErrorMessage": "Nie można połączyć się z serwerem. Sprawdź połączenie internetowe i spróbuj ponownie.",
+  "serverErrorMessage": "Serwer napotyka problemy. Spróbuj ponownie później.",
+  "enterMfaCode": "Wprowadź kod MFA",
+  "tryAgain": "Spróbuj ponownie",
+  "mfaDialogTitle": "Autoryzacja dwuskładnikowa",
+  "mfaNotImplemented": "Funkcjonalność MFA nie jest jeszcze zaimplementowana."
 }

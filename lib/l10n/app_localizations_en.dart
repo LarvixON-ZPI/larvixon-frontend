@@ -228,4 +228,73 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loading => 'Loading';
+
+  @override
+  String get signInFailed => 'Sign In Failed';
+
+  @override
+  String get accountDisabled => 'Account Disabled';
+
+  @override
+  String get mfaRequired => 'Multi-Factor Authentication Required';
+
+  @override
+  String get authenticationError => 'Authentication Error';
+
+  @override
+  String get validationError => 'Validation Error';
+
+  @override
+  String get connectionError => 'Connection Error';
+
+  @override
+  String get serverError => 'Server Error';
+
+  @override
+  String get invalidCredentialsMessage =>
+      'The email or password you entered is incorrect. Please try again.';
+
+  @override
+  String get accountDisabledMessage =>
+      'Your account has been disabled. Please contact support for assistance.';
+
+  @override
+  String get mfaRequiredMessage =>
+      'This account requires multi-factor authentication. Please enter your authentication code.';
+
+  @override
+  String get mfaDeviceNotFoundMessage =>
+      'No multi-factor authentication device found for this account.';
+
+  @override
+  String get mfaDeviceNotConfirmedMessage =>
+      'Your multi-factor authentication device is not confirmed. Please contact support.';
+
+  @override
+  String get mfaSecretMissingMessage =>
+      'Multi-factor authentication is not properly configured. Please contact support.';
+
+  @override
+  String get invalidMfaCodeMessage =>
+      'The authentication code you entered is invalid. Please try again.';
+
+  @override
+  String get networkErrorMessage =>
+      'Unable to connect to the server. Please check your internet connection and try again.';
+
+  @override
+  String get serverErrorMessage =>
+      'The server is experiencing issues. Please try again later.';
+
+  @override
+  String get enterMfaCode => 'Enter MFA Code';
+
+  @override
+  String get tryAgain => 'Try Again';
+
+  @override
+  String get mfaDialogTitle => 'Multi-Factor Authentication';
+
+  @override
+  String get mfaNotImplemented => 'MFA functionality is not yet implemented.';
 }

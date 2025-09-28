@@ -452,8 +452,8 @@ class _AuthFormState extends State<AuthForm>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Multi-Factor Authentication'),
-        content: const Text('MFA functionality is not yet implemented.'),
+        title: Text(context.translate.mfaDialogTitle),
+        content: Text(context.translate.mfaNotImplemented),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
