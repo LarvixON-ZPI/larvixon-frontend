@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/detailsCard/larva_video_card.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/video_list_cubit/larva_video_list_cubit.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/detailsCard/larva_video_card.dart';
 import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
@@ -25,8 +25,7 @@ class _LarvaVideoGridState extends State<LarvaVideoGrid> {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent) {
       final cubit = context.read<LarvaVideoListCubit>();
-      if (cubit.state.status != LarvaVideoListStatus.loading &&
-          cubit.state.hasMore) {
+      if (cubit.state.status != LarvaVideoListStatus.loading) {
         cubit.fetchVideoList();
       }
     }

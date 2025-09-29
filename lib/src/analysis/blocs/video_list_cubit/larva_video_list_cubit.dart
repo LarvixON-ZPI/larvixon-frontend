@@ -19,6 +19,7 @@ class LarvaVideoListCubit extends Cubit<LarvaVideoListState> {
   Future<void> fetchVideoList() async {
     if (!state.hasMore) return;
     if (state.status == LarvaVideoListStatus.loading) return;
+
     emit(state.copyWith(status: LarvaVideoListStatus.loading));
 
     final result = await _repository
@@ -39,6 +40,7 @@ class LarvaVideoListCubit extends Cubit<LarvaVideoListState> {
         final ids = success.ids;
         final nextPage = success.nextPage;
         final merged = {...state.videoIds, ...ids}.toList();
+
         emit(
           state.copyWith(
             status: LarvaVideoListStatus.success,

@@ -7,11 +7,11 @@ class LarvaVideoIdListMapper
   @override
   LarvaVideoIdList dtoToEntity(LarvaVideoIdListDto dto) {
     final results = <int>[];
-    dto.results.map((e) {
+    for (var e in dto.results) {
       if (e is Map<String, dynamic> && e['id'] is int) {
         results.add(e['id'] as int);
       }
-    });
+    }
     return LarvaVideoIdList(ids: results, nextPage: dto.next);
   }
 
