@@ -25,6 +25,10 @@ void main(List<String> args) {
   final bool dryRun = args.contains('--dry-run');
   final bool removeGitKeep = args.contains('--remove-gitkeep');
   final bool interactive = args.contains('--interactive');
+  final bool formatCode = args.contains('--format');
+  final bool fixLints = args.contains('--fix-lints');
+  final bool addConst = args.contains('--add-const');
+  final bool fullCleanup = args.contains('--full-cleanup');
 
   if (featureName == null) {
     _listFeatures(libSrc);
@@ -79,11 +83,40 @@ void main(List<String> args) {
     emptyFilesCount += testResults.emptyFiles;
   }
 
+  // Code Quality Improvements
+  int formattedFiles = 0;
+  int fixedLints = 0;
+  int constAdditions = 0;
+
+  if (formatCode || fixLints || addConst || fullCleanup) {
+    print('\n🔧 Running code quality improvements...');
+
+    if (formatCode || fullCleanup) {
+      formattedFiles = _formatDartFiles(libFeatureDir, testFeatureDir, dryRun);
+    }
+
+    if (fixLints || fullCleanup) {
+      fixedLints = _fixLintIssues(libFeatureDir, testFeatureDir, dryRun);
+    }
+
+    if (addConst || fullCleanup) {
+      constAdditions = _addConstKeywords(libFeatureDir, testFeatureDir, dryRun);
+    }
+  }
+
   // Summary
   print('\n📊 Cleanup Summary:');
   print('   Empty directories: $emptyDirsCount');
   if (removeGitKeep) print('   .gitkeep files: $gitKeepCount');
   print('   Empty files: $emptyFilesCount');
+
+  if (formatCode || fixLints || addConst || fullCleanup) {
+    print('\n🔧 Code Quality Improvements:');
+    if (formatCode || fullCleanup) print('   Formatted files: $formattedFiles');
+    if (fixLints || fullCleanup) print('   Fixed lint issues: $fixedLints');
+    if (addConst || fullCleanup)
+      print('   Added const keywords: $constAdditions');
+  }
 
   if (dryRun) {
     print('\n💡 Run without --dry-run to actually delete files');
@@ -315,6 +348,157 @@ int _levenshteinDistance(String a, String b) {
   return previousRow.last;
 }
 
+// Code Quality Improvement Functions
+int _formatDartFiles(
+  Directory libFeatureDir,
+  Directory? testFeatureDir,
+  bool dryRun,
+) {
+  int formattedCount = 0;
+
+  final dirs = [libFeatureDir];
+  if (testFeatureDir?.existsSync() ?? false) {
+    dirs.add(testFeatureDir!);
+  }
+
+  for (final dir in dirs) {
+    final dartFiles = _getDartFiles(dir);
+
+    for (final file in dartFiles) {
+      if (dryRun) {
+        print('   🎨 Would format: ${_getRelativePath(file.path)}');
+        formattedCount++;
+      } else {
+        try {
+          final result = Process.runSync('dart', ['format', file.path]);
+          if (result.exitCode == 0) {
+            print('   🎨 Formatted: ${_getRelativePath(file.path)}');
+            formattedCount++;
+          }
+        } catch (e) {
+          print('   ❌ Failed to format: ${_getRelativePath(file.path)} - $e');
+        }
+      }
+    }
+  }
+
+  return formattedCount;
+}
+
+int _fixLintIssues(
+  Directory libFeatureDir,
+  Directory? testFeatureDir,
+  bool dryRun,
+) {
+  int fixedCount = 0;
+
+  // Get the feature directory path for dart fix
+  final featurePath = libFeatureDir.path;
+
+  if (dryRun) {
+    print('   🔧 Would run: dart fix --dry-run $featurePath');
+    // Try to count potential fixes
+    try {
+      final result = Process.runSync('dart', ['fix', '--dry-run', featurePath]);
+      final output = result.stdout.toString();
+      final fixes = RegExp(r'(\d+) fix').allMatches(output);
+      for (final match in fixes) {
+        fixedCount += int.parse(match.group(1)!);
+      }
+    } catch (e) {
+      print('   ⚠️  Could not preview fixes: $e');
+    }
+  } else {
+    try {
+      final result = Process.runSync('dart', ['fix', '--apply', featurePath]);
+      if (result.exitCode == 0) {
+        final output = result.stdout.toString();
+        print('   🔧 Fixed lint issues in: ${_getRelativePath(featurePath)}');
+
+        // Count actual fixes applied
+        final fixes = RegExp(r'(\d+) fix').allMatches(output);
+        for (final match in fixes) {
+          fixedCount += int.parse(match.group(1)!);
+        }
+      }
+    } catch (e) {
+      print('   ❌ Failed to fix lint issues: $e');
+    }
+  }
+
+  return fixedCount;
+}
+
+int _addConstKeywords(
+  Directory libFeatureDir,
+  Directory? testFeatureDir,
+  bool dryRun,
+) {
+  int constCount = 0;
+
+  final dirs = [libFeatureDir];
+  if (testFeatureDir?.existsSync() ?? false) {
+    dirs.add(testFeatureDir!);
+  }
+
+  for (final dir in dirs) {
+    final dartFiles = _getDartFiles(dir);
+
+    for (final file in dartFiles) {
+      final content = file.readAsStringSync();
+      String newContent = content;
+
+      // Simple const keyword additions (basic patterns)
+      final patterns = [
+        // Constructor calls that could be const
+        RegExp(r'(\s+)([A-Z]\w*)\(([^)]*)\)(?!\s*\{)'),
+        // Widget constructors
+        RegExp(r'(\s+)(Text|Icon|Padding|Container|SizedBox)\('),
+      ];
+
+      int fileConstCount = 0;
+      for (final pattern in patterns) {
+        final matches = pattern.allMatches(content);
+        for (final match in matches) {
+          // Check if 'const' is not already present
+          final beforeMatch = content.substring(0, match.start);
+          if (!beforeMatch.endsWith('const ')) {
+            fileConstCount++;
+            if (!dryRun) {
+              final replacement = '${match.group(1)}const ${match.group(2)}(';
+              newContent = newContent.replaceFirst(pattern, replacement);
+            }
+          }
+        }
+      }
+
+      if (fileConstCount > 0) {
+        if (dryRun) {
+          print(
+            '   ⚡ Would add $fileConstCount const keywords: ${_getRelativePath(file.path)}',
+          );
+        } else {
+          file.writeAsStringSync(newContent);
+          print(
+            '   ⚡ Added $fileConstCount const keywords: ${_getRelativePath(file.path)}',
+          );
+        }
+        constCount += fileConstCount;
+      }
+    }
+  }
+
+  return constCount;
+}
+
+List<File> _getDartFiles(Directory dir) {
+  return dir
+      .listSync(recursive: true)
+      .where((entity) => entity is File && entity.path.endsWith('.dart'))
+      .cast<File>()
+      .toList();
+}
+
 void _showHelp() {
   print('''
 🧹 Feature Cleanup Script
@@ -325,11 +509,16 @@ Commands:
   dart scripts/cleanup_features.dart                    # List all features
   dart scripts/cleanup_features.dart <feature_name>     # Clean specific feature
 
-Options:
+File Cleanup Options:
   --dry-run         Show what would be deleted without actually deleting
   --remove-gitkeep  Also remove .gitkeep files (use with caution)
   --interactive     Ask for confirmation before each deletion
-  --help           Show this help message
+
+Code Quality Options:
+  --format          Format Dart files using 'dart format'
+  --fix-lints       Fix lint issues using 'dart fix --apply'
+  --add-const       Add const keywords where possible
+  --full-cleanup    Run all cleanup and code quality improvements
 
 Examples:
   # List all available features
@@ -338,20 +527,34 @@ Examples:
   # Preview cleanup for specific feature
   dart scripts/cleanup_features.dart analysis --dry-run
   
-  # Clean specific feature
+  # Clean files only
   dart scripts/cleanup_features.dart user_profile
   
-  # Interactive cleanup with confirmations
-  dart scripts/cleanup_features.dart analysis --interactive
+  # Format code in feature
+  dart scripts/cleanup_features.dart analysis --format
   
-  # Remove everything including .gitkeep files
-  dart scripts/cleanup_features.dart analysis --remove-gitkeep
+  # Fix lint issues
+  dart scripts/cleanup_features.dart analysis --fix-lints
+  
+  # Add const keywords
+  dart scripts/cleanup_features.dart analysis --add-const
+  
+  # Full cleanup (files + formatting + lints + const)
+  dart scripts/cleanup_features.dart analysis --full-cleanup
+  
+  # Preview full cleanup
+  dart scripts/cleanup_features.dart analysis --full-cleanup --dry-run
 
 What gets cleaned:
-  ✅ Empty directories
-  ✅ Empty files (except .gitkeep)
-  ✅ Temporary files (.DS_Store, Thumbs.db, etc.)
+  📁 Empty directories
+  📄 Empty files (except .gitkeep)
+  🗑️  Temporary files (.DS_Store, Thumbs.db, etc.)
   ⚠️  .gitkeep files (only with --remove-gitkeep flag)
+
+Code Quality Improvements:
+  🎨 Dart code formatting
+  🔧 Automatic lint fixes
+  ⚡ Adding const keywords where possible
 
 ''');
 }

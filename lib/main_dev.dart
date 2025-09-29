@@ -5,14 +5,14 @@ import 'package:go_router/go_router.dart';
 import 'core/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'l10n/app_localizations.dart';
-import 'src/analysis/domain/larva_video_repository.dart';
-import 'src/analysis/domain/larva_video_repository_fake.dart';
+import 'src/analysis/domain/repositories/larva_video_repository.dart';
+import 'src/analysis/domain/repositories/larva_video_repository_fake.dart';
 import 'src/authentication/bloc/auth_bloc.dart';
-import 'src/authentication/domain/auth_repository.dart';
-import 'src/authentication/domain/auth_repository_fake.dart';
+import 'src/authentication/domain/repositories/auth_repository.dart';
+import 'src/authentication/domain/repositories/auth_repository_fake.dart';
 import 'src/user/bloc/user_bloc.dart';
-import 'src/user/domain/user_repository.dart';
-import 'src/user/domain/user_repository_fake.dart';
+import 'src/user/domain/repositories/user_repository.dart';
+import 'src/user/domain/repositories/user_repository_fake.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

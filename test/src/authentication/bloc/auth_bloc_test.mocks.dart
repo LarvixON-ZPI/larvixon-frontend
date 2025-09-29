@@ -5,7 +5,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i3;
 
-import 'package:larvixon_frontend/src/authentication/domain/auth_repository.dart'
+import 'package:larvixon_frontend/src/authentication/domain/repositories/auth_repository.dart'
     as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 

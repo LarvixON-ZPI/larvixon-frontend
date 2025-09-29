@@ -4,8 +4,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../domain/user_repository.dart';
-import '../user.dart';
+import '../domain/repositories/user_repository.dart';
+import '../domain/entities/user.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';

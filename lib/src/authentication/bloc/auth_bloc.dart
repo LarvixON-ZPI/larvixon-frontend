@@ -4,8 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart' show Equatable;
 import 'package:meta/meta.dart';
 
-import '../domain/auth_repository.dart';
-import '../domain/auth_error.dart';
+import '../domain/repositories/auth_repository.dart';
+import '../domain/failures/auth_error.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

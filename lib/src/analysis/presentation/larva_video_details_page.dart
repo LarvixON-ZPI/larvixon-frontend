@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:larvixon_frontend/src/analysis/video_bloc/larva_video_bloc.dart';
+import 'package:larvixon_frontend/src/analysis/blocs/video_bloc/larva_video_bloc.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
 class LarvaVideoDetailsPage extends StatelessWidget {

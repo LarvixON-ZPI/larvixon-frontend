@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:larvixon_frontend/src/analysis/larva_video.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/larva_video.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/larva_video_results_entry.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 

@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
-import 'package:larvixon_frontend/src/authentication/domain/auth_repository.dart';
-import 'package:larvixon_frontend/src/authentication/domain/auth_error.dart';
+import 'package:larvixon_frontend/src/authentication/domain/repositories/auth_repository.dart';
+import 'package:larvixon_frontend/src/authentication/domain/failures/auth_error.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 

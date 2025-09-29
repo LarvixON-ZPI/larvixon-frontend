@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:larvixon_frontend/src/analysis/domain/larva_video_repository.dart';
+import 'package:larvixon_frontend/src/analysis/domain/repositories/larva_video_repository.dart';
 
 part 'video_upload_state.dart';
 

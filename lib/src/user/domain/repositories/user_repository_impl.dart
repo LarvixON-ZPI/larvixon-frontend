@@ -2,8 +2,8 @@ import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart'
     show Failure, UnknownFailure;
 
-import '../data/user_datasource.dart';
-import '../user.dart';
+import '../../data/user_datasource.dart';
+import '../entities/user.dart';
 import 'user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {

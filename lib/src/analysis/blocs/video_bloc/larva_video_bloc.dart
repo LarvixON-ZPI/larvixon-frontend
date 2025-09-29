@@ -4,9 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
-import 'package:larvixon_frontend/src/analysis/larva_video.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/larva_video.dart';
 
-import '../domain/larva_video_repository.dart';
+import '../../domain/repositories/larva_video_repository.dart';
 
 part 'larva_video_event.dart';
 part 'larva_video_state.dart';

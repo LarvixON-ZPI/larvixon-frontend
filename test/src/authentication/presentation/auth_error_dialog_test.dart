@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:larvixon_frontend/src/authentication/domain/auth_error.dart';
+import 'package:larvixon_frontend/src/authentication/domain/failures/auth_error.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_error_dialog.dart';
 import 'package:larvixon_frontend/l10n/app_localizations.dart';
 

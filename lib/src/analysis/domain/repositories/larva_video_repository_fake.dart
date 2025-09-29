@@ -3,11 +3,12 @@ import 'dart:typed_data';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
-import 'package:larvixon_frontend/src/analysis/domain/failures.dart';
-import 'package:larvixon_frontend/src/analysis/domain/video_upload_response.dart';
-import 'package:larvixon_frontend/src/analysis/larva_video_status.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/larva_video_id_list.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/larva_video_status.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/video_upload_response.dart';
+import 'package:larvixon_frontend/src/analysis/domain/failures/failures.dart';
 
-import '../larva_video.dart';
+import '../entities/larva_video.dart';
 import 'larva_video_repository.dart';
 
 class FakeLarvaVideoRepository implements LarvaVideoRepository {
@@ -66,10 +67,15 @@ class FakeLarvaVideoRepository implements LarvaVideoRepository {
   ];
 
   @override
-  TaskEither<Failure, VideoFetchIdsResponse> fetchVideoIds({String? nextPage}) {
+  TaskEither<Failure, LarvaVideoIdList> fetchVideoIds({String? nextPage}) {
     Future.delayed(const Duration(seconds: 1));
 
-    return TaskEither.right((_videos.map((video) => video.id).toList(), null));
+    return TaskEither.right(
+      LarvaVideoIdList(
+        ids: _videos.map((video) => video.id).toList(),
+        nextPage: null,
+      ),
+    );
   }
 
   @override

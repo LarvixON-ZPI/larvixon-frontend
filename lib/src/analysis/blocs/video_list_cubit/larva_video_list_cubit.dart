@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:larvixon_frontend/src/analysis/domain/larva_video_repository.dart';
+import 'package:larvixon_frontend/src/analysis/domain/repositories/larva_video_repository.dart';
 
 part 'larva_video_list_state.dart';
 
@@ -36,7 +36,8 @@ class LarvaVideoListCubit extends Cubit<LarvaVideoListState> {
       },
 
       (success) {
-        final (ids, nextPage) = success;
+        final ids = success.ids;
+        final nextPage = success.nextPage;
         final merged = {...state.videoIds, ...ids}.toList();
         emit(
           state.copyWith(

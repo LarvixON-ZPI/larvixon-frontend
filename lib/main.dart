@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:larvixon_frontend/src/analysis/data/larva_video_datasource.dart';
-import 'package:larvixon_frontend/src/analysis/domain/larva_video_repository.dart';
-import 'package:larvixon_frontend/src/analysis/domain/larva_video_repository_impl.dart';
+import 'package:larvixon_frontend/src/analysis/data/datasources/larva_video_datasource.dart';
+import 'package:larvixon_frontend/src/analysis/domain/repositories/larva_video_repository.dart';
+import 'package:larvixon_frontend/src/analysis/domain/repositories/larva_video_repository_impl.dart';
 
 import 'core/api_client.dart';
 import 'core/app_router.dart';
@@ -12,12 +12,12 @@ import 'core/locale_controller.dart';
 import 'l10n/app_localizations.dart';
 import 'src/authentication/bloc/auth_bloc.dart';
 import 'src/authentication/data/auth_datasource.dart';
-import 'src/authentication/domain/auth_repository.dart';
-import 'src/authentication/domain/auth_repository_impl.dart';
+import 'src/authentication/domain/repositories/auth_repository.dart';
+import 'src/authentication/domain/repositories/auth_repository_impl.dart';
 import 'src/user/bloc/user_bloc.dart';
 import 'src/user/data/user_datasource.dart';
-import 'src/user/domain/user_repository.dart';
-import 'src/user/domain/user_repository_impl.dart';
+import 'src/user/domain/repositories/user_repository.dart';
+import 'src/user/domain/repositories/user_repository_impl.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

@@ -2,16 +2,21 @@ import 'dart:typed_data';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
-import 'package:larvixon_frontend/src/analysis/data/larva_video_datasource.dart';
-import 'package:larvixon_frontend/src/analysis/domain/failures.dart';
-import 'package:larvixon_frontend/src/analysis/domain/video_upload_response.dart';
-import 'package:larvixon_frontend/src/analysis/larva_video.dart';
-import 'package:larvixon_frontend/src/analysis/larva_video_status.dart';
+import 'package:larvixon_frontend/src/analysis/data/datasources/larva_video_datasource.dart';
+import 'package:larvixon_frontend/src/analysis/data/mappers/larva_video_id_list_mapper.dart';
+import 'package:larvixon_frontend/src/analysis/data/mappers/larva_video_mapper.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/larva_video.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/larva_video_id_list.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/larva_video_status.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/video_upload_response.dart';
+import 'package:larvixon_frontend/src/analysis/domain/failures/failures.dart';
 
 import 'larva_video_repository.dart';
 
 class LarvaVideoRepositoryImpl implements LarvaVideoRepository {
   final LarvaVideoDatasource dataSource;
+  final LarvaVideoMapper videoMapper = LarvaVideoMapper();
+  final LarvaVideoIdListMapper idListMapper = LarvaVideoIdListMapper();
 
   LarvaVideoRepositoryImpl({required this.dataSource});
   @override
@@ -34,28 +39,18 @@ class LarvaVideoRepositoryImpl implements LarvaVideoRepository {
   TaskEither<VideoFailure, LarvaVideo> fetchVideoDetailsById(int id) {
     return TaskEither.tryCatch(() {
       return dataSource.fetchVideoDetailsById(id).then((data) {
-        return LarvaVideo.fromJson(data);
+        return videoMapper.dtoToEntity(data);
       });
     }, (error, stackTrace) => UnknownVideoFailure(message: error.toString()));
   }
 
   @override
-  TaskEither<Failure, VideoFetchIdsResponse> fetchVideoIds({String? nextPage}) {
+  TaskEither<Failure, LarvaVideoIdList> fetchVideoIds({String? nextPage}) {
     return TaskEither.tryCatch(
       () async {
         final results = await dataSource.fetchVideosIds(nextPage: nextPage);
-        final idsJson = results['results'];
-        if (idsJson is List) {
-          final ids = <int>[];
-          for (final e in idsJson) {
-            if (e is Map<String, dynamic> && e['id'] is int) {
-              ids.add(e['id'] as int);
-            } else {}
-          }
-          String? nextPage = results['next'];
-          return (ids, nextPage);
-        }
-        return (<int>[], null);
+        final entity = idListMapper.dtoToEntity(results);
+        return entity;
       },
       (error, stackTrace) {
         return UnknownVideoFailure(message: error.toString());

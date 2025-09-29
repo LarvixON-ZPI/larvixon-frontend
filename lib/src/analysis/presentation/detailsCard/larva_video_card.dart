@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:larvixon_frontend/src/analysis/domain/larva_video_repository.dart';
-import 'package:larvixon_frontend/src/analysis/larva_video_status.dart';
+import 'package:larvixon_frontend/src/analysis/domain/repositories/larva_video_repository.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/larva_video_status.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/detailsCard/progress_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/detailsCard/results_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/detailsCard/status_row.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/larva_video_details_page.dart';
-import 'package:larvixon_frontend/src/analysis/video_bloc/larva_video_bloc.dart';
+import 'package:larvixon_frontend/src/analysis/blocs/video_bloc/larva_video_bloc.dart';
 import 'package:larvixon_frontend/src/common/extensions/date_format_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';

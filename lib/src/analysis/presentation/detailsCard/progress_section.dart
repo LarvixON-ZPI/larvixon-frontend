@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:larvixon_frontend/src/analysis/larva_video.dart';
-import 'package:larvixon_frontend/src/analysis/larva_video_status.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/larva_video.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/larva_video_status.dart';
 
 class ProgressSection extends StatefulWidget {
   final LarvaVideo? video;

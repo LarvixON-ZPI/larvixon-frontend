@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:larvixon_frontend/src/authentication/domain/auth_error.dart';
+import 'package:larvixon_frontend/src/authentication/domain/failures/auth_error.dart';
 
 void main() {
   group('AuthError', () {

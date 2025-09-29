@@ -28,7 +28,6 @@ void main(List<String> args) {
     // Data layer
     '${libSrc.path}/$featureNameSnake/data/datasources',
     '${libSrc.path}/$featureNameSnake/data/models',
-    '${libSrc.path}/$featureNameSnake/data/repositories',
     '${libSrc.path}/$featureNameSnake/data/mappers',
     '${libSrc.path}/$featureNameSnake/data/exceptions',
     // Presentation layer

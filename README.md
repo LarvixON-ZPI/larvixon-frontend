@@ -59,3 +59,37 @@ Here’s an example configuration:
     }
   ]
 }
+```
+
+### 🚀 Creating New Features
+
+We provide automated scripts to scaffold new features with proper Clean Architecture structure:
+
+#### Create a New Feature
+```bash
+# Create a complete feature structure
+dart scripts/new_feature.dart "Feature Name"
+
+# This creates:
+# - lib/src/feature_name/ with full Clean Architecture folders
+# - test/src/feature_name/ for testing
+# - README.md with detailed guidance
+# - Template files (repository interface, implementation, page)
+```
+
+#### Clean Up Feature Folders
+```bash
+# List all features
+dart scripts/cleanup_features.dart
+
+# Preview cleanup for specific feature
+dart scripts/cleanup_features.dart analysis --dry-run
+
+# Clean empty directories and files from a feature
+dart scripts/cleanup_features.dart feature_name
+
+# Interactive cleanup (asks for confirmation)
+dart scripts/cleanup_features.dart feature_name --interactive
+
+```
+

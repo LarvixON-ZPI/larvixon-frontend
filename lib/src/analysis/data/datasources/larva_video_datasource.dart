@@ -4,27 +4,29 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:larvixon_frontend/core/api_client.dart';
 import 'package:larvixon_frontend/core/constants/endpoints_analysis.dart';
+import 'package:larvixon_frontend/src/analysis/data/models/larva_video_dto.dart';
+import 'package:larvixon_frontend/src/analysis/data/models/larva_video_id_list_dto.dart';
 
 class LarvaVideoDatasource {
   final ApiClient apiClient;
 
   LarvaVideoDatasource({required this.apiClient});
 
-  Future<Map<String, dynamic>> fetchVideosIds({String? nextPage}) async {
+  Future<LarvaVideoIdListDto> fetchVideosIds({String? nextPage}) async {
     if (nextPage != null) {
       final response = await apiClient.dio.get(nextPage);
-      return response.data;
+      return LarvaVideoIdListDto.fromMap(response.data);
     } else {
       final response = await apiClient.dio.get(AnalysisEndpoints.videoIDs);
-      return response.data;
+      return LarvaVideoIdListDto.fromMap(response.data);
     }
   }
 
-  Future<Map<String, dynamic>> fetchVideoDetailsById(int id) async {
+  Future<LarvaVideoDto> fetchVideoDetailsById(int id) async {
     final response = await apiClient.dio.get(
       AnalysisEndpoints.analysisById(id),
     );
-    return response.data;
+    return LarvaVideoDto.fromMap(response.data);
   }
 
   Future<Map<String, dynamic>> uploadVideo({
