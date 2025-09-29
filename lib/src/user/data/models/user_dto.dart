@@ -51,7 +51,6 @@ class UserProfileDTO {
   String toJson() => json.encode(toMap());
 
   factory UserProfileDTO.fromJson(String source) {
-    print('Decoding JSON: $source');
     return UserProfileDTO.fromMap(json.decode(source));
   }
 }
