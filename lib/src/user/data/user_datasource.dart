@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:larvixon_frontend/core/api_client.dart';
+import 'package:larvixon_frontend/src/user/data/models/user_dto.dart';
 
 import '../../../core/constants/endpoints_user.dart';
 
@@ -9,40 +10,31 @@ class UserDataSource {
 
   UserDataSource(this.apiClient);
 
-  Future<Map<String, dynamic>> getUserProfile() async {
+  Future<UserProfileDTO> getUserProfile() async {
     final response = await apiClient.dio.get(UserEndpoints.profile);
-    return response.data;
+
+    return UserProfileDTO.fromMap(response.data);
   }
 
-  Future<Map<String, dynamic>> updateUserProfile({
-    required String? firstName,
-    required String? lastName,
-    required String? email,
+  Future<UserProfileDTO> updateUserProfile({
+    required UserProfileDTO dto,
   }) async {
     final response = await apiClient.dio.put(
       UserEndpoints.profile,
-      data: {
-        'first_name': firstName ?? '',
-        'last_name': lastName ?? '',
-        'email': email ?? '',
-      },
+      data: dto.toMap(),
     );
-    return response.data;
+
+    return UserProfileDTO.fromMap(response.data);
   }
 
-  Future<Map<String, dynamic>> updateUserProfileDetails({
-    required String? bio,
-    required String? organization,
-    required String? phoneNumber,
+  Future<UserProfileDetailsDTO> updateUserProfileDetails({
+    required UserProfileDetailsDTO profileDetails,
   }) async {
     final response = await apiClient.dio.put(
       UserEndpoints.profileDetails,
-      data: {
-        'bio': bio ?? '',
-        'organization': organization ?? '',
-        'phone_number': phoneNumber ?? '',
-      },
+      data: profileDetails.toMap(),
     );
-    return response.data;
+
+    return UserProfileDetailsDTO.fromMap(response.data);
   }
 }

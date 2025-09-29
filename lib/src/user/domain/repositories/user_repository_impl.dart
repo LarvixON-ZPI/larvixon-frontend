@@ -1,6 +1,8 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart'
     show Failure, UnknownFailure;
+import 'package:larvixon_frontend/src/user/data/mappers/user_mapper.dart';
+import 'package:larvixon_frontend/src/user/data/models/user_dto.dart';
 
 import '../../data/user_datasource.dart';
 import '../entities/user.dart';
@@ -8,6 +10,7 @@ import 'user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final UserDataSource dataSource;
+  final UserMapper mapper = UserMapper();
 
   UserRepositoryImpl({required this.dataSource});
 
@@ -16,7 +19,7 @@ class UserRepositoryImpl implements UserRepository {
     return TaskEither.tryCatch(
       () async {
         final data = await dataSource.getUserProfile();
-        return User.fromJson(data);
+        return mapper.dtoToEntity(data);
       },
       (error, stackTrace) {
         return UnknownFailure(message: error.toString());
@@ -29,17 +32,21 @@ class UserRepositoryImpl implements UserRepository {
     return TaskEither.tryCatch(
       () async {
         final data = await dataSource.updateUserProfile(
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
+          dto: mapper.entityToDto(user),
         );
         final dataDetails = await dataSource.updateUserProfileDetails(
-          bio: user.bio,
-          organization: user.organization,
-          phoneNumber: user.phoneNumber,
+          profileDetails: mapper.entityToDto(user).profile!,
+        );
+        final updatedDto = UserProfileDTO(
+          email: data.email,
+          username: data.username,
+          first_name: data.first_name,
+          last_name: data.last_name,
+          date_joined: data.date_joined,
+          profile: dataDetails,
         );
 
-        return User.fromJson({...data, 'profile': dataDetails});
+        return mapper.dtoToEntity(updatedDto);
       },
       (error, stackTrace) {
         return UnknownFailure(message: error.toString());

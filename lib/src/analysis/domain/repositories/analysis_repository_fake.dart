@@ -28,27 +28,23 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
     "Morphine",
     "Ketamine",
   ];
-  final List<LarvaVideo> _videos = [
-    LarvaVideo(
-      id: 1,
-      uploadedAt: DateTime.now(),
-      name: "zebrafish experiment 1",
-    ),
-    LarvaVideo(
+  final List<Analysis> _videos = [
+    Analysis(id: 1, uploadedAt: DateTime.now(), name: "zebrafish experiment 1"),
+    Analysis(
       id: 2,
       uploadedAt: DateTime.now(),
       name: "zebrafish experiment 2",
       thumbnailUrl:
           "https://www.shutterstock.com/shutterstock/videos/32685646/thumb/1.jpg?ip=x480",
     ),
-    LarvaVideo(id: 3, uploadedAt: DateTime.now(), name: "danio rerio study"),
-    LarvaVideo(id: 4, uploadedAt: DateTime.now(), name: "larva lsd test"),
-    LarvaVideo(
+    Analysis(id: 3, uploadedAt: DateTime.now(), name: "danio rerio study"),
+    Analysis(id: 4, uploadedAt: DateTime.now(), name: "larva lsd test"),
+    Analysis(
       id: 5,
       uploadedAt: DateTime.now(),
       name: "fish larvae alcohol test",
     ),
-    LarvaVideo(
+    Analysis(
       id: 6,
       uploadedAt: DateTime.now(),
       name: "fish larvae caffeine test",
@@ -58,12 +54,12 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
       thumbnailUrl:
           "https://media.springernature.com/lw685/springer-static/image/chp%3A10.1007%2F978-1-4939-8940-9_13/MediaObjects/448871_1_En_13_Fig1_HTML.jpg",
     ),
-    LarvaVideo(
+    Analysis(
       id: 7,
       uploadedAt: DateTime.now(),
       name: "fish larvae nicotine test",
     ),
-    LarvaVideo(id: 8, uploadedAt: DateTime.now(), name: "fish larvae THC test"),
+    Analysis(id: 8, uploadedAt: DateTime.now(), name: "fish larvae THC test"),
   ];
 
   @override
@@ -79,7 +75,7 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
   }
 
   @override
-  TaskEither<Failure, LarvaVideo> fetchVideoDetailsById(int id) {
+  TaskEither<Failure, Analysis> fetchVideoDetailsById(int id) {
     Random random = Random();
     return TaskEither.tryCatch(
       () async {
@@ -87,18 +83,18 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
         return _videos.firstWhere((video) => video.id == id);
       },
       (error, _) {
-        return UnknownVideoFailure(message: error.toString());
+        return UnknownAnalysisFailure(message: error.toString());
       },
     );
   }
 
   @override
-  Future<List<LarvaVideo>> fetchVideosDetails() {
+  Future<List<Analysis>> fetchVideosDetails() {
     throw UnimplementedError();
   }
 
   @override
-  Stream<Either<Failure, LarvaVideo>> watchVideoProgressById({
+  Stream<Either<Failure, Analysis>> watchVideoProgressById({
     required int id,
     Duration interval = const Duration(seconds: 5),
   }) async* {
@@ -145,7 +141,7 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
     }
   }
 
-  LarvaVideo _applyRandomSubstances(LarvaVideo video) {
+  Analysis _applyRandomSubstances(Analysis video) {
     final int substanceCount = _random.nextInt(_substances.length) + 1;
     final sub = (_substances.toList()..shuffle()).take(substanceCount);
     final results = [for (var s in sub) (s, _random.nextDouble())]
@@ -154,7 +150,7 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
   }
 
   @override
-  TaskEither<VideoFailure, AnalysisUploadResponse> uploadVideo({
+  TaskEither<AnalysisFailure, AnalysisUploadResponse> uploadVideo({
     required Uint8List bytes,
     required String filename,
     required String title,
@@ -166,7 +162,7 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
             (_videos.isEmpty ? 0 : _videos.map((e) => e.id).reduce(max)) + 1;
         _videos.insert(
           0,
-          LarvaVideo(id: nextId, uploadedAt: DateTime.now(), name: title),
+          Analysis(id: nextId, uploadedAt: DateTime.now(), name: title),
         );
         return AnalysisUploadResponse(
           id: nextId,

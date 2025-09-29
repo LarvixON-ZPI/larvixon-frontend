@@ -23,7 +23,7 @@ class AnalysisBloc extends Bloc<AnalysisEvent, AnalysisState> {
   ) async {
     emit(state.copyWith(status: AnalysisStatus.loading));
 
-    await emit.forEach<Either<Failure, LarvaVideo>>(
+    await emit.forEach<Either<Failure, Analysis>>(
       repository.watchVideoProgressById(id: event.videoId),
       onData: (either) => either.match(
         (failure) => state.copyWith(

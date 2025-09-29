@@ -43,7 +43,6 @@ class AnalysisDatasource {
       data: formData,
       options: Options(headers: {"Content-Type": "multipart/form-data"}),
     );
-    print(response.data);
     return response.data;
   }
 }

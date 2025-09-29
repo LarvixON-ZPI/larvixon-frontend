@@ -12,15 +12,15 @@ import 'package:larvixon_frontend/src/common/extensions/date_format_extension.da
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class LarvaVideoCard extends StatefulWidget {
+class AnalysisCard extends StatefulWidget {
   final int videoId;
-  const LarvaVideoCard({super.key, required this.videoId});
+  const AnalysisCard({super.key, required this.videoId});
 
   @override
-  State<LarvaVideoCard> createState() => _LarvaVideoCardState();
+  State<AnalysisCard> createState() => _AnalysisCardState();
 }
 
-class _LarvaVideoCardState extends State<LarvaVideoCard>
+class _AnalysisCardState extends State<AnalysisCard>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {

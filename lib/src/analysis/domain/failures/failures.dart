@@ -1,22 +1,22 @@
 import 'package:larvixon_frontend/core/errors/failures.dart';
 
-sealed class VideoFailure extends Failure {
-  const VideoFailure({required super.message});
+sealed class AnalysisFailure extends Failure {
+  const AnalysisFailure({required super.message});
 }
 
-final class UploadFailure extends VideoFailure {
+final class UploadFailure extends AnalysisFailure {
   const UploadFailure({required super.message});
 }
 
-final class VideoNotFoundFailure extends VideoFailure {
-  const VideoNotFoundFailure({required super.message});
+final class AnalysisNotFoundFailure extends AnalysisFailure {
+  const AnalysisNotFoundFailure({required super.message});
 }
 
-final class UnknownVideoFailure extends VideoFailure {
-  const UnknownVideoFailure({required super.message});
+final class UnknownAnalysisFailure extends AnalysisFailure {
+  const UnknownAnalysisFailure({required super.message});
 }
 
-final class VideoApiFailure extends VideoFailure {
+final class AnalysisApiFailure extends AnalysisFailure {
   final ApiFailure apiFailure;
-  const VideoApiFailure({required this.apiFailure, required super.message});
+  const AnalysisApiFailure({required this.apiFailure, required super.message});
 }

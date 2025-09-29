@@ -4,7 +4,7 @@ import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart
 
 class StatusRow extends StatelessWidget {
   const StatusRow({super.key, required this.video});
-  final LarvaVideo? video;
+  final Analysis? video;
 
   static const Duration _animationDuration = Duration(milliseconds: 300);
 

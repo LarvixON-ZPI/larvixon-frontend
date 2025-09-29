@@ -85,7 +85,7 @@ class _LarvaVideoGridState extends State<LarvaVideoGrid> {
                 (context, index) {
                   if (index < state.videoIds.length) {
                     final videoId = state.videoIds[index];
-                    return LarvaVideoCard(
+                    return AnalysisCard(
                       key: ValueKey(videoId),
                       videoId: videoId,
                     ).withOnHoverEffect;

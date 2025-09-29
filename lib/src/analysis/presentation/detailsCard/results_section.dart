@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_results.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/detailsCard/analysis_results_entry.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 
 class ResultsSection extends StatefulWidget {
-  final LarvaVideoResults results;
+  final AnalysisResults results;
   const ResultsSection({super.key, required this.results});
 
   @override
@@ -82,10 +83,7 @@ class _ResultsSectionState extends State<ResultsSection>
                         ),
                       ),
                     ),
-                    child: LarvaVideoResultsEntry(
-                      label: r.$1,
-                      confidence: r.$2,
-                    ),
+                    child: AnalysisResultsEntry(label: r.$1, confidence: r.$2),
                   ),
                 );
               }),

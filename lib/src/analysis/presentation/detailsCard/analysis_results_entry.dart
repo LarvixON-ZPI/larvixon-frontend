@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-class LarvaVideoResultsEntry extends StatefulWidget {
+class AnalysisResultsEntry extends StatefulWidget {
   final String label;
   final double confidence;
-  const LarvaVideoResultsEntry({
+  const AnalysisResultsEntry({
     super.key,
     required this.label,
     required this.confidence,
   });
 
   @override
-  State<LarvaVideoResultsEntry> createState() => _LarvaVideoResultsEntryState();
+  State<AnalysisResultsEntry> createState() => _AnalysisResultsEntryState();
 }
 
-class _LarvaVideoResultsEntryState extends State<LarvaVideoResultsEntry>
+class _AnalysisResultsEntryState extends State<AnalysisResultsEntry>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -48,7 +48,7 @@ class _LarvaVideoResultsEntryState extends State<LarvaVideoResultsEntry>
   }
 
   @override
-  void didUpdateWidget(covariant LarvaVideoResultsEntry oldWidget) {
+  void didUpdateWidget(covariant AnalysisResultsEntry oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.confidence != widget.confidence) {
       _controller.reset();

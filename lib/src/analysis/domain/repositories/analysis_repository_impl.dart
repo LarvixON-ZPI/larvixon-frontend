@@ -20,7 +20,7 @@ class AnalysisRepositoryImpl implements AnalysisRepository {
 
   AnalysisRepositoryImpl({required this.dataSource});
   @override
-  TaskEither<VideoFailure, AnalysisUploadResponse> uploadVideo({
+  TaskEither<AnalysisFailure, AnalysisUploadResponse> uploadVideo({
     required Uint8List bytes,
     required String filename,
     required String title,
@@ -36,13 +36,15 @@ class AnalysisRepositoryImpl implements AnalysisRepository {
   }
 
   @override
-  TaskEither<VideoFailure, LarvaVideo> fetchVideoDetailsById(int id) {
-    return TaskEither.tryCatch(() {
-      return dataSource.fetchAnalysisDetailsById(id).then((dto) {
-        print(dto);
-        return videoMapper.dtoToEntity(dto);
-      });
-    }, (error, stackTrace) => UnknownVideoFailure(message: error.toString()));
+  TaskEither<AnalysisFailure, Analysis> fetchVideoDetailsById(int id) {
+    return TaskEither.tryCatch(
+      () {
+        return dataSource.fetchAnalysisDetailsById(id).then((dto) {
+          return videoMapper.dtoToEntity(dto);
+        });
+      },
+      (error, stackTrace) => UnknownAnalysisFailure(message: error.toString()),
+    );
   }
 
   @override
@@ -54,19 +56,19 @@ class AnalysisRepositoryImpl implements AnalysisRepository {
         return entity;
       },
       (error, stackTrace) {
-        return UnknownVideoFailure(message: error.toString());
+        return UnknownAnalysisFailure(message: error.toString());
       },
     );
   }
 
   @override
-  Future<List<LarvaVideo>> fetchVideosDetails() {
+  Future<List<Analysis>> fetchVideosDetails() {
     // TODO: implement fetchVideosDetails
     throw UnimplementedError();
   }
 
   @override
-  Stream<Either<VideoFailure, LarvaVideo>> watchVideoProgressById({
+  Stream<Either<AnalysisFailure, Analysis>> watchVideoProgressById({
     required int id,
     Duration interval = const Duration(seconds: 5),
   }) async* {

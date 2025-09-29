@@ -4,7 +4,7 @@ enum AnalysisStatus { initial, loading, success, error }
 
 final class AnalysisState extends Equatable {
   final AnalysisStatus status;
-  final LarvaVideo? video;
+  final Analysis? video;
   final String? errorMessage;
   final double progress;
   const AnalysisState({
@@ -15,7 +15,7 @@ final class AnalysisState extends Equatable {
   });
   AnalysisState copyWith({
     AnalysisStatus? status,
-    LarvaVideo? video,
+    Analysis? video,
     String? errorMessage,
     double? progress,
   }) {

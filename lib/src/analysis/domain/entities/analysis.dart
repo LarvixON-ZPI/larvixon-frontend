@@ -1,25 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress_status.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_results.dart';
 
-typedef LarvaVideoResults = List<(String, double)>;
-
-extension LarvaVideoResultsX on LarvaVideoResults {
-  static LarvaVideoResults fromMap(List<dynamic> list) {
-    final results = list.map((e) {
-      if (e is! List<dynamic> || e.length != 2) {
-        throw FormatException('Invalid substance entry: $e');
-      }
-      final [substance as String, concentration as double] = e;
-
-      return (substance, concentration);
-    }).toList();
-
-    return results;
-  }
-}
-
-class LarvaVideo extends Equatable {
+class Analysis extends Equatable {
   final int id;
   final DateTime uploadedAt;
   final AnalysisProgressStatus status;
@@ -27,9 +11,9 @@ class LarvaVideo extends Equatable {
   final String? name;
   final DateTime? analysedAt;
   final String? thumbnailUrl;
-  final LarvaVideoResults? results;
+  final AnalysisResults? results;
 
-  const LarvaVideo({
+  const Analysis({
     required this.id,
     required this.uploadedAt,
     this.name,
@@ -41,7 +25,7 @@ class LarvaVideo extends Equatable {
     this.errorMessage,
   });
 
-  LarvaVideo copyWith({
+  Analysis copyWith({
     int? id,
     DateTime? uploadedAt,
     AnalysisProgressStatus? status,
@@ -49,10 +33,10 @@ class LarvaVideo extends Equatable {
     String? errorMessage,
     String? name,
     DateTime? analysedAt,
-    LarvaVideoResults? results,
+    AnalysisResults? results,
     String? thumbnailUrl,
   }) {
-    return LarvaVideo(
+    return Analysis(
       id: id ?? this.id,
       uploadedAt: uploadedAt ?? this.uploadedAt,
       status: status ?? this.status,

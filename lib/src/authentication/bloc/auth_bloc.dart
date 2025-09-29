@@ -4,8 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart' show Equatable;
 import 'package:meta/meta.dart';
 
-import '../domain/repositories/auth_repository.dart';
 import '../domain/failures/auth_error.dart';
+import '../domain/repositories/auth_repository.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -105,14 +105,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         ),
       );
     }
-  }
-
-  @override
-  void onTransition(Transition<AuthEvent, AuthState> transition) {
-    print(
-      'Transitioning from ${transition.currentState} to ${transition.nextState} via ${transition.event}',
-    );
-    super.onTransition(transition);
   }
 
   FutureOr<void> _onVerificationRequested(

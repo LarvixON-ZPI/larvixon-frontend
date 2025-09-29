@@ -3,7 +3,7 @@ import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress_status.dart';
 
 class ProgressSection extends StatefulWidget {
-  final LarvaVideo? video;
+  final Analysis? video;
   final double progress;
   const ProgressSection({super.key, this.video, required this.progress});
 

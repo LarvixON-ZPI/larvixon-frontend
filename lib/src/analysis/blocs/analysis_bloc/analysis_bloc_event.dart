@@ -17,7 +17,7 @@ final class FetchAnalysisDetails extends AnalysisEvent {
 }
 
 final class UpdateAnalysisDetails extends AnalysisEvent {
-  final LarvaVideo video;
+  final Analysis video;
   const UpdateAnalysisDetails({required this.video});
 
   @override
