@@ -75,8 +75,8 @@ class _LarvaVideoCardState extends State<LarvaVideoCard>
                       ),
                     if (hasResults)
                       ResultsSection(results: state.video!.results!),
-                    (state.video?.status == LarvaVideoStatus.error ||
-                            state.video?.status == LarvaVideoStatus.analysed)
+                    (state.video?.status == LarvaVideoStatus.failed ||
+                            state.video?.status == LarvaVideoStatus.completed)
                         ? SizedBox.shrink()
                         : Spacer(),
                     ProgressSection(

@@ -61,8 +61,10 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
     }
   }
 
-  void _uploadFile(BuildContext context) {
-    if (_fileBytes != null && _fileName != null) {
+  void _uploadFile(BuildContext context, GlobalKey<FormState> formKey) {
+    if (_fileBytes != null &&
+        _fileName != null &&
+        formKey.currentState?.validate() == true) {
       context.read<VideoUploadCubit>().uploadVideo(
         bytes: _fileBytes!,
         filename: _fileName!,
@@ -87,13 +89,18 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
             );
           }
           if (state.status == VideoUploadStatus.success) {
-            context.read<LarvaVideoListCubit>().fetchVideoList();
+            context.read<LarvaVideoListCubit>().fetchNewlyUploadedVideo(
+              id: state.uploadedVideoId!,
+            );
             Future.delayed(const Duration(milliseconds: 500)).then((_) {});
             if (!mounted) return;
             Navigator.of(context).pop();
           }
         },
         builder: (context, state) {
+          final canUpload = _fileBytes == null;
+          final isUploading = state.status == VideoUploadStatus.uploading;
+
           return CustomCard(
             color: Colors.transparent,
             title: context.translate.uploadNewVideo,
@@ -145,16 +152,14 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
                         Flexible(
                           flex: 2,
                           child: ElevatedButton.icon(
-                            onPressed: _fileBytes == null
-                                ? null
-                                : () {
-                                    if (_formKey.currentState!.validate()) {
-                                      _uploadFile(context);
-                                    }
-                                  },
+                            iconAlignment: IconAlignment.start,
 
-                            icon: const Icon(Icons.cloud_upload),
-                            label: Text(context.translate.upload),
+                            onPressed: canUpload
+                                ? null
+                                : () => _uploadFile(context, _formKey),
+
+                            icon: _UploadIcon(isUploading: isUploading),
+                            label: _UploadText(isUploading: isUploading),
                           ),
                         ),
                       ],
@@ -166,6 +171,86 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
           );
         },
       ),
+    );
+  }
+}
+
+class _UploadText extends StatefulWidget {
+  const _UploadText({required this.isUploading});
+
+  final bool isUploading;
+
+  @override
+  State<_UploadText> createState() => _UploadTextState();
+}
+
+class _UploadTextState extends State<_UploadText> {
+  @override
+  Widget build(BuildContext context) {
+    final label = widget.isUploading
+        ? context.translate.uploading
+        : context.translate.upload;
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 300),
+      child: Text(label, key: ValueKey(label)),
+    );
+  }
+}
+
+class _UploadIcon extends StatefulWidget {
+  final bool isUploading;
+  const _UploadIcon({this.isUploading = false});
+
+  @override
+  State<_UploadIcon> createState() => _UploadIconState();
+}
+
+class _UploadIconState extends State<_UploadIcon>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _scale;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+
+    _scale = Tween<double>(
+      begin: 1.0,
+      end: 1.2,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant _UploadIcon oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isUploading) {
+      _controller.repeat(reverse: true);
+    } else {
+      _controller.stop();
+      _controller.reset();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Transform.scale(
+          scale: _scale.value,
+          child: Icon(Icons.cloud_upload),
+        );
+      },
     );
   }
 }

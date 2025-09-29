@@ -74,8 +74,8 @@ class _ProgressSectionState extends State<ProgressSection>
   Widget build(BuildContext context) {
     final status = widget.video?.status ?? LarvaVideoStatus.pending;
     final enabled =
-        !(status == LarvaVideoStatus.error ||
-            status == LarvaVideoStatus.analysed);
+        !(status == LarvaVideoStatus.completed ||
+            status == LarvaVideoStatus.failed);
 
     if (!enabled) return const SizedBox.shrink();
 

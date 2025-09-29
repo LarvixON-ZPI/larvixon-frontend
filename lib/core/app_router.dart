@@ -60,8 +60,6 @@ class AppRouter {
             name: LandingPage.name,
             path: LandingPage.route,
             pageBuilder: (context, state) {
-              final extra = state.extra as Map<String, dynamic>? ?? {};
-
               return const LandingPage().withoutTransition(state: state);
             },
           ),
@@ -69,7 +67,6 @@ class AppRouter {
             name: ContactPage.name,
             path: ContactPage.route,
             pageBuilder: (context, state) {
-              final extra = state.extra as Map<String, dynamic>? ?? {};
               return const ContactPage().withoutTransition(state: state);
             },
           ),
@@ -77,7 +74,6 @@ class AppRouter {
             name: AboutPage.name,
             path: AboutPage.route,
             pageBuilder: (context, state) {
-              final extra = state.extra as Map<String, dynamic>? ?? {};
               return const AboutPage().withoutTransition(state: state);
             },
           ),

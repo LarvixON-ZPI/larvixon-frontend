@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
 import 'package:larvixon_frontend/src/analysis/domain/failures.dart';
+import 'package:larvixon_frontend/src/analysis/domain/video_upload_response.dart';
 import 'package:larvixon_frontend/src/analysis/larva_video_status.dart';
 
 import '../larva_video.dart';
@@ -50,7 +51,7 @@ class FakeLarvaVideoRepository implements LarvaVideoRepository {
       id: 6,
       uploadedAt: DateTime.now(),
       name: "fish larvae caffeine test",
-      status: LarvaVideoStatus.analysed,
+      status: LarvaVideoStatus.completed,
       results: [("Caffeine", 0.87), ("Ethanol", 0.12)],
       analysedAt: DateTime.now(),
       thumbnailUrl:
@@ -65,9 +66,10 @@ class FakeLarvaVideoRepository implements LarvaVideoRepository {
   ];
 
   @override
-  Future<List<int>> fetchVideoIds() async {
-    await Future.delayed(const Duration(seconds: 1));
-    return _videos.map((video) => video.id).toList();
+  TaskEither<Failure, VideoFetchIdsResponse> fetchVideoIds({String? nextPage}) {
+    Future.delayed(const Duration(seconds: 1));
+
+    return TaskEither.right((_videos.map((video) => video.id).toList(), null));
   }
 
   @override
@@ -103,9 +105,9 @@ class FakeLarvaVideoRepository implements LarvaVideoRepository {
       }
       var v = video.getRight().toNullable()!;
 
-      if (v.status == LarvaVideoStatus.analysed ||
-          v.status == LarvaVideoStatus.error) {
-        if (v.status == LarvaVideoStatus.analysed && v.results == null) {
+      if (v.status == LarvaVideoStatus.completed ||
+          v.status == LarvaVideoStatus.failed) {
+        if (v.status == LarvaVideoStatus.completed && v.results == null) {
           v = _applyRandomSubstances(v);
           final index = _videos.indexWhere((v) => v.id == id);
           _videos[index] = v;
@@ -118,14 +120,14 @@ class FakeLarvaVideoRepository implements LarvaVideoRepository {
       var updatedVideo = v;
 
       if (random.nextDouble() < 0.02) {
-        updatedVideo = updatedVideo.copyWith(status: LarvaVideoStatus.error);
+        updatedVideo = updatedVideo.copyWith(status: LarvaVideoStatus.failed);
       } else {
         updatedVideo = updatedVideo.copyWith(
           status: updatedVideo.status.progressStatus(),
         );
       }
 
-      if (updatedVideo.status == LarvaVideoStatus.analysed) {
+      if (updatedVideo.status == LarvaVideoStatus.completed) {
         updatedVideo = _applyRandomSubstances(updatedVideo);
         updatedVideo = updatedVideo.copyWith(analysedAt: DateTime.now());
       }
@@ -144,7 +146,7 @@ class FakeLarvaVideoRepository implements LarvaVideoRepository {
   }
 
   @override
-  TaskEither<VideoFailure, void> uploadVideo({
+  TaskEither<VideoFailure, VideoUploadResponse> uploadVideo({
     required Uint8List bytes,
     required String filename,
     required String title,
@@ -157,6 +159,10 @@ class FakeLarvaVideoRepository implements LarvaVideoRepository {
         _videos.insert(
           0,
           LarvaVideo(id: nextId, uploadedAt: DateTime.now(), name: title),
+        );
+        return VideoUploadResponse(
+          id: nextId,
+          message: 'Video uploaded successfully',
         );
       },
       (error, _) {

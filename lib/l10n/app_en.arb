@@ -143,6 +143,7 @@
     }
   },
   "loading": "Loading",
+  "retry": "Retry",
   "@@_AuthErrors": {},
   "signInFailed": "Sign In Failed",
   "accountDisabled": "Account Disabled",

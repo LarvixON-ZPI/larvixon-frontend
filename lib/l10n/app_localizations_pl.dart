@@ -231,6 +231,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get loading => 'Ładowanie';
 
   @override
+  String get retry => 'Ponów';
+
+  @override
   String get signInFailed => 'Logowanie nie powiodło się';
 
   @override

@@ -230,6 +230,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loading => 'Loading';
 
   @override
+  String get retry => 'Retry';
+
+  @override
   String get signInFailed => 'Sign In Failed';
 
   @override

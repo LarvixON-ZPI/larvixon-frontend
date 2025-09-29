@@ -16,7 +16,7 @@ class VideoUploadCubit extends Cubit<VideoUploadState> {
     required String title,
   }) async {
     emit(state.copyWith(status: VideoUploadStatus.uploading));
-    var result = await repository
+    final result = await repository
         .uploadVideo(bytes: bytes, filename: filename, title: title)
         .run();
 
@@ -27,7 +27,12 @@ class VideoUploadCubit extends Cubit<VideoUploadState> {
           errorMessage: failure.message,
         ),
       ),
-      (_) => emit(state.copyWith(status: VideoUploadStatus.success)),
+      (response) => emit(
+        state.copyWith(
+          status: VideoUploadStatus.success,
+          uploadedVideoId: response.id,
+        ),
+      ),
     );
   }
 }

@@ -143,6 +143,7 @@
     }
   },
   "loading": "Ładowanie",
+  "retry": "Ponów",
   "@@_AuthErrors": {},
   "signInFailed": "Logowanie nie powiodło się",
   "accountDisabled": "Konto zablokowane",
