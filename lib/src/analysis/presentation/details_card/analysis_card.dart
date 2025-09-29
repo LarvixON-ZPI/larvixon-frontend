@@ -5,9 +5,9 @@ import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress_status.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/analysis_details_page.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/detailsCard/progress_section.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/detailsCard/results_section.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/detailsCard/status_row.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/details_card/progress_section.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/details_card/results_section.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/details_card/status_row.dart';
 import 'package:larvixon_frontend/src/common/extensions/date_format_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
