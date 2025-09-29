@@ -5,7 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
-import 'package:larvixon_frontend/src/analysis/blocs/analysis_upload_cubit/video_upload_cubit.dart';
+import 'package:larvixon_frontend/src/analysis/blocs/video_upload_cubit/video_upload_cubit.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
