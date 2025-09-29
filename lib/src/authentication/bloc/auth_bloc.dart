@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart' show Equatable;
 import 'package:meta/meta.dart';
 
 import '../domain/auth_repository.dart';
+import '../domain/auth_error.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -34,12 +35,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       emit(state.copyWith(status: AuthStatus.authenticated));
     } catch (error) {
-      emit(
-        state.copyWith(
-          status: AuthStatus.error,
-          errorMessage: error.toString(),
-        ),
-      );
+      if (error is AuthError) {
+        emit(
+          state.copyWith(
+            status: AuthStatus.error,
+            error: error,
+            errorMessage: error.message,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            status: AuthStatus.error,
+            errorMessage: error.toString(),
+          ),
+        );
+      }
     }
   }
 
@@ -52,12 +63,30 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _authRepository.login(email: event.email, password: event.password);
       emit(state.copyWith(status: AuthStatus.authenticated));
     } catch (error) {
-      emit(
-        state.copyWith(
-          status: AuthStatus.error,
-          errorMessage: error.toString(),
-        ),
-      );
+      if (error is MfaRequiredButNoCodeError) {
+        emit(
+          state.copyWith(
+            status: AuthStatus.mfaRequired,
+            error: error,
+            errorMessage: error.message,
+          ),
+        );
+      } else if (error is AuthError) {
+        emit(
+          state.copyWith(
+            status: AuthStatus.error,
+            error: error,
+            errorMessage: error.message,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            status: AuthStatus.error,
+            errorMessage: error.toString(),
+          ),
+        );
+      }
     }
   }
 

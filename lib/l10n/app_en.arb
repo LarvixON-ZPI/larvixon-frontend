@@ -143,5 +143,26 @@
     }
   },
   "loading": "Loading",
-  "retry": "Retry"
+  "retry": "Retry",
+  "@@_AuthErrors": {},
+  "signInFailed": "Sign In Failed",
+  "accountDisabled": "Account Disabled",
+  "mfaRequired": "Multi-Factor Authentication Required",
+  "authenticationError": "Authentication Error",
+  "validationError": "Validation Error",
+  "connectionError": "Connection Error",
+  "serverError": "Server Error",
+  "invalidCredentialsMessage": "The email or password you entered is incorrect. Please try again.",
+  "accountDisabledMessage": "Your account has been disabled. Please contact support for assistance.",
+  "mfaRequiredMessage": "This account requires multi-factor authentication. Please enter your authentication code.",
+  "mfaDeviceNotFoundMessage": "No multi-factor authentication device found for this account.",
+  "mfaDeviceNotConfirmedMessage": "Your multi-factor authentication device is not confirmed. Please contact support.",
+  "mfaSecretMissingMessage": "Multi-factor authentication is not properly configured. Please contact support.",
+  "invalidMfaCodeMessage": "The authentication code you entered is invalid. Please try again.",
+  "networkErrorMessage": "Unable to connect to the server. Please check your internet connection and try again.",
+  "serverErrorMessage": "The server is experiencing issues. Please try again later.",
+  "enterMfaCode": "Enter MFA Code",
+  "tryAgain": "Try Again",
+  "mfaDialogTitle": "Multi-Factor Authentication",
+  "mfaNotImplemented": "MFA functionality is not yet implemented."
 }

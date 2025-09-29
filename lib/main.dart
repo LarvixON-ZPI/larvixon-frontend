@@ -8,6 +8,7 @@ import 'core/api_client.dart';
 import 'core/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/token_storage.dart';
+import 'core/locale_controller.dart';
 import 'l10n/app_localizations.dart';
 import 'src/authentication/bloc/auth_bloc.dart';
 import 'src/authentication/data/auth_datasource.dart';
@@ -31,6 +32,7 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
+  Locale? _locale;
   late final AppRouter _appRouter;
   late final AuthBloc _authBloc;
   late final UserBloc _userBloc;
@@ -89,6 +91,12 @@ class _MainAppState extends State<MainApp> {
     );
   }
 
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
   MultiBlocProvider _buildBlocProviders() {
     return MultiBlocProvider(
       providers: [
@@ -103,12 +111,17 @@ class _MainAppState extends State<MainApp> {
             context.read<UserBloc>().add(UserProfileDataRequested());
           }
         },
-        child: MaterialApp.router(
-          theme: appThemeLight,
-          routerConfig: _appRouter.router,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          debugShowCheckedModeBanner: false,
+        child: LocaleController(
+          locale: _locale,
+          setLocale: setLocale,
+          child: MaterialApp.router(
+            theme: appThemeLight,
+            routerConfig: _appRouter.router,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: _locale,
+            debugShowCheckedModeBanner: false,
+          ),
         ),
       ),
     );
