@@ -5,8 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'core/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'l10n/app_localizations.dart';
-import 'src/analysis/domain/repositories/larva_video_repository.dart';
-import 'src/analysis/domain/repositories/larva_video_repository_fake.dart';
+import 'src/analysis/domain/repositories/analysis_repository.dart';
+import 'src/analysis/domain/repositories/analysis_repository_fake.dart';
 import 'src/authentication/bloc/auth_bloc.dart';
 import 'src/authentication/domain/repositories/auth_repository.dart';
 import 'src/authentication/domain/repositories/auth_repository_fake.dart';
@@ -33,13 +33,13 @@ class _MainAppState extends State<MainApp> {
   late final UserBloc _userBloc;
   late final AuthRepository _authRepository;
   late final UserRepository _userRepository;
-  late final LarvaVideoRepository _larvaVideoRepository;
+  late final AnalysisRepository _larvaVideoRepository;
 
   @override
   void initState() {
     super.initState();
     _authRepository = AuthRepositoryFake();
-    _larvaVideoRepository = FakeLarvaVideoRepository();
+    _larvaVideoRepository = AnalysisRepositoryRepository();
     _userRepository = UserRepositoryFake();
     _authBloc = AuthBloc(_authRepository)..add(AuthVerificationRequested());
     _userBloc = UserBloc(_userRepository);
@@ -84,7 +84,7 @@ class _MainAppState extends State<MainApp> {
       providers: [
         RepositoryProvider<AuthRepository>.value(value: _authRepository),
         RepositoryProvider<UserRepository>.value(value: _userRepository),
-        RepositoryProvider<LarvaVideoRepository>.value(
+        RepositoryProvider<AnalysisRepository>.value(
           value: _larvaVideoRepository,
         ),
       ],

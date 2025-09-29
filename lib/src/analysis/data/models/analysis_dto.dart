@@ -3,7 +3,7 @@ import 'dart:convert';
 
 // ignore_for_file: non_constant_identifier_names
 
-class LarvaVideoDto {
+class AnalysisDTO {
   final int id;
   final String video_name;
   final String status;
@@ -14,7 +14,7 @@ class LarvaVideoDto {
   final String? thumbnailUrl;
   final String? title;
 
-  const LarvaVideoDto({
+  const AnalysisDTO({
     required this.id,
     required this.video_name,
     required this.status,
@@ -40,29 +40,22 @@ class LarvaVideoDto {
     };
   }
 
-  factory LarvaVideoDto.fromMap(Map<String, dynamic> map) {
-    return LarvaVideoDto(
+  factory AnalysisDTO.fromMap(Map<String, dynamic> map) {
+    return AnalysisDTO(
       id: map['id'] as int,
       video_name: map['video_name'] as String,
       status: map['status'] as String,
       created_at: map['created_at'] as String,
-      completed_at: map['completed_at'] != null
-          ? map['completed_at'] as String
-          : null,
-      confidence_scores: map['confidence_scores'] != null
-          ? map['confidence_scores'] as List<dynamic>
-          : null,
-      user_feedback: map['user_feedback'] != null
-          ? map['user_feedback'] as String
-          : null,
-      thumbnailUrl: map['thumbnail_url'] != null
-          ? map['thumbnail_url'] as String
-          : null,
+      completed_at: map['completed_at'] as String?,
+      confidence_scores: map['confidence_scores'] as List<dynamic>?,
+      user_feedback: map['user_feedback'] as String?,
+      thumbnailUrl: map['thumbnail_url'] as String?,
+      title: map['title'] as String?,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory LarvaVideoDto.fromJson(String source) =>
-      LarvaVideoDto.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory AnalysisDTO.fromJson(String source) =>
+      AnalysisDTO.fromMap(json.decode(source) as Map<String, dynamic>);
 }

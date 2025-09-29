@@ -1,12 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-class LarvaVideoIdListDto {
+class AnalysisIdListDTO {
   final int count;
   final String? next;
   final String? previous;
   final List<dynamic> results;
-  LarvaVideoIdListDto({
+  AnalysisIdListDTO({
     required this.count,
     required this.next,
     required this.previous,
@@ -22,17 +22,17 @@ class LarvaVideoIdListDto {
     };
   }
 
-  factory LarvaVideoIdListDto.fromMap(Map<String, dynamic> map) {
-    return LarvaVideoIdListDto(
+  factory AnalysisIdListDTO.fromMap(Map<String, dynamic> map) {
+    return AnalysisIdListDTO(
       count: map['count'] as int,
-      next: map['next'] != null ? map['next'] as String : null,
-      previous: map['previous'] != null ? map['previous'] as String : null,
+      next: map['next'] as String?,
+      previous: map['previous'] as String?,
       results: List<dynamic>.from((map['results'] as List<dynamic>)),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory LarvaVideoIdListDto.fromJson(String source) =>
-      LarvaVideoIdListDto.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory AnalysisIdListDTO.fromJson(String source) =>
+      AnalysisIdListDTO.fromMap(json.decode(source) as Map<String, dynamic>);
 }

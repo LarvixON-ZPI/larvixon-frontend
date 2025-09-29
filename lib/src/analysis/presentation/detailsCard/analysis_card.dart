@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:larvixon_frontend/src/analysis/domain/repositories/larva_video_repository.dart';
-import 'package:larvixon_frontend/src/analysis/domain/entities/larva_video_status.dart';
+import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress_status.dart';
+import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/analysis_details_page.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/detailsCard/progress_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/detailsCard/results_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/detailsCard/status_row.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/larva_video_details_page.dart';
-import 'package:larvixon_frontend/src/analysis/blocs/video_bloc/larva_video_bloc.dart';
 import 'package:larvixon_frontend/src/common/extensions/date_format_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -28,9 +28,9 @@ class _LarvaVideoCardState extends State<LarvaVideoCard>
     return BlocProvider(
       key: ValueKey(widget.key),
       create: (context) =>
-          LarvaVideoBloc(repository: context.read<LarvaVideoRepository>())
-            ..add(FetchLarvaVideoDetails(videoId: widget.videoId)),
-      child: BlocConsumer<LarvaVideoBloc, LarvaVideoState>(
+          AnalysisBloc(repository: context.read<AnalysisRepository>())
+            ..add(FetchAnalysisDetails(videoId: widget.videoId)),
+      child: BlocConsumer<AnalysisBloc, AnalysisState>(
         listenWhen: (previous, current) {
           return previous.progress != current.progress;
         },
@@ -39,15 +39,15 @@ class _LarvaVideoCardState extends State<LarvaVideoCard>
           final video = state.video;
           final hasResults = state.video?.results?.isNotEmpty ?? false;
           final enabled =
-              state.status == LarvaVideoBlocStatus.loading ||
-              state.video == null;
+              state.status == AnalysisStatus.loading || state.video == null;
+          final title = state.video?.name ?? '';
 
           return GestureDetector(
             onTap: () => context.push(
               LarvaVideoDetailsPage.routeName,
               extra: {
                 'videoId': widget.videoId,
-                'bloc': context.read<LarvaVideoBloc>(),
+                'bloc': context.read<AnalysisBloc>(),
               },
             ),
             child: MouseRegion(
@@ -64,19 +64,22 @@ class _LarvaVideoCardState extends State<LarvaVideoCard>
                         StatusRow(video: state.video),
                       ],
                     ),
-
-                    Text(
-                      state.video?.name ?? '',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
+                    if (state.video?.name != null)
+                      Text(
+                        state.video?.name ?? '',
+                        style: Theme.of(context).textTheme.titleMedium,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     if (video != null)
                       Text(
                         "${video.uploadedAt.formattedDateOnly} ${video.uploadedAt.formattedTimeOnly}",
                       ),
                     if (hasResults)
                       ResultsSection(results: state.video!.results!),
-                    (state.video?.status == LarvaVideoStatus.failed ||
-                            state.video?.status == LarvaVideoStatus.completed)
+                    (state.video?.status == AnalysisProgressStatus.failed ||
+                            state.video?.status ==
+                                AnalysisProgressStatus.completed)
                         ? SizedBox.shrink()
                         : Spacer(),
                     ProgressSection(

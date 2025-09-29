@@ -1,4 +1,4 @@
-part of 'larva_video_list_cubit.dart';
+part of 'analysis_list_cubit.dart';
 
 enum LarvaVideoListStatus { initial, loading, loadingMore, success, error }
 

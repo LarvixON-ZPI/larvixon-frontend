@@ -3,15 +3,15 @@ import 'dart:typed_data';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
-import 'package:larvixon_frontend/src/analysis/domain/entities/larva_video_id_list.dart';
-import 'package:larvixon_frontend/src/analysis/domain/entities/larva_video_status.dart';
-import 'package:larvixon_frontend/src/analysis/domain/entities/video_upload_response.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_id_list.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress_status.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_upload_response.dart';
 import 'package:larvixon_frontend/src/analysis/domain/failures/failures.dart';
 
-import '../entities/larva_video.dart';
-import 'larva_video_repository.dart';
+import '../entities/analysis.dart';
+import 'analysis_repository.dart';
 
-class FakeLarvaVideoRepository implements LarvaVideoRepository {
+class AnalysisRepositoryRepository implements AnalysisRepository {
   final Random _random = Random();
   final List<String> _substances = [
     "Ethanol",
@@ -52,7 +52,7 @@ class FakeLarvaVideoRepository implements LarvaVideoRepository {
       id: 6,
       uploadedAt: DateTime.now(),
       name: "fish larvae caffeine test",
-      status: LarvaVideoStatus.completed,
+      status: AnalysisProgressStatus.completed,
       results: [("Caffeine", 0.87), ("Ethanol", 0.12)],
       analysedAt: DateTime.now(),
       thumbnailUrl:
@@ -67,11 +67,11 @@ class FakeLarvaVideoRepository implements LarvaVideoRepository {
   ];
 
   @override
-  TaskEither<Failure, LarvaVideoIdList> fetchVideoIds({String? nextPage}) {
+  TaskEither<Failure, AnalysisIdList> fetchVideoIds({String? nextPage}) {
     Future.delayed(const Duration(seconds: 1));
 
     return TaskEither.right(
-      LarvaVideoIdList(
+      AnalysisIdList(
         ids: _videos.map((video) => video.id).toList(),
         nextPage: null,
       ),
@@ -111,9 +111,9 @@ class FakeLarvaVideoRepository implements LarvaVideoRepository {
       }
       var v = video.getRight().toNullable()!;
 
-      if (v.status == LarvaVideoStatus.completed ||
-          v.status == LarvaVideoStatus.failed) {
-        if (v.status == LarvaVideoStatus.completed && v.results == null) {
+      if (v.status == AnalysisProgressStatus.completed ||
+          v.status == AnalysisProgressStatus.failed) {
+        if (v.status == AnalysisProgressStatus.completed && v.results == null) {
           v = _applyRandomSubstances(v);
           final index = _videos.indexWhere((v) => v.id == id);
           _videos[index] = v;
@@ -126,14 +126,16 @@ class FakeLarvaVideoRepository implements LarvaVideoRepository {
       var updatedVideo = v;
 
       if (random.nextDouble() < 0.02) {
-        updatedVideo = updatedVideo.copyWith(status: LarvaVideoStatus.failed);
+        updatedVideo = updatedVideo.copyWith(
+          status: AnalysisProgressStatus.failed,
+        );
       } else {
         updatedVideo = updatedVideo.copyWith(
           status: updatedVideo.status.progressStatus(),
         );
       }
 
-      if (updatedVideo.status == LarvaVideoStatus.completed) {
+      if (updatedVideo.status == AnalysisProgressStatus.completed) {
         updatedVideo = _applyRandomSubstances(updatedVideo);
         updatedVideo = updatedVideo.copyWith(analysedAt: DateTime.now());
       }
@@ -152,7 +154,7 @@ class FakeLarvaVideoRepository implements LarvaVideoRepository {
   }
 
   @override
-  TaskEither<VideoFailure, VideoUploadResponse> uploadVideo({
+  TaskEither<VideoFailure, AnalysisUploadResponse> uploadVideo({
     required Uint8List bytes,
     required String filename,
     required String title,
@@ -166,7 +168,7 @@ class FakeLarvaVideoRepository implements LarvaVideoRepository {
           0,
           LarvaVideo(id: nextId, uploadedAt: DateTime.now(), name: title),
         );
-        return VideoUploadResponse(
+        return AnalysisUploadResponse(
           id: nextId,
           message: 'Video uploaded successfully',
         );

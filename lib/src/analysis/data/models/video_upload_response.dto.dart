@@ -1,1 +1,1 @@
-class VideoUploadResponseDto {}
+class VideoUploadResponseDTO {}

@@ -4,29 +4,29 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:larvixon_frontend/core/api_client.dart';
 import 'package:larvixon_frontend/core/constants/endpoints_analysis.dart';
-import 'package:larvixon_frontend/src/analysis/data/models/larva_video_dto.dart';
-import 'package:larvixon_frontend/src/analysis/data/models/larva_video_id_list_dto.dart';
+import 'package:larvixon_frontend/src/analysis/data/models/analysis_dto.dart';
+import 'package:larvixon_frontend/src/analysis/data/models/analysis_id_list_dto.dart';
 
-class LarvaVideoDatasource {
+class AnalysisDatasource {
   final ApiClient apiClient;
 
-  LarvaVideoDatasource({required this.apiClient});
+  AnalysisDatasource({required this.apiClient});
 
-  Future<LarvaVideoIdListDto> fetchVideosIds({String? nextPage}) async {
+  Future<AnalysisIdListDTO> fetchAnalysisIds({String? nextPage}) async {
     if (nextPage != null) {
       final response = await apiClient.dio.get(nextPage);
-      return LarvaVideoIdListDto.fromMap(response.data);
+      return AnalysisIdListDTO.fromMap(response.data);
     } else {
       final response = await apiClient.dio.get(AnalysisEndpoints.videoIDs);
-      return LarvaVideoIdListDto.fromMap(response.data);
+      return AnalysisIdListDTO.fromMap(response.data);
     }
   }
 
-  Future<LarvaVideoDto> fetchVideoDetailsById(int id) async {
+  Future<AnalysisDTO> fetchAnalysisDetailsById(int id) async {
     final response = await apiClient.dio.get(
       AnalysisEndpoints.analysisById(id),
     );
-    return LarvaVideoDto.fromMap(response.data);
+    return AnalysisDTO.fromMap(response.data);
   }
 
   Future<Map<String, dynamic>> uploadVideo({
@@ -45,13 +45,6 @@ class LarvaVideoDatasource {
     );
     print(response.data);
     return response.data;
-  }
-
-  Stream<Map<String, dynamic>> watchVideoProgressById({
-    required int id,
-    Duration interval = const Duration(seconds: 5),
-  }) async* {
-    throw UnimplementedError();
   }
 }
 

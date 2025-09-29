@@ -4,34 +4,34 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
-import 'package:larvixon_frontend/src/analysis/domain/entities/larva_video.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
 
-import '../../domain/repositories/larva_video_repository.dart';
+import '../../domain/repositories/analysis_repository.dart';
 
-part 'larva_video_event.dart';
-part 'larva_video_state.dart';
+part 'analysis_bloc_event.dart';
+part 'analysis_state.dart';
 
-class LarvaVideoBloc extends Bloc<LarvaVideoEvent, LarvaVideoState> {
-  final LarvaVideoRepository repository;
-  LarvaVideoBloc({required this.repository}) : super(LarvaVideoState()) {
-    on<FetchLarvaVideoDetails>(_fetchLarvaVideoDetails);
+class AnalysisBloc extends Bloc<AnalysisEvent, AnalysisState> {
+  final AnalysisRepository repository;
+  AnalysisBloc({required this.repository}) : super(AnalysisState()) {
+    on<FetchAnalysisDetails>(_fetchLarvaVideoDetails);
   }
 
   FutureOr<void> _fetchLarvaVideoDetails(
-    FetchLarvaVideoDetails event,
-    Emitter<LarvaVideoState> emit,
+    FetchAnalysisDetails event,
+    Emitter<AnalysisState> emit,
   ) async {
-    emit(state.copyWith(status: LarvaVideoBlocStatus.loading));
+    emit(state.copyWith(status: AnalysisStatus.loading));
 
     await emit.forEach<Either<Failure, LarvaVideo>>(
       repository.watchVideoProgressById(id: event.videoId),
       onData: (either) => either.match(
         (failure) => state.copyWith(
-          status: LarvaVideoBlocStatus.error,
+          status: AnalysisStatus.error,
           errorMessage: failure.message,
         ),
         (video) => state.copyWith(
-          status: LarvaVideoBlocStatus.success,
+          status: AnalysisStatus.success,
           video: video,
           progress: video.status.progressValue,
           errorMessage: null,
@@ -39,7 +39,7 @@ class LarvaVideoBloc extends Bloc<LarvaVideoEvent, LarvaVideoState> {
       ),
       onError: (error, stackTrace) {
         return state.copyWith(
-          status: LarvaVideoBlocStatus.error,
+          status: AnalysisStatus.error,
           errorMessage: "Unexpected stream error: $error",
         );
       },

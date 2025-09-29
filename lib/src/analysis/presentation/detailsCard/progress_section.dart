@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:larvixon_frontend/src/analysis/domain/entities/larva_video.dart';
-import 'package:larvixon_frontend/src/analysis/domain/entities/larva_video_status.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress_status.dart';
 
 class ProgressSection extends StatefulWidget {
   final LarvaVideo? video;
@@ -39,7 +39,7 @@ class _ProgressSectionState extends State<ProgressSection>
   void didUpdateWidget(covariant ProgressSection oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    final status = widget.video?.status ?? LarvaVideoStatus.pending;
+    final status = widget.video?.status ?? AnalysisProgressStatus.pending;
     final newColor = status.color;
     if (widget.progress != oldWidget.progress || newColor != _currentColor) {
       _animateTo(widget.progress, newColor);
@@ -72,10 +72,10 @@ class _ProgressSectionState extends State<ProgressSection>
 
   @override
   Widget build(BuildContext context) {
-    final status = widget.video?.status ?? LarvaVideoStatus.pending;
+    final status = widget.video?.status ?? AnalysisProgressStatus.pending;
     final enabled =
-        !(status == LarvaVideoStatus.completed ||
-            status == LarvaVideoStatus.failed);
+        !(status == AnalysisProgressStatus.completed ||
+            status == AnalysisProgressStatus.failed);
 
     if (!enabled) return const SizedBox.shrink();
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:larvixon_frontend/src/analysis/blocs/video_bloc/larva_video_bloc.dart';
+import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
 class LarvaVideoDetailsPage extends StatelessWidget {
@@ -19,7 +19,7 @@ class LarvaVideoDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LarvaVideoBloc, LarvaVideoState>(
+    return BlocBuilder<AnalysisBloc, AnalysisState>(
       builder: (context, state) {
         if (state.video == null) {
           return const Scaffold(
@@ -28,7 +28,7 @@ class LarvaVideoDetailsPage extends StatelessWidget {
         }
         final video = state.video!;
         return Scaffold(
-          appBar: AppBar(title: Text(video.name)),
+          appBar: AppBar(title: Text(video.name ?? 'Video #${video.id}')),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(16.0),

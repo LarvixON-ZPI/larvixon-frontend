@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/larva_video_add_dialog.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/video_grid.dart';
-import 'package:larvixon_frontend/src/analysis/blocs/video_list_cubit/larva_video_list_cubit.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/analysis_add_dialog.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/analysis_grid.dart';
+import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
 import 'package:larvixon_frontend/src/user/presentation/account_page.dart';
 
 import '../authentication/bloc/auth_bloc.dart';

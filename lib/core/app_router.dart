@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/core/transitions.dart';
-import 'package:larvixon_frontend/src/analysis/domain/repositories/larva_video_repository.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/larva_video_details_page.dart';
-import 'package:larvixon_frontend/src/analysis/blocs/video_bloc/larva_video_bloc.dart';
-import 'package:larvixon_frontend/src/analysis/blocs/video_list_cubit/larva_video_list_cubit.dart';
+import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc.dart';
+import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
+import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/analysis_details_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/about/about_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/landing_scaffold.dart';
@@ -98,7 +98,7 @@ class AppRouter {
         name: HomePage.name,
         builder: (context, state) => BlocProvider(
           create: (context) =>
-              LarvaVideoListCubit(context.read<LarvaVideoRepository>())
+              LarvaVideoListCubit(context.read<AnalysisRepository>())
                 ..fetchVideoList(),
           child: const HomePage(),
         ),
@@ -113,7 +113,7 @@ class AppRouter {
         name: LarvaVideoDetailsPage.name,
         redirect: (context, state) {
           final extra = state.extra as Map<String, dynamic>? ?? {};
-          final videoBloc = extra['bloc'] as LarvaVideoBloc?;
+          final videoBloc = extra['bloc'] as AnalysisBloc?;
           final videoId = extra['videoId'] as int?;
           if (videoBloc == null && videoId == null) {
             return HomePage.route;
@@ -122,8 +122,8 @@ class AppRouter {
         },
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>? ?? {};
-          final videoBloc = extra['bloc'] as LarvaVideoBloc?;
-          if (videoBloc is LarvaVideoBloc) {
+          final videoBloc = extra['bloc'] as AnalysisBloc?;
+          if (videoBloc is AnalysisBloc) {
             return BlocProvider.value(
               value: videoBloc,
               child: LarvaVideoDetailsPage(),
@@ -131,10 +131,10 @@ class AppRouter {
           }
           final videoId = extra['videoId'] as int?;
           if (videoId is int) {
-            return BlocProvider<LarvaVideoBloc>(
-              create: (context) => LarvaVideoBloc(
-                repository: context.read<LarvaVideoRepository>(),
-              )..add(FetchLarvaVideoDetails(videoId: videoId)),
+            return BlocProvider<AnalysisBloc>(
+              create: (context) =>
+                  AnalysisBloc(repository: context.read<AnalysisRepository>())
+                    ..add(FetchAnalysisDetails(videoId: videoId)),
               child: LarvaVideoDetailsPage(),
             );
           }

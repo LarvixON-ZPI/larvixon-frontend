@@ -1,25 +1,25 @@
-part of 'larva_video_bloc.dart';
+part of 'analysis_bloc.dart';
 
-enum LarvaVideoBlocStatus { initial, loading, success, error }
+enum AnalysisStatus { initial, loading, success, error }
 
-final class LarvaVideoState extends Equatable {
-  final LarvaVideoBlocStatus status;
+final class AnalysisState extends Equatable {
+  final AnalysisStatus status;
   final LarvaVideo? video;
   final String? errorMessage;
   final double progress;
-  const LarvaVideoState({
-    this.status = LarvaVideoBlocStatus.initial,
+  const AnalysisState({
+    this.status = AnalysisStatus.initial,
     this.video,
     this.errorMessage,
     this.progress = 0.0,
   });
-  LarvaVideoState copyWith({
-    LarvaVideoBlocStatus? status,
+  AnalysisState copyWith({
+    AnalysisStatus? status,
     LarvaVideo? video,
     String? errorMessage,
     double? progress,
   }) {
-    return LarvaVideoState(
+    return AnalysisState(
       status: status ?? this.status,
       video: video ?? this.video,
       errorMessage: errorMessage ?? this.errorMessage,

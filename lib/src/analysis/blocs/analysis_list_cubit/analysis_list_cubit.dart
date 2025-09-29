@@ -1,11 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:larvixon_frontend/src/analysis/domain/repositories/larva_video_repository.dart';
+import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 
-part 'larva_video_list_state.dart';
+part 'analysis_list_state.dart';
 
 class LarvaVideoListCubit extends Cubit<LarvaVideoListState> {
-  final LarvaVideoRepository _repository;
+  final AnalysisRepository _repository;
   LarvaVideoListCubit(this._repository) : super(LarvaVideoListState());
 
   void fetchNewlyUploadedVideo({required int id}) async {

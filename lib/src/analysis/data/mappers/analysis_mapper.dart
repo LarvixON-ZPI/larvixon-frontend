@@ -1,15 +1,15 @@
-import 'package:larvixon_frontend/src/analysis/data/models/larva_video_dto.dart';
-import 'package:larvixon_frontend/src/analysis/domain/entities/larva_video.dart';
-import 'package:larvixon_frontend/src/analysis/domain/entities/larva_video_status.dart';
+import 'package:larvixon_frontend/src/analysis/data/models/analysis_dto.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress_status.dart';
 import 'package:larvixon_frontend/src/common/base_mapper.dart';
 
-class LarvaVideoMapper implements Mapper<LarvaVideoDto, LarvaVideo> {
+class AnalysisMapper implements Mapper<AnalysisDTO, LarvaVideo> {
   @override
-  LarvaVideo dtoToEntity(LarvaVideoDto dto) {
+  LarvaVideo dtoToEntity(AnalysisDTO dto) {
     return LarvaVideo(
       id: dto.id,
       uploadedAt: DateTime.parse(dto.created_at),
-      status: LarvaVideoStatus.fromString(dto.status),
+      status: AnalysisProgressStatus.fromString(dto.status),
       name: dto.title ?? 'Unnamed',
       analysedAt: dto.completed_at != null
           ? DateTime.parse(dto.completed_at!)
@@ -22,7 +22,7 @@ class LarvaVideoMapper implements Mapper<LarvaVideoDto, LarvaVideo> {
   }
 
   @override
-  LarvaVideoDto entityToDto(LarvaVideo entity) {
+  AnalysisDTO entityToDto(LarvaVideo entity) {
     // TODO: implement entityToDto
     throw UnimplementedError();
   }
