@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../src/common/extensions/translate_extension.dart';
 import '../../common/form_validators.dart';
 import '../bloc/user_bloc.dart';
-import '../user.dart';
+import '../domain/entities/user.dart';
 
 class AccountPage extends StatefulWidget {
   static const String route = '/account';

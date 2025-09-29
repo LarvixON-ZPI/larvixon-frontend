@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../common/extensions/translate_extension.dart';
-import '../domain/auth_error.dart';
+import '../domain/failures/auth_error.dart';
 
 class AuthErrorDialog extends StatelessWidget {
   final AuthError error;

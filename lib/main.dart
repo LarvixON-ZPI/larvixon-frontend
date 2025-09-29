@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:larvixon_frontend/src/analysis/data/larva_video_datasource.dart';
-import 'package:larvixon_frontend/src/analysis/domain/larva_video_repository.dart';
-import 'package:larvixon_frontend/src/analysis/domain/larva_video_repository_impl.dart';
+import 'package:larvixon_frontend/src/analysis/data/datasources/analysis_datasource.dart';
+import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
+import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository_impl.dart';
 
 import 'core/api_client.dart';
 import 'core/app_router.dart';
+import 'core/locale_controller.dart';
 import 'core/theme/app_theme.dart';
 import 'core/token_storage.dart';
-import 'core/locale_controller.dart';
 import 'l10n/app_localizations.dart';
 import 'src/authentication/bloc/auth_bloc.dart';
 import 'src/authentication/data/auth_datasource.dart';
-import 'src/authentication/domain/auth_repository.dart';
-import 'src/authentication/domain/auth_repository_impl.dart';
+import 'src/authentication/domain/repositories/auth_repository.dart';
+import 'src/authentication/domain/repositories/auth_repository_impl.dart';
 import 'src/user/bloc/user_bloc.dart';
 import 'src/user/data/user_datasource.dart';
-import 'src/user/domain/user_repository.dart';
-import 'src/user/domain/user_repository_impl.dart';
+import 'src/user/domain/repositories/user_repository.dart';
+import 'src/user/domain/repositories/user_repository_impl.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,8 +42,8 @@ class _MainAppState extends State<MainApp> {
   late final ApiClient _apiClient;
   late final AuthDataSource _authDataSource;
   late final UserDataSource _userDataSource;
-  late final LarvaVideoRepository _larvaVideoRepository;
-  late final LarvaVideoDatasource _larvaVideoDataSource;
+  late final AnalysisRepository _larvaVideoRepository;
+  late final AnalysisDatasource _larvaVideoDataSource;
 
   @override
   void initState() {
@@ -52,12 +52,12 @@ class _MainAppState extends State<MainApp> {
     _apiClient = ApiClient(_tokenStorage);
     _authDataSource = AuthDataSource(_apiClient);
     _userDataSource = UserDataSource(_apiClient);
-    _larvaVideoDataSource = LarvaVideoDatasource(apiClient: _apiClient);
+    _larvaVideoDataSource = AnalysisDatasource(apiClient: _apiClient);
     _authRepository = AuthRepositoryImpl(
       dataSource: _authDataSource,
       tokenStorage: _tokenStorage,
     );
-    _larvaVideoRepository = LarvaVideoRepositoryImpl(
+    _larvaVideoRepository = AnalysisRepositoryImpl(
       dataSource: _larvaVideoDataSource,
     );
     _userRepository = UserRepositoryImpl(dataSource: _userDataSource);
@@ -83,7 +83,7 @@ class _MainAppState extends State<MainApp> {
         RepositoryProvider<AuthRepository>.value(value: _authRepository),
         RepositoryProvider<UserDataSource>.value(value: _userDataSource),
         RepositoryProvider<UserRepository>.value(value: _userRepository),
-        RepositoryProvider<LarvaVideoRepository>.value(
+        RepositoryProvider<AnalysisRepository>.value(
           value: _larvaVideoRepository,
         ),
       ],

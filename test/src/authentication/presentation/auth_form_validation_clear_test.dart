@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:larvixon_frontend/l10n/app_localizations.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_form.dart';
 import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
-import 'package:larvixon_frontend/src/authentication/domain/auth_repository.dart';
+import 'package:larvixon_frontend/src/authentication/domain/repositories/auth_repository.dart';
 import 'package:mockito/annotations.dart';
 
 import 'auth_form_validation_clear_test.mocks.dart';
