@@ -81,36 +81,48 @@ class _LarvaVideoGridState extends State<LarvaVideoGrid> {
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
               ),
-              childrenDelegate: SliverChildBuilderDelegate((context, index) {
-                if (index < state.videoIds.length) {
-                  final videoId = state.videoIds[index];
-                  return LarvaVideoCard(
-                    key: ValueKey(videoId),
-                    videoId: videoId,
-                  ).withOnHoverEffect;
-                }
-                if (state.status == LarvaVideoListStatus.loading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (state.status == LarvaVideoListStatus.error) {
-                  return CustomCard(
-                    title: context.translate.error,
-                    description:
-                        state.errorMessage ?? context.translate.unknownError,
-                    icon: Icons.error,
-                    color: Colors.redAccent,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          context.read<LarvaVideoListCubit>().fetchVideoList();
-                        },
-                        child: Text(context.translate.retry),
-                      ),
-                    ],
-                  ).withOnHoverEffect;
-                }
-                return null;
-              }, childCount: _getChildrenCount()),
+
+              childrenDelegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  if (index < state.videoIds.length) {
+                    final videoId = state.videoIds[index];
+                    return LarvaVideoCard(
+                      key: ValueKey(videoId),
+                      videoId: videoId,
+                    ).withOnHoverEffect;
+                  }
+                  if (state.status == LarvaVideoListStatus.loading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (state.status == LarvaVideoListStatus.error) {
+                    return CustomCard(
+                      title: context.translate.error,
+                      description:
+                          state.errorMessage ?? context.translate.unknownError,
+                      icon: Icons.error,
+                      color: Colors.redAccent,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            context
+                                .read<LarvaVideoListCubit>()
+                                .fetchVideoList();
+                          },
+                          child: Text(context.translate.retry),
+                        ),
+                      ],
+                    ).withOnHoverEffect;
+                  }
+                  return null;
+                },
+                childCount: _getChildrenCount(),
+                findChildIndexCallback: (key) {
+                  if (key is ValueKey<int>) {
+                    return state.videoIds.indexOf(key.value);
+                  }
+                  return null;
+                },
+              ),
             );
           },
         );
