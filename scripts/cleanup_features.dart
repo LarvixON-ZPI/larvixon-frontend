@@ -501,7 +501,8 @@ List<File> _getDartFiles(Directory dir) {
 
 void _showHelp() {
   print('''
-🧹 Feature Cleanup Script
+!!! EXPERIMENTAL - USE WITH CAUTION !!!
+🧹 Feature Cleanup Script 
 
 Usage: dart scripts/cleanup_features.dart <feature_name> [options]
 
