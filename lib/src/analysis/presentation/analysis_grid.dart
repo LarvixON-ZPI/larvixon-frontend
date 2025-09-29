@@ -15,6 +15,7 @@ class LarvaVideoGrid extends StatefulWidget {
 
 class _LarvaVideoGridState extends State<LarvaVideoGrid> {
   final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -24,19 +25,19 @@ class _LarvaVideoGridState extends State<LarvaVideoGrid> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent) {
-      final cubit = context.read<LarvaVideoListCubit>();
-      if (cubit.state.status != LarvaVideoListStatus.loading) {
+      final cubit = context.read<AnalysisListCubit>();
+      if (cubit.canLoadMore) {
         cubit.fetchVideoList();
       }
     }
   }
 
   void _checkScrollability(double viewportHeight) {
-    final cubit = context.read<LarvaVideoListCubit>();
+    final cubit = context.read<AnalysisListCubit>();
     if (_scrollController.hasClients &&
         _scrollController.position.maxScrollExtent <= viewportHeight &&
-        cubit.state.hasMore &&
-        cubit.state.status != LarvaVideoListStatus.loading) {
+        cubit.canLoadMore &&
+        cubit.state.status != AnalysisListStatus.error) {
       cubit.fetchVideoList().then((_) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _checkScrollability(viewportHeight);
@@ -52,10 +53,10 @@ class _LarvaVideoGridState extends State<LarvaVideoGrid> {
   }
 
   int _getChildrenCount() {
-    final state = context.read<LarvaVideoListCubit>().state;
+    final state = context.read<AnalysisListCubit>().state;
     var count = state.videoIds.length;
-    if (state.status == LarvaVideoListStatus.loading ||
-        state.status == LarvaVideoListStatus.error) {
+    if (state.status == AnalysisListStatus.loading ||
+        state.status == AnalysisListStatus.error) {
       count += 1;
     }
     return count;
@@ -63,7 +64,7 @@ class _LarvaVideoGridState extends State<LarvaVideoGrid> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LarvaVideoListCubit, LarvaVideoListState>(
+    return BlocBuilder<AnalysisListCubit, AnalysisListState>(
       builder: (context, state) {
         return LayoutBuilder(
           builder: (context, constraints) {
@@ -90,10 +91,10 @@ class _LarvaVideoGridState extends State<LarvaVideoGrid> {
                       videoId: videoId,
                     ).withOnHoverEffect;
                   }
-                  if (state.status == LarvaVideoListStatus.loading) {
+                  if (state.status == AnalysisListStatus.loading) {
                     return const Center(child: CircularProgressIndicator());
                   }
-                  if (state.status == LarvaVideoListStatus.error) {
+                  if (state.status == AnalysisListStatus.error) {
                     return CustomCard(
                       title: context.translate.error,
                       description:
@@ -103,9 +104,7 @@ class _LarvaVideoGridState extends State<LarvaVideoGrid> {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            context
-                                .read<LarvaVideoListCubit>()
-                                .fetchVideoList();
+                            context.read<AnalysisListCubit>().fetchVideoList();
                           },
                           child: Text(context.translate.retry),
                         ),

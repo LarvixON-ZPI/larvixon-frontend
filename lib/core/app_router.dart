@@ -98,7 +98,7 @@ class AppRouter {
         name: HomePage.name,
         builder: (context, state) => BlocProvider(
           create: (context) =>
-              LarvaVideoListCubit(context.read<AnalysisRepository>())
+              AnalysisListCubit(context.read<AnalysisRepository>())
                 ..fetchVideoList(),
           child: const HomePage(),
         ),

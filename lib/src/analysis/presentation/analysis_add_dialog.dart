@@ -16,7 +16,7 @@ class LarvaVideoAddForm extends StatefulWidget {
   State<LarvaVideoAddForm> createState() => _LarvaVideoAddFormState();
   static Future<void> showLarvaVideoDialog(
     BuildContext context,
-    LarvaVideoListCubit videoListCubit,
+    AnalysisListCubit videoListCubit,
   ) {
     return showDialog(
       barrierColor: Colors.black.withValues(alpha: 0.2),
@@ -89,7 +89,7 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
             );
           }
           if (state.status == VideoUploadStatus.success) {
-            context.read<LarvaVideoListCubit>().fetchNewlyUploadedVideo(
+            context.read<AnalysisListCubit>().fetchNewlyUploadedVideo(
               id: state.uploadedVideoId!,
             );
             Future.delayed(const Duration(milliseconds: 500)).then((_) {});

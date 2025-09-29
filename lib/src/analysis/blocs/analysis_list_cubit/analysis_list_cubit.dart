@@ -4,9 +4,12 @@ import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repo
 
 part 'analysis_list_state.dart';
 
-class LarvaVideoListCubit extends Cubit<LarvaVideoListState> {
+class AnalysisListCubit extends Cubit<AnalysisListState> {
   final AnalysisRepository _repository;
-  LarvaVideoListCubit(this._repository) : super(LarvaVideoListState());
+  AnalysisListCubit(this._repository) : super(AnalysisListState());
+
+  bool get canLoadMore =>
+      state.hasMore && state.status != AnalysisListStatus.loading;
 
   void fetchNewlyUploadedVideo({required int id}) async {
     final currentIds = state.videoIds;
@@ -17,10 +20,7 @@ class LarvaVideoListCubit extends Cubit<LarvaVideoListState> {
   }
 
   Future<void> fetchVideoList() async {
-    if (!state.hasMore) return;
-    if (state.status == LarvaVideoListStatus.loading) return;
-
-    emit(state.copyWith(status: LarvaVideoListStatus.loading));
+    emit(state.copyWith(status: AnalysisListStatus.loading));
 
     final result = await _repository
         .fetchVideoIds(nextPage: state.nextPage)
@@ -30,7 +30,7 @@ class LarvaVideoListCubit extends Cubit<LarvaVideoListState> {
       (failure) {
         emit(
           state.copyWith(
-            status: LarvaVideoListStatus.error,
+            status: AnalysisListStatus.error,
             errorMessage: failure.message,
           ),
         );
@@ -43,7 +43,7 @@ class LarvaVideoListCubit extends Cubit<LarvaVideoListState> {
 
         emit(
           state.copyWith(
-            status: LarvaVideoListStatus.success,
+            status: AnalysisListStatus.success,
             videoIds: merged,
             page: state.page + 1,
             nextPage: nextPage,
