@@ -142,5 +142,6 @@
       }
     }
   },
-  "loading": "Ładowanie"
+  "loading": "Ładowanie",
+  "retry": "Ponów"
 }

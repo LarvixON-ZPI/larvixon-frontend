@@ -3,24 +3,18 @@ import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart
 
 enum LarvaVideoStatus {
   pending,
-  uploading,
-  uploaded,
-  analysing,
-  analysed,
-  error;
+  processing,
+  completed,
+  failed;
 
   LarvaVideoStatus progressStatus() {
     switch (this) {
       case LarvaVideoStatus.pending:
-        return LarvaVideoStatus.uploading;
-      case LarvaVideoStatus.uploading:
-        return LarvaVideoStatus.analysing;
-      case LarvaVideoStatus.uploaded:
-        return LarvaVideoStatus.analysing;
-      case LarvaVideoStatus.analysing:
-        return LarvaVideoStatus.analysed;
-      case LarvaVideoStatus.analysed:
-      case LarvaVideoStatus.error:
+        return LarvaVideoStatus.processing;
+      case LarvaVideoStatus.processing:
+        return LarvaVideoStatus.completed;
+      case LarvaVideoStatus.completed:
+      case LarvaVideoStatus.failed:
         return this;
     }
   }
@@ -29,33 +23,24 @@ enum LarvaVideoStatus {
     switch (this) {
       case LarvaVideoStatus.pending:
         return context.translate.pending;
-      case LarvaVideoStatus.uploading:
-        return context.translate.uploading;
-      case LarvaVideoStatus.uploaded:
-        return context.translate.uploaded;
-      case LarvaVideoStatus.analysing:
-        return context.translate.analysing;
-      case LarvaVideoStatus.analysed:
-        return context.translate.analysed;
-      case LarvaVideoStatus.error:
-        return context.translate.error;
+      case LarvaVideoStatus.processing:
+        return context.translate.processing;
+      case LarvaVideoStatus.completed:
+        return context.translate.completed;
+      case LarvaVideoStatus.failed:
+        return context.translate.failed;
     }
   }
 
   double get progressValue {
     switch (this) {
       case LarvaVideoStatus.pending:
+      case LarvaVideoStatus.failed:
         return 0.0;
-      case LarvaVideoStatus.uploading:
-        return 0.15;
-      case LarvaVideoStatus.uploaded:
-        return 0.3;
-      case LarvaVideoStatus.analysing:
+      case LarvaVideoStatus.processing:
         return 0.5;
-      case LarvaVideoStatus.analysed:
+      case LarvaVideoStatus.completed:
         return 1.0;
-      case LarvaVideoStatus.error:
-        return 0.0;
     }
   }
 
@@ -63,15 +48,11 @@ enum LarvaVideoStatus {
     switch (this) {
       case LarvaVideoStatus.pending:
         return Icons.hourglass_empty;
-      case LarvaVideoStatus.uploading:
-        return Icons.cloud_upload;
-      case LarvaVideoStatus.uploaded:
-        return Icons.cloud_done;
-      case LarvaVideoStatus.analysing:
-        return Icons.search;
-      case LarvaVideoStatus.analysed:
+      case LarvaVideoStatus.processing:
+        return Icons.autorenew;
+      case LarvaVideoStatus.completed:
         return Icons.check_circle;
-      case LarvaVideoStatus.error:
+      case LarvaVideoStatus.failed:
         return Icons.error;
     }
   }
@@ -80,15 +61,27 @@ enum LarvaVideoStatus {
     switch (this) {
       case LarvaVideoStatus.pending:
         return Colors.grey;
-      case LarvaVideoStatus.uploading:
-      case LarvaVideoStatus.uploaded:
+      case LarvaVideoStatus.processing:
         return Colors.blue;
-      case LarvaVideoStatus.analysing:
-        return Colors.orange;
-      case LarvaVideoStatus.analysed:
+      case LarvaVideoStatus.completed:
         return Colors.green;
-      case LarvaVideoStatus.error:
+      case LarvaVideoStatus.failed:
         return Colors.red;
+    }
+  }
+
+  static LarvaVideoStatus fromString(String status) {
+    switch (status.toLowerCase()) {
+      case 'pending':
+        return LarvaVideoStatus.pending;
+      case 'processing':
+        return LarvaVideoStatus.processing;
+      case 'completed':
+        return LarvaVideoStatus.completed;
+      case 'failed':
+        return LarvaVideoStatus.failed;
+      default:
+        throw ArgumentError('Unknown status: $status');
     }
   }
 }

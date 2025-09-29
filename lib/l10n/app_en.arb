@@ -142,5 +142,6 @@
       }
     }
   },
-  "loading": "Loading"
+  "loading": "Loading",
+  "retry": "Retry"
 }

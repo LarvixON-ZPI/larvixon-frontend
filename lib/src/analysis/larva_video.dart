@@ -1,7 +1,23 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 import 'package:larvixon_frontend/src/analysis/larva_video_status.dart';
 
 typedef LarvaVideoResults = List<(String, double)>;
+
+extension LarvaVideoResultsX on LarvaVideoResults {
+  static LarvaVideoResults fromMap(List<dynamic> list) {
+    final results = list.map((e) {
+      if (e is! List<dynamic> || e.length != 2) {
+        throw FormatException('Invalid substance entry: $e');
+      }
+      final [substance as String, concentration as double] = e;
+
+      return (substance, concentration);
+    }).toList();
+
+    return results;
+  }
+}
 
 class LarvaVideo extends Equatable {
   final int id;
@@ -48,8 +64,20 @@ class LarvaVideo extends Equatable {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
+  @override
+  List<Object?> get props => [
+    id,
+    uploadedAt,
+    status,
+    errorMessage,
+    name,
+    analysedAt,
+    results,
+    thumbnailUrl,
+  ];
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
       'id': id,
       'uploaded_at': uploadedAt.toIso8601String(),
       'status': status.name,
@@ -63,15 +91,26 @@ class LarvaVideo extends Equatable {
     };
   }
 
-  @override
-  List<Object?> get props => [
-    id,
-    uploadedAt,
-    status,
-    errorMessage,
-    name,
-    analysedAt,
-    results,
-    thumbnailUrl,
-  ];
+  factory LarvaVideo.fromJson(Map<String, dynamic> map) {
+    return LarvaVideo(
+      id: map['id'] as int,
+      uploadedAt: DateTime.parse(map['created_at'] as String),
+      status: LarvaVideoStatus.fromString(map['status']),
+      errorMessage: map['errorMessage'] != null
+          ? map['errorMessage'] as String
+          : null,
+      name: map['name'] != null ? map['name'] as String : 'Unnamed',
+      analysedAt: map['completed_at'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['completed_at'] as int)
+          : null,
+      thumbnailUrl: map['thumbnailUrl'] != null
+          ? map['thumbnailUrl'] as String
+          : null,
+      results: map['confidence_scores'] != null
+          ? LarvaVideoResultsX.fromMap(
+              map['confidence_scores'] as List<dynamic>,
+            )
+          : null,
+    );
+  }
 }

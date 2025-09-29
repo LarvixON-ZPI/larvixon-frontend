@@ -159,6 +159,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get ourTeam => 'Nasz zespół';
+
   @override
   String get messageSentAcknowledgment =>
       'Wiadomość została wysłana — dziękujemy!';
@@ -228,4 +229,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get loading => 'Ładowanie';
+
+  @override
+  String get retry => 'Ponów';
 }

@@ -367,6 +367,7 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Our Team'**
   String get ourTeam;
+
   /// No description provided for @messageSentAcknowledgment.
   ///
   /// In en, this message translates to:
@@ -492,6 +493,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Loading'**
   String get loading;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
 }
 
 class _AppLocalizationsDelegate

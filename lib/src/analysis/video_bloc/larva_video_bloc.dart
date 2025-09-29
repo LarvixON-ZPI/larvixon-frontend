@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -19,7 +18,7 @@ class LarvaVideoBloc extends Bloc<LarvaVideoEvent, LarvaVideoState> {
   }
 
   FutureOr<void> _fetchLarvaVideoDetails(
-    event,
+    FetchLarvaVideoDetails event,
     Emitter<LarvaVideoState> emit,
   ) async {
     emit(state.copyWith(status: LarvaVideoBlocStatus.loading));
@@ -38,10 +37,12 @@ class LarvaVideoBloc extends Bloc<LarvaVideoEvent, LarvaVideoState> {
           errorMessage: null,
         ),
       ),
-      onError: (error, stackTrace) => state.copyWith(
-        status: LarvaVideoBlocStatus.error,
-        errorMessage: "Unexpected stream error: $error",
-      ),
+      onError: (error, stackTrace) {
+        return state.copyWith(
+          status: LarvaVideoBlocStatus.error,
+          errorMessage: "Unexpected stream error: $error",
+        );
+      },
     );
   }
 }
