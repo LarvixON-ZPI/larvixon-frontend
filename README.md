@@ -61,7 +61,7 @@ Here’s an example configuration:
 }
 ```
 
-### 🚀 Creating New Features
+### Creating New Features
 
 We provide automated scripts to scaffold new features with proper Clean Architecture structure:
 
