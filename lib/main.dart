@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:larvixon_frontend/src/analysis/data/datasources/analysis_datasource.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository_impl.dart';
+import 'package:larvixon_frontend/src/settings/domain/repositories/settings_repository.dart';
+import 'package:larvixon_frontend/src/settings/domain/repositories/settings_repository_impl.dart';
+import 'package:larvixon_frontend/src/settings/presentation/blocs/cubit/settings_cubit.dart';
 
 import 'core/api_client.dart';
 import 'core/app_router.dart';
@@ -44,6 +47,8 @@ class _MainAppState extends State<MainApp> {
   late final UserDataSource _userDataSource;
   late final AnalysisRepository _larvaVideoRepository;
   late final AnalysisDatasource _larvaVideoDataSource;
+  late final SettingsRepository _settingsRepository;
+  late final SettingsCubit _settingsCubit;
 
   @override
   void initState() {
@@ -64,13 +69,18 @@ class _MainAppState extends State<MainApp> {
     _authBloc = AuthBloc(_authRepository)..add(AuthVerificationRequested());
     _userBloc = UserBloc(_userRepository);
     _appRouter = AppRouter(_authBloc);
+    _settingsRepository = SettingsRepositoryImpl();
+    _settingsCubit = SettingsCubit(
+      repository: _settingsRepository,
+      supportedLocales: AppLocalizations.supportedLocales,
+    )..loadSettings();
   }
 
   @override
   void dispose() {
     _authBloc.close();
     _userBloc.close();
-
+    _settingsCubit.close();
     super.dispose();
   }
 
@@ -86,15 +96,12 @@ class _MainAppState extends State<MainApp> {
         RepositoryProvider<AnalysisRepository>.value(
           value: _larvaVideoRepository,
         ),
+        RepositoryProvider<SettingsRepository>.value(
+          value: _settingsRepository,
+        ),
       ],
       child: _buildBlocProviders(),
     );
-  }
-
-  void setLocale(Locale locale) {
-    setState(() {
-      _locale = locale;
-    });
   }
 
   MultiBlocProvider _buildBlocProviders() {
@@ -102,6 +109,7 @@ class _MainAppState extends State<MainApp> {
       providers: [
         BlocProvider<AuthBloc>.value(value: _authBloc),
         BlocProvider<UserBloc>.value(value: _userBloc),
+        BlocProvider<SettingsCubit>.value(value: _settingsCubit),
       ],
       child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
@@ -111,17 +119,19 @@ class _MainAppState extends State<MainApp> {
             context.read<UserBloc>().add(UserProfileDataRequested());
           }
         },
-        child: LocaleController(
-          locale: _locale,
-          setLocale: setLocale,
-          child: MaterialApp.router(
-            theme: appThemeLight,
-            routerConfig: _appRouter.router,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-            locale: _locale,
-            debugShowCheckedModeBanner: false,
-          ),
+        child: BlocBuilder<SettingsCubit, SettingsState>(
+          builder: (context, state) {
+            return MaterialApp.router(
+              theme: AppTheme.appThemeLight,
+              darkTheme: AppTheme.appThemeDark,
+              themeMode: state.theme,
+              locale: state.locale,
+              routerConfig: _appRouter.router,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              debugShowCheckedModeBanner: false,
+            );
+          },
         ),
       ),
     );
