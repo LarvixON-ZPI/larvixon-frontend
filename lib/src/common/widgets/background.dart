@@ -13,7 +13,7 @@ class Background extends StatelessWidget {
         gradient: LinearGradient(
           colors: [
             Theme.of(context).colorScheme.primary,
-            Theme.of(context).colorScheme.secondary,
+            Theme.of(context).colorScheme.onPrimary,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,

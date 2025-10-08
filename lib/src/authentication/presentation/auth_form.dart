@@ -36,7 +36,6 @@ class _AuthFormState extends State<AuthForm>
 
   Map<String, String> _serverSideFieldErrors = {};
 
-  // Track which fields have been validated (to enable continuous validation)
   Set<String> _validatedFields = {};
 
   @override
@@ -160,16 +159,15 @@ class _AuthFormState extends State<AuthForm>
                     style: ElevatedButton.styleFrom(
                       backgroundColor: _formMode == AuthFormMode.signIn
                           ? Theme.of(context).colorScheme.primary
-                          : Colors.grey[300],
+                          : Theme.of(
+                              context,
+                            ).colorScheme.surfaceContainerHighest,
+                      foregroundColor: _formMode == AuthFormMode.signIn
+                          ? Theme.of(context).colorScheme.onPrimary
+                          : Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
-                    child: Text(
-                      context.translate.signIn,
-                      style: TextStyle(
-                        color: _formMode == AuthFormMode.signIn
-                            ? Colors.white
-                            : Colors.black,
-                      ),
-                    ),
+
+                    child: Text(context.translate.signIn),
                   ),
                 ),
                 Expanded(
@@ -180,16 +178,14 @@ class _AuthFormState extends State<AuthForm>
                     style: ElevatedButton.styleFrom(
                       backgroundColor: _formMode == AuthFormMode.signUp
                           ? Theme.of(context).colorScheme.primary
-                          : Colors.grey[300],
+                          : Theme.of(
+                              context,
+                            ).colorScheme.surfaceContainerHighest,
+                      foregroundColor: _formMode == AuthFormMode.signUp
+                          ? Theme.of(context).colorScheme.onPrimary
+                          : Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
-                    child: Text(
-                      context.translate.signUp,
-                      style: TextStyle(
-                        color: _formMode == AuthFormMode.signUp
-                            ? Colors.white
-                            : Colors.black,
-                      ),
-                    ),
+                    child: Text(context.translate.signUp),
                   ),
                 ),
               ],
@@ -222,7 +218,6 @@ class _AuthFormState extends State<AuthForm>
                 suffixIcon: IconButton(
                   icon: Icon(
                     _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                    color: Colors.grey[700],
                   ),
                   onPressed: () {
                     setState(() {
@@ -276,7 +271,6 @@ class _AuthFormState extends State<AuthForm>
                                 _obscureConfirmPassword
                                     ? Icons.visibility_off
                                     : Icons.visibility,
-                                color: Colors.grey[700],
                               ),
                               onPressed: () {
                                 setState(() {
@@ -382,14 +376,11 @@ class _AuthFormState extends State<AuthForm>
               alignment: Alignment.centerRight,
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 200),
-                child: ElevatedButton(
+                child: IconButton(
+                  color: Theme.of(context).colorScheme.primary,
                   key: ValueKey(_formMode),
                   onPressed: _submitForm,
-                  child: Text(
-                    _formMode == AuthFormMode.signIn
-                        ? context.translate.signIn
-                        : context.translate.signUp,
-                  ),
+                  icon: Icon(Icons.arrow_forward),
                 ),
               ),
             ),
