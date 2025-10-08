@@ -1,16 +1,20 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:ffi';
+
 typedef AnalysisResults = List<(String substance, double confidence)>;
 
 extension AnalysisResultsMapper on AnalysisResults {
   static AnalysisResults fromMap(List<dynamic> list) {
     final results = list.map((e) {
-      if (e is! List<dynamic> || e.length != 2) {
+      print(e.runtimeType);
+      if (e is! Map<String, dynamic>) {
         throw FormatException('Invalid substance entry: $e');
       }
-      final [substance as String, confidence as double] = e;
+      final substanceMap = e["substance"];
+      final confidenceScore = e["confidence_score"] / 100;
 
-      return (substance, confidence);
+      return (substanceMap["name_en"] as String, confidenceScore as double);
     }).toList();
 
     return results;
