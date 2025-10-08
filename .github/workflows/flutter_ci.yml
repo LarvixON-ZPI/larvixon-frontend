@@ -29,5 +29,11 @@ jobs:
       - name: Analyze project source
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
       
+      - name: Analyze project for web
+        run: flutter analyze --platform=web
+
+      - name: Run web test build
+        run: flutter test --platform=chrome
+      
       - name: Run tests
         run: flutter test
