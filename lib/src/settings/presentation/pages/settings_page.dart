@@ -29,6 +29,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   onPressed: () => context.read<SettingsCubit>().toggleTheme(),
                 ),
                 ElevatedButton(
+                  child: Text("Auto"),
+                  onPressed: () => context.read<SettingsCubit>().setTheme(
+                    theme: ThemeMode.system,
+                  ),
+                ),
+                ElevatedButton(
                   child: Text("Dark"),
 
                   onPressed: () => context.read<SettingsCubit>().setTheme(
