@@ -3,27 +3,23 @@ import 'package:larvixon_frontend/src/common/widgets/background.dart';
 
 class AppShell extends StatelessWidget {
   final Widget child;
-  final Widget? navbar;
+  final Widget? appBar;
   final Widget? footer;
-  const AppShell({super.key, required this.child, this.navbar, this.footer});
+  const AppShell({super.key, required this.child, this.appBar, this.footer});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       body: Stack(
         fit: StackFit.expand,
         children: [
           BackgroundWithLarvae(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (navbar != null) navbar!,
-              Expanded(
-                child: CustomScrollView(
-                  slivers: [SliverToBoxAdapter(child: child)],
-                ),
-              ),
-              if (footer != null) footer!,
+          CustomScrollView(
+            slivers: [
+              if (appBar != null) appBar!,
+              SliverFillRemaining(child: child),
+              if (footer != null) SliverToBoxAdapter(child: footer),
             ],
           ),
         ],

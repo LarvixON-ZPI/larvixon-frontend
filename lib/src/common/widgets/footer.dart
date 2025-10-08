@@ -13,16 +13,12 @@ class Footer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
+      child: Wrap(
         spacing: 8,
+        alignment: WrapAlignment.spaceBetween,
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          Text(
-            '© 2025 ${context.translate.larvixon}',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-          const Spacer(),
+          Text('© 2025 ${context.translate.larvixon}'),
           TextButton(
             onPressed: onPrivacyPressed,
             child: Text(context.translate.privacy),

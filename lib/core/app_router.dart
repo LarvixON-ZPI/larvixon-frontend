@@ -58,7 +58,7 @@ class AppRouter {
         navigatorKey: _landingShellNavigatorKey,
         pageBuilder: (context, state, child) {
           return AppShell(
-            navbar: LandingNavBar(),
+            appBar: LandingNavBar(),
             footer: Footer(),
             child: child,
           ).withSlideTransition(state);
