@@ -4,58 +4,69 @@ import 'package:google_fonts/google_fonts.dart';
 import 'colors.dart';
 import 'text_styles.dart';
 
-final ThemeData appThemeLight = ThemeData(
-  splashFactory: NoSplash.splashFactory,
-  hoverColor: Colors.transparent,
-  highlightColor: Colors.transparent,
-  focusColor: Colors.transparent,
-  pageTransitionsTheme: const PageTransitionsTheme(
-    builders: {
-      TargetPlatform.android: ZoomPageTransitionsBuilder(),
-      TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-    },
-  ),
-  fontFamily: GoogleFonts.oswald().fontFamily,
-  colorScheme: AppColors.colorScheme,
-  primaryColor: AppColors.primary,
-  scaffoldBackgroundColor: AppColors.background,
-  textTheme: TextStyles.textTheme,
-  appBarTheme: const AppBarTheme(
-    backgroundColor: AppColors.primary,
-    titleTextStyle: TextStyles.title,
-  ),
-  inputDecorationTheme: InputDecorationTheme(
+class AppTheme {
+  static final splashFactory = NoSplash.splashFactory;
+  static final hoverColor = Colors.transparent;
+  static final highlightColor = Colors.transparent;
+  static final focusColor = Colors.transparent;
+  static final fontFamily = GoogleFonts.oswald().fontFamily;
+  static final inputDecorationTheme = InputDecorationTheme(
     errorStyle: const TextStyle(height: 1.0),
-    filled: true,
-    fillColor: AppColors.inputFill,
+
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(6.0),
       borderSide: BorderSide.none,
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(6.0),
-      borderSide: const BorderSide(color: AppColors.primary, width: 2.0),
+      borderSide: const BorderSide(width: 2.0),
     ),
     errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(6.0),
-      borderSide: const BorderSide(color: AppColors.error, width: 2.0),
+      borderSide: const BorderSide(width: 2.0),
     ),
-  ),
-  elevatedButtonTheme: ElevatedButtonThemeData(
+  );
+  static const appBarTheme = AppBarTheme(titleTextStyle: TextStyles.title);
+  static final elevatedButtonTheme = ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: AppColors.primary,
-      foregroundColor: AppColors.background,
       minimumSize: const Size(double.infinity, 48),
       elevation: 0.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
     ),
-  ),
-  textButtonTheme: TextButtonThemeData(
+  );
+  static final textButtonTheme = TextButtonThemeData(
     style: ButtonStyle(
       splashFactory: NoSplash.splashFactory,
       mouseCursor: WidgetStateProperty.resolveWith(
         (states) => SystemMouseCursors.click,
       ),
     ),
-  ),
-);
+  );
+
+  static final appThemeLight = ThemeData.light(useMaterial3: true).copyWith(
+    colorScheme: AppColors.colorSchemeLight,
+
+    splashFactory: splashFactory,
+    hoverColor: hoverColor,
+    highlightColor: highlightColor,
+    focusColor: focusColor,
+    textTheme: GoogleFonts.oswaldTextTheme(ThemeData.light().textTheme),
+    inputDecorationTheme: inputDecorationTheme,
+    appBarTheme: appBarTheme,
+    elevatedButtonTheme: elevatedButtonTheme,
+    textButtonTheme: textButtonTheme,
+  );
+  static final appThemeDark = ThemeData.dark(useMaterial3: true).copyWith(
+    colorScheme: AppColors.colorSchemeDark,
+
+    splashFactory: splashFactory,
+    hoverColor: hoverColor,
+    highlightColor: highlightColor,
+    focusColor: focusColor,
+    textTheme: GoogleFonts.oswaldTextTheme(ThemeData.dark().textTheme),
+    inputDecorationTheme: inputDecorationTheme,
+    appBarTheme: appBarTheme,
+    elevatedButtonTheme: elevatedButtonTheme,
+    textButtonTheme: textButtonTheme,
+  );
+}

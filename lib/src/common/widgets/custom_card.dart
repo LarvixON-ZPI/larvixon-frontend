@@ -25,7 +25,7 @@ class CustomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAlias,
-      color: color ?? Colors.white.withValues(alpha: 0.03),
+      color: color ?? Theme.of(context).cardColor.withValues(alpha: 0.8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Stack(
         children: [

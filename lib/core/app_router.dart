@@ -8,9 +8,12 @@ import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/analysis_details_page.dart';
+import 'package:larvixon_frontend/src/common/widgets/footer.dart';
 import 'package:larvixon_frontend/src/landing/presentation/about/about_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
-import 'package:larvixon_frontend/src/landing/presentation/landing_scaffold.dart';
+import 'package:larvixon_frontend/src/landing/presentation/landing_navbar.dart';
+import 'package:larvixon_frontend/src/common/app_shell.dart';
+import 'package:larvixon_frontend/src/settings/presentation/pages/settings_page.dart';
 
 import '../src/authentication/bloc/auth_bloc.dart';
 import '../src/authentication/presentation/auth_form.dart';
@@ -43,6 +46,8 @@ class AppRouter {
   );
   final GlobalKey<NavigatorState> _landingShellNavigatorKey =
       GlobalKey<NavigatorState>(debugLabel: 'LandingShell');
+  final GlobalKey<NavigatorState> _appShellNavigatorKey =
+      GlobalKey<NavigatorState>(debugLabel: 'AppShell');
 
   late final router = GoRouter(
     initialLocation: LandingPage.route,
@@ -52,7 +57,11 @@ class AppRouter {
       ShellRoute(
         navigatorKey: _landingShellNavigatorKey,
         pageBuilder: (context, state, child) {
-          return LandingScaffold(child: child).withSlideTransition(state);
+          return AppShell(
+            appBar: LandingNavBar(),
+            footer: Footer(),
+            child: child,
+          ).withSlideTransition(state);
         },
 
         routes: [
@@ -139,6 +148,13 @@ class AppRouter {
             );
           }
           return const SizedBox.shrink();
+        },
+      ),
+      GoRoute(
+        path: SettingsPage.route,
+        name: SettingsPage.name,
+        builder: (context, state) {
+          return SettingsPage();
         },
       ),
     ],

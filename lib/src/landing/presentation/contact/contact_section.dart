@@ -42,6 +42,7 @@ class _ContactSectionState extends State<ContactSection> {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           context.translate.contact,

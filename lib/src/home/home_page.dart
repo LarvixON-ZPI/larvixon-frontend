@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/analysis_add_dialog.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/analysis_grid.dart';
+import 'package:larvixon_frontend/src/common/widgets/background.dart';
+import 'package:larvixon_frontend/src/settings/presentation/pages/settings_page.dart';
 import 'package:larvixon_frontend/src/user/presentation/account_page.dart';
 
 import '../authentication/bloc/auth_bloc.dart';
@@ -36,6 +38,12 @@ class HomePage extends StatelessWidget {
             },
           ),
           IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              context.push(SettingsPage.route);
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.person),
             onPressed: () {
               context.push(AccountPage.route);
@@ -43,7 +51,7 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: const LarvaVideoGrid(),
+      body: Stack(children: [BackgroundWithLarvae(), const LarvaVideoGrid()]),
     );
   }
 }

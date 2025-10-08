@@ -15,16 +15,13 @@ class AppColors {
 
   static const inputFill = Color(0xFFEFEFEF);
 
-  static const ColorScheme colorScheme = ColorScheme(
-    brightness: Brightness.light,
-    primary: primary,
-    onPrimary: Colors.white,
-    secondary: Colors.tealAccent,
-    onSecondary: Colors.black,
-    error: error,
-    onError: Colors.white,
+  static final ColorScheme colorSchemeLight = ColorScheme.fromSeed(
+    seedColor: const Color.fromARGB(255, 0, 255, 195),
 
-    surface: card,
-    onSurface: Colors.black87,
+    brightness: Brightness.light,
+  );
+  static final ColorScheme colorSchemeDark = ColorScheme.fromSeed(
+    seedColor: const Color.fromARGB(255, 16, 97, 89),
+    brightness: Brightness.dark,
   );
 }

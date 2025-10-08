@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:larvixon_frontend/src/settings/domain/repositories/settings_repository.dart';
+import 'package:larvixon_frontend/src/settings/domain/repositories/settings_repository_impl.dart';
+import 'package:larvixon_frontend/src/settings/presentation/blocs/cubit/settings_cubit.dart';
 
 import 'core/app_router.dart';
 import 'core/theme/app_theme.dart';
@@ -34,6 +37,8 @@ class _MainAppState extends State<MainApp> {
   late final AuthRepository _authRepository;
   late final UserRepository _userRepository;
   late final AnalysisRepository _larvaVideoRepository;
+  late final SettingsRepository _settingsRepository;
+  late final SettingsCubit _settingsCubit;
 
   @override
   void initState() {
@@ -41,15 +46,21 @@ class _MainAppState extends State<MainApp> {
     _authRepository = AuthRepositoryFake();
     _larvaVideoRepository = AnalysisRepositoryRepository();
     _userRepository = UserRepositoryFake();
+    _settingsRepository = SettingsRepositoryImpl();
     _authBloc = AuthBloc(_authRepository)..add(AuthVerificationRequested());
     _userBloc = UserBloc(_userRepository);
     _appRouter = AppRouter(_authBloc);
+    _settingsCubit = SettingsCubit(
+      repository: _settingsRepository,
+      supportedLocales: AppLocalizations.supportedLocales,
+    )..loadSettings();
   }
 
   @override
   void dispose() {
     _authBloc.close();
     _userBloc.close();
+    _settingsCubit.close();
     super.dispose();
   }
 
@@ -58,6 +69,7 @@ class _MainAppState extends State<MainApp> {
       providers: [
         BlocProvider<AuthBloc>.value(value: _authBloc),
         BlocProvider<UserBloc>.value(value: _userBloc),
+        BlocProvider<SettingsCubit>.value(value: _settingsCubit),
       ],
       child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
@@ -67,13 +79,19 @@ class _MainAppState extends State<MainApp> {
             context.read<UserBloc>().add(UserProfileDataRequested());
           }
         },
-        child: MaterialApp.router(
-          theme: appThemeLight,
-          routerConfig: _appRouter.router,
-
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          debugShowCheckedModeBanner: false,
+        child: BlocBuilder<SettingsCubit, SettingsState>(
+          builder: (context, state) {
+            return MaterialApp.router(
+              theme: AppTheme.appThemeLight,
+              darkTheme: AppTheme.appThemeDark,
+              themeMode: state.theme,
+              locale: state.locale,
+              routerConfig: _appRouter.router,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              debugShowCheckedModeBanner: false,
+            );
+          },
         ),
       ),
     );

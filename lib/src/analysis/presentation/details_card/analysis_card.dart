@@ -54,7 +54,6 @@ class _AnalysisCardState extends State<AnalysisCard>
               child: Skeletonizer(
                 enabled: enabled,
                 child: CustomCard(
-                  color: Colors.grey[200],
                   useWrap: false,
                   children: [
                     Row(

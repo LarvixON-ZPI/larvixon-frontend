@@ -8,13 +8,16 @@ class Background extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
+
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            Theme.of(context).colorScheme.primary,
-            Theme.of(context).colorScheme.secondary,
-          ],
+          colors: isDark
+              ? [colorScheme.inversePrimary, colorScheme.surfaceContainerLow]
+              : [colorScheme.inversePrimary, colorScheme.primary],
+
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
