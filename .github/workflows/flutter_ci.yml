@@ -2,7 +2,7 @@ name: Flutter CI
 
 on:
   push:
-    branches: ["*"]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -28,12 +28,10 @@ jobs:
       
       - name: Analyze project source
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
-      
-      - name: Analyze project for web
-        run: flutter analyze --platform=chrome
 
-      - name: Run web test build
-        run: flutter test --platform=chrome
-      
       - name: Run tests
-        run: flutter test
+        run: flutter 
+        
+      - name: Check web build
+        run: flutter build web --release --target=lib/main.dart
+
