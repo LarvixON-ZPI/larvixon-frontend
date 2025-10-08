@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:larvixon_frontend/src/settings/presentation/widgets/locale_dropdown_menu.dart';
 
 import '../extensions/translate_extension.dart';
 
@@ -11,8 +12,10 @@ class Footer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
         spacing: 8,
         children: [
           Text(
@@ -28,6 +31,7 @@ class Footer extends StatelessWidget {
             onPressed: onTermsPressed,
             child: Text(context.translate.terms),
           ),
+          LocaleDropdownMenu(),
         ],
       ),
     );
