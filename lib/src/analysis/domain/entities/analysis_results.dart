@@ -1,7 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
-import 'dart:ffi';
-
 typedef AnalysisResults = List<(String substance, double confidence)>;
 
 extension AnalysisResultsMapper on AnalysisResults {
