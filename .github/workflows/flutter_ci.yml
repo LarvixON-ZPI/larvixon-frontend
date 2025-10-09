@@ -30,7 +30,7 @@ jobs:
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
 
       - name: Run tests
-        run: flutter 
+        run: flutter test
         
       - name: Check web build
         run: flutter build web --release --target=lib/main.dart
