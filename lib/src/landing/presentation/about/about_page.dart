@@ -10,10 +10,14 @@ class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: 600),
-        child: AboutSection(),
-      ).withDefaultPagePadding,
+      child: SingleChildScrollView(
+        child: SafeArea(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 600),
+            child: AboutSection().withDefaultPagePadding,
+          ),
+        ),
+      ),
     );
   }
 }

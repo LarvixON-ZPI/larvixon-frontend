@@ -53,196 +53,184 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(context.translate.account),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () {
-              setState(() {
-                isEditing = !isEditing;
-                _setupControllers(user: context.read<UserBloc>().state.user);
-              });
-            },
-          ),
-        ],
-      ),
-      body: BlocConsumer<UserBloc, UserState>(
-        listenWhen: (previous, current) => previous.user != current.user,
-        listener: (context, state) {
-          _setupControllers(user: state.user);
-        },
-        builder: (context, state) {
-          switch (state.status) {
-            case UserStatus.initial:
-            case UserStatus.loading:
-              return const Center(child: CircularProgressIndicator());
-            case UserStatus.error:
-              return Center(child: Text('Error: ${state.errorMessage}'));
-            case UserStatus.success:
-              final user = state.user;
-              if (user == null) {
-                return const Center(child: Text('No user data available.'));
-              }
+    return SingleChildScrollView(
+      child: SafeArea(
+        child: BlocConsumer<UserBloc, UserState>(
+          listenWhen: (previous, current) => previous.user != current.user,
+          listener: (context, state) {
+            _setupControllers(user: state.user);
+          },
+          builder: (context, state) {
+            switch (state.status) {
+              case UserStatus.initial:
+              case UserStatus.loading:
+                return const Center(child: CircularProgressIndicator());
+              case UserStatus.error:
+                return Center(child: Text('Error: ${state.errorMessage}'));
+              case UserStatus.success:
+                final user = state.user;
+                if (user == null) {
+                  return const Center(child: Text('No user data available.'));
+                }
 
-              return SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Header(username: user.username, email: user.email),
-                    Form(
-                      key: _formKey,
-                      child: Container(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          spacing: 10.0,
-                          children: [
-                            TextFormField(
-                              readOnly: !isEditing,
-                              controller: _firstNameController,
-                              decoration: InputDecoration(
-                                labelText: context.translate.firstName,
+                return SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      Header(username: user.username, email: user.email),
+                      Form(
+                        key: _formKey,
+                        child: Container(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            spacing: 10.0,
+                            children: [
+                              TextFormField(
+                                readOnly: !isEditing,
+                                controller: _firstNameController,
+                                decoration: InputDecoration(
+                                  labelText: context.translate.firstName,
+                                ),
+                                autovalidateMode: AutovalidateMode.always,
+                                validator: (value) {
+                                  return FormValidators.lengthValidator(
+                                    context,
+                                    value,
+                                    fieldName: context.translate.firstName,
+                                    minLength: 0,
+                                    maxLength: 150,
+                                    allowNull: true,
+                                  );
+                                },
                               ),
-                              autovalidateMode: AutovalidateMode.always,
-                              validator: (value) {
-                                return FormValidators.lengthValidator(
-                                  context,
-                                  value,
-                                  fieldName: context.translate.firstName,
-                                  minLength: 0,
-                                  maxLength: 150,
-                                  allowNull: true,
-                                );
-                              },
-                            ),
-                            TextFormField(
-                              readOnly: !isEditing,
-                              controller: _lastNameController,
-                              decoration: InputDecoration(
-                                labelText: context.translate.lastName,
+                              TextFormField(
+                                readOnly: !isEditing,
+                                controller: _lastNameController,
+                                decoration: InputDecoration(
+                                  labelText: context.translate.lastName,
+                                ),
+                                autovalidateMode: AutovalidateMode.always,
+                                validator: (value) {
+                                  return FormValidators.lengthValidator(
+                                    context,
+                                    value,
+                                    fieldName: context.translate.lastName,
+                                    minLength: 0,
+                                    maxLength: 150,
+                                    allowNull: true,
+                                  );
+                                },
                               ),
-                              autovalidateMode: AutovalidateMode.always,
-                              validator: (value) {
-                                return FormValidators.lengthValidator(
-                                  context,
-                                  value,
-                                  fieldName: context.translate.lastName,
-                                  minLength: 0,
-                                  maxLength: 150,
-                                  allowNull: true,
-                                );
-                              },
-                            ),
-                            TextFormField(
-                              readOnly: !isEditing,
-                              controller: _phoneNumberController,
-                              decoration: InputDecoration(
-                                labelText: context.translate.phoneNumber,
+                              TextFormField(
+                                readOnly: !isEditing,
+                                controller: _phoneNumberController,
+                                decoration: InputDecoration(
+                                  labelText: context.translate.phoneNumber,
+                                ),
+                                autovalidateMode: AutovalidateMode.always,
+                                validator: (value) {
+                                  return FormValidators.lengthValidator(
+                                    context,
+                                    value,
+                                    fieldName: context.translate.phoneNumber,
+                                    minLength: 0,
+                                    maxLength: 20,
+                                    allowNull: true,
+                                  );
+                                },
                               ),
-                              autovalidateMode: AutovalidateMode.always,
-                              validator: (value) {
-                                return FormValidators.lengthValidator(
-                                  context,
-                                  value,
-                                  fieldName: context.translate.phoneNumber,
-                                  minLength: 0,
-                                  maxLength: 20,
-                                  allowNull: true,
-                                );
-                              },
-                            ),
-                            TextFormField(
-                              readOnly: !isEditing,
-                              controller: _organizationController,
-                              decoration: InputDecoration(
-                                labelText: context.translate.organization,
+                              TextFormField(
+                                readOnly: !isEditing,
+                                controller: _organizationController,
+                                decoration: InputDecoration(
+                                  labelText: context.translate.organization,
+                                ),
+                                autovalidateMode: AutovalidateMode.always,
+                                validator: (value) {
+                                  return FormValidators.lengthValidator(
+                                    context,
+                                    value,
+                                    fieldName: context.translate.organization,
+                                    minLength: 0,
+                                    maxLength: 255,
+                                    allowNull: true,
+                                  );
+                                },
                               ),
-                              autovalidateMode: AutovalidateMode.always,
-                              validator: (value) {
-                                return FormValidators.lengthValidator(
-                                  context,
-                                  value,
-                                  fieldName: context.translate.organization,
-                                  minLength: 0,
-                                  maxLength: 255,
-                                  allowNull: true,
-                                );
-                              },
-                            ),
-                            TextFormField(
-                              readOnly: !isEditing,
-                              controller: _bioController,
-                              maxLines: 3,
-                              decoration: InputDecoration(
-                                labelText: context.translate.bio,
+                              TextFormField(
+                                readOnly: !isEditing,
+                                controller: _bioController,
+                                maxLines: 3,
+                                decoration: InputDecoration(
+                                  labelText: context.translate.bio,
+                                ),
+                                autovalidateMode: AutovalidateMode.always,
+                                validator: (value) {
+                                  return FormValidators.lengthValidator(
+                                    context,
+                                    value,
+                                    fieldName: context.translate.bio,
+                                    minLength: 0,
+                                    maxLength: 500,
+                                    allowNull: true,
+                                  );
+                                },
                               ),
-                              autovalidateMode: AutovalidateMode.always,
-                              validator: (value) {
-                                return FormValidators.lengthValidator(
-                                  context,
-                                  value,
-                                  fieldName: context.translate.bio,
-                                  minLength: 0,
-                                  maxLength: 500,
-                                  allowNull: true,
-                                );
-                              },
-                            ),
 
-                            AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 300),
-                              transitionBuilder: (child, animation) {
-                                final offset = Tween<Offset>(
-                                  begin: const Offset(1, 0),
-                                  end: Offset.zero,
-                                ).animate(animation);
-                                return SlideTransition(
-                                  position: offset,
-                                  child: child,
-                                );
-                              },
-                              child: isEditing
-                                  ? ElevatedButton(
-                                      onPressed: state.isUpdating
-                                          ? null
-                                          : () {
-                                              if (_formKey.currentState!
-                                                  .validate()) {
-                                                context.read<UserBloc>().add(
-                                                  UserProfileDataUpdateRequested(
-                                                    firstName:
-                                                        _firstNameController
-                                                            .text,
-                                                    lastName:
-                                                        _lastNameController
-                                                            .text,
-                                                    bio: _bioController.text,
-                                                    phoneNumber:
-                                                        _phoneNumberController
-                                                            .text,
-                                                    organization:
-                                                        _organizationController
-                                                            .text,
-                                                  ),
-                                                );
-                                                setState(() {
-                                                  isEditing = false;
-                                                });
-                                              }
-                                            },
-                                      child: Text(context.translate.save),
-                                    )
-                                  : null,
-                            ),
-                          ],
+                              AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 300),
+                                transitionBuilder: (child, animation) {
+                                  final offset = Tween<Offset>(
+                                    begin: const Offset(1, 0),
+                                    end: Offset.zero,
+                                  ).animate(animation);
+                                  return SlideTransition(
+                                    position: offset,
+                                    child: child,
+                                  );
+                                },
+                                child: isEditing
+                                    ? ElevatedButton(
+                                        onPressed: state.isUpdating
+                                            ? null
+                                            : () {
+                                                if (_formKey.currentState!
+                                                    .validate()) {
+                                                  context.read<UserBloc>().add(
+                                                    UserProfileDataUpdateRequested(
+                                                      firstName:
+                                                          _firstNameController
+                                                              .text,
+                                                      lastName:
+                                                          _lastNameController
+                                                              .text,
+                                                      bio: _bioController.text,
+                                                      phoneNumber:
+                                                          _phoneNumberController
+                                                              .text,
+                                                      organization:
+                                                          _organizationController
+                                                              .text,
+                                                    ),
+                                                  );
+                                                  setState(() {
+                                                    isEditing = false;
+                                                  });
+                                                }
+                                              },
+                                        child: Text(context.translate.save),
+                                      )
+                                    : null,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              );
-          }
-        },
+                    ],
+                  ),
+                );
+            }
+          },
+        ),
       ),
     );
   }
