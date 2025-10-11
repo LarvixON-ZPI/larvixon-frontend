@@ -17,41 +17,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              await LarvaVideoAddForm.showLarvaVideoDialog(
-                context,
-                context.read<AnalysisListCubit>(),
-              );
-            },
-            icon: const Icon(Icons.add),
-          ),
-
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              context.read<AuthBloc>().add(AuthSignOutRequested());
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              context.push(SettingsPage.route);
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.person),
-            onPressed: () {
-              context.push(AccountPage.route);
-            },
-          ),
-        ],
-      ),
-      body: Stack(children: [BackgroundWithLarvae(), const LarvaVideoGrid()]),
-    );
+    return const LarvaVideoGrid();
   }
 }

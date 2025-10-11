@@ -74,7 +74,7 @@ class _LarvaVideoGridState extends State<LarvaVideoGrid> {
 
             return GridView.custom(
               controller: _scrollController,
-              padding: const EdgeInsets.all(8.0),
+
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 500,
                 childAspectRatio: 5 / 4,
