@@ -25,17 +25,21 @@ class _AuthPageState extends State<AuthPage>
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: 600),
-        child: CustomCard(
-          children: [
-            AuthForm(
-              initialMode: widget.initialMode,
-              initialEmail: widget.initialEmail,
-            ),
-          ],
+      child: SingleChildScrollView(
+        child: SafeArea(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 600),
+            child: CustomCard(
+              children: [
+                AuthForm(
+                  initialMode: widget.initialMode,
+                  initialEmail: widget.initialEmail,
+                ),
+              ],
+            ).withDefaultPagePadding,
+          ),
         ),
       ),
-    ).withDefaultPagePadding;
+    );
   }
 }

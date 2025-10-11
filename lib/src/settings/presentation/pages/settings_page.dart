@@ -16,44 +16,45 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Settings")),
-
-      body: BlocBuilder<SettingsCubit, SettingsState>(
-        builder: (context, state) {
-          return Center(
-            child: Column(
-              children: [
-                ElevatedButton(
-                  child: Text("Toggle"),
-                  onPressed: () => context.read<SettingsCubit>().toggleTheme(),
-                ),
-                ElevatedButton(
-                  child: Text("Auto"),
-                  onPressed: () => context.read<SettingsCubit>().setTheme(
-                    theme: ThemeMode.system,
+    return BlocBuilder<SettingsCubit, SettingsState>(
+      builder: (context, state) {
+        return Center(
+          child: SingleChildScrollView(
+            child: SafeArea(
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    child: Text("Toggle"),
+                    onPressed: () =>
+                        context.read<SettingsCubit>().toggleTheme(),
                   ),
-                ),
-                ElevatedButton(
-                  child: Text("Dark"),
-
-                  onPressed: () => context.read<SettingsCubit>().setTheme(
-                    theme: ThemeMode.dark,
+                  ElevatedButton(
+                    child: Text("Auto"),
+                    onPressed: () => context.read<SettingsCubit>().setTheme(
+                      theme: ThemeMode.system,
+                    ),
                   ),
-                ),
-                ElevatedButton(
-                  child: Text("Light"),
+                  ElevatedButton(
+                    child: Text("Dark"),
 
-                  onPressed: () => context.read<SettingsCubit>().setTheme(
-                    theme: ThemeMode.light,
+                    onPressed: () => context.read<SettingsCubit>().setTheme(
+                      theme: ThemeMode.dark,
+                    ),
                   ),
-                ),
-                LocaleDropdownMenu(),
-              ],
+                  ElevatedButton(
+                    child: Text("Light"),
+
+                    onPressed: () => context.read<SettingsCubit>().setTheme(
+                      theme: ThemeMode.light,
+                    ),
+                  ),
+                  LocaleDropdownMenu(),
+                ],
+              ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

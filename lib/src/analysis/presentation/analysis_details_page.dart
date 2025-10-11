@@ -27,31 +27,27 @@ class LarvaVideoDetailsPage extends StatelessWidget {
           );
         }
         final video = state.video!;
-        return Scaffold(
-          appBar: AppBar(title: Text(video.name ?? 'Video #${video.id}')),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (video.results?.isNotEmpty ?? false)
-                    Wrap(
-                      spacing: 8,
-                      children: [
-                        ...video.results!.map(
-                          (r) => CustomCard(
-                            title: r.$1,
-                            description: "${(r.$2 * 100).toStringAsFixed(1)}%",
-                            color: barColor(r.$2).withValues(alpha: 0.3),
+        return SingleChildScrollView(
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (video.results?.isNotEmpty ?? false)
+                  Wrap(
+                    spacing: 8,
+                    children: [
+                      ...video.results!.map(
+                        (r) => CustomCard(
+                          title: r.$1,
+                          description: "${(r.$2 * 100).toStringAsFixed(1)}%",
+                          color: barColor(r.$2).withValues(alpha: 0.3),
 
-                            children: [],
-                          ),
+                          children: [],
                         ),
-                      ],
-                    ),
-                ],
-              ),
+                      ),
+                    ],
+                  ),
+              ],
             ),
           ),
         );

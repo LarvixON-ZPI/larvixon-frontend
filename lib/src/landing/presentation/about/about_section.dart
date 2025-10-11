@@ -57,18 +57,15 @@ class AboutSection extends StatelessWidget {
             );
           },
         ),
-        SizedBox(
-          width: double.infinity,
-          child: CustomCard(
-            icon: Icons.group,
-            title: context.translate.ourTeam,
-            children: [
-              _TeamMemberAvatar(name: "Mikołaj Kubś").withOnHoverEffect,
-              _TeamMemberAvatar(name: "Martyna Łopianiak").withOnHoverEffect,
-              _TeamMemberAvatar(name: "Krzysztof Kulka").withOnHoverEffect,
-              _TeamMemberAvatar(name: "Patryk Łuszczek").withOnHoverEffect,
-            ],
-          ),
+        CustomCard(
+          icon: Icons.group,
+          title: context.translate.ourTeam,
+          children: [
+            _TeamMemberAvatar(name: "Mikołaj Kubś").withOnHoverEffect,
+            _TeamMemberAvatar(name: "Martyna Łopianiak").withOnHoverEffect,
+            _TeamMemberAvatar(name: "Krzysztof Kulka").withOnHoverEffect,
+            _TeamMemberAvatar(name: "Patryk Łuszczek").withOnHoverEffect,
+          ],
         ),
       ],
     );

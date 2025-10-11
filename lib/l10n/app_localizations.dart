@@ -619,6 +619,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'MFA functionality is not yet implemented.'**
   String get mfaNotImplemented;
+
+  /// No description provided for @analyzeNewVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyze new video'**
+  String get analyzeNewVideo;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
 }
 
 class _AppLocalizationsDelegate

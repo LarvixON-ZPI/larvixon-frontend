@@ -164,5 +164,7 @@
   "enterMfaCode": "Wprowadź kod MFA",
   "tryAgain": "Spróbuj ponownie",
   "mfaDialogTitle": "Autoryzacja dwuskładnikowa",
-  "mfaNotImplemented": "Funkcjonalność MFA nie jest jeszcze zaimplementowana."
+  "mfaNotImplemented": "Funkcjonalność MFA nie jest jeszcze zaimplementowana.",
+  "analyzeNewVideo": "Wyślij nagranie",
+  "settings": "Ustawienia"
 }

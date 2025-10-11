@@ -8,10 +8,10 @@ import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/analysis_details_page.dart';
-import 'package:larvixon_frontend/src/common/widgets/footer.dart';
+import 'package:larvixon_frontend/src/home/larvixon_app_bar.dart';
 import 'package:larvixon_frontend/src/landing/presentation/about/about_page.dart';
+import 'package:larvixon_frontend/src/landing/presentation/landing_appbar.dart';
 import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
-import 'package:larvixon_frontend/src/landing/presentation/landing_navbar.dart';
 import 'package:larvixon_frontend/src/common/app_shell.dart';
 import 'package:larvixon_frontend/src/settings/presentation/pages/settings_page.dart';
 
@@ -58,8 +58,7 @@ class AppRouter {
         navigatorKey: _landingShellNavigatorKey,
         pageBuilder: (context, state, child) {
           return AppShell(
-            appBar: LandingNavBar(),
-            footer: Footer(),
+            appBar: const LandingAppBar(),
             child: child,
           ).withSlideTransition(state);
         },
@@ -102,60 +101,73 @@ class AppRouter {
         ],
       ),
 
-      GoRoute(
-        path: HomePage.route,
-        name: HomePage.name,
-        builder: (context, state) => BlocProvider(
-          create: (context) =>
-              AnalysisListCubit(context.read<AnalysisRepository>())
-                ..fetchVideoList(),
-          child: const HomePage(),
-        ),
-      ),
-      GoRoute(
-        path: AccountPage.route,
-        name: AccountPage.name,
-        builder: (_, _) => const AccountPage(),
-      ),
-      GoRoute(
-        path: LarvaVideoDetailsPage.routeName,
-        name: LarvaVideoDetailsPage.name,
-        redirect: (context, state) {
-          final extra = state.extra as Map<String, dynamic>? ?? {};
-          final videoBloc = extra['bloc'] as AnalysisBloc?;
-          final videoId = extra['videoId'] as int?;
-          if (videoBloc == null && videoId == null) {
-            return HomePage.route;
-          }
-          return null;
+      ShellRoute(
+        navigatorKey: _appShellNavigatorKey,
+        pageBuilder: (context, state, child) {
+          return BlocProvider(
+            create: (context) =>
+                AnalysisListCubit(context.read())..fetchVideoList(),
+            child: AppShell(appBar: LarvixonAppBar(), child: child),
+          ).withSlideTransition(state);
         },
-        builder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>? ?? {};
-          final videoBloc = extra['bloc'] as AnalysisBloc?;
-          if (videoBloc is AnalysisBloc) {
-            return BlocProvider.value(
-              value: videoBloc,
-              child: LarvaVideoDetailsPage(),
-            );
-          }
-          final videoId = extra['videoId'] as int?;
-          if (videoId is int) {
-            return BlocProvider<AnalysisBloc>(
-              create: (context) =>
-                  AnalysisBloc(repository: context.read<AnalysisRepository>())
-                    ..add(FetchAnalysisDetails(videoId: videoId)),
-              child: LarvaVideoDetailsPage(),
-            );
-          }
-          return const SizedBox.shrink();
-        },
-      ),
-      GoRoute(
-        path: SettingsPage.route,
-        name: SettingsPage.name,
-        builder: (context, state) {
-          return SettingsPage();
-        },
+
+        routes: [
+          GoRoute(
+            path: HomePage.route,
+            name: HomePage.name,
+            pageBuilder: (context, state) {
+              return const HomePage().withoutTransition(state: state);
+            },
+          ),
+
+          GoRoute(
+            path: AccountPage.route,
+            name: AccountPage.name,
+            pageBuilder: (context, state) {
+              return const AccountPage().withoutTransition(state: state);
+            },
+          ),
+          GoRoute(
+            path: LarvaVideoDetailsPage.routeName,
+            name: LarvaVideoDetailsPage.name,
+            redirect: (context, state) {
+              final extra = state.extra as Map<String, dynamic>? ?? {};
+              final videoBloc = extra['bloc'] as AnalysisBloc?;
+              final videoId = extra['videoId'] as int?;
+              if (videoBloc == null && videoId == null) {
+                return HomePage.route;
+              }
+              return null;
+            },
+            pageBuilder: (context, state) {
+              final extra = state.extra as Map<String, dynamic>? ?? {};
+              final videoBloc = extra['bloc'] as AnalysisBloc?;
+              if (videoBloc is AnalysisBloc) {
+                return BlocProvider.value(
+                  value: videoBloc,
+                  child: LarvaVideoDetailsPage(),
+                ).withoutTransition(state: state);
+              }
+              final videoId = extra['videoId'] as int?;
+              if (videoId is int) {
+                return BlocProvider<AnalysisBloc>(
+                  create: (context) => AnalysisBloc(
+                    repository: context.read<AnalysisRepository>(),
+                  )..add(FetchAnalysisDetails(videoId: videoId)),
+                  child: LarvaVideoDetailsPage(),
+                ).withSlideTransition(state);
+              }
+              return const SizedBox.shrink().withoutTransition(state: state);
+            },
+          ),
+          GoRoute(
+            path: SettingsPage.route,
+            name: SettingsPage.name,
+            pageBuilder: (context, state) {
+              return SettingsPage().withoutTransition(state: state);
+            },
+          ),
+        ],
       ),
     ],
     redirect: (context, state) {
