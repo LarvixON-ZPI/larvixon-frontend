@@ -66,6 +66,8 @@ class _LarvaVideoGridState extends State<LarvaVideoGrid> {
   Widget build(BuildContext context) {
     return BlocBuilder<AnalysisListCubit, AnalysisListState>(
       builder: (context, state) {
+        final String errorMessage =
+            state.errorMessage ?? context.translate.unknownError;
         return LayoutBuilder(
           builder: (context, constraints) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -89,26 +91,23 @@ class _LarvaVideoGridState extends State<LarvaVideoGrid> {
                     return AnalysisCard(
                       key: ValueKey(videoId),
                       videoId: videoId,
-                    ).withOnHoverEffect;
+                    );
                   }
                   if (state.status == AnalysisListStatus.loading) {
                     return const Center(child: CircularProgressIndicator());
                   }
                   if (state.status == AnalysisListStatus.error) {
                     return CustomCard(
-                      title: context.translate.error,
-                      description:
-                          state.errorMessage ?? context.translate.unknownError,
-                      icon: Icons.error,
+                      title: Text(context.translate.error),
+                      description: Text(errorMessage),
+                      icon: Icon(Icons.error),
                       color: Colors.redAccent,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            context.read<AnalysisListCubit>().fetchVideoList();
-                          },
-                          child: Text(context.translate.retry),
-                        ),
-                      ],
+                      child: ElevatedButton(
+                        onPressed: () {
+                          context.read<AnalysisListCubit>().fetchVideoList();
+                        },
+                        child: Text(context.translate.retry),
+                      ),
                     ).withOnHoverEffect;
                   }
                   return null;
