@@ -164,5 +164,7 @@
   "enterMfaCode": "Enter MFA Code",
   "tryAgain": "Try Again",
   "mfaDialogTitle": "Multi-Factor Authentication",
-  "mfaNotImplemented": "MFA functionality is not yet implemented."
+  "mfaNotImplemented": "MFA functionality is not yet implemented.",
+  "analyzeNewVideo": "Analyze new video",
+  "settings": "Settings"
 }

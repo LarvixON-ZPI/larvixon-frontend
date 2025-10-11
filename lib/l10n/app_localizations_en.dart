@@ -300,4 +300,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mfaNotImplemented => 'MFA functionality is not yet implemented.';
+
+  @override
+  String get analyzeNewVideo => 'Analyze new video';
+
+  @override
+  String get settings => 'Settings';
 }

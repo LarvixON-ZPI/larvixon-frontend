@@ -302,4 +302,10 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get mfaNotImplemented =>
       'Funkcjonalność MFA nie jest jeszcze zaimplementowana.';
+
+  @override
+  String get analyzeNewVideo => 'Wyślij nagranie';
+
+  @override
+  String get settings => 'Ustawienia';
 }
