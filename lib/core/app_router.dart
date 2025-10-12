@@ -9,7 +9,7 @@ import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysi
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/analysis_details_page.dart';
 import 'package:larvixon_frontend/src/home/larvixon_app_bar.dart';
-import 'package:larvixon_frontend/src/landing/presentation/about/about_page.dart';
+import 'package:larvixon_frontend/src/about_us/presentation/pages/about_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/landing_appbar.dart';
 import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
 import 'package:larvixon_frontend/src/common/app_shell.dart';

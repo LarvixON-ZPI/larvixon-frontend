@@ -58,63 +58,64 @@ class _ContactSectionState extends State<ContactSection> {
         SizedBox(
           width: double.infinity,
           child: CustomCard(
-            title: context.translate.sendUsAMessage,
-            children: [
-              Form(
-                key: _formKey,
-                child: Column(
-                  spacing: 16,
-                  children: [
-                    Row(
-                      spacing: 16,
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: _nameController,
-                            decoration: InputDecoration(
-                              hintText: context.translate.firstName,
+            child: Column(
+              children: [
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    spacing: 16,
+                    children: [
+                      Row(
+                        spacing: 16,
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              controller: _nameController,
+                              decoration: InputDecoration(
+                                hintText: context.translate.firstName,
+                              ),
+                              validator: (v) =>
+                                  FormValidators.firstNameValidator(context, v),
                             ),
-                            validator: (v) =>
-                                FormValidators.firstNameValidator(context, v),
                           ),
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                            controller: _emailController,
-                            decoration: InputDecoration(
-                              hintText: context.translate.email,
+                          Expanded(
+                            child: TextFormField(
+                              controller: _emailController,
+                              decoration: InputDecoration(
+                                hintText: context.translate.email,
+                              ),
+                              keyboardType: TextInputType.emailAddress,
+                              validator: (v) =>
+                                  FormValidators.emailValidator(context, v),
                             ),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (v) =>
-                                FormValidators.emailValidator(context, v),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
 
-                    TextFormField(
-                      controller: _messageController,
-                      decoration: InputDecoration(
-                        hintText: context.translate.message,
+                      TextFormField(
+                        controller: _messageController,
+                        decoration: InputDecoration(
+                          hintText: context.translate.message,
+                        ),
+                        minLines: 3,
+                        maxLines: 6,
+                        validator: (v) => FormValidators.lengthValidator(
+                          context,
+                          v,
+                          fieldName: context.translate.message,
+                          minLength: 10,
+                          maxLength: 512,
+                        ),
                       ),
-                      minLines: 3,
-                      maxLines: 6,
-                      validator: (v) => FormValidators.lengthValidator(
-                        context,
-                        v,
-                        fieldName: context.translate.message,
-                        minLength: 10,
-                        maxLength: 512,
+                      ElevatedButton(
+                        onPressed: _submit,
+                        child: Text(context.translate.send),
                       ),
-                    ),
-                    ElevatedButton(
-                      onPressed: _submit,
-                      child: Text(context.translate.send),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ],

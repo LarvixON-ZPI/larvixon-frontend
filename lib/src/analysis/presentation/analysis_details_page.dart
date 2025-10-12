@@ -38,11 +38,11 @@ class LarvaVideoDetailsPage extends StatelessWidget {
                     children: [
                       ...video.results!.map(
                         (r) => CustomCard(
-                          title: r.$1,
-                          description: "${(r.$2 * 100).toStringAsFixed(1)}%",
+                          title: Text(r.$1),
+                          description: Text(
+                            "${(r.$2 * 100).toStringAsFixed(1)}%",
+                          ),
                           color: barColor(r.$2).withValues(alpha: 0.3),
-
-                          children: [],
                         ),
                       ),
                     ],

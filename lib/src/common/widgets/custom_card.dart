@@ -6,20 +6,18 @@ class CustomCard extends StatelessWidget {
     this.title,
     this.description,
     this.icon,
-    this.children,
+    this.child,
     this.mainAxisSize = MainAxisSize.min,
-    this.useWrap = true,
     this.color,
     this.background,
   });
-  final String? title;
-  final String? description;
-  final IconData? icon;
-  final List<Widget>? children;
+  final Widget? title;
+  final Widget? description;
+  final Widget? icon;
   final MainAxisSize mainAxisSize;
-  final bool useWrap;
   final Color? color;
   final Widget? background;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -34,29 +32,15 @@ class CustomCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: mainAxisSize,
               spacing: 6,
               children: [
-                if (icon != null)
-                  Column(children: [Icon(icon, size: 40), SizedBox(height: 2)]),
-                if (title != null)
-                  Text(title!, style: Theme.of(context).textTheme.titleMedium),
-                if (description != null)
-                  Column(
-                    children: [
-                      Text(
-                        description!,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    ],
-                  ),
-
-                if (children != null)
-                  if (useWrap) ...[
-                    Wrap(spacing: 12, runSpacing: 12, children: children!),
-                  ] else
-                    ...children!,
+                if (icon != null) icon!,
+                if (title != null) title!,
+                if (description != null) description!,
+                if (child != null) child!,
               ],
             ),
           ),

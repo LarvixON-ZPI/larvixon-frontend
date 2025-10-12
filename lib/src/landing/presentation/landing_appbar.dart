@@ -6,7 +6,7 @@ import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart
 import 'package:larvixon_frontend/src/common/widgets/app_bar_button.dart';
 import 'package:larvixon_frontend/src/common/widgets/app_bar_base.dart';
 import 'package:larvixon_frontend/src/common/widgets/larvixon_logo.dart';
-import 'package:larvixon_frontend/src/landing/presentation/about/about_page.dart';
+import 'package:larvixon_frontend/src/about_us/presentation/pages/about_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/landing/landing_page.dart';
 import 'package:larvixon_frontend/src/settings/presentation/widgets/locale_dropdown_menu.dart';

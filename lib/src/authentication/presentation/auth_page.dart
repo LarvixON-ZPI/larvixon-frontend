@@ -30,12 +30,10 @@ class _AuthPageState extends State<AuthPage>
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: 600),
             child: CustomCard(
-              children: [
-                AuthForm(
-                  initialMode: widget.initialMode,
-                  initialEmail: widget.initialEmail,
-                ),
-              ],
+              child: AuthForm(
+                initialMode: widget.initialMode,
+                initialEmail: widget.initialEmail,
+              ),
             ).withDefaultPagePadding,
           ),
         ),

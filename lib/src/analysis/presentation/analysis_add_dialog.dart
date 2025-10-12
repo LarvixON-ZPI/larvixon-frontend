@@ -103,71 +103,69 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
 
           return CustomCard(
             color: Colors.transparent,
-            title: context.translate.uploadNewVideo,
+            title: Text(context.translate.uploadNewVideo),
 
-            description: context.translate.uploadVideoDescription,
-            children: [
-              Form(
-                key: _formKey,
-                child: Column(
-                  spacing: 16,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextFormField(
-                      controller: _titleController,
-                      decoration: InputDecoration(
-                        hint: Text(context.translate.enterTitle),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return context.translate.fieldIsRequired;
-                        }
-                        return null;
-                      },
+            description: Text(context.translate.uploadVideoDescription),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                spacing: 16,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextFormField(
+                    controller: _titleController,
+                    decoration: InputDecoration(
+                      hint: Text(context.translate.enterTitle),
                     ),
-                    ElevatedButton.icon(
-                      onPressed: _pickFile,
-                      icon: const Icon(Icons.upload_file),
-                      label: Text(
-                        _fileName != null
-                            ? context.translate.selectedFile(_fileName!)
-                            : context.translate.selectVideo,
-                      ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return context.translate.fieldIsRequired;
+                      }
+                      return null;
+                    },
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: _pickFile,
+                    icon: const Icon(Icons.upload_file),
+                    label: Text(
+                      _fileName != null
+                          ? context.translate.selectedFile(_fileName!)
+                          : context.translate.selectVideo,
                     ),
-                    Row(
-                      spacing: 16,
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: ElevatedButton.icon(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.redAccent,
-                            ),
-                            onPressed: () => Navigator.of(context).pop(),
-                            icon: const Icon(Icons.close),
-                            label: Text(context.translate.cancel),
+                  ),
+                  Row(
+                    spacing: 16,
+                    children: [
+                      Flexible(
+                        flex: 1,
+                        child: ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.redAccent,
                           ),
+                          onPressed: () => Navigator.of(context).pop(),
+                          icon: const Icon(Icons.close),
+                          label: Text(context.translate.cancel),
                         ),
-                        Spacer(flex: 1),
-                        Flexible(
-                          flex: 2,
-                          child: ElevatedButton.icon(
-                            iconAlignment: IconAlignment.start,
+                      ),
+                      Spacer(flex: 1),
+                      Flexible(
+                        flex: 2,
+                        child: ElevatedButton.icon(
+                          iconAlignment: IconAlignment.start,
 
-                            onPressed: canUpload
-                                ? null
-                                : () => _uploadFile(context, _formKey),
+                          onPressed: canUpload
+                              ? null
+                              : () => _uploadFile(context, _formKey),
 
-                            icon: _UploadIcon(isUploading: isUploading),
-                            label: _UploadText(isUploading: isUploading),
-                          ),
+                          icon: _UploadIcon(isUploading: isUploading),
+                          label: _UploadText(isUploading: isUploading),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ],
+            ),
           );
         },
       ),

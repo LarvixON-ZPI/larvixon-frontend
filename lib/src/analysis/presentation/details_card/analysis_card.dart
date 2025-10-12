@@ -54,38 +54,41 @@ class _AnalysisCardState extends State<AnalysisCard>
               child: Skeletonizer(
                 enabled: enabled,
                 child: CustomCard(
-                  useWrap: false,
-                  children: [
-                    Row(
+                  child: Expanded(
+                    child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Spacer(),
-                        StatusRow(video: state.video),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.end,
+
+                          children: [StatusRow(video: state.video)],
+                        ),
+                        if (state.video?.name != null)
+                          Text(
+                            state.video!.name!,
+                            style: Theme.of(context).textTheme.titleMedium,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        if (video != null)
+                          Text(
+                            "${video.uploadedAt.formattedDateOnly} ${video.uploadedAt.formattedTimeOnly}",
+                          ),
+                        if (hasResults)
+                          Expanded(
+                            child: ResultsSection(
+                              results: state.video!.results!,
+                            ),
+                          ),
+
+                        ProgressSection(
+                          video: state.video,
+                          progress: state.progress,
+                        ),
                       ],
                     ),
-                    if (state.video?.name != null)
-                      Text(
-                        state.video?.name ?? '',
-                        style: Theme.of(context).textTheme.titleMedium,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    if (video != null)
-                      Text(
-                        "${video.uploadedAt.formattedDateOnly} ${video.uploadedAt.formattedTimeOnly}",
-                      ),
-                    if (hasResults)
-                      ResultsSection(results: state.video!.results!),
-                    (state.video?.status == AnalysisProgressStatus.failed ||
-                            state.video?.status ==
-                                AnalysisProgressStatus.completed)
-                        ? SizedBox.shrink()
-                        : Spacer(),
-                    ProgressSection(
-                      video: state.video,
-                      progress: state.progress,
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -97,25 +100,4 @@ class _AnalysisCardState extends State<AnalysisCard>
 
   @override
   bool get wantKeepAlive => true;
-}
-
-class _DateText extends StatelessWidget {
-  final DateTime? date;
-  final String text;
-  const _DateText({super.key, required this.date, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: Duration(milliseconds: 300),
-      transitionBuilder: (child, animation) {
-        return ScaleTransition(
-          scale: animation,
-          child: FadeTransition(opacity: animation, child: child),
-        );
-      },
-
-      child: Text("$text ${date?.toLocal().formattedDateOnly ?? ''}"),
-    );
-  }
 }
