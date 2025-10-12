@@ -6,36 +6,16 @@ import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
 class TeamMembersCard extends StatelessWidget {
   const TeamMembersCard({super.key});
-  static const TeamMember jantar = TeamMember(
-    name: "Mikołaj",
-    surname: "Kubś",
-    roles: [MemberRole.backend, MemberRole.frontend, MemberRole.simulation],
-  );
-  static const TeamMember margarynka = TeamMember(
-    name: "Martyna",
-    surname: "Łopianiak",
-    roles: [MemberRole.backend],
-  );
-  static const TeamMember krzysztof = TeamMember(
-    name: "Krzysztof",
-    surname: "Kulka",
-    roles: [MemberRole.ml],
-  );
-  static const TeamMember patryk = TeamMember(
-    name: "Patryk",
-    surname: "Łuszczek",
-    roles: [MemberRole.frontend, MemberRole.ui, MemberRole.ux],
-  );
 
   @override
   Widget build(BuildContext context) {
     return CustomCard(
-      icon: Icon(Icons.group),
+      icon: const Icon(Icons.group),
       title: Text(
         context.translate.ourTeam,
         style: Theme.of(context).textTheme.titleLarge,
       ),
-      child: SizedBox(
+      child: const SizedBox(
         width: double.infinity,
         child: Wrap(
           spacing: 16,

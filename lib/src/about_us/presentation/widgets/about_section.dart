@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/core/constants/breakpoints.dart';
 import 'package:larvixon_frontend/src/about_us/presentation/widgets/team_member_avatar.dart';
 import 'package:larvixon_frontend/src/about_us/presentation/widgets/team_members_card.dart';
+import 'package:larvixon_frontend/src/common/extensions/default_padding.dart';
 import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
@@ -15,20 +16,29 @@ class AboutSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
-      spacing: 12,
       children: [
-        Text(
-          context.translate.about,
-          style: Theme.of(
-            context,
-          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                context.translate.about,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                context.translate.aboutDescription,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: 8),
-        Text(
-          context.translate.aboutDescription,
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
-        // TODO: make the cards expand to full width on narrow
+
         LayoutBuilder(
           builder: (context, constraints) {
             final isNarrow = constraints.maxWidth < Breakpoints.small;
