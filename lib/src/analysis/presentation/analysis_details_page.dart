@@ -39,7 +39,9 @@ class LarvaVideoDetailsPage extends StatelessWidget {
                       ...video.results!.map(
                         (r) => CustomCard(
                           title: Text(r.$1),
-                          description: Text("${(r.$2 * 100).toStringAsFixed(1)}%"),
+                          description: Text(
+                            "${(r.$2 * 100).toStringAsFixed(1)}%",
+                          ),
                           color: barColor(r.$2).withValues(alpha: 0.3),
                         ),
                       ),
