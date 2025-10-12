@@ -11,6 +11,8 @@ class AppTheme {
   static final focusColor = Colors.transparent;
   static final fontFamily = GoogleFonts.oswald().fontFamily;
   static final inputDecorationTheme = InputDecorationTheme(
+    filled: true,
+
     errorStyle: const TextStyle(height: 1.0),
 
     border: OutlineInputBorder(

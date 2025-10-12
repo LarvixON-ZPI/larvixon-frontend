@@ -15,9 +15,12 @@ class AppBarButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: TextButton.styleFrom(
+        textStyle: TextStyle(color: Theme.of(context).iconTheme.color!),
+
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       ),
-      child: Text(label),
+
+      child: Text(label, style: Theme.of(context).textTheme.titleMedium),
     );
   }
 }
