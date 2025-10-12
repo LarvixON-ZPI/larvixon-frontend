@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:larvixon_frontend/core/constants/breakpoints.dart';
 import 'package:larvixon_frontend/src/about_us/domain/entities/team_member.dart';
 import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';

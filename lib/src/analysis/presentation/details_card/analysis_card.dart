@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc.dart';
-import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress_status.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/analysis_details_page.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/details_card/progress_section.dart';
@@ -40,7 +39,6 @@ class _AnalysisCardState extends State<AnalysisCard>
           final hasResults = state.video?.results?.isNotEmpty ?? false;
           final enabled =
               state.status == AnalysisStatus.loading || state.video == null;
-          final title = state.video?.name ?? '';
 
           return GestureDetector(
             onTap: () => context.push(

@@ -2,8 +2,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:fpdart/fpdart.dart';
-import 'package:larvixon_frontend/core/errors/failures.dart';
 import 'package:larvixon_frontend/src/settings/domain/repositories/settings_repository.dart';
 
 part 'settings_state.dart';
@@ -27,7 +25,6 @@ class SettingsCubit extends Cubit<SettingsState> {
     themeResult.match((failure) {}, (theme) {
       emit(state.copyWith(theme: theme));
     });
-    print("theme: ${themeResult}, locale: ${localeResult}");
   }
 
   Future<void> setLocale({required Locale locale}) async {

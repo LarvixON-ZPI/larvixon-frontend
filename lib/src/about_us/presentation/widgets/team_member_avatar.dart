@@ -20,7 +20,6 @@ class TeamMemberAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     final String? imageUrl = teamMember.imageUrl;
     final bool hasImage = imageUrl != null;
-    final String? rolesText = teamMember.rolesString;
     return GestureDetector(
       onTap: () => showGeneralDialog(
         context: context,

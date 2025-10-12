@@ -2,13 +2,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:larvixon_frontend/core/constants/breakpoints.dart';
-
-import 'package:larvixon_frontend/src/landing/presentation/landing/landing_page.dart';
-
-import '../../common/extensions/translate_extension.dart';
 
 class AppBarBase extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? children;

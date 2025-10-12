@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/core/constants/breakpoints.dart';
-import 'package:larvixon_frontend/src/about_us/presentation/widgets/team_member_avatar.dart';
 import 'package:larvixon_frontend/src/about_us/presentation/widgets/team_members_card.dart';
-import 'package:larvixon_frontend/src/common/extensions/default_padding.dart';
-import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
 import '../../../common/extensions/translate_extension.dart';
