@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'colors.dart';
-
 class TextStyles {
   static const TextStyle headline = TextStyle(
     fontSize: 24,

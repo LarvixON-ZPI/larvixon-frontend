@@ -9,7 +9,6 @@ import 'package:larvixon_frontend/src/settings/presentation/blocs/cubit/settings
 
 import 'core/api_client.dart';
 import 'core/app_router.dart';
-import 'core/locale_controller.dart';
 import 'core/theme/app_theme.dart';
 import 'core/token_storage.dart';
 import 'l10n/app_localizations.dart';
@@ -35,7 +34,6 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  Locale? _locale;
   late final AppRouter _appRouter;
   late final AuthBloc _authBloc;
   late final UserBloc _userBloc;

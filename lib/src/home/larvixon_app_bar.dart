@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
@@ -10,7 +9,6 @@ import 'package:larvixon_frontend/src/common/widgets/app_bar_base.dart';
 import 'package:larvixon_frontend/src/common/widgets/larvixon_logo.dart';
 import 'package:larvixon_frontend/src/home/home_page.dart';
 import 'package:larvixon_frontend/src/settings/presentation/pages/settings_page.dart';
-import 'package:larvixon_frontend/src/settings/presentation/widgets/locale_dropdown_menu.dart';
 import 'package:larvixon_frontend/src/user/presentation/account_page.dart';
 
 class LarvixonAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -29,23 +27,23 @@ class LarvixonAppBar extends StatelessWidget implements PreferredSizeWidget {
               context.read<AnalysisListCubit>(),
             );
           },
-          icon: const Icon(Icons.add),
+          icon: Icon(Icons.add, color: Theme.of(context).iconTheme.color!),
         ),
 
         IconButton(
-          icon: const Icon(Icons.logout),
+          icon: Icon(Icons.logout, color: Theme.of(context).iconTheme.color!),
           onPressed: () {
             context.read<AuthBloc>().add(AuthSignOutRequested());
           },
         ),
         IconButton(
-          icon: const Icon(Icons.settings),
+          icon: Icon(Icons.settings, color: Theme.of(context).iconTheme.color!),
           onPressed: () {
             context.go(SettingsPage.route);
           },
         ),
         IconButton(
-          icon: const Icon(Icons.person),
+          icon: Icon(Icons.person, color: Theme.of(context).iconTheme.color!),
           onPressed: () {
             context.go(AccountPage.route);
           },
