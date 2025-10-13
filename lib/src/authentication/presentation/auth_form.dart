@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:larvixon_frontend/src/common/widgets/larvixon_logo.dart';
 
 import '../../common/extensions/translate_extension.dart';
 import '../../common/form_validators.dart';
@@ -132,12 +134,7 @@ class _AuthFormState extends State<AuthForm>
               },
               child: AnimatedBuilder(
                 animation: _logoController,
-                child: Text(
-                  context.translate.larvixon,
-                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                child: const LarvixonLogo(useFull: false),
                 builder: (context, child) {
                   return Transform.scale(
                     scale: _scaleAnimation.value,
@@ -194,7 +191,7 @@ class _AuthFormState extends State<AuthForm>
             TextFormField(
               controller: _emailController,
               decoration: InputDecoration(hintText: context.translate.email),
-              autofillHints: [AutofillHints.email],
+              autofillHints: const [AutofillHints.email],
               autovalidateMode:
                   (_validatedFields.contains('email') ||
                       _serverSideFieldErrors.containsKey('email'))
@@ -212,7 +209,7 @@ class _AuthFormState extends State<AuthForm>
             ),
             TextFormField(
               controller: _passwordController,
-              autofillHints: [AutofillHints.password],
+              autofillHints: const [AutofillHints.password],
               decoration: InputDecoration(
                 hintText: context.translate.password,
                 suffixIcon: IconButton(
@@ -263,7 +260,7 @@ class _AuthFormState extends State<AuthForm>
                       if (_formMode == AuthFormMode.signUp) ...[
                         TextFormField(
                           controller: _confirmPasswordController,
-                          autofillHints: [AutofillHints.password],
+                          autofillHints: const [AutofillHints.password],
                           decoration: InputDecoration(
                             hintText: context.translate.confirmPassword,
                             suffixIcon: IconButton(
@@ -298,7 +295,7 @@ class _AuthFormState extends State<AuthForm>
                         ),
                         TextFormField(
                           controller: _usernameController,
-                          autofillHints: [AutofillHints.username],
+                          autofillHints: const [AutofillHints.username],
                           decoration: InputDecoration(
                             hintText: context.translate.username,
                           ),
