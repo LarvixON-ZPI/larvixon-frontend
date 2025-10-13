@@ -26,6 +26,7 @@ dependencies:
   animations: ^2.0.11
   shared_preferences: ^2.5.3
   font_awesome_flutter: ^10.10.0
+  flutter_svg: ^2.2.1
 
 dev_dependencies:
   flutter_test:
@@ -42,5 +43,7 @@ flutter:
     - family: PixelatedElegance
       fonts:
         - asset: fonts/PixelatedEleganceRegular-ovyAA.ttf
+  assets: 
+      - assets/images/logo/
 
 
