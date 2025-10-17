@@ -9,6 +9,7 @@ import 'package:larvixon_frontend/src/common/widgets/app_bar_base.dart';
 import 'package:larvixon_frontend/src/common/widgets/larvixon_logo.dart';
 import 'package:larvixon_frontend/src/home/home_page.dart';
 import 'package:larvixon_frontend/src/settings/presentation/pages/settings_page.dart';
+import 'package:larvixon_frontend/src/settings/presentation/widgets/settings_dropdown_menu.dart';
 import 'package:larvixon_frontend/src/user/presentation/account_page.dart';
 
 class LarvixonAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -36,12 +37,7 @@ class LarvixonAppBar extends StatelessWidget implements PreferredSizeWidget {
             context.read<AuthBloc>().add(AuthSignOutRequested());
           },
         ),
-        IconButton(
-          icon: Icon(Icons.settings, color: Theme.of(context).iconTheme.color!),
-          onPressed: () {
-            context.go(SettingsPage.route);
-          },
-        ),
+        SettingsDropdownMenu(),
         IconButton(
           icon: Icon(Icons.person, color: Theme.of(context).iconTheme.color!),
           onPressed: () {

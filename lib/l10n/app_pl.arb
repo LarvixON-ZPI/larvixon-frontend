@@ -166,5 +166,10 @@
   "mfaDialogTitle": "Autoryzacja dwuskładnikowa",
   "mfaNotImplemented": "Funkcjonalność MFA nie jest jeszcze zaimplementowana.",
   "analyzeNewVideo": "Wyślij nagranie",
-  "settings": "Ustawienia"
+  "settings": "Ustawienia",
+  "appearance": "Wygląd",
+  "language": "Język",
+  "lightMode": "Tryb jasny",
+  "darkMode": "Tryb ciemny",
+  "systemDefault": "Domyślny systemowy"
 }
