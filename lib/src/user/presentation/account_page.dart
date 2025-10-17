@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
+import 'package:larvixon_frontend/src/common/widgets/profile_avatar.dart';
 
 import '../../../src/common/extensions/translate_extension.dart';
 import '../../common/form_validators.dart';
@@ -51,185 +54,223 @@ class _AccountPageState extends State<AccountPage> {
     _setupControllers(user: context.read<UserBloc>().state.user);
   }
 
+  Function()? _onSavePressed(GlobalKey<FormState> formKey, UserState state) {
+    return state.isUpdating
+        ? null
+        : () {
+            if (_formKey.currentState!.validate()) {
+              context.read<UserBloc>().add(
+                UserProfileDataUpdateRequested(
+                  firstName: _firstNameController.text,
+                  lastName: _lastNameController.text,
+                  bio: _bioController.text,
+                  phoneNumber: _phoneNumberController.text,
+                  organization: _organizationController.text,
+                ),
+              );
+              setState(() {
+                isEditing = false;
+              });
+            }
+          };
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: SafeArea(
-        child: BlocConsumer<UserBloc, UserState>(
-          listenWhen: (previous, current) => previous.user != current.user,
-          listener: (context, state) {
-            _setupControllers(user: state.user);
-          },
-          builder: (context, state) {
-            switch (state.status) {
-              case UserStatus.initial:
-              case UserStatus.loading:
-                return const Center(child: CircularProgressIndicator());
-              case UserStatus.error:
-                return Center(child: Text('Error: ${state.errorMessage}'));
-              case UserStatus.success:
-                final user = state.user;
-                if (user == null) {
-                  return const Center(child: Text('No user data available.'));
-                }
+    return Center(
+      child: SingleChildScrollView(
+        child: SafeArea(
+          child: BlocConsumer<UserBloc, UserState>(
+            listenWhen: (previous, current) => previous.user != current.user,
+            listener: (context, state) {
+              _setupControllers(user: state.user);
+            },
+            builder: (context, state) {
+              switch (state.status) {
+                case UserStatus.initial:
+                case UserStatus.loading:
+                  return const Center(child: CircularProgressIndicator());
+                case UserStatus.error:
+                  return Center(child: Text('Error: ${state.errorMessage}'));
+                case UserStatus.success:
+                  final user = state.user;
+                  if (user == null) {
+                    return const Center(child: Text('No user data available.'));
+                  }
 
-                return SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      Header(username: user.username, email: user.email),
-                      Form(
-                        key: _formKey,
-                        child: Container(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            spacing: 10.0,
-                            children: [
-                              TextFormField(
-                                readOnly: !isEditing,
-                                controller: _firstNameController,
-                                decoration: InputDecoration(
-                                  labelText: context.translate.firstName,
+                  return CustomCard(
+                    constraints: const BoxConstraints(maxWidth: 800),
+                    child: Stack(
+                      children: [
+                        Column(
+                          children: <Widget>[
+                            Row(
+                              children: [
+                                Header(
+                                  username: user.username,
+                                  email: user.email,
                                 ),
-                                autovalidateMode: AutovalidateMode.always,
-                                validator: (value) {
-                                  return FormValidators.lengthValidator(
-                                    context,
-                                    value,
-                                    fieldName: context.translate.firstName,
-                                    minLength: 0,
-                                    maxLength: 150,
-                                    allowNull: true,
-                                  );
-                                },
-                              ),
-                              TextFormField(
-                                readOnly: !isEditing,
-                                controller: _lastNameController,
-                                decoration: InputDecoration(
-                                  labelText: context.translate.lastName,
-                                ),
-                                autovalidateMode: AutovalidateMode.always,
-                                validator: (value) {
-                                  return FormValidators.lengthValidator(
-                                    context,
-                                    value,
-                                    fieldName: context.translate.lastName,
-                                    minLength: 0,
-                                    maxLength: 150,
-                                    allowNull: true,
-                                  );
-                                },
-                              ),
-                              TextFormField(
-                                readOnly: !isEditing,
-                                controller: _phoneNumberController,
-                                decoration: InputDecoration(
-                                  labelText: context.translate.phoneNumber,
-                                ),
-                                autovalidateMode: AutovalidateMode.always,
-                                validator: (value) {
-                                  return FormValidators.lengthValidator(
-                                    context,
-                                    value,
-                                    fieldName: context.translate.phoneNumber,
-                                    minLength: 0,
-                                    maxLength: 20,
-                                    allowNull: true,
-                                  );
-                                },
-                              ),
-                              TextFormField(
-                                readOnly: !isEditing,
-                                controller: _organizationController,
-                                decoration: InputDecoration(
-                                  labelText: context.translate.organization,
-                                ),
-                                autovalidateMode: AutovalidateMode.always,
-                                validator: (value) {
-                                  return FormValidators.lengthValidator(
-                                    context,
-                                    value,
-                                    fieldName: context.translate.organization,
-                                    minLength: 0,
-                                    maxLength: 255,
-                                    allowNull: true,
-                                  );
-                                },
-                              ),
-                              TextFormField(
-                                readOnly: !isEditing,
-                                controller: _bioController,
-                                maxLines: 3,
-                                decoration: InputDecoration(
-                                  labelText: context.translate.bio,
-                                ),
-                                autovalidateMode: AutovalidateMode.always,
-                                validator: (value) {
-                                  return FormValidators.lengthValidator(
-                                    context,
-                                    value,
-                                    fieldName: context.translate.bio,
-                                    minLength: 0,
-                                    maxLength: 500,
-                                    allowNull: true,
-                                  );
-                                },
-                              ),
+                              ],
+                            ),
+                            Form(
+                              key: _formKey,
+                              child: Column(
+                                spacing: 10.0,
+                                children: [
+                                  Row(
+                                    spacing: 10,
+                                    children: [
+                                      Expanded(
+                                        child: TextFormField(
+                                          readOnly: !isEditing,
+                                          controller: _firstNameController,
+                                          decoration: InputDecoration(
+                                            labelText:
+                                                context.translate.firstName,
+                                          ),
+                                          autovalidateMode:
+                                              AutovalidateMode.always,
+                                          validator: (value) {
+                                            return FormValidators.lengthValidator(
+                                              context,
+                                              value,
+                                              fieldName:
+                                                  context.translate.firstName,
+                                              minLength: 0,
+                                              maxLength: 150,
+                                              allowNull: true,
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: TextFormField(
+                                          readOnly: !isEditing,
+                                          controller: _lastNameController,
+                                          decoration: InputDecoration(
+                                            labelText:
+                                                context.translate.lastName,
+                                          ),
+                                          autovalidateMode:
+                                              AutovalidateMode.always,
+                                          validator: (value) {
+                                            return FormValidators.lengthValidator(
+                                              context,
+                                              value,
+                                              fieldName:
+                                                  context.translate.lastName,
+                                              minLength: 0,
+                                              maxLength: 150,
+                                              allowNull: true,
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    spacing: 10,
+                                    children: [
+                                      Expanded(
+                                        child: TextFormField(
+                                          readOnly: !isEditing,
+                                          controller: _phoneNumberController,
+                                          decoration: InputDecoration(
+                                            labelText:
+                                                context.translate.phoneNumber,
+                                          ),
+                                          autovalidateMode:
+                                              AutovalidateMode.always,
+                                          validator: (value) {
+                                            return FormValidators.lengthValidator(
+                                              context,
+                                              value,
+                                              fieldName:
+                                                  context.translate.phoneNumber,
+                                              minLength: 0,
+                                              maxLength: 20,
+                                              allowNull: true,
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: TextFormField(
+                                          readOnly: !isEditing,
+                                          controller: _organizationController,
+                                          decoration: InputDecoration(
+                                            labelText:
+                                                context.translate.organization,
+                                          ),
+                                          autovalidateMode:
+                                              AutovalidateMode.always,
+                                          validator: (value) {
+                                            return FormValidators.lengthValidator(
+                                              context,
+                                              value,
+                                              fieldName: context
+                                                  .translate
+                                                  .organization,
+                                              minLength: 0,
+                                              maxLength: 255,
+                                              allowNull: true,
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
 
-                              AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 300),
-                                transitionBuilder: (child, animation) {
-                                  final offset = Tween<Offset>(
-                                    begin: const Offset(1, 0),
-                                    end: Offset.zero,
-                                  ).animate(animation);
-                                  return SlideTransition(
-                                    position: offset,
-                                    child: child,
-                                  );
-                                },
-                                child: isEditing
-                                    ? ElevatedButton(
-                                        onPressed: state.isUpdating
-                                            ? null
-                                            : () {
-                                                if (_formKey.currentState!
-                                                    .validate()) {
-                                                  context.read<UserBloc>().add(
-                                                    UserProfileDataUpdateRequested(
-                                                      firstName:
-                                                          _firstNameController
-                                                              .text,
-                                                      lastName:
-                                                          _lastNameController
-                                                              .text,
-                                                      bio: _bioController.text,
-                                                      phoneNumber:
-                                                          _phoneNumberController
-                                                              .text,
-                                                      organization:
-                                                          _organizationController
-                                                              .text,
-                                                    ),
-                                                  );
-                                                  setState(() {
-                                                    isEditing = false;
-                                                  });
-                                                }
-                                              },
-                                        child: Text(context.translate.save),
-                                      )
-                                    : null,
+                                  TextFormField(
+                                    readOnly: !isEditing,
+                                    controller: _bioController,
+                                    maxLines: 3,
+                                    decoration: InputDecoration(
+                                      labelText: context.translate.bio,
+                                    ),
+                                    autovalidateMode: AutovalidateMode.always,
+                                    validator: (value) {
+                                      return FormValidators.lengthValidator(
+                                        context,
+                                        value,
+                                        fieldName: context.translate.bio,
+                                        minLength: 0,
+                                        maxLength: 500,
+                                        allowNull: true,
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
+                          ],
+                        ),
+                        Positioned(
+                          top: 16,
+                          right: 16,
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 150),
+                            child: IconButton(
+                              key: ValueKey(isEditing),
+                              onPressed: isEditing
+                                  ? _onSavePressed(_formKey, state)
+                                  : () => setState(() {
+                                      isEditing = true;
+                                    }),
+                              icon: Icon(
+                                isEditing
+                                    ? FontAwesomeIcons.check
+                                    : FontAwesomeIcons.penToSquare,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-            }
-          },
+                      ],
+                    ),
+                  );
+              }
+            },
+          ),
         ),
       ),
     );
@@ -239,8 +280,14 @@ class _AccountPageState extends State<AccountPage> {
 class Header extends StatelessWidget {
   final String username;
   final String email;
+  final String? imageUrl;
 
-  const Header({super.key, required this.username, required this.email});
+  const Header({
+    super.key,
+    required this.username,
+    required this.email,
+    this.imageUrl,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -248,13 +295,7 @@ class Header extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 40,
-            child: Text(
-              username.isNotEmpty ? username[0] : '',
-              style: const TextStyle(fontSize: 24, color: Colors.white),
-            ),
-          ),
+          ProfileAvatar(size: 60, imageUrl: imageUrl),
           const SizedBox(width: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
