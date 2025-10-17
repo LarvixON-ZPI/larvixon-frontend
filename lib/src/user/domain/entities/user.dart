@@ -9,6 +9,7 @@ class User extends Equatable {
   final String? bio;
   final String? phoneNumber;
   final String? organization;
+  final String? profilePictureUrl;
 
   const User({
     required this.email,
@@ -19,6 +20,7 @@ class User extends Equatable {
     this.bio,
     this.phoneNumber,
     this.organization,
+    this.profilePictureUrl,
   });
 
   User copyWith({
@@ -30,6 +32,7 @@ class User extends Equatable {
     String? bio,
     String? phoneNumber,
     String? organization,
+    String? profilePictureUrl,
   }) {
     return User(
       email: email ?? this.email,
@@ -40,6 +43,7 @@ class User extends Equatable {
       bio: bio ?? this.bio,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       organization: organization ?? this.organization,
+      profilePictureUrl: profilePictureUrl ?? this.profilePictureUrl,
     );
   }
 
@@ -53,5 +57,6 @@ class User extends Equatable {
     bio,
     phoneNumber,
     organization,
+    profilePictureUrl,
   ];
 }
