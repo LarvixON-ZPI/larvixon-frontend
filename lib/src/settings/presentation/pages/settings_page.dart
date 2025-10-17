@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:larvixon_frontend/src/settings/presentation/blocs/cubit/settings_cubit.dart';
-import 'package:larvixon_frontend/src/settings/presentation/widgets/locale_dropdown_menu.dart';
+import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
+import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
+import 'package:larvixon_frontend/src/settings/presentation/widgets/locale_wrap_list.dart';
+import 'package:larvixon_frontend/src/settings/presentation/widgets/theme_selection_buttons.dart';
 
 class SettingsPage extends StatefulWidget {
   static const route = '/settings';
@@ -15,45 +16,35 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsCubit, SettingsState>(
-      builder: (context, state) {
-        return Center(
-          child: SingleChildScrollView(
-            child: SafeArea(
-              child: Column(
-                children: [
-                  ElevatedButton(
-                    child: Text("Toggle"),
-                    onPressed: () =>
-                        context.read<SettingsCubit>().toggleTheme(),
-                  ),
-                  ElevatedButton(
-                    child: Text("Auto"),
-                    onPressed: () => context.read<SettingsCubit>().setTheme(
-                      theme: ThemeMode.system,
-                    ),
-                  ),
-                  ElevatedButton(
-                    child: Text("Dark"),
-
-                    onPressed: () => context.read<SettingsCubit>().setTheme(
-                      theme: ThemeMode.dark,
-                    ),
-                  ),
-                  ElevatedButton(
-                    child: Text("Light"),
-
-                    onPressed: () => context.read<SettingsCubit>().setTheme(
-                      theme: ThemeMode.light,
-                    ),
-                  ),
-                  LocaleDropdownMenu(),
-                ],
+    return Center(
+      child: SingleChildScrollView(
+        child: SafeArea(
+          child: Column(
+            children: [
+              CustomCard(
+                constraints: const BoxConstraints(maxWidth: 600),
+                child: Column(
+                  spacing: 16,
+                  children: [
+                    Text(context.translate.appearance),
+                    const ThemeSelectionButtons(),
+                  ],
+                ),
               ),
-            ),
+              CustomCard(
+                constraints: const BoxConstraints(maxWidth: 600),
+                child: Column(
+                  spacing: 16,
+                  children: [
+                    Text(context.translate.language),
+                    const LocaleWrapList(),
+                  ],
+                ),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

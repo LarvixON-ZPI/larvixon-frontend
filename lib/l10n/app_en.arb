@@ -166,5 +166,10 @@
   "mfaDialogTitle": "Multi-Factor Authentication",
   "mfaNotImplemented": "MFA functionality is not yet implemented.",
   "analyzeNewVideo": "Analyze new video",
-  "settings": "Settings"
+  "settings": "Settings",
+  "appearance": "Appearance",
+  "language": "Language",
+  "lightMode": "Light Mode",
+  "darkMode": "Dark Mode",
+  "systemDefault": "System Default"
 }

@@ -3,7 +3,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 
 class LarvixonLogo extends StatelessWidget {
   final VoidCallback? onPressed;
