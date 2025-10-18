@@ -7,9 +7,11 @@ import 'package:larvixon_frontend/core/transitions.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/analyses_page.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/analysis_details_page.dart';
 import 'package:larvixon_frontend/src/home/larvixon_app_bar.dart';
 import 'package:larvixon_frontend/src/about_us/presentation/pages/about_page.dart';
+import 'package:larvixon_frontend/src/home/larvixon_app_bar_cubit.dart';
 import 'package:larvixon_frontend/src/landing/presentation/landing_appbar.dart';
 import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
 import 'package:larvixon_frontend/src/common/app_shell.dart';
@@ -104,10 +106,15 @@ class AppRouter {
       ShellRoute(
         navigatorKey: _appShellNavigatorKey,
         pageBuilder: (context, state, child) {
-          return BlocProvider(
-            create: (context) =>
-                AnalysisListCubit(context.read())..fetchVideoList(),
-            child: AppShell(appBar: LarvixonAppBar(), child: child),
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) =>
+                    AnalysisListCubit(context.read())..fetchVideoList(),
+              ),
+              BlocProvider(create: (context) => AppBarCubit()),
+            ],
+            child: AppShell(appBar: const LarvixonAppBar(), child: child),
           ).withSlideTransition(state);
         },
 
@@ -117,6 +124,13 @@ class AppRouter {
             name: HomePage.name,
             pageBuilder: (context, state) {
               return const HomePage().withoutTransition(state: state);
+            },
+          ),
+          GoRoute(
+            path: AnalysesPage.route,
+            name: AnalysesPage.name,
+            pageBuilder: (context, state) {
+              return const AnalysesPage().withoutTransition(state: state);
             },
           ),
 
@@ -185,7 +199,7 @@ class AppRouter {
           }
           return null;
         case AuthStatus.authenticated:
-          if (loggingIn || onLanding) return HomePage.route;
+          if (loggingIn || onLanding) return AnalysesPage.route;
           return null;
         case AuthStatus.mfaRequired:
         case AuthStatus.error:
