@@ -14,9 +14,13 @@ class SortPopupMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
       offset: const Offset(40, 0),
-      child: Icon(
-        FontAwesomeIcons.sort,
-        color: Theme.of(context).iconTheme.color!,
+      child: AnimatedRotation(
+        turns: initialSorting.order == SortOrder.ascending ? 0.0 : 0.5,
+        duration: const Duration(milliseconds: 300),
+        child: Icon(
+          FontAwesomeIcons.sortUp,
+          color: Theme.of(context).iconTheme.color!,
+        ),
       ),
       itemBuilder: (context) {
         AnalysisSortField tempField = initialSorting.field;
