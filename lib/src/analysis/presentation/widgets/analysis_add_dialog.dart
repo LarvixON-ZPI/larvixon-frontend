@@ -14,7 +14,7 @@ class LarvaVideoAddForm extends StatefulWidget {
 
   @override
   State<LarvaVideoAddForm> createState() => _LarvaVideoAddFormState();
-  static Future<void> showLarvaVideoDialog(
+  static Future<void> showUploadLarvaVideoDialog(
     BuildContext context,
     AnalysisListCubit videoListCubit,
   ) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_results.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/details_card/analysis_results_entry.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/analysis_results_entry.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 
 class ResultsSection extends StatefulWidget {

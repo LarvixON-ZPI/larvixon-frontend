@@ -10,6 +10,7 @@ class AppBarBase extends StatelessWidget implements PreferredSizeWidget {
   final Widget? menu;
   final Widget? rightChild;
   final Widget? title;
+  final Color? backgroundColor;
 
   const AppBarBase({
     super.key,
@@ -17,6 +18,7 @@ class AppBarBase extends StatelessWidget implements PreferredSizeWidget {
     this.rightChild,
     this.menu,
     this.title,
+    this.backgroundColor = Colors.transparent,
   });
 
   @override
@@ -31,14 +33,16 @@ class AppBarBase extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: isNarrow,
       title: title,
       leading: isNarrow ? menu : null,
+      actionsPadding: const EdgeInsets.only(right: 16),
+
       actions: isNarrow
           ? (rightChild != null ? [rightChild!] : null)
           : (children ?? []),
       flexibleSpace: ClipRRect(
-        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
+        borderRadius: const BorderRadius.all(Radius.circular(24)),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(color: Colors.transparent),
+          child: Container(color: backgroundColor),
         ),
       ),
     );

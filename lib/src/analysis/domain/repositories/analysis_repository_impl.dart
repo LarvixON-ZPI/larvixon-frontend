@@ -8,6 +8,7 @@ import 'package:larvixon_frontend/src/analysis/data/mappers/analysis_mapper.dart
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_id_list.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress_status.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_upload_response.dart';
 import 'package:larvixon_frontend/src/analysis/domain/failures/failures.dart';
 
@@ -48,10 +49,16 @@ class AnalysisRepositoryImpl implements AnalysisRepository {
   }
 
   @override
-  TaskEither<Failure, AnalysisIdList> fetchVideoIds({String? nextPage}) {
+  TaskEither<Failure, AnalysisIdList> fetchVideoIds({
+    String? nextPage,
+    AnalysisSort? sort,
+  }) {
     return TaskEither.tryCatch(
       () async {
-        final results = await dataSource.fetchAnalysisIds(nextPage: nextPage);
+        final results = await dataSource.fetchAnalysisIds(
+          nextPage: nextPage,
+          sort: sort,
+        );
         final entity = idListMapper.dtoToEntity(results);
         return entity;
       },

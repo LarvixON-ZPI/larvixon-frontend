@@ -16,8 +16,10 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: SafeArea(child: const LandingContent().withDefaultPagePadding),
+    return Center(
+      child: SingleChildScrollView(
+        child: SafeArea(child: const LandingContent().withDefaultPagePadding),
+      ),
     );
   }
 }

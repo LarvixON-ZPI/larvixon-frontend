@@ -321,4 +321,48 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get systemDefault => 'System Default';
+
+  @override
+  String get noAnalysesFound => 'No analyses found.';
+
+  @override
+  String get loadingAnalysesError =>
+      'An error occurred while loading analyses.';
+
+  @override
+  String get addYourFirstAnalysis =>
+      'Add your first analysis by uploading a video.';
+
+  @override
+  String get clickToUpload => 'Click to upload a video';
+
+  @override
+  String get filter => 'Filter';
+
+  @override
+  String get sort => 'Sort';
+
+  @override
+  String get search => 'Search';
+
+  @override
+  String get apply => 'Apply';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get reset => 'Reset';
+
+  @override
+  String get createdAt => 'Created at';
+
+  @override
+  String get title => 'Title';
+
+  @override
+  String get ascending => 'Ascending';
+
+  @override
+  String get descending => 'Descending';
 }
