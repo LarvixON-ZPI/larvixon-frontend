@@ -323,4 +323,46 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get systemDefault => 'Domyślny systemowy';
+
+  @override
+  String get noAnalysesFound => 'Nie znaleziono analiz.';
+
+  @override
+  String get loadingAnalysesError => 'Wystąpił błąd podczas ładowania analiz.';
+
+  @override
+  String get addYourFirstAnalysis => 'Dodaj swoją pierwszą analizę.';
+
+  @override
+  String get clickToUpload => 'Kliknij, aby przesłać nagranie.';
+
+  @override
+  String get filter => 'Filtruj';
+
+  @override
+  String get sort => 'Sortuj';
+
+  @override
+  String get search => 'Szukaj';
+
+  @override
+  String get apply => 'Zastosuj';
+
+  @override
+  String get close => 'Zamknij';
+
+  @override
+  String get reset => 'Resetuj';
+
+  @override
+  String get createdAt => 'Data utworzenia';
+
+  @override
+  String get title => 'Tytuł';
+
+  @override
+  String get ascending => 'Rosnąco';
+
+  @override
+  String get descending => 'Malejąco';
 }

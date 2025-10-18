@@ -171,5 +171,19 @@
   "language": "Język",
   "lightMode": "Tryb jasny",
   "darkMode": "Tryb ciemny",
-  "systemDefault": "Domyślny systemowy"
+  "systemDefault": "Domyślny systemowy",
+  "noAnalysesFound": "Nie znaleziono analiz.",
+  "loadingAnalysesError": "Wystąpił błąd podczas ładowania analiz.",
+  "addYourFirstAnalysis": "Dodaj swoją pierwszą analizę.",
+  "clickToUpload": "Kliknij, aby przesłać nagranie.",
+  "filter": "Filtruj",
+  "sort": "Sortuj",
+  "search": "Szukaj",
+  "apply": "Zastosuj",
+  "close": "Zamknij",
+  "reset": "Resetuj",
+  "createdAt": "Data utworzenia",
+  "title": "Tytuł",
+  "ascending": "Rosnąco",
+  "descending": "Malejąco"
 }

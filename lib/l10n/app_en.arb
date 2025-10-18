@@ -171,5 +171,19 @@
   "language": "Language",
   "lightMode": "Light Mode",
   "darkMode": "Dark Mode",
-  "systemDefault": "System Default"
+  "systemDefault": "System Default",
+  "noAnalysesFound": "No analyses found.",
+  "loadingAnalysesError": "An error occurred while loading analyses.",
+  "addYourFirstAnalysis": "Add your first analysis by uploading a video.",
+  "clickToUpload": "Click to upload a video",
+  "filter": "Filter",
+  "sort": "Sort",
+  "search": "Search",
+  "apply": "Apply",
+  "close": "Close",
+  "reset": "Reset",
+  "createdAt": "Created at",
+  "title": "Title",
+  "ascending": "Ascending",
+  "descending": "Descending"
 }
