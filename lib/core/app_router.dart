@@ -11,7 +11,6 @@ import 'package:larvixon_frontend/src/analysis/presentation/analyses_page.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/analysis_details_page.dart';
 import 'package:larvixon_frontend/src/home/larvixon_app_bar.dart';
 import 'package:larvixon_frontend/src/about_us/presentation/pages/about_page.dart';
-import 'package:larvixon_frontend/src/home/larvixon_app_bar_cubit.dart';
 import 'package:larvixon_frontend/src/landing/presentation/landing_appbar.dart';
 import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
 import 'package:larvixon_frontend/src/common/app_shell.dart';
@@ -112,7 +111,6 @@ class AppRouter {
                 create: (context) =>
                     AnalysisListCubit(context.read())..fetchVideoList(),
               ),
-              BlocProvider(create: (context) => AppBarCubit()),
             ],
             child: AppShell(appBar: const LarvixonAppBar(), child: child),
           ).withSlideTransition(state);
