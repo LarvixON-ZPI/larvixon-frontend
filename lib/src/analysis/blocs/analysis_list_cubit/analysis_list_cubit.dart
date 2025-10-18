@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
+import 'package:larvixon_frontend/src/common/sort_order.dart';
 
 part 'analysis_list_state.dart';
 
@@ -13,10 +15,9 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
 
   void fetchNewlyUploadedVideo({required int id}) async {
     final currentIds = state.videoIds;
-    if (!currentIds.contains(id)) {
-      final updatedIds = [id, ...currentIds];
-      emit(state.copyWith(videoIds: updatedIds));
-    }
+    if (currentIds.contains(id)) return;
+    final updatedIds = [id, ...currentIds];
+    emit(state.copyWith(videoIds: updatedIds));
   }
 
   Future<void> fetchVideoList() async {
@@ -52,5 +53,51 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
         );
       },
     );
+  }
+
+  Future<void> loadAnalyses({bool refresh = false}) async {
+    emit(
+      state.copyWith(status: AnalysisListStatus.loading, errorMessage: null),
+    );
+    final result = await _repository.fetchVideoIds(sort: state.sort).run();
+
+    result.match(
+      (failire) => emit(
+        state.copyWith(
+          status: AnalysisListStatus.error,
+          errorMessage: failire.message,
+        ),
+      ),
+      (success) {
+        final ids = refresh
+            ? success.ids
+            : {...state.videoIds, ...success.ids}.toList();
+
+        final nextPage = success.nextPage;
+        emit(
+          state.copyWith(
+            status: AnalysisListStatus.success,
+            videoIds: ids,
+            errorMessage: null,
+            page: state.page + 1,
+            nextPage: nextPage,
+            hasMore: nextPage != null,
+          ),
+        );
+      },
+    );
+  }
+
+  void updateSort(AnalysisSort sort) {
+    emit(state.copyWith(sort: sort));
+    loadAnalyses(refresh: true);
+  }
+
+  void toggleSortOrder() {
+    final newOrder = state.sort.order == SortOrder.ascending
+        ? SortOrder.descending
+        : SortOrder.ascending;
+
+    updateSort(state.sort.copyWith(order: newOrder));
   }
 }

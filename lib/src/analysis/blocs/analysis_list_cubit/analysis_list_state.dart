@@ -9,6 +9,7 @@ final class AnalysisListState extends Equatable {
   final String? nextPage;
   final int page;
   final bool hasMore;
+  final AnalysisSort sort;
   const AnalysisListState({
     this.status = AnalysisListStatus.initial,
     this.videoIds = const [],
@@ -16,6 +17,7 @@ final class AnalysisListState extends Equatable {
     this.page = 1,
     this.hasMore = true,
     this.nextPage,
+    this.sort = const AnalysisSort.defaultSorting(),
   });
 
   AnalysisListState copyWith({
@@ -25,6 +27,7 @@ final class AnalysisListState extends Equatable {
     int? page,
     bool? hasMore,
     String? nextPage,
+    AnalysisSort? sort,
   }) {
     return AnalysisListState(
       status: status ?? this.status,
@@ -33,6 +36,7 @@ final class AnalysisListState extends Equatable {
       page: page ?? this.page,
       hasMore: hasMore ?? this.hasMore,
       nextPage: nextPage ?? this.nextPage,
+      sort: sort ?? this.sort,
     );
   }
 
@@ -44,5 +48,6 @@ final class AnalysisListState extends Equatable {
     page,
     hasMore,
     nextPage,
+    sort,
   ];
 }

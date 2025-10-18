@@ -32,7 +32,7 @@ class BackgroundWithLarvae extends StatelessWidget {
   const BackgroundWithLarvae({
     super.key,
     this.useBlur = true,
-    this.larvaeCount = 3,
+    this.larvaeCount = 1,
   });
 
   @override

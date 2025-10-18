@@ -4,20 +4,36 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:larvixon_frontend/core/api_client.dart';
 import 'package:larvixon_frontend/core/constants/endpoints_analysis.dart';
+import 'package:larvixon_frontend/src/analysis/data/mappers/analysis_sort_query_params.dart';
 import 'package:larvixon_frontend/src/analysis/data/models/analysis_dto.dart';
 import 'package:larvixon_frontend/src/analysis/data/models/analysis_id_list_dto.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
 
 class AnalysisDatasource {
   final ApiClient apiClient;
 
   AnalysisDatasource({required this.apiClient});
 
-  Future<AnalysisIdListDTO> fetchAnalysisIds({String? nextPage}) async {
+  Future<AnalysisIdListDTO> fetchAnalysisIds({
+    String? nextPage,
+    AnalysisSort? sort,
+  }) async {
+    final queryParameters = <String, dynamic>{};
+    if (sort != null) {
+      queryParameters['ordering'] = sort.toQueryParam();
+    }
+
     if (nextPage != null) {
-      final response = await apiClient.dio.get(nextPage);
+      final response = await apiClient.dio.get(
+        nextPage,
+        queryParameters: queryParameters,
+      );
       return AnalysisIdListDTO.fromMap(response.data);
     } else {
-      final response = await apiClient.dio.get(AnalysisEndpoints.videoIDs);
+      final response = await apiClient.dio.get(
+        AnalysisEndpoints.videoIDs,
+        queryParameters: queryParameters,
+      );
       return AnalysisIdListDTO.fromMap(response.data);
     }
   }

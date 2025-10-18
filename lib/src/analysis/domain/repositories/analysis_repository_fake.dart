@@ -5,8 +5,10 @@ import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_id_list.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress_status.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_upload_response.dart';
 import 'package:larvixon_frontend/src/analysis/domain/failures/failures.dart';
+import 'package:larvixon_frontend/src/common/sort_order.dart';
 
 import '../entities/analysis.dart';
 import 'analysis_repository.dart';
@@ -63,15 +65,29 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
   ];
 
   @override
-  TaskEither<Failure, AnalysisIdList> fetchVideoIds({String? nextPage}) {
-    Future.delayed(const Duration(seconds: 1));
+  TaskEither<Failure, AnalysisIdList> fetchVideoIds({
+    String? nextPage,
+    AnalysisSort? sort,
+  }) {
+    return TaskEither.tryCatch(() async {
+      await Future.delayed(const Duration(seconds: 1));
 
-    return TaskEither.right(
-      AnalysisIdList(
-        ids: _videos.map((video) => video.id).toList(),
+      var sortedVideos = List<Analysis>.from(_videos);
+
+      if (sort != null) {
+        sortedVideos.sort((a, b) {
+          final comparison = _compareByField(a, b, sort.field);
+          return sort.order == SortOrder.ascending ? comparison : -comparison;
+        });
+      } else {
+        sortedVideos.sort((a, b) => b.uploadedAt.compareTo(a.uploadedAt));
+      }
+
+      return AnalysisIdList(
+        ids: sortedVideos.map((video) => video.id).toList(),
         nextPage: null,
-      ),
-    );
+      );
+    }, (error, _) => UnknownAnalysisFailure(message: error.toString()));
   }
 
   @override
@@ -173,5 +189,19 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
         return UploadFailure(message: error.toString());
       },
     );
+  }
+
+  int _compareByField(Analysis a, Analysis b, AnalysisSortField field) {
+    return switch (field) {
+      AnalysisSortField.title => _compareNullableStrings(a.name, b.name),
+      AnalysisSortField.createdAt => a.uploadedAt.compareTo(b.uploadedAt),
+    };
+  }
+
+  int _compareNullableStrings(String? a, String? b) {
+    if (a == null && b == null) return 0;
+    if (a == null) return 1;
+    if (b == null) return -1;
+    return a.compareTo(b);
   }
 }
