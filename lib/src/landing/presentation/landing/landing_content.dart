@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 
@@ -41,26 +39,14 @@ class LandingContent extends StatelessWidget {
         if (showPetriDishes)
           Flexible(
             fit: FlexFit.loose,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final crossAxisCount = constraints.maxWidth > 600 ? 2 : 1;
-                final dishCount = crossAxisCount * crossAxisCount;
-
-                return GridView.builder(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(64),
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
-                    crossAxisSpacing: 48,
-                    mainAxisSpacing: 48,
-                  ),
-                  itemCount: dishCount,
-                  itemBuilder: (context, i) {
-                    return PetriDish(larvaeCount: Random().nextInt(2) + 1);
-                  },
-                );
-              },
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 400,
+                  maxHeight: 400,
+                ),
+                child: const PetriDish(larvaeCount: 1),
+              ),
             ),
           ),
       ],
