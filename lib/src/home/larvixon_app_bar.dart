@@ -31,7 +31,7 @@ class LarvixonAppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: Icon(Icons.person, color: Theme.of(context).iconTheme.color!),
           onPressed: () {
-            context.go(AccountPage.route);
+            context.push(AccountPage.route);
           },
         ),
       ],
