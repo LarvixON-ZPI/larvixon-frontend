@@ -3,16 +3,16 @@ import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 
 class StatusRow extends StatelessWidget {
-  const StatusRow({super.key, required this.video});
-  final Analysis? video;
+  const StatusRow({super.key, required this.analysis});
+  final Analysis? analysis;
 
   static const Duration _animationDuration = Duration(milliseconds: 300);
 
   @override
   Widget build(BuildContext context) {
-    final statusColor = video?.status.color ?? Colors.grey;
+    final statusColor = analysis?.status.color ?? Colors.grey;
     final backgroundColor = statusColor.withValues(alpha: 0.2);
-    final icon = video?.status.icon ?? Icons.help_outline;
+    final icon = analysis?.status.icon ?? Icons.help_outline;
     return AnimatedContainer(
       duration: _animationDuration,
       curve: Curves.easeInOut,
@@ -39,7 +39,8 @@ class StatusRow extends StatelessWidget {
             duration: _animationDuration,
             style: TextStyle(color: statusColor, fontWeight: FontWeight.bold),
             child: Text(
-              video?.status.displayName(context) ?? context.translate.loading,
+              analysis?.status.displayName(context) ??
+                  context.translate.loading,
             ),
           ),
         ],
