@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
 
 class LarvixonLogo extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -26,7 +26,7 @@ class LarvixonLogo extends StatelessWidget {
               Theme.of(context).iconTheme.color!,
               BlendMode.srcIn,
             ),
-          ),
+          ).withOnHoverEffect,
         ),
       ),
     );
