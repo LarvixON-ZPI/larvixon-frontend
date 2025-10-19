@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/analyses_page.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/pages/analyses_page.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/progress_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/results_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/status_row.dart';
