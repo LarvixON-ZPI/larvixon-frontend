@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/analysis_card.dart';
 
 class LarvaVideoGrid extends StatelessWidget {
-  final List<int> videoIds;
+  final List<int> analysesIds;
 
-  const LarvaVideoGrid({super.key, required this.videoIds});
+  const LarvaVideoGrid({super.key, required this.analysesIds});
 
   @override
   Widget build(BuildContext context) {
-    if (videoIds.isEmpty) {
+    if (analysesIds.isEmpty) {
       return const Center(
         child: Padding(
           padding: EdgeInsets.all(32.0),
@@ -27,14 +27,14 @@ class LarvaVideoGrid extends StatelessWidget {
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
       ),
-      itemCount: videoIds.length,
+      itemCount: analysesIds.length,
       itemBuilder: (context, index) {
-        final videoId = videoIds[index];
-        return AnalysisCard(key: ValueKey(videoId), videoId: videoId);
+        final analysisId = analysesIds[index];
+        return AnalysisCard(key: ValueKey(analysisId), analysisId: analysisId);
       },
       findChildIndexCallback: (key) {
         if (key is ValueKey<int>) {
-          return videoIds.indexOf(key.value);
+          return analysesIds.indexOf(key.value);
         }
         return null;
       },

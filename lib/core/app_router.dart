@@ -130,6 +130,31 @@ class AppRouter {
             pageBuilder: (context, state) {
               return const AnalysesPage().withoutTransition(state: state);
             },
+            routes: [
+              GoRoute(
+                path: AnalysisDetailsPage.route,
+                name: AnalysisDetailsPage.name,
+                redirect: (context, state) {
+                  final analysisId = state.pathParameters['analysisId'];
+                  if (analysisId == null) {
+                    return HomePage.route;
+                  }
+                  return null;
+                },
+                pageBuilder: (context, state) {
+                  final extra = state.extra as Map<String, dynamic>? ?? {};
+                  final analysisId = int.tryParse(
+                    state.pathParameters['analysisId'] ?? '',
+                  );
+                  final bloc = extra['bloc'] as AnalysisBloc?;
+
+                  return AnalysisDetailsPage(
+                    analysisId: analysisId,
+                    bloc: bloc,
+                  ).withoutTransition(state: state);
+                },
+              ),
+            ],
           ),
 
           GoRoute(
@@ -139,39 +164,7 @@ class AppRouter {
               return const AccountPage().withoutTransition(state: state);
             },
           ),
-          GoRoute(
-            path: LarvaVideoDetailsPage.routeName,
-            name: LarvaVideoDetailsPage.name,
-            redirect: (context, state) {
-              final extra = state.extra as Map<String, dynamic>? ?? {};
-              final videoBloc = extra['bloc'] as AnalysisBloc?;
-              final videoId = extra['videoId'] as int?;
-              if (videoBloc == null && videoId == null) {
-                return HomePage.route;
-              }
-              return null;
-            },
-            pageBuilder: (context, state) {
-              final extra = state.extra as Map<String, dynamic>? ?? {};
-              final videoBloc = extra['bloc'] as AnalysisBloc?;
-              if (videoBloc is AnalysisBloc) {
-                return BlocProvider.value(
-                  value: videoBloc,
-                  child: LarvaVideoDetailsPage(),
-                ).withoutTransition(state: state);
-              }
-              final videoId = extra['videoId'] as int?;
-              if (videoId is int) {
-                return BlocProvider<AnalysisBloc>(
-                  create: (context) => AnalysisBloc(
-                    repository: context.read<AnalysisRepository>(),
-                  )..add(FetchAnalysisDetails(videoId: videoId)),
-                  child: LarvaVideoDetailsPage(),
-                ).withSlideTransition(state);
-              }
-              return const SizedBox.shrink().withoutTransition(state: state);
-            },
-          ),
+
           GoRoute(
             path: SettingsPage.route,
             name: SettingsPage.name,

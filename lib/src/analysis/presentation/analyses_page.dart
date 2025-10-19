@@ -128,7 +128,7 @@ class _AnalysesPageState extends State<AnalysesPage> {
                 child: SafeArea(
                   child: Column(
                     children: [
-                      LarvaVideoGrid(videoIds: state.videoIds),
+                      LarvaVideoGrid(analysesIds: state.videoIds),
                       if (state.status == AnalysisListStatus.loadingMore)
                         const Padding(
                           padding: EdgeInsets.all(16.0),

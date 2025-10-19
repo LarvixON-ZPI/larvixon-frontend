@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/analysis_details_page.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/analyses_page.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/progress_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/results_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/status_row.dart';
@@ -12,8 +12,8 @@ import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class AnalysisCard extends StatefulWidget {
-  final int videoId;
-  const AnalysisCard({super.key, required this.videoId});
+  final int analysisId;
+  const AnalysisCard({super.key, required this.analysisId});
 
   @override
   State<AnalysisCard> createState() => _AnalysisCardState();
@@ -28,25 +28,23 @@ class _AnalysisCardState extends State<AnalysisCard>
       key: ValueKey(widget.key),
       create: (context) =>
           AnalysisBloc(repository: context.read<AnalysisRepository>())
-            ..add(FetchAnalysisDetails(videoId: widget.videoId)),
+            ..add(FetchAnalysisDetails(analysisId: widget.analysisId)),
       child: BlocConsumer<AnalysisBloc, AnalysisState>(
         listenWhen: (previous, current) {
           return previous.progress != current.progress;
         },
         listener: (context, state) {},
         builder: (context, state) {
-          final video = state.video;
-          final hasResults = state.video?.results?.isNotEmpty ?? false;
+          final analysis = state.analysis;
+          final hasResults = state.analysis?.results?.isNotEmpty ?? false;
           final enabled =
-              state.status == AnalysisStatus.loading || state.video == null;
+              state.status == AnalysisStatus.loading || state.analysis == null;
 
           return GestureDetector(
             onTap: () => context.push(
-              LarvaVideoDetailsPage.routeName,
-              extra: {
-                'videoId': widget.videoId,
-                'bloc': context.read<AnalysisBloc>(),
-              },
+              "${AnalysesPage.route}/${widget.analysisId}",
+
+              extra: {'bloc': context.read<AnalysisBloc>()},
             ),
             child: MouseRegion(
               child: Skeletonizer(
@@ -60,28 +58,28 @@ class _AnalysisCardState extends State<AnalysisCard>
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.end,
 
-                          children: [StatusRow(video: state.video)],
+                          children: [StatusRow(video: state.analysis)],
                         ),
-                        if (state.video?.name != null)
+                        if (state.analysis?.name != null)
                           Text(
-                            state.video!.name!,
+                            state.analysis!.name!,
                             style: Theme.of(context).textTheme.titleMedium,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
-                        if (video != null)
+                        if (analysis != null)
                           Text(
-                            "${video.uploadedAt.formattedDateOnly} ${video.uploadedAt.formattedTimeOnly}",
+                            "${analysis.uploadedAt.formattedDateOnly} ${analysis.uploadedAt.formattedTimeOnly}",
                           ),
                         if (hasResults)
                           Expanded(
                             child: ResultsSection(
-                              results: state.video!.results!,
+                              results: state.analysis!.results!,
                             ),
                           ),
 
                         ProgressSection(
-                          video: state.video,
+                          video: state.analysis,
                           progress: state.progress,
                         ),
                       ],
