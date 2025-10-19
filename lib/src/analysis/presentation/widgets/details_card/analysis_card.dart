@@ -41,11 +41,8 @@ class _AnalysisCardState extends State<AnalysisCard>
               state.status == AnalysisStatus.loading || state.analysis == null;
 
           return GestureDetector(
-            onTap: () => context.push(
-              "${AnalysesPage.route}/${widget.analysisId}",
-
-              extra: {'bloc': context.read<AnalysisBloc>()},
-            ),
+            onTap: () =>
+                context.push("${AnalysesPage.route}/${widget.analysisId}"),
             child: MouseRegion(
               child: Skeletonizer(
                 enabled: enabled,
@@ -58,18 +55,19 @@ class _AnalysisCardState extends State<AnalysisCard>
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.end,
 
-                          children: [StatusRow(video: state.analysis)],
+                          children: [StatusRow(analysis: state.analysis)],
                         ),
                         if (state.analysis?.name != null)
                           Text(
                             state.analysis!.name!,
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context).textTheme.titleLarge,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
                         if (analysis != null)
                           Text(
                             "${analysis.uploadedAt.formattedDateOnly} ${analysis.uploadedAt.formattedTimeOnly}",
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                         if (hasResults)
                           Expanded(

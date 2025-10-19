@@ -745,6 +745,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Descending'**
   String get descending;
+
+  /// No description provided for @mostConfidentResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Most confident result'**
+  String get mostConfidentResult;
+
+  /// No description provided for @allResults.
+  ///
+  /// In en, this message translates to:
+  /// **'All results'**
+  String get allResults;
+
+  /// No description provided for @notSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get notSet;
+
+  /// No description provided for @status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
+  /// No description provided for @analysisDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis details'**
+  String get analysisDetails;
+
+  /// No description provided for @confidence.
+  ///
+  /// In en, this message translates to:
+  /// **'Confidence'**
+  String get confidence;
+
+  /// No description provided for @substance.
+  ///
+  /// In en, this message translates to:
+  /// **'Substance'**
+  String get substance;
+
+  /// No description provided for @description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get description;
+
+  /// No description provided for @detectedSubstances.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No detected substances} =1{Detected substance} other{Detected substances}}'**
+  String detectedSubstances(int count);
 }
 
 class _AppLocalizationsDelegate

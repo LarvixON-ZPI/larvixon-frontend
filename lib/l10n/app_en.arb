@@ -185,5 +185,22 @@
   "createdAt": "Created at",
   "title": "Title",
   "ascending": "Ascending",
-  "descending": "Descending"
+  "descending": "Descending",
+  "mostConfidentResult": "Most confident result",
+  "allResults": "All results",
+  "notSet": "Not set",
+  "status": "Status",
+  "analysisDetails": "Analysis details",
+  "confidence": "Confidence",
+  "substance": "Substance",
+  "description": "Description",
+  "detectedSubstances": "{count, plural, =0{No detected substances} =1{Detected substance} other{Detected substances}}",
+  "@detectedSubstances": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  }
 }
