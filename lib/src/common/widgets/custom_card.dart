@@ -11,6 +11,7 @@ class CustomCard extends StatelessWidget {
     this.color,
     this.background,
     this.constraints,
+    this.shadowColor = Colors.black54,
   });
   final Widget? title;
   final Widget? description;
@@ -20,6 +21,7 @@ class CustomCard extends StatelessWidget {
   final Widget? background;
   final Widget? child;
   final BoxConstraints? constraints;
+  final Color? shadowColor;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class CustomCard extends StatelessWidget {
             maxWidth: double.infinity,
           ),
       child: Card(
+        shadowColor: shadowColor,
         clipBehavior: Clip.antiAlias,
         color: color ?? Theme.of(context).cardColor.withValues(alpha: 0.8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

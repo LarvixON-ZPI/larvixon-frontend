@@ -194,7 +194,7 @@ class IconTextButton extends StatelessWidget {
 }
 
 class _LoadingView extends StatelessWidget {
-  const _LoadingView({super.key});
+  const _LoadingView();
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +203,7 @@ class _LoadingView extends StatelessWidget {
 }
 
 class _EmptyView extends StatelessWidget {
-  const _EmptyView({super.key});
+  const _EmptyView();
 
   @override
   Widget build(BuildContext context) {
@@ -228,7 +228,7 @@ class _EmptyView extends StatelessWidget {
 
 class _ErrorView extends StatelessWidget {
   final String errorMessage;
-  const _ErrorView({super.key, required this.errorMessage});
+  const _ErrorView({required this.errorMessage});
 
   @override
   Widget build(BuildContext context) {
