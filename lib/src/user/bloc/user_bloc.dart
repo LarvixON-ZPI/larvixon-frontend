@@ -78,22 +78,4 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   ) {
     emit(state.copyWith(user: null, status: UserStatus.initial));
   }
-
-  @override
-  void onTransition(Transition<UserEvent, UserState> transition) {
-    super.onTransition(transition);
-    if (kDebugMode) {
-      print(
-        'Transitioning from ${transition.currentState} to ${transition.nextState}',
-      );
-    }
-  }
-
-  @override
-  void onEvent(UserEvent event) {
-    super.onEvent(event);
-    if (kDebugMode) {
-      print('Event received: $event');
-    }
-  }
 }
