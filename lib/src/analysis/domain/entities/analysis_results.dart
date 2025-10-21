@@ -3,7 +3,6 @@ typedef AnalysisResults = List<(String substance, double confidence)>;
 extension AnalysisResultsMapper on AnalysisResults {
   static AnalysisResults fromMap(List<dynamic> list) {
     final results = list.map((e) {
-      print(e.runtimeType);
       if (e is! Map<String, dynamic>) {
         throw FormatException('Invalid substance entry: $e');
       }

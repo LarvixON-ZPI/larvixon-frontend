@@ -73,7 +73,7 @@ class _ResultsSectionState extends State<ResultsSection>
                 child: SlideTransition(
                   position: _controller.drive(
                     Tween<Offset>(
-                      begin: Offset(0, 0.5),
+                      begin: const Offset(0, 0.5),
                       end: Offset.zero,
                     ).chain(
                       CurveTween(
@@ -99,7 +99,7 @@ class _ResultsSectionState extends State<ResultsSection>
                 child: SlideTransition(
                   position: _controller.drive(
                     Tween<Offset>(
-                      begin: Offset(0, 0.5),
+                      begin: const Offset(0, 0.5),
                       end: Offset.zero,
                     ).chain(
                       CurveTween(

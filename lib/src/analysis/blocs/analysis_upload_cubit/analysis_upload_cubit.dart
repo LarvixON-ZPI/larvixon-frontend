@@ -4,11 +4,12 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 
-part 'video_upload_state.dart';
+part 'analysis_upload_state.dart';
 
-class VideoUploadCubit extends Cubit<VideoUploadState> {
+class AnalysisUploadCubit extends Cubit<AnalysisUploadState> {
   final AnalysisRepository repository;
-  VideoUploadCubit({required this.repository}) : super(VideoUploadState());
+  AnalysisUploadCubit({required this.repository})
+    : super(const AnalysisUploadState());
 
   Future<void> uploadVideo({
     required Uint8List bytes,

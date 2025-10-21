@@ -14,7 +14,7 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
       state.hasMore && state.status != AnalysisListStatus.loading;
 
   void fetchNewlyUploadedVideo({required int id}) async {
-    final currentIds = state.videoIds;
+    final currentIds = state.analysesIds;
     if (currentIds.contains(id)) return;
     final updatedIds = [id, ...currentIds];
     emit(state.copyWith(videoIds: updatedIds));
@@ -40,7 +40,7 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
       (success) {
         final ids = success.ids;
         final nextPage = success.nextPage;
-        final merged = {...state.videoIds, ...ids}.toList();
+        final merged = {...state.analysesIds, ...ids}.toList();
 
         emit(
           state.copyWith(
@@ -71,7 +71,7 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
       (success) {
         final ids = refresh
             ? success.ids
-            : {...state.videoIds, ...success.ids}.toList();
+            : {...state.analysesIds, ...success.ids}.toList();
 
         final nextPage = success.nextPage;
         emit(

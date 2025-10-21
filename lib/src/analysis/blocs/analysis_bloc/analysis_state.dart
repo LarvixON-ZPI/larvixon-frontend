@@ -4,29 +4,29 @@ enum AnalysisStatus { initial, loading, success, error }
 
 final class AnalysisState extends Equatable {
   final AnalysisStatus status;
-  final Analysis? video;
+  final Analysis? analysis;
   final String? errorMessage;
   final double progress;
   const AnalysisState({
     this.status = AnalysisStatus.initial,
-    this.video,
+    this.analysis,
     this.errorMessage,
     this.progress = 0.0,
   });
   AnalysisState copyWith({
     AnalysisStatus? status,
-    Analysis? video,
+    Analysis? analysis,
     String? errorMessage,
     double? progress,
   }) {
     return AnalysisState(
       status: status ?? this.status,
-      video: video ?? this.video,
+      analysis: analysis ?? this.analysis,
       errorMessage: errorMessage ?? this.errorMessage,
       progress: progress ?? this.progress,
     );
   }
 
   @override
-  List<Object?> get props => [status, video, errorMessage, progress];
+  List<Object?> get props => [status, analysis, errorMessage, progress];
 }

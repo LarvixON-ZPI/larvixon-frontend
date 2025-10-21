@@ -185,5 +185,23 @@
   "createdAt": "Data utworzenia",
   "title": "Tytuł",
   "ascending": "Rosnąco",
-  "descending": "Malejąco"
+  "descending": "Malejąco",
+  "mostConfidentResult": "Najpewniejszy wynik",
+  "allResults": "Wszystkie wyniki",
+  "notSet": "Nie ustawiono",
+  "status": "Status",
+  "analysisDetails": "Szczegóły analizy",
+  "confidence": "Pewność",
+  "substance": "Substancja",
+  "description": "Opis",
+  "detectedSubstances": "{count, plural, =0{Brak wykrytych substancji} =1{Wykryta substancja} other{Wykryte substancje}}",
+  "@detectedSubstances": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "analysis": "Analiza"
 }

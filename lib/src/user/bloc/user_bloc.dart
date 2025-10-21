@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../domain/repositories/user_repository.dart';
@@ -77,23 +76,5 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     Emitter<UserState> emit,
   ) {
     emit(state.copyWith(user: null, status: UserStatus.initial));
-  }
-
-  @override
-  void onTransition(Transition<UserEvent, UserState> transition) {
-    super.onTransition(transition);
-    if (kDebugMode) {
-      print(
-        'Transitioning from ${transition.currentState} to ${transition.nextState}',
-      );
-    }
-  }
-
-  @override
-  void onEvent(UserEvent event) {
-    super.onEvent(event);
-    if (kDebugMode) {
-      print('Event received: $event');
-    }
   }
 }

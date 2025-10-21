@@ -5,7 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
-import 'package:larvixon_frontend/src/analysis/blocs/video_upload_cubit/video_upload_cubit.dart';
+import 'package:larvixon_frontend/src/analysis/blocs/analysis_upload_cubit/analysis_upload_cubit.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
@@ -65,7 +65,7 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
     if (_fileBytes != null &&
         _fileName != null &&
         formKey.currentState?.validate() == true) {
-      context.read<VideoUploadCubit>().uploadVideo(
+      context.read<AnalysisUploadCubit>().uploadVideo(
         bytes: _fileBytes!,
         filename: _fileName!,
         title: _titleController.text,
@@ -76,8 +76,8 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => VideoUploadCubit(repository: context.read()),
-      child: BlocConsumer<VideoUploadCubit, VideoUploadState>(
+      create: (context) => AnalysisUploadCubit(repository: context.read()),
+      child: BlocConsumer<AnalysisUploadCubit, AnalysisUploadState>(
         listener: (context, state) {
           if (state.status == VideoUploadStatus.error) {
             ScaffoldMessenger.of(context).showSnackBar(

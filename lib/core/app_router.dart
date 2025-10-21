@@ -6,9 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/core/transitions.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
-import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/analyses_page.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/analysis_details_page.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/pages/analyses_page.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/pages/analysis_details_page.dart';
 import 'package:larvixon_frontend/src/home/larvixon_app_bar.dart';
 import 'package:larvixon_frontend/src/about_us/presentation/pages/about_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/landing_appbar.dart';
@@ -125,11 +124,40 @@ class AppRouter {
             },
           ),
           GoRoute(
-            path: AnalysesPage.route,
-            name: AnalysesPage.name,
+            path: AnalysesOverviewPage.route,
+            name: AnalysesOverviewPage.name,
             pageBuilder: (context, state) {
-              return const AnalysesPage().withoutTransition(state: state);
+              return const AnalysesOverviewPage().withoutTransition(
+                state: state,
+              );
             },
+            routes: [
+              GoRoute(
+                path: AnalysisDetailsPage.route,
+                name: AnalysisDetailsPage.name,
+                redirect: (context, state) {
+                  final analysisId = state.pathParameters['analysisId'];
+                  if (analysisId == null) {
+                    return HomePage.route;
+                  }
+                  return null;
+                },
+                pageBuilder: (context, state) {
+                  final analysisId = int.tryParse(
+                    state.pathParameters['analysisId'] ?? '',
+                  );
+                  final extra = state.extra as Map<String, dynamic>?;
+                  final analysisBloc = extra != null
+                      ? extra['bloc'] as AnalysisBloc
+                      : null;
+
+                  return AnalysisDetailsPage(
+                    analysisId: analysisId,
+                    analysisBloc: analysisBloc,
+                  ).withoutTransition(state: state);
+                },
+              ),
+            ],
           ),
 
           GoRoute(
@@ -139,39 +167,7 @@ class AppRouter {
               return const AccountPage().withoutTransition(state: state);
             },
           ),
-          GoRoute(
-            path: LarvaVideoDetailsPage.routeName,
-            name: LarvaVideoDetailsPage.name,
-            redirect: (context, state) {
-              final extra = state.extra as Map<String, dynamic>? ?? {};
-              final videoBloc = extra['bloc'] as AnalysisBloc?;
-              final videoId = extra['videoId'] as int?;
-              if (videoBloc == null && videoId == null) {
-                return HomePage.route;
-              }
-              return null;
-            },
-            pageBuilder: (context, state) {
-              final extra = state.extra as Map<String, dynamic>? ?? {};
-              final videoBloc = extra['bloc'] as AnalysisBloc?;
-              if (videoBloc is AnalysisBloc) {
-                return BlocProvider.value(
-                  value: videoBloc,
-                  child: LarvaVideoDetailsPage(),
-                ).withoutTransition(state: state);
-              }
-              final videoId = extra['videoId'] as int?;
-              if (videoId is int) {
-                return BlocProvider<AnalysisBloc>(
-                  create: (context) => AnalysisBloc(
-                    repository: context.read<AnalysisRepository>(),
-                  )..add(FetchAnalysisDetails(videoId: videoId)),
-                  child: LarvaVideoDetailsPage(),
-                ).withSlideTransition(state);
-              }
-              return const SizedBox.shrink().withoutTransition(state: state);
-            },
-          ),
+
           GoRoute(
             path: SettingsPage.route,
             name: SettingsPage.name,
@@ -197,7 +193,7 @@ class AppRouter {
           }
           return null;
         case AuthStatus.authenticated:
-          if (loggingIn || onLanding) return AnalysesPage.route;
+          if (loggingIn || onLanding) return AnalysesOverviewPage.route;
           return null;
         case AuthStatus.mfaRequired:
         case AuthStatus.error:

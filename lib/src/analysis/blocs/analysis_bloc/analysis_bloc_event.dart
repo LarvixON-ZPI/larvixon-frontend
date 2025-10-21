@@ -9,25 +9,25 @@ sealed class AnalysisEvent extends Equatable {
 
 final class FetchAnalysisDetails extends AnalysisEvent {
   final bool refresh;
-  final int videoId;
-  const FetchAnalysisDetails({required this.videoId, this.refresh = false});
+  final int analysisId;
+  const FetchAnalysisDetails({required this.analysisId, this.refresh = false});
 
   @override
-  List<Object> get props => [refresh, videoId];
+  List<Object> get props => [refresh, analysisId];
 }
 
 final class UpdateAnalysisDetails extends AnalysisEvent {
-  final Analysis video;
-  const UpdateAnalysisDetails({required this.video});
+  final Analysis analysis;
+  const UpdateAnalysisDetails({required this.analysis});
 
   @override
-  List<Object> get props => [video];
+  List<Object> get props => [analysis];
 }
 
 final class RemoveAnalysis extends AnalysisEvent {
-  final int videoId;
-  const RemoveAnalysis({required this.videoId});
+  final int analysisId;
+  const RemoveAnalysis({required this.analysisId});
 
   @override
-  List<Object> get props => [videoId];
+  List<Object> get props => [analysisId];
 }

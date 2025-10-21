@@ -365,4 +365,43 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get descending => 'Malejąco';
+
+  @override
+  String get mostConfidentResult => 'Najpewniejszy wynik';
+
+  @override
+  String get allResults => 'Wszystkie wyniki';
+
+  @override
+  String get notSet => 'Nie ustawiono';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get analysisDetails => 'Szczegóły analizy';
+
+  @override
+  String get confidence => 'Pewność';
+
+  @override
+  String get substance => 'Substancja';
+
+  @override
+  String get description => 'Opis';
+
+  @override
+  String detectedSubstances(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Wykryte substancje',
+      one: 'Wykryta substancja',
+      zero: 'Brak wykrytych substancji',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get analysis => 'Analiza';
 }

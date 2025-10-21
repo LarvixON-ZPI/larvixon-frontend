@@ -13,6 +13,7 @@ class SortPopupMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
+      tooltip: '',
       offset: const Offset(40, 0),
       child: AnimatedRotation(
         turns: initialSorting.order == SortOrder.ascending ? 0.0 : 0.5,
