@@ -4,7 +4,7 @@ enum AnalysisListStatus { initial, loading, loadingMore, success, error }
 
 final class AnalysisListState extends Equatable {
   final AnalysisListStatus status;
-  final List<int> videoIds;
+  final List<int> analysesIds;
   final String? errorMessage;
   final String? nextPage;
   final int page;
@@ -12,7 +12,7 @@ final class AnalysisListState extends Equatable {
   final AnalysisSort sort;
   const AnalysisListState({
     this.status = AnalysisListStatus.initial,
-    this.videoIds = const [],
+    this.analysesIds = const [],
     this.errorMessage,
     this.page = 1,
     this.hasMore = true,
@@ -31,7 +31,7 @@ final class AnalysisListState extends Equatable {
   }) {
     return AnalysisListState(
       status: status ?? this.status,
-      videoIds: videoIds ?? this.videoIds,
+      analysesIds: videoIds ?? this.analysesIds,
       errorMessage: errorMessage ?? this.errorMessage,
       page: page ?? this.page,
       hasMore: hasMore ?? this.hasMore,
@@ -43,7 +43,7 @@ final class AnalysisListState extends Equatable {
   @override
   List<Object?> get props => [
     status,
-    videoIds,
+    analysesIds,
     errorMessage,
     page,
     hasMore,

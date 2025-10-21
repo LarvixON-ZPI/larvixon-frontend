@@ -73,16 +73,18 @@ class _AnalysesContent extends StatelessWidget {
         if (state.isLoading) return const LoadingView();
         if (state.isError) return ErrorView(errorMessage: state.errorMessage!);
         if (state.isEmpty) return const EmptyView();
-
-        return AnalysesList(scrollController: scrollController, state: state);
+        return AnalysesList(
+          scrollController: scrollController,
+          analysesIds: state.analysesIds,
+        );
       },
     );
   }
 }
 
 extension on AnalysisListState {
-  bool get isEmpty => errorMessage == null && videoIds.isEmpty;
-  bool get isError => errorMessage != null && videoIds.isEmpty;
+  bool get isEmpty => errorMessage == null && analysesIds.isEmpty;
+  bool get isError => errorMessage != null && analysesIds.isEmpty;
   bool get isLoading =>
-      status == AnalysisListStatus.loading && videoIds.isEmpty;
+      status == AnalysisListStatus.loading && analysesIds.isEmpty;
 }
