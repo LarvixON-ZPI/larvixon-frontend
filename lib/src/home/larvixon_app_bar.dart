@@ -18,7 +18,9 @@ class LarvixonAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBarBase(
-      title: LarvixonLogo(onPressed: () => context.go(AnalysesPage.route)),
+      title: LarvixonLogo(
+        onPressed: () => context.go(AnalysesOverviewPage.route),
+      ),
       menu: const _Menu(),
       children: [
         IconButton(

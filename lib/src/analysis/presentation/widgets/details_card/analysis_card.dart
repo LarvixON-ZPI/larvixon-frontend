@@ -41,8 +41,10 @@ class _AnalysisCardState extends State<AnalysisCard>
               state.status == AnalysisStatus.loading || state.analysis == null;
 
           return GestureDetector(
-            onTap: () =>
-                context.push("${AnalysesPage.route}/${widget.analysisId}"),
+            onTap: () => context.push(
+              "${AnalysesOverviewPage.route}/${widget.analysisId}",
+              extra: {"bloc": context.read<AnalysisBloc>()},
+            ),
             child: MouseRegion(
               child: Skeletonizer(
                 enabled: enabled,

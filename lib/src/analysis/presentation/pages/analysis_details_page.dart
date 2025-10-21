@@ -1,346 +1,144 @@
-import 'dart:ui' show ImageFilter;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
-import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_results.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/status_row.dart';
-import 'package:larvixon_frontend/src/common/extensions/date_format_extension.dart';
-import 'package:larvixon_frontend/src/common/extensions/default_padding.dart';
-import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
-import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
-import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
-import 'package:larvixon_frontend/src/common/extensions/color_gradient.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/all_results_section.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/best_match_result_section.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/header_section.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/invalid_id_view.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/loading_view.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/meta_section.dart';
+import 'package:larvixon_frontend/src/common/widgets/slide_widget.dart';
 
 class AnalysisDetailsPage extends StatelessWidget {
   static const String route = ':analysisId';
   static const String name = 'analysis-details';
 
-  const AnalysisDetailsPage({super.key, required this.analysisId});
+  const AnalysisDetailsPage({
+    super.key,
+    required this.analysisId,
+    this.analysisBloc,
+  });
 
   final int? analysisId;
+  final AnalysisBloc? analysisBloc;
 
   @override
   Widget build(BuildContext context) {
-    if (analysisId == null) {
-      return const _InvalidIdView();
-    }
-    final int id = analysisId!;
+    if (analysisId == null) return const InvalidIdView();
+    final id = analysisId!;
 
-    return BlocProvider(
-      key: ValueKey("analysis-$id"),
-      create: (context) =>
-          AnalysisBloc(repository: context.read<AnalysisRepository>())
-            ..add(FetchAnalysisDetails(analysisId: id)),
-      child: _AnalysisDetailsContent(analysisId: id),
+    return SingleChildScrollView(
+      child: Center(child: SafeArea(child: _buildBlocProvider(context, id))),
     );
+  }
+
+  Widget _buildBlocProvider(BuildContext context, int id) {
+    return analysisBloc != null
+        ? BlocProvider<AnalysisBloc>.value(
+            key: ValueKey("analysis-$id"),
+            value: analysisBloc!,
+            child: _AnalysisDetailsContent(analysisId: id),
+          )
+        : BlocProvider(
+            key: ValueKey("analysis-$id"),
+            create: (context) =>
+                AnalysisBloc(repository: context.read<AnalysisRepository>())
+                  ..add(FetchAnalysisDetails(analysisId: id)),
+            child: _AnalysisDetailsContent(analysisId: id),
+          );
   }
 }
 
-class _AnalysisDetailsContent extends StatelessWidget {
+class _AnalysisDetailsContent extends StatefulWidget {
   final int analysisId;
   const _AnalysisDetailsContent({required this.analysisId});
+
+  @override
+  State<_AnalysisDetailsContent> createState() =>
+      _AnalysisDetailsContentState();
+}
+
+class _AnalysisDetailsContentState extends State<_AnalysisDetailsContent> {
+  bool _isFirstBuild = true;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AnalysisBloc, AnalysisState>(
       builder: (context, state) {
-        if (state.status == AnalysisStatus.initial) {
-          context.read<AnalysisBloc>().add(
-            FetchAnalysisDetails(analysisId: analysisId),
-          );
-          return const _LoadingView();
-        }
-        if (_isLoading(state)) {
-          return const _LoadingView();
-        }
+        if (state.isLoading) return const LoadingView();
 
         final analysis = state.analysis!;
-        return Center(
-          child: SingleChildScrollView(
-            child: CustomCard(
-              constraints: const BoxConstraints(maxWidth: 800),
-              title: Text(
-                context.translate.analysisDetails,
-                style: Theme.of(context).textTheme.headlineLarge,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                spacing: 8.0,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  _DetailsSection(analysis: analysis),
-                  if (_hasResults(analysis)) ...[
-                    const Divider(),
-                    _MostProbableSubstanceSection(results: analysis.results!),
-                    if (_hasManyResults(analysis)) ...[
-                      const Divider(),
-                      _AllResultsSection(results: analysis.results!),
-                    ],
-                  ],
-                ],
-              ),
-            ),
+        final animationConfig = _buildAnimationConfig();
+
+        return ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 600),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              HeaderSection(analysis: analysis),
+              MetaSection(analysis: analysis),
+
+              if (analysis.hasResults)
+                SlideUpTransition(
+                  delay: animationConfig.resultsDelay,
+                  duration: animationConfig.mainDuration,
+                  child: BestMatchResultSection(results: analysis.results!),
+                ),
+              if (analysis.hasManyResults)
+                SlideUpTransition(
+                  delay: animationConfig.manyResultsDelay,
+                  duration: animationConfig.allResultsDuration,
+                  child: AllResultsSection(results: analysis.results!),
+                ),
+            ],
           ),
         );
       },
     );
   }
 
-  bool _hasManyResults(Analysis analysis) => analysis.results!.length > 1;
-
-  bool _hasResults(Analysis analysis) => analysis.results?.isNotEmpty != null;
-
-  bool _isLoading(AnalysisState state) =>
-      state.analysis == null && state.status == AnalysisStatus.loading;
-}
-
-class _MostProbableSubstanceSection extends StatelessWidget {
-  const _MostProbableSubstanceSection({required this.results});
-  final AnalysisResults results;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Wrap(
-          crossAxisAlignment: WrapCrossAlignment.start,
-          alignment: WrapAlignment.start,
-          children: [
-            Text(
-              "${context.translate.mostConfidentResult}: ",
-              style: Theme.of(context).textTheme.headlineSmall,
-              overflow: TextOverflow.ellipsis,
-            ),
-
-            Text(
-              "${results.first.$1} (${(results.first.$2 * 100).toStringAsFixed(2)}%)",
-              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                color: ColorGradientExtension.gradient(score: results.first.$2),
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
-      ],
-    );
+  _AnimationConfig _buildAnimationConfig() {
+    final config = _isFirstBuild
+        ? const _AnimationConfig.zero()
+        : const _AnimationConfig.standard();
+    _isFirstBuild = false;
+    return config;
   }
 }
 
-class _AllResultsSection extends StatelessWidget {
-  const _AllResultsSection({required this.results});
+class _AnimationConfig {
+  final Duration mainDuration;
+  final Duration allResultsDuration;
+  final Duration resultsDelay;
+  final Duration manyResultsDelay;
 
-  final AnalysisResults results;
+  const _AnimationConfig({
+    required this.mainDuration,
+    required this.allResultsDuration,
+    required this.resultsDelay,
+    required this.manyResultsDelay,
+  });
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "${context.translate.detectedSubstances(results.length)}: ",
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
-        const SizedBox(height: 8.0),
+  const _AnimationConfig.zero()
+    : mainDuration = Duration.zero,
+      allResultsDuration = Duration.zero,
+      resultsDelay = Duration.zero,
+      manyResultsDelay = Duration.zero;
 
-        Wrap(
-          crossAxisAlignment: WrapCrossAlignment.start,
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            ...results.map((entry) {
-              final (substance, confidence) = entry;
-              return _SubstanceChip(
-                confidence: confidence,
-                substance: substance,
-              ).withOnHoverEffect;
-            }),
-          ],
-        ),
-      ],
-    );
-  }
+  const _AnimationConfig.standard()
+    : mainDuration = const Duration(milliseconds: 400),
+      allResultsDuration = const Duration(milliseconds: 400),
+      resultsDelay = const Duration(milliseconds: 200),
+      manyResultsDelay = const Duration(milliseconds: 400);
 }
 
-class _SubstanceChip extends StatelessWidget {
-  const _SubstanceChip({required this.confidence, required this.substance});
-
-  final double confidence;
-  final String substance;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        _showSubstanceDetails(context);
-      },
-      child: Chip(
-        backgroundColor: ColorGradientExtension.gradient(score: confidence),
-        label: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(substance, style: Theme.of(context).textTheme.titleMedium),
-            Text("${(confidence * 100).toStringAsFixed(2)}%"),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<Object?> _showSubstanceDetails(BuildContext context) {
-    return showGeneralDialog(
-      context: context,
-      barrierLabel: "Substance Details",
-      barrierDismissible: true,
-      pageBuilder: (context, anim, secondaryAnimation) {
-        return FadeTransition(
-          opacity: anim,
-          child: ScaleTransition(
-            scale: CurvedAnimation(parent: anim, curve: Curves.easeOutBack),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 600),
-                  child: CustomCard(
-                    title: Text(
-                      context.translate.detectedSubstances(1),
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Row(
-                          spacing: 8,
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.flaskVial,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            Text(
-                              substance,
-                              style: Theme.of(context).textTheme.headlineSmall,
-                            ),
-                          ],
-                        ),
-                        const Divider(),
-                        Row(
-                          spacing: 8.0,
-                          children: [
-                            Icon(
-                              Icons.percent,
-                              color: ColorGradientExtension.gradient(
-                                score: confidence,
-                              ),
-                            ),
-                            Text(
-                              "${context.translate.confidence}: ${(confidence * 100).toStringAsFixed(2)}%",
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ).withDefaultPagePadding;
-      },
-    );
-  }
+extension on AnalysisState {
+  bool get isLoading => status == AnalysisStatus.initial || analysis == null;
 }
 
-class _DetailsSection extends StatelessWidget {
-  const _DetailsSection({required this.analysis});
-
-  final Analysis analysis;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Wrap(
-          alignment: WrapAlignment.start,
-          children: [
-            Text(
-              "${context.translate.title}: ",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            Text(
-              analysis.name ?? context.translate.notSet,
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-          ],
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-
-          children: [
-            Text(
-              "${context.translate.status}: ",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            StatusRow(analysis: analysis),
-          ],
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-
-          children: [
-            Text(
-              "${context.translate.createdAt}: ",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            Text(
-              analysis.uploadedAt.formattedDateTime,
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-          ],
-        ),
-        if (analysis.analysedAt != null)
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                "${context.translate.analysed}: ",
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              Text(
-                analysis.analysedAt!.formattedDateTime,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-            ],
-          ),
-      ],
-    );
-  }
-}
-
-class _LoadingView extends StatelessWidget {
-  const _LoadingView();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: CircularProgressIndicator());
-  }
-}
-
-class _InvalidIdView extends StatelessWidget {
-  const _InvalidIdView();
-
-  @override
-  Widget build(BuildContext context) {
-    return const SafeArea(child: Center(child: Text('Analysis ID is missing')));
-  }
+extension on Analysis {
+  bool get hasResults => results?.isNotEmpty ?? false;
+  bool get hasManyResults => (results?.length ?? 0) > 1;
 }

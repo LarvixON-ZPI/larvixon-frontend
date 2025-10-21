@@ -799,6 +799,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =0{No detected substances} =1{Detected substance} other{Detected substances}}'**
   String detectedSubstances(int count);
+
+  /// No description provided for @analysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis'**
+  String get analysis;
 }
 
 class _AppLocalizationsDelegate
