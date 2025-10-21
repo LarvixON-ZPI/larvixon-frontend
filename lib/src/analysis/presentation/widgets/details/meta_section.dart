@@ -6,7 +6,7 @@ import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
 class MetaSection extends StatefulWidget {
-  const MetaSection({required this.analysis});
+  const MetaSection({super.key, required this.analysis});
   final Analysis analysis;
 
   @override

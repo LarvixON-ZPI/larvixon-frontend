@@ -1,13 +1,13 @@
-part of 'video_upload_cubit.dart';
+part of 'analysis_upload_cubit.dart';
 
 enum VideoUploadStatus { initial, uploading, success, error }
 
-class VideoUploadState extends Equatable {
+class AnalysisUploadState extends Equatable {
   final VideoUploadStatus status;
   final String? errorMessage;
   final int? uploadedVideoId;
 
-  const VideoUploadState({
+  const AnalysisUploadState({
     this.status = VideoUploadStatus.initial,
     this.errorMessage,
     this.uploadedVideoId,
@@ -16,12 +16,12 @@ class VideoUploadState extends Equatable {
   @override
   List<Object?> get props => [status, errorMessage, uploadedVideoId];
 
-  VideoUploadState copyWith({
+  AnalysisUploadState copyWith({
     VideoUploadStatus? status,
     String? errorMessage,
     int? uploadedVideoId,
   }) {
-    return VideoUploadState(
+    return AnalysisUploadState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       uploadedVideoId: uploadedVideoId ?? this.uploadedVideoId,

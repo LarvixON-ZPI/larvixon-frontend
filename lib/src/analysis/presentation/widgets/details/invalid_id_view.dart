@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class InvalidIdView extends StatelessWidget {
-  const InvalidIdView();
+  const InvalidIdView({super.key});
 
   @override
   Widget build(BuildContext context) {

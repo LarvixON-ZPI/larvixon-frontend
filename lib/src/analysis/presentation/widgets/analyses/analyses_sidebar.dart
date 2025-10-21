@@ -15,7 +15,10 @@ class AnalysesSidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SideBarBase(
-      children: [_UploadButton(), _SortSelector(), _FilterButton()],
+      children: [
+        _UploadButton(), _SortSelector(),
+        //TODO: _FilterButton()
+      ],
     );
   }
 }
