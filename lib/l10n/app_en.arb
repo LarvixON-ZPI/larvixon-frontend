@@ -203,5 +203,11 @@
       }
     }
   },
-  "analysis": "Analysis"
+  "analysis": "Analysis",
+  "date": "Date",
+  "datesRange": "Dates range",
+  "start": "Start",
+  "end": "End",
+  "from": "From",
+  "to": "To"
 }

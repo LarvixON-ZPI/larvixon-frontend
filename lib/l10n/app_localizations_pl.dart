@@ -404,4 +404,22 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get analysis => 'Analiza';
+
+  @override
+  String get date => 'Data';
+
+  @override
+  String get datesRange => 'Zakres dat';
+
+  @override
+  String get start => 'Początek';
+
+  @override
+  String get end => 'Koniec';
+
+  @override
+  String get from => 'Od';
+
+  @override
+  String get to => 'Do';
 }

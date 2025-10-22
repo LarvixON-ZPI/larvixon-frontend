@@ -203,5 +203,11 @@
       }
     }
   },
-  "analysis": "Analiza"
+  "analysis": "Analiza",
+  "date": "Data",
+  "datesRange": "Zakres dat",
+  "start": "Początek",
+  "end": "Koniec",
+  "from": "Od",
+  "to": "Do"
 }
