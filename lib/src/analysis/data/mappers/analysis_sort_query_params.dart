@@ -1,3 +1,4 @@
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_field_enum.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
 import 'package:larvixon_frontend/src/common/sort_order.dart';
 
@@ -8,10 +9,11 @@ extension AnalysisSortQueryParams on AnalysisSort {
     return '$orderPrefix$fieldName';
   }
 
-  String _fieldToApiName(AnalysisSortField field) {
+  String _fieldToApiName(AnalysisField field) {
     return switch (field) {
-      AnalysisSortField.createdAt => 'created_at',
-      AnalysisSortField.title => 'title',
+      AnalysisField.createdAt => 'created_at',
+      AnalysisField.title => 'title',
+      AnalysisField.status => 'status',
     };
   }
 }

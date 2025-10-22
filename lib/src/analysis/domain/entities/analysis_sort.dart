@@ -1,31 +1,23 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_field_enum.dart';
 import 'package:larvixon_frontend/src/common/sort_order.dart';
 
-enum AnalysisSortField { createdAt, title }
-
-class AnalysisSort {
-  final AnalysisSortField field;
+@immutable
+class AnalysisSort extends Equatable {
+  final AnalysisField field;
   final SortOrder order;
 
   const AnalysisSort({required this.field, required this.order});
 
   const AnalysisSort.defaultSorting()
-    : field = AnalysisSortField.createdAt,
+    : field = AnalysisField.createdAt,
       order = SortOrder.descending;
 
-  AnalysisSort copyWith({AnalysisSortField? field, SortOrder? order}) {
+  AnalysisSort copyWith({AnalysisField? field, SortOrder? order}) {
     return AnalysisSort(field: field ?? this.field, order: order ?? this.order);
   }
-}
 
-extension AnalysisSortFieldTranslation on AnalysisSortField {
-  String translate(BuildContext context) {
-    switch (this) {
-      case AnalysisSortField.createdAt:
-        return context.translate.createdAt;
-      case AnalysisSortField.title:
-        return context.translate.title;
-    }
-  }
+  @override
+  List<Object?> get props => [field, order];
 }

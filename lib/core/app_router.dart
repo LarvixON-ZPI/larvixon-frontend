@@ -108,7 +108,7 @@ class AppRouter {
             providers: [
               BlocProvider(
                 create: (context) =>
-                    AnalysisListCubit(context.read())..fetchVideoList(),
+                    AnalysisListCubit(context.read())..fetchAnalysesList(),
               ),
             ],
             child: AppShell(appBar: const LarvixonAppBar(), child: child),

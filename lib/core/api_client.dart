@@ -4,7 +4,7 @@ import 'package:larvixon_frontend/core/auth_interceptor.dart';
 import 'package:larvixon_frontend/core/token_storage.dart';
 
 final class ApiClient {
-  Duration timeoutDuration = Duration(seconds: 30);
+  Duration timeoutDuration = const Duration(seconds: 30);
   final TokenStorage _tokenStorage;
   ApiClient(this._tokenStorage);
 

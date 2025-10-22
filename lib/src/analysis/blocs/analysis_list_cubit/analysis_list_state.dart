@@ -10,6 +10,7 @@ final class AnalysisListState extends Equatable {
   final int page;
   final bool hasMore;
   final AnalysisSort sort;
+  final AnalysisFilter filter;
   const AnalysisListState({
     this.status = AnalysisListStatus.initial,
     this.analysesIds = const [],
@@ -18,6 +19,7 @@ final class AnalysisListState extends Equatable {
     this.hasMore = true,
     this.nextPage,
     this.sort = const AnalysisSort.defaultSorting(),
+    this.filter = const AnalysisFilter.empty(),
   });
 
   AnalysisListState copyWith({
@@ -28,6 +30,7 @@ final class AnalysisListState extends Equatable {
     bool? hasMore,
     String? nextPage,
     AnalysisSort? sort,
+    AnalysisFilter? filter,
   }) {
     return AnalysisListState(
       status: status ?? this.status,
@@ -37,6 +40,7 @@ final class AnalysisListState extends Equatable {
       hasMore: hasMore ?? this.hasMore,
       nextPage: nextPage ?? this.nextPage,
       sort: sort ?? this.sort,
+      filter: filter ?? this.filter,
     );
   }
 
@@ -49,5 +53,6 @@ final class AnalysisListState extends Equatable {
     hasMore,
     nextPage,
     sort,
+    filter,
   ];
 }

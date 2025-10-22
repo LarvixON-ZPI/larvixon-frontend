@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_field_enum.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 import 'package:larvixon_frontend/src/common/sort_order.dart';
@@ -24,7 +25,7 @@ class SortPopupMenu extends StatelessWidget {
         ),
       ),
       itemBuilder: (context) {
-        AnalysisSortField tempField = initialSorting.field;
+        AnalysisField tempField = initialSorting.field;
         SortOrder tempOrder = initialSorting.order;
 
         return [
@@ -36,14 +37,14 @@ class SortPopupMenu extends StatelessWidget {
                 alignment: WrapAlignment.center,
                 spacing: 4.0,
                 runSpacing: 4.0,
-                children: AnalysisSortField.values.map((f) {
+                children: AnalysisField.values.map((f) {
                   return ChoiceChip(
                     showCheckmark: false,
                     selected: f == tempField,
                     onSelected: (s) {
                       if (s) setPopupState(() => tempField = f);
                     },
-                    label: Text(f.translate(context)),
+                    label: Text(f.displayName(context)),
                   );
                 }).toList(),
               ),
@@ -72,40 +73,59 @@ class SortPopupMenu extends StatelessWidget {
             ),
           ),
           const PopupMenuDivider(),
-          PopupMenuItem<int>(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  tooltip: context.translate.close,
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.close),
-                ),
-                IconButton(
-                  tooltip: context.translate.reset,
-                  onPressed: () {
-                    context.read<AnalysisListCubit>().updateSort(
-                      const AnalysisSort.defaultSorting(),
-                    );
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(Icons.restart_alt),
-                ),
-                IconButton(
-                  tooltip: context.translate.apply,
-                  onPressed: () {
-                    context.read<AnalysisListCubit>().updateSort(
-                      AnalysisSort(field: tempField, order: tempOrder),
-                    );
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(Icons.check),
-                ),
-              ],
+          PopupMenuItem(
+            child: PopupControlsRow(
+              onClose: () => Navigator.pop(context),
+              onReset: () {
+                context.read<AnalysisListCubit>().updateSort(
+                  const AnalysisSort.defaultSorting(),
+                );
+                Navigator.pop(context);
+              },
+              onApply: () {
+                context.read<AnalysisListCubit>().updateSort(
+                  AnalysisSort(field: tempField, order: tempOrder),
+                );
+                Navigator.pop(context);
+              },
             ),
           ),
         ];
       },
+    );
+  }
+}
+
+class PopupControlsRow extends StatelessWidget {
+  final VoidCallback? onClose;
+  final VoidCallback? onReset;
+  final VoidCallback? onApply;
+  const PopupControlsRow({super.key, this.onClose, this.onReset, this.onApply});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        if (onClose != null)
+          IconButton(
+            tooltip: context.translate.close,
+            onPressed: onClose,
+            icon: const Icon(Icons.close),
+          ),
+        if (onReset != null)
+          IconButton(
+            tooltip: context.translate.reset,
+            onPressed: onReset,
+            icon: const Icon(Icons.restart_alt),
+          ),
+        if (onApply != null)
+          IconButton(
+            tooltip: context.translate.apply,
+            onPressed: onApply,
+            icon: const Icon(Icons.check),
+          ),
+      ],
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_filter.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 import 'package:larvixon_frontend/src/common/sort_order.dart';
@@ -13,14 +14,14 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
   bool get canLoadMore =>
       state.hasMore && state.status != AnalysisListStatus.loading;
 
-  void fetchNewlyUploadedVideo({required int id}) async {
+  void fetchNewlyUploadedAnalysis({required int id}) async {
     final currentIds = state.analysesIds;
     if (currentIds.contains(id)) return;
     final updatedIds = [id, ...currentIds];
     emit(state.copyWith(videoIds: updatedIds));
   }
 
-  Future<void> fetchVideoList() async {
+  Future<void> fetchAnalysesList() async {
     emit(state.copyWith(status: AnalysisListStatus.loading));
 
     final result = await _repository
@@ -57,7 +58,9 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
 
   Future<void> loadAnalyses({bool refresh = false}) async {
     emit(state.copyWith(status: AnalysisListStatus.loading));
-    final result = await _repository.fetchVideoIds(sort: state.sort).run();
+    final result = await _repository
+        .fetchVideoIds(sort: state.sort, filter: state.filter)
+        .run();
 
     result.match(
       (failire) => emit(
@@ -86,6 +89,7 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
   }
 
   void updateSort(AnalysisSort sort) {
+    if (sort == state.sort) return;
     emit(state.copyWith(sort: sort));
     loadAnalyses(refresh: true);
   }
@@ -96,5 +100,19 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
         : SortOrder.ascending;
 
     updateSort(state.sort.copyWith(order: newOrder));
+  }
+
+  void updateFilter(AnalysisFilter filter) {
+    if (filter == state.filter) return;
+    emit(state.copyWith(filter: filter));
+    loadAnalyses(refresh: true);
+  }
+
+  void resetFilter() {
+    const emptyFilter = AnalysisFilter.empty();
+    if (state.filter != emptyFilter) {
+      emit(state.copyWith(filter: emptyFilter));
+      loadAnalyses(refresh: true);
+    }
   }
 }

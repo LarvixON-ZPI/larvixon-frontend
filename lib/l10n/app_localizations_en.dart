@@ -404,4 +404,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get analysis => 'Analysis';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get datesRange => 'Dates range';
+
+  @override
+  String get start => 'Start';
+
+  @override
+  String get end => 'End';
+
+  @override
+  String get from => 'From';
+
+  @override
+  String get to => 'To';
 }

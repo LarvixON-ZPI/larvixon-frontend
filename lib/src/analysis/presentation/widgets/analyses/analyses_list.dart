@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/widgets/analysis_grid.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/widgets/analyses/analysis_grid.dart';
 
 class AnalysesList extends StatelessWidget {
   final ScrollController scrollController;

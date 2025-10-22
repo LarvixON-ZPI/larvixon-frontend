@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_filter.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/widgets/analyses/filter_popup_menu.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/analysis_add_dialog.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/widgets/sort_popup_menu.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/widgets/analyses/sort_popup_menu.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/icon_text_button.dart';
 import 'package:larvixon_frontend/src/common/widgets/side_bar_base.dart';
@@ -15,10 +17,7 @@ class AnalysesSidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SideBarBase(
-      children: [
-        _UploadButton(), _SortSelector(),
-        //TODO: _FilterButton()
-      ],
+      children: [_UploadButton(), _SortSelector(), _FilterSelector()],
     );
   }
 }
@@ -57,15 +56,21 @@ class _SortSelector extends StatelessWidget {
   }
 }
 
-class _FilterButton extends StatelessWidget {
+class _FilterSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return IconTextButton(
-      icon: FontAwesomeIcons.filter,
-      text: context.translate.filter,
-      onPressed: () {
-        // TODO: implement filter dialog
-      },
+    return Column(
+      children: [
+        BlocSelector<AnalysisListCubit, AnalysisListState, AnalysisFilter>(
+          selector: (state) => state.filter,
+          builder: (context, filter) =>
+              FilterPopupMenu(initialFiltering: filter),
+        ),
+        Text(
+          context.translate.filter,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+      ],
     );
   }
 }

@@ -32,9 +32,10 @@ class LarvaVideoGrid extends StatelessWidget {
         final analysisId = analysesIds[index];
         return AnalysisCard(key: ValueKey(analysisId), analysisId: analysisId);
       },
-      findChildIndexCallback: (key) {
+      findChildIndexCallback: (Key key) {
         if (key is ValueKey<int>) {
-          return analysesIds.indexOf(key.value);
+          final index = analysesIds.indexOf(key.value);
+          return index >= 0 ? index : null;
         }
         return null;
       },
