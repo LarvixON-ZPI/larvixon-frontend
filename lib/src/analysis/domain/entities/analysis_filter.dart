@@ -16,7 +16,7 @@ class AnalysisFilter extends Equatable {
     AnalysisProgressStatus? status,
   }) {
     return AnalysisFilter(
-      createAtDateRange: dateRange ?? this.createAtDateRange,
+      createAtDateRange: dateRange ?? createAtDateRange,
       status: status ?? this.status,
     );
   }
@@ -24,7 +24,7 @@ class AnalysisFilter extends Equatable {
   /// Applies the filter to a list of analyses.
   List<Analysis> applyFilter(List<Analysis> analyses) {
     print("Filtering with dateRange: $createAtDateRange, status: $status");
-    List<Analysis> filtered = analyses.where((analysis) {
+    final List<Analysis> filtered = analyses.where((analysis) {
       final matchesDateRange =
           createAtDateRange == null ||
           (analysis.uploadedAt.isAfter(createAtDateRange!.start) &&

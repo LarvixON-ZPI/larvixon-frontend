@@ -6,7 +6,7 @@ class DateInputFormatter extends TextInputFormatter {
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
-    String digitsOnly = newValue.text.replaceAll(RegExp(r'\D'), '');
+    final String digitsOnly = newValue.text.replaceAll(RegExp(r'\D'), '');
     String formatted = '';
     for (int i = 0; i < digitsOnly.length && i < 8; i++) {
       formatted += digitsOnly[i];
