@@ -88,7 +88,7 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
             );
           }
           if (state.status == VideoUploadStatus.success) {
-            context.read<AnalysisListCubit>().fetchNewlyUploadedVideo(
+            context.read<AnalysisListCubit>().fetchNewlyUploadedAnalysis(
               id: state.uploadedVideoId!,
             );
             Future.delayed(const Duration(milliseconds: 500)).then((_) {});

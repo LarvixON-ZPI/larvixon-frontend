@@ -3,6 +3,8 @@ import 'dart:typed_data';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_field_enum.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_filter.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_id_list.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress_status.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
@@ -30,7 +32,7 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
     "Morphine",
     "Ketamine",
   ];
-  final List<Analysis> _videos = [
+  final List<Analysis> _analyses = [
     Analysis(id: 1, uploadedAt: DateTime.now(), name: "zebrafish experiment 1"),
     Analysis(
       id: 2,
@@ -39,7 +41,12 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
       thumbnailUrl:
           "https://www.shutterstock.com/shutterstock/videos/32685646/thumb/1.jpg?ip=x480",
     ),
-    Analysis(id: 3, uploadedAt: DateTime.now(), name: "danio rerio study"),
+    Analysis(
+      id: 3,
+      uploadedAt: DateTime.now(),
+      name: "danio rerio study",
+      status: AnalysisProgressStatus.failed,
+    ),
     Analysis(id: 4, uploadedAt: DateTime.now(), name: "larva lsd test"),
     Analysis(
       id: 5,
@@ -68,23 +75,26 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
   TaskEither<Failure, AnalysisIdList> fetchVideoIds({
     String? nextPage,
     AnalysisSort? sort,
+    AnalysisFilter? filter,
   }) {
     return TaskEither.tryCatch(() async {
       await Future.delayed(const Duration(seconds: 1));
-
-      final sortedVideos = List<Analysis>.from(_videos);
+      List<Analysis> analysesCopy = List<Analysis>.from(_analyses);
+      if (filter != null) {
+        analysesCopy = filter.applyFilter(analysesCopy);
+      }
 
       if (sort != null) {
-        sortedVideos.sort((a, b) {
+        analysesCopy.sort((a, b) {
           final comparison = _compareByField(a, b, sort.field);
           return sort.order == SortOrder.ascending ? comparison : -comparison;
         });
       } else {
-        sortedVideos.sort((a, b) => b.uploadedAt.compareTo(a.uploadedAt));
+        analysesCopy.sort((a, b) => b.uploadedAt.compareTo(a.uploadedAt));
       }
 
       return AnalysisIdList(
-        ids: sortedVideos.map((video) => video.id).toList(),
+        ids: analysesCopy.map((analysis) => analysis.id).toList(),
       );
     }, (error, _) => UnknownAnalysisFailure(message: error.toString()));
   }
@@ -95,7 +105,7 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
     return TaskEither.tryCatch(
       () async {
         await Future.delayed(Duration(milliseconds: random.nextInt(250)));
-        return _videos.firstWhere((video) => video.id == id);
+        return _analyses.firstWhere((video) => video.id == id);
       },
       (error, _) {
         return UnknownAnalysisFailure(message: error.toString());
@@ -126,8 +136,8 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
           v.status == AnalysisProgressStatus.failed) {
         if (v.status == AnalysisProgressStatus.completed && v.results == null) {
           v = _applyRandomSubstances(v);
-          final index = _videos.indexWhere((v) => v.id == id);
-          _videos[index] = v;
+          final index = _analyses.indexWhere((v) => v.id == id);
+          _analyses[index] = v;
         }
         yield Either.right(v);
         break;
@@ -150,8 +160,8 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
         updatedVideo = _applyRandomSubstances(updatedVideo);
         updatedVideo = updatedVideo.copyWith(analysedAt: DateTime.now());
       }
-      final index = _videos.indexWhere((v) => v.id == id);
-      _videos[index] = updatedVideo;
+      final index = _analyses.indexWhere((v) => v.id == id);
+      _analyses[index] = updatedVideo;
       await Future.delayed(interval);
     }
   }
@@ -174,8 +184,9 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
       () async {
         await Future.delayed(const Duration(milliseconds: 250));
         final nextId =
-            (_videos.isEmpty ? 0 : _videos.map((e) => e.id).reduce(max)) + 1;
-        _videos.insert(
+            (_analyses.isEmpty ? 0 : _analyses.map((e) => e.id).reduce(max)) +
+            1;
+        _analyses.insert(
           0,
           Analysis(id: nextId, uploadedAt: DateTime.now(), name: title),
         );
@@ -190,10 +201,11 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
     );
   }
 
-  int _compareByField(Analysis a, Analysis b, AnalysisSortField field) {
+  int _compareByField(Analysis a, Analysis b, AnalysisField field) {
     return switch (field) {
-      AnalysisSortField.title => _compareNullableStrings(a.name, b.name),
-      AnalysisSortField.createdAt => a.uploadedAt.compareTo(b.uploadedAt),
+      AnalysisField.title => _compareNullableStrings(a.name, b.name),
+      AnalysisField.createdAt => a.uploadedAt.compareTo(b.uploadedAt),
+      AnalysisField.status => a.status.index.compareTo(b.status.index),
     };
   }
 

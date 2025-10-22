@@ -7,6 +7,7 @@ import 'package:larvixon_frontend/core/constants/endpoints_analysis.dart';
 import 'package:larvixon_frontend/src/analysis/data/mappers/analysis_sort_query_params.dart';
 import 'package:larvixon_frontend/src/analysis/data/models/analysis_dto.dart';
 import 'package:larvixon_frontend/src/analysis/data/models/analysis_id_list_dto.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_filter.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
 
 class AnalysisDatasource {
@@ -17,10 +18,27 @@ class AnalysisDatasource {
   Future<AnalysisIdListDTO> fetchAnalysisIds({
     String? nextPage,
     AnalysisSort? sort,
+    AnalysisFilter? filter,
   }) async {
     final queryParameters = <String, dynamic>{};
     if (sort != null) {
       queryParameters['ordering'] = sort.toQueryParam();
+    }
+    if (filter != null) {
+      final status = filter.status;
+      if (status != null) {
+        queryParameters['status'] = status.name;
+      }
+      final createdAtRange = filter.createAtDateRange;
+      if (createdAtRange != null) {
+        String formatDate(DateTime d) =>
+            "${d.year.toString().padLeft(4, '0')}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}";
+
+        final createdAtStart = createdAtRange.start;
+        final createdAtEnd = createdAtRange.end;
+        queryParameters['created_at__date__gte'] = formatDate(createdAtStart);
+        queryParameters['created_at__date__lte'] = formatDate(createdAtEnd);
+      }
     }
 
     if (nextPage != null) {
