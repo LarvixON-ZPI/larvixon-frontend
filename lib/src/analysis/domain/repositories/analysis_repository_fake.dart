@@ -10,8 +10,8 @@ import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_upload_r
 import 'package:larvixon_frontend/src/analysis/domain/failures/failures.dart';
 import 'package:larvixon_frontend/src/common/sort_order.dart';
 
-import '../entities/analysis.dart';
-import 'analysis_repository.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
+import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 
 class AnalysisRepositoryRepository implements AnalysisRepository {
   final Random _random = Random();
@@ -51,7 +51,7 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
       uploadedAt: DateTime.now(),
       name: "fish larvae caffeine test",
       status: AnalysisProgressStatus.completed,
-      results: [("Caffeine", 0.87), ("Ethanol", 0.12)],
+      results: const [("Caffeine", 0.87), ("Ethanol", 0.12)],
       analysedAt: DateTime.now(),
       thumbnailUrl:
           "https://media.springernature.com/lw685/springer-static/image/chp%3A10.1007%2F978-1-4939-8940-9_13/MediaObjects/448871_1_En_13_Fig1_HTML.jpg",
@@ -72,7 +72,7 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
     return TaskEither.tryCatch(() async {
       await Future.delayed(const Duration(seconds: 1));
 
-      var sortedVideos = List<Analysis>.from(_videos);
+      final sortedVideos = List<Analysis>.from(_videos);
 
       if (sort != null) {
         sortedVideos.sort((a, b) {
@@ -85,14 +85,13 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
 
       return AnalysisIdList(
         ids: sortedVideos.map((video) => video.id).toList(),
-        nextPage: null,
       );
     }, (error, _) => UnknownAnalysisFailure(message: error.toString()));
   }
 
   @override
   TaskEither<Failure, Analysis> fetchVideoDetailsById(int id) {
-    Random random = Random();
+    final Random random = Random();
     return TaskEither.tryCatch(
       () async {
         await Future.delayed(Duration(milliseconds: random.nextInt(250)));
@@ -114,9 +113,9 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
     required int id,
     Duration interval = const Duration(seconds: 5),
   }) async* {
-    Random random = Random();
+    final Random random = Random();
     while (true) {
-      var video = await fetchVideoDetailsById(id).run();
+      final video = await fetchVideoDetailsById(id).run();
       if (video.isLeft()) {
         yield video;
         break;
@@ -173,7 +172,7 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
   }) {
     return TaskEither.tryCatch(
       () async {
-        await Future.delayed(Duration(milliseconds: 250));
+        await Future.delayed(const Duration(milliseconds: 250));
         final nextId =
             (_videos.isEmpty ? 0 : _videos.map((e) => e.id).reduce(max)) + 1;
         _videos.insert(

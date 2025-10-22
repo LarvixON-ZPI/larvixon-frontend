@@ -30,7 +30,6 @@ class _ThemeButtonState extends State<ThemeButton>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 150),
-      lowerBound: 0.0,
       upperBound: 0.6,
     );
   }

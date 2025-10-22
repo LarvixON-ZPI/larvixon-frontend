@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/src/common/extensions/default_padding.dart';
 
-import 'landing_content.dart';
+import 'package:larvixon_frontend/src/landing/presentation/landing/landing_content.dart';
 
 class LandingPage extends StatefulWidget {
   static const String route = '/';

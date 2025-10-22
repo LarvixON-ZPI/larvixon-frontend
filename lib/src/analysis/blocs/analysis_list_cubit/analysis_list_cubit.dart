@@ -8,7 +8,7 @@ part 'analysis_list_state.dart';
 
 class AnalysisListCubit extends Cubit<AnalysisListState> {
   final AnalysisRepository _repository;
-  AnalysisListCubit(this._repository) : super(AnalysisListState());
+  AnalysisListCubit(this._repository) : super(const AnalysisListState());
 
   bool get canLoadMore =>
       state.hasMore && state.status != AnalysisListStatus.loading;
@@ -57,7 +57,7 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
 
   Future<void> loadAnalyses({bool refresh = false}) async {
     emit(
-      state.copyWith(status: AnalysisListStatus.loading, errorMessage: null),
+      state.copyWith(status: AnalysisListStatus.loading),
     );
     final result = await _repository.fetchVideoIds(sort: state.sort).run();
 
@@ -78,7 +78,6 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
           state.copyWith(
             status: AnalysisListStatus.success,
             videoIds: ids,
-            errorMessage: null,
             page: state.page + 1,
             nextPage: nextPage,
             hasMore: nextPage != null,

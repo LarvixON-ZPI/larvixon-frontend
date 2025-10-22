@@ -7,19 +7,19 @@ import 'package:larvixon_frontend/src/settings/domain/repositories/settings_repo
 import 'package:larvixon_frontend/src/settings/domain/repositories/settings_repository_impl.dart';
 import 'package:larvixon_frontend/src/settings/presentation/blocs/cubit/settings_cubit.dart';
 
-import 'core/api_client.dart';
-import 'core/app_router.dart';
-import 'core/theme/app_theme.dart';
-import 'core/token_storage.dart';
-import 'l10n/app_localizations.dart';
-import 'src/authentication/bloc/auth_bloc.dart';
-import 'src/authentication/data/auth_datasource.dart';
-import 'src/authentication/domain/repositories/auth_repository.dart';
-import 'src/authentication/domain/repositories/auth_repository_impl.dart';
-import 'src/user/bloc/user_bloc.dart';
-import 'src/user/data/user_datasource.dart';
-import 'src/user/domain/repositories/user_repository.dart';
-import 'src/user/domain/repositories/user_repository_impl.dart';
+import 'package:larvixon_frontend/core/api_client.dart';
+import 'package:larvixon_frontend/core/app_router.dart';
+import 'package:larvixon_frontend/core/theme/app_theme.dart';
+import 'package:larvixon_frontend/core/token_storage.dart';
+import 'package:larvixon_frontend/l10n/app_localizations.dart';
+import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
+import 'package:larvixon_frontend/src/authentication/data/auth_datasource.dart';
+import 'package:larvixon_frontend/src/authentication/domain/repositories/auth_repository.dart';
+import 'package:larvixon_frontend/src/authentication/domain/repositories/auth_repository_impl.dart';
+import 'package:larvixon_frontend/src/user/bloc/user_bloc.dart';
+import 'package:larvixon_frontend/src/user/data/user_datasource.dart';
+import 'package:larvixon_frontend/src/user/domain/repositories/user_repository.dart';
+import 'package:larvixon_frontend/src/user/domain/repositories/user_repository_impl.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

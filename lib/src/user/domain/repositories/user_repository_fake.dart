@@ -1,8 +1,8 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart' show Failure;
 
-import '../entities/user.dart';
-import 'user_repository.dart';
+import 'package:larvixon_frontend/src/user/domain/entities/user.dart';
+import 'package:larvixon_frontend/src/user/domain/repositories/user_repository.dart';
 
 class UserRepositoryFake implements UserRepository {
   User _user = User(

@@ -18,10 +18,8 @@ class LarvixonLogo extends StatelessWidget {
       child: SizedBox(
         height: kToolbarHeight,
         child: FittedBox(
-          fit: BoxFit.contain,
           child: SvgPicture.asset(
             useFull ? full : logoOnly,
-            fit: BoxFit.contain,
             colorFilter: ColorFilter.mode(
               Theme.of(context).iconTheme.color!,
               BlendMode.srcIn,

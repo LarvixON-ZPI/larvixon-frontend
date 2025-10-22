@@ -4,15 +4,15 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart' show Equatable;
 import 'package:meta/meta.dart';
 
-import '../domain/failures/auth_error.dart';
-import '../domain/repositories/auth_repository.dart';
+import 'package:larvixon_frontend/src/authentication/domain/failures/auth_error.dart';
+import 'package:larvixon_frontend/src/authentication/domain/repositories/auth_repository.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository;
-  AuthBloc(this._authRepository) : super(AuthState()) {
+  AuthBloc(this._authRepository) : super(const AuthState()) {
     on<AuthSignUpRequested>(_onSignUpRequested);
     on<AuthSignInRequested>(_onSignInRequested);
     on<AuthSignOutRequested>(_onSignOutRequested);

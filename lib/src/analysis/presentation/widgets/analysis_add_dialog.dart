@@ -27,11 +27,11 @@ class LarvaVideoAddForm extends StatefulWidget {
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: Center(
             child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 600),
+              constraints: const BoxConstraints(maxWidth: 600),
 
               child: BlocProvider.value(
                 value: videoListCubit,
-                child: LarvaVideoAddForm(),
+                child: const LarvaVideoAddForm(),
               ),
             ),
           ),
@@ -50,7 +50,6 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.video,
       withData: true,
-      allowMultiple: false,
     );
 
     if (result != null && result.files.isNotEmpty) {
@@ -137,7 +136,6 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
                     spacing: 16,
                     children: [
                       Flexible(
-                        flex: 1,
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.redAccent,
@@ -147,7 +145,7 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
                           label: Text(context.translate.cancel),
                         ),
                       ),
-                      Spacer(flex: 1),
+                      const Spacer(),
                       Flexible(
                         flex: 2,
                         child: ElevatedButton.icon(
@@ -246,7 +244,7 @@ class _UploadIconState extends State<_UploadIcon>
       builder: (context, child) {
         return Transform.scale(
           scale: _scale.value,
-          child: Icon(Icons.cloud_upload),
+          child: const Icon(Icons.cloud_upload),
         );
       },
     );

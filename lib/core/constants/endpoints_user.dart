@@ -1,4 +1,4 @@
-import 'api_base.dart';
+import 'package:larvixon_frontend/core/constants/api_base.dart';
 
 class UserEndpoints {
   static const String profile = '${ApiBase.baseUrl}/accounts/profile/';

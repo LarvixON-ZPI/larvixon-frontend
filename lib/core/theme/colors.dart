@@ -17,8 +17,6 @@ class AppColors {
 
   static final ColorScheme colorSchemeLight = ColorScheme.fromSeed(
     seedColor: const Color.fromARGB(255, 0, 255, 195),
-
-    brightness: Brightness.light,
   );
   static final ColorScheme colorSchemeDark = ColorScheme.fromSeed(
     seedColor: const Color.fromARGB(255, 16, 97, 89),

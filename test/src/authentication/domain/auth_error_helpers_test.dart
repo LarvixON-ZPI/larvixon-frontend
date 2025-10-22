@@ -101,22 +101,22 @@ void main() {
 
     test('should have correct error messages', () {
       expect(
-        InvalidCredentialsError().message,
+        const InvalidCredentialsError().message,
         equals('Invalid email or password'),
       );
-      expect(DisabledAccountError().message, equals('Account is disabled'));
+      expect(const DisabledAccountError().message, equals('Account is disabled'));
       expect(
-        MfaRequiredButNoCodeError().message,
+        const MfaRequiredButNoCodeError().message,
         equals('Multi-factor authentication is required'),
       );
-      expect(InvalidMfaCodeError().message, equals('Invalid MFA code'));
+      expect(const InvalidMfaCodeError().message, equals('Invalid MFA code'));
       expect(
-        NetworkError('Connection failed').message,
+        const NetworkError('Connection failed').message,
         equals('Connection failed'),
       );
-      expect(ServerError('Internal error').message, equals('Internal error'));
+      expect(const ServerError('Internal error').message, equals('Internal error'));
       expect(
-        FieldValidationError({
+        const FieldValidationError({
           'email': ['Required'],
         }).message,
         equals('Validation errors occurred'),

@@ -1,6 +1,6 @@
-import '../../data/auth_datasource.dart';
-import '../../../../core/token_storage.dart';
-import 'auth_repository.dart';
+import 'package:larvixon_frontend/src/authentication/data/auth_datasource.dart';
+import 'package:larvixon_frontend/core/token_storage.dart';
+import 'package:larvixon_frontend/src/authentication/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthDataSource dataSource;

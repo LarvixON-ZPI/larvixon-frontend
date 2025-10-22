@@ -13,8 +13,8 @@ class ContactPage extends StatelessWidget {
       child: SingleChildScrollView(
         child: SafeArea(
           child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 600),
-            child: ContactSection().withDefaultPagePadding,
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: const ContactSection().withDefaultPagePadding,
           ),
         ),
       ),

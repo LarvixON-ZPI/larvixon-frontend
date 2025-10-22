@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 
-import '../../../common/widgets/petri_dish/petri_dish.dart';
-import 'landing_email_form.dart';
+import 'package:larvixon_frontend/src/common/widgets/petri_dish/petri_dish.dart';
+import 'package:larvixon_frontend/src/landing/presentation/landing/landing_email_form.dart';
 
 class LandingContent extends StatelessWidget {
   const LandingContent({super.key});
@@ -15,7 +15,6 @@ class LandingContent extends StatelessWidget {
       spacing: 32,
       children: [
         Flexible(
-          fit: FlexFit.loose,
           child: Column(
             spacing: 16,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,20 +31,19 @@ class LandingContent extends StatelessWidget {
                 context.translate.larvixonDescription,
                 style: Theme.of(context).textTheme.headlineMedium!,
               ),
-              LandingEmailForm(),
+              const LandingEmailForm(),
             ],
           ),
         ),
         if (showPetriDishes)
           Flexible(
-            fit: FlexFit.loose,
             child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(
                   maxWidth: 400,
                   maxHeight: 400,
                 ),
-                child: const PetriDish(larvaeCount: 1),
+                child: const PetriDish(),
               ),
             ),
           ),

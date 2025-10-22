@@ -1,13 +1,12 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:larvixon_frontend/src/common/widgets/larvixon_logo.dart';
 
-import '../../common/extensions/translate_extension.dart';
-import '../../common/form_validators.dart';
-import '../bloc/auth_bloc.dart';
-import '../domain/failures/auth_error.dart';
-import 'auth_error_dialog.dart';
+import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
+import 'package:larvixon_frontend/src/common/form_validators.dart';
+import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
+import 'package:larvixon_frontend/src/authentication/domain/failures/auth_error.dart';
+import 'package:larvixon_frontend/src/authentication/presentation/auth_error_dialog.dart';
 
 enum AuthFormMode { signUp, signIn }
 
@@ -38,7 +37,7 @@ class _AuthFormState extends State<AuthForm>
 
   Map<String, String> _serverSideFieldErrors = {};
 
-  Set<String> _validatedFields = {};
+  final Set<String> _validatedFields = {};
 
   @override
   void dispose() {
@@ -86,7 +85,6 @@ class _AuthFormState extends State<AuthForm>
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 4.0,
           children: [
@@ -318,7 +316,7 @@ class _AuthFormState extends State<AuthForm>
                         ),
                         TextFormField(
                           controller: _firstNameController,
-                          autofillHints: [AutofillHints.givenName],
+                          autofillHints: const [AutofillHints.givenName],
                           decoration: InputDecoration(
                             hintText: context.translate.firstName,
                           ),
@@ -341,7 +339,7 @@ class _AuthFormState extends State<AuthForm>
                         ),
                         TextFormField(
                           controller: _lastNameController,
-                          autofillHints: [AutofillHints.familyName],
+                          autofillHints: const [AutofillHints.familyName],
                           decoration: InputDecoration(
                             hintText: context.translate.lastName,
                           ),
@@ -377,7 +375,7 @@ class _AuthFormState extends State<AuthForm>
                   color: Theme.of(context).colorScheme.primary,
                   key: ValueKey(_formMode),
                   onPressed: _submitForm,
-                  icon: Icon(Icons.arrow_forward),
+                  icon: const Icon(Icons.arrow_forward),
                 ),
               ),
             ),

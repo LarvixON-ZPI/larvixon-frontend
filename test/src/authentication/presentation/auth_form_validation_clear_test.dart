@@ -42,7 +42,7 @@ void main() {
   group('AuthFormValidationClear', () {
     testWidgets('clears validation errors on input change', (tester) async {
       await tester.pumpWidget(
-        createTestWidget(AuthForm(initialMode: AuthFormMode.signIn)),
+        createTestWidget(const AuthForm(initialMode: AuthFormMode.signIn)),
       );
 
       final emailField = find.widgetWithText(TextFormField, 'Email');
@@ -67,7 +67,7 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        createTestWidget(AuthForm(initialMode: AuthFormMode.signIn)),
+        createTestWidget(const AuthForm(initialMode: AuthFormMode.signIn)),
       );
 
       final emailField = find.widgetWithText(TextFormField, 'Email');

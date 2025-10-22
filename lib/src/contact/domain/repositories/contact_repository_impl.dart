@@ -1,4 +1,4 @@
-import '../../domain/repositories/contact_repository.dart';
+import 'package:larvixon_frontend/src/contact/domain/repositories/contact_repository.dart';
 
 class ContactRepositoryImpl implements ContactRepository {
   // TODO: Implement repository methods

@@ -5,7 +5,7 @@ import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
 class BestMatchResultSection extends StatelessWidget {
-  const BestMatchResultSection({required this.results});
+  const BestMatchResultSection({super.key, required this.results});
   final AnalysisResults results;
 
   @override

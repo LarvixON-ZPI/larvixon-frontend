@@ -28,7 +28,6 @@ class AnalysisAppBarBottom extends StatelessWidget
           },
         ),
         Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             BlocSelector<AnalysisListCubit, AnalysisListState, AnalysisSort>(
@@ -42,7 +41,6 @@ class AnalysisAppBarBottom extends StatelessWidget
           ],
         ),
         Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(

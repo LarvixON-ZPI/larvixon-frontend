@@ -14,6 +14,6 @@ class AppBarCubit extends Cubit<AppBarState> {
 
   void clearBottom() {
     print('Clearing bottom');
-    emit(const AppBarState(bottom: null));
+    emit(const AppBarState());
   }
 }

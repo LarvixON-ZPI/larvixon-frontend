@@ -16,14 +16,13 @@ class LocaleDropdownMenu extends StatelessWidget {
       builder: (context, locale) {
         return DropdownMenu<Locale>(
           initialSelection: locale,
-          leadingIcon: includeTrailingIcon ? Icon(Icons.language) : null,
+          leadingIcon: includeTrailingIcon ? const Icon(Icons.language) : null,
           enableSearch: false,
-          enableFilter: false,
           requestFocusOnTap: false,
           inputDecorationTheme: InputDecorationTheme(
             isCollapsed: true,
             isDense: true,
-            focusedBorder: OutlineInputBorder(borderSide: BorderSide.none),
+            focusedBorder: const OutlineInputBorder(borderSide: BorderSide.none),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(4),
               borderSide: BorderSide.none,

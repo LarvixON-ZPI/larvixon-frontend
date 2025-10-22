@@ -31,7 +31,7 @@ final class AnalysisListState extends Equatable {
   }) {
     return AnalysisListState(
       status: status ?? this.status,
-      analysesIds: videoIds ?? this.analysesIds,
+      analysesIds: videoIds ?? analysesIds,
       errorMessage: errorMessage ?? this.errorMessage,
       page: page ?? this.page,
       hasMore: hasMore ?? this.hasMore,

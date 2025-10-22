@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/src/settings/presentation/widgets/locale_dropdown_menu.dart';
 
-import '../extensions/translate_extension.dart';
+import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 
 class Footer extends StatelessWidget {
   final VoidCallback? onPrivacyPressed;
@@ -20,7 +20,6 @@ class Footer extends StatelessWidget {
           if (constraints.maxWidth > 600) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   '© 2025 ${context.translate.larvixon}',
@@ -37,7 +36,7 @@ class Footer extends StatelessWidget {
                       onPressed: onTermsPressed,
                       child: Text(context.translate.terms),
                     ),
-                    IntrinsicWidth(child: LocaleDropdownMenu()),
+                    const IntrinsicWidth(child: LocaleDropdownMenu()),
                   ],
                 ),
               ],
@@ -62,7 +61,7 @@ class Footer extends StatelessWidget {
                   onPressed: onTermsPressed,
                   child: Text(context.translate.terms),
                 ),
-                LocaleDropdownMenu(),
+                const LocaleDropdownMenu(),
               ],
             );
           }
