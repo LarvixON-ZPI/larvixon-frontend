@@ -26,11 +26,7 @@ class CustomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints:
-          constraints ??
-          const BoxConstraints(
-            
-          ),
+      constraints: constraints ?? const BoxConstraints(),
       child: Card(
         shadowColor: shadowColor,
         clipBehavior: Clip.antiAlias,

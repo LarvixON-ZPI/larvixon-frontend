@@ -104,7 +104,10 @@ void main() {
         const InvalidCredentialsError().message,
         equals('Invalid email or password'),
       );
-      expect(const DisabledAccountError().message, equals('Account is disabled'));
+      expect(
+        const DisabledAccountError().message,
+        equals('Account is disabled'),
+      );
       expect(
         const MfaRequiredButNoCodeError().message,
         equals('Multi-factor authentication is required'),
@@ -114,7 +117,10 @@ void main() {
         const NetworkError('Connection failed').message,
         equals('Connection failed'),
       );
-      expect(const ServerError('Internal error').message, equals('Internal error'));
+      expect(
+        const ServerError('Internal error').message,
+        equals('Internal error'),
+      );
       expect(
         const FieldValidationError({
           'email': ['Required'],

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';

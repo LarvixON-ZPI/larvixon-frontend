@@ -22,7 +22,9 @@ class LocaleDropdownMenu extends StatelessWidget {
           inputDecorationTheme: InputDecorationTheme(
             isCollapsed: true,
             isDense: true,
-            focusedBorder: const OutlineInputBorder(borderSide: BorderSide.none),
+            focusedBorder: const OutlineInputBorder(
+              borderSide: BorderSide.none,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(4),
               borderSide: BorderSide.none,
