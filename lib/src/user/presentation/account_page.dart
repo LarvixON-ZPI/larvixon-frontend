@@ -4,10 +4,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 import 'package:larvixon_frontend/src/common/widgets/profile_avatar.dart';
 
-import '../../../src/common/extensions/translate_extension.dart';
-import '../../common/form_validators.dart';
-import '../bloc/user_bloc.dart';
-import '../domain/entities/user.dart';
+import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
+import 'package:larvixon_frontend/src/common/form_validators.dart';
+import 'package:larvixon_frontend/src/user/bloc/user_bloc.dart';
+import 'package:larvixon_frontend/src/user/domain/entities/user.dart';
 
 class AccountPage extends StatefulWidget {
   static const String route = '/account';

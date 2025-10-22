@@ -15,12 +15,12 @@ import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.
 import 'package:larvixon_frontend/src/common/app_shell.dart';
 import 'package:larvixon_frontend/src/settings/presentation/pages/settings_page.dart';
 
-import '../src/authentication/bloc/auth_bloc.dart';
-import '../src/authentication/presentation/auth_form.dart';
-import '../src/authentication/presentation/auth_page.dart';
-import '../src/home/home_page.dart';
-import '../src/landing/presentation/landing/landing_page.dart';
-import '../src/user/presentation/account_page.dart';
+import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
+import 'package:larvixon_frontend/src/authentication/presentation/auth_form.dart';
+import 'package:larvixon_frontend/src/authentication/presentation/auth_page.dart';
+import 'package:larvixon_frontend/src/home/home_page.dart';
+import 'package:larvixon_frontend/src/landing/presentation/landing/landing_page.dart';
+import 'package:larvixon_frontend/src/user/presentation/account_page.dart';
 
 class GoRouterAuthNotifier extends ChangeNotifier {
   final AuthBloc authBloc;
@@ -172,7 +172,7 @@ class AppRouter {
             path: SettingsPage.route,
             name: SettingsPage.name,
             pageBuilder: (context, state) {
-              return SettingsPage().withoutTransition(state: state);
+              return const SettingsPage().withoutTransition(state: state);
             },
           ),
         ],

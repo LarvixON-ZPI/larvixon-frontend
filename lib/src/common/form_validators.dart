@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import 'extensions/translate_extension.dart';
+import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 
 class FormValidators {
   static String? lengthValidator(

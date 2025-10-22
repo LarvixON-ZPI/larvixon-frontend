@@ -4,9 +4,9 @@ import 'package:larvixon_frontend/core/errors/failures.dart'
 import 'package:larvixon_frontend/src/user/data/mappers/user_mapper.dart';
 import 'package:larvixon_frontend/src/user/data/models/user_dto.dart';
 
-import '../../data/user_datasource.dart';
-import '../entities/user.dart';
-import 'user_repository.dart';
+import 'package:larvixon_frontend/src/user/data/user_datasource.dart';
+import 'package:larvixon_frontend/src/user/domain/entities/user.dart';
+import 'package:larvixon_frontend/src/user/domain/repositories/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final UserDataSource dataSource;

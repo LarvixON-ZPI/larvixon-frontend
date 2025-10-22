@@ -103,7 +103,7 @@ class PetriLarva {
 
 extension OffsetExtension on Offset {
   Offset normalize() {
-    final length = this.distance;
+    final length = distance;
     return length == 0 ? Offset.zero : this / length;
   }
 }

@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:larvixon_frontend/core/constants/endpoints_auth.dart';
 
-import '../../../core/api_client.dart';
-import '../domain/failures/auth_error.dart';
+import 'package:larvixon_frontend/core/api_client.dart';
+import 'package:larvixon_frontend/src/authentication/domain/failures/auth_error.dart';
 
 class AuthDataSource {
   final ApiClient apiClient;

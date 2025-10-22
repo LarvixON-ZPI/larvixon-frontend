@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/src/common/extensions/default_padding.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
-import 'auth_form.dart';
+import 'package:larvixon_frontend/src/authentication/presentation/auth_form.dart';
 
 class AuthPage extends StatefulWidget {
   static const String route = '/login';
@@ -28,7 +28,7 @@ class _AuthPageState extends State<AuthPage>
       child: SingleChildScrollView(
         child: SafeArea(
           child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 600),
+            constraints: const BoxConstraints(maxWidth: 600),
             child: CustomCard(
               child: AuthForm(
                 initialMode: widget.initialMode,

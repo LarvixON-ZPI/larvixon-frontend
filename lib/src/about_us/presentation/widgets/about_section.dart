@@ -3,7 +3,7 @@ import 'package:larvixon_frontend/core/constants/breakpoints.dart';
 import 'package:larvixon_frontend/src/about_us/presentation/widgets/team_members_card.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
-import '../../../common/extensions/translate_extension.dart';
+import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 
 class AboutSection extends StatelessWidget {
   const AboutSection({super.key});
@@ -51,7 +51,7 @@ class AboutSection extends StatelessWidget {
                     child: SizedBox(
                       width: isNarrow ? double.infinity : null,
                       child: CustomCard(
-                        icon: Icon(Icons.flag),
+                        icon: const Icon(Icons.flag),
                         title: Text(
                           context.translate.ourMission,
                           style: Theme.of(context).textTheme.titleLarge,
@@ -68,7 +68,7 @@ class AboutSection extends StatelessWidget {
                     child: SizedBox(
                       width: isNarrow ? double.infinity : null,
                       child: CustomCard(
-                        icon: Icon(Icons.lightbulb),
+                        icon: const Icon(Icons.lightbulb),
                         title: Text(
                           context.translate.ourVision,
                           style: Theme.of(context).textTheme.titleLarge,
@@ -84,7 +84,7 @@ class AboutSection extends StatelessWidget {
             );
           },
         ),
-        SizedBox(width: double.infinity, child: TeamMembersCard()),
+        const SizedBox(width: double.infinity, child: TeamMembersCard()),
       ],
     );
   }

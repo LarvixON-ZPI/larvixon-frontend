@@ -114,8 +114,9 @@ void main(List<String> args) {
     print('\n🔧 Code Quality Improvements:');
     if (formatCode || fullCleanup) print('   Formatted files: $formattedFiles');
     if (fixLints || fullCleanup) print('   Fixed lint issues: $fixedLints');
-    if (addConst || fullCleanup)
+    if (addConst || fullCleanup) {
       print('   Added const keywords: $constAdditions');
+    }
   }
 
   if (dryRun) {
@@ -326,12 +327,12 @@ int _levenshteinDistance(String a, String b) {
   List<int> previousRow = List.generate(b.length + 1, (i) => i);
 
   for (int i = 0; i < a.length; i++) {
-    List<int> currentRow = [i + 1];
+    final List<int> currentRow = [i + 1];
 
     for (int j = 0; j < b.length; j++) {
-      int insertCost = previousRow[j + 1] + 1;
-      int deleteCost = currentRow[j] + 1;
-      int substituteCost = previousRow[j] + (a[i] == b[j] ? 0 : 1);
+      final int insertCost = previousRow[j + 1] + 1;
+      final int deleteCost = currentRow[j] + 1;
+      final int substituteCost = previousRow[j] + (a[i] == b[j] ? 0 : 1);
 
       currentRow.add(
         [

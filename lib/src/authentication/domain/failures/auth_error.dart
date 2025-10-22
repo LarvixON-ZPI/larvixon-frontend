@@ -9,7 +9,7 @@ sealed class AuthError {
     final response = exception.response;
 
     if (response == null) {
-      return NetworkError('Network connection failed');
+      return const NetworkError('Network connection failed');
     }
 
     final data = response.data;
@@ -19,24 +19,24 @@ sealed class AuthError {
       case 202:
         if (data is Map<String, dynamic> &&
             data['detail'] == 'MFA is required.') {
-          return MfaRequiredButNoCodeError();
+          return const MfaRequiredButNoCodeError();
         }
-        return UnknownError('Unexpected response from server');
+        return const UnknownError('Unexpected response from server');
 
       case 400:
         if (data is Map<String, dynamic>) {
           return _parseValidationErrors(data);
         }
-        return ValidationError('Invalid request');
+        return const ValidationError('Invalid request');
 
       case 401:
-        return AuthenticationError('Unauthorized access');
+        return const AuthenticationError('Unauthorized access');
 
       case 403:
-        return AuthenticationError('Access forbidden');
+        return const AuthenticationError('Access forbidden');
 
       case 500:
-        return ServerError('Internal server error');
+        return const ServerError('Internal server error');
 
       default:
         return UnknownError('HTTP $statusCode: ${exception.message}');
@@ -51,11 +51,11 @@ sealed class AuthError {
           : 'Authentication failed';
 
       if (errorMessage.contains('Invalid email or password')) {
-        return InvalidCredentialsError();
+        return const InvalidCredentialsError();
       } else if (errorMessage.contains('Account is disabled')) {
-        return DisabledAccountError();
+        return const DisabledAccountError();
       } else if (errorMessage.contains('Must include email and password')) {
-        return MissingCredentialsError();
+        return const MissingCredentialsError();
       }
 
       return AuthenticationError(errorMessage);
@@ -65,13 +65,13 @@ sealed class AuthError {
       final detail = data['detail'].toString();
 
       if (detail == 'MFA device not found.') {
-        return MfaDeviceNotFoundError();
+        return const MfaDeviceNotFoundError();
       } else if (detail == 'MFA device is not confirmed.') {
-        return MfaDeviceNotConfirmedError();
+        return const MfaDeviceNotConfirmedError();
       } else if (detail == 'MFA secret key not found.') {
-        return MfaSecretMissingError();
+        return const MfaSecretMissingError();
       } else if (detail == 'Invalid MFA code.') {
-        return InvalidMfaCodeError();
+        return const InvalidMfaCodeError();
       }
 
       return GenericMfaError(detail);
@@ -90,7 +90,7 @@ sealed class AuthError {
       return FieldValidationError(fieldErrors);
     }
 
-    return ValidationError('Validation failed');
+    return const ValidationError('Validation failed');
   }
 }
 

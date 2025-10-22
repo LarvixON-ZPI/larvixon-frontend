@@ -13,8 +13,8 @@ class AboutPage extends StatelessWidget {
       child: Center(
         child: SafeArea(
           child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 600),
-            child: AboutSection().withDefaultPagePadding,
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: const AboutSection().withDefaultPagePadding,
           ),
         ),
       ),

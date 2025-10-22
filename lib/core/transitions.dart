@@ -7,7 +7,7 @@ enum SlideFrom {
   top,
   bottom;
 
-  get offset {
+  Offset get offset {
     switch (this) {
       case SlideFrom.left:
         return const Offset(-1, 0);
@@ -20,7 +20,7 @@ enum SlideFrom {
     }
   }
 
-  get opposite {
+  SlideFrom get opposite {
     switch (this) {
       case SlideFrom.left:
         return SlideFrom.right;

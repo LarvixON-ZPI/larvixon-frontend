@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../common/extensions/translate_extension.dart';
-import '../../../common/form_validators.dart';
-import '../../../authentication/presentation/auth_form.dart';
-import '../../../authentication/presentation/auth_page.dart';
+import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
+import 'package:larvixon_frontend/src/common/form_validators.dart';
+import 'package:larvixon_frontend/src/authentication/presentation/auth_form.dart';
+import 'package:larvixon_frontend/src/authentication/presentation/auth_page.dart';
 
 class LandingEmailForm extends StatefulWidget {
-  LandingEmailForm({super.key});
+  const LandingEmailForm({super.key});
 
   @override
   State<LandingEmailForm> createState() => _LandingEmailFormState();

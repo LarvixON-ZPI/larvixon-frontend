@@ -6,7 +6,7 @@ import 'package:larvixon_frontend/core/errors/failures.dart';
 import 'package:shared_preferences/shared_preferences.dart'
     show SharedPreferences;
 
-import '../../domain/repositories/settings_repository.dart';
+import 'package:larvixon_frontend/src/settings/domain/repositories/settings_repository.dart';
 
 class SettingsRepositoryImpl implements SettingsRepository {
   static const _brightnessKey = 'brightness';

@@ -54,7 +54,6 @@ class _AnalysisCardState extends State<AnalysisCard>
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Row(
-                          mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.end,
 
                           children: [StatusRow(analysis: state.analysis)],

@@ -1,4 +1,4 @@
-import 'auth_repository.dart';
+import 'package:larvixon_frontend/src/authentication/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryFake implements AuthRepository {
   @override

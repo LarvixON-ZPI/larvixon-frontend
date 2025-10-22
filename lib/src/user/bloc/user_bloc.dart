@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../domain/repositories/user_repository.dart';
-import '../domain/entities/user.dart';
+import 'package:larvixon_frontend/src/user/domain/repositories/user_repository.dart';
+import 'package:larvixon_frontend/src/user/domain/entities/user.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   final UserRepository userRepository;
-  UserBloc(this.userRepository) : super(UserState()) {
+  UserBloc(this.userRepository) : super(const UserState()) {
     on<UserProfileDataRequested>(_onUserProfileDataRequested);
     on<UserProfileDataUpdateRequested>(_onUserProfileDataUpdateRequested);
     on<UserProfileClearRequested>(_onUserProfileClearRequested);
@@ -22,7 +22,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     Emitter<UserState> emit,
   ) async {
     emit(state.copyWith(isUpdating: true));
-    var result = await userRepository
+    final result = await userRepository
         .updateUserProfile(
           user: state.user!.copyWith(
             email: event.email,
@@ -59,7 +59,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     Emitter<UserState> emit,
   ) async {
     emit(state.copyWith(status: UserStatus.loading));
-    var result = await userRepository.getUserProfile().run();
+    final result = await userRepository.getUserProfile().run();
     result.match(
       (error) => emit(
         state.copyWith(
@@ -75,6 +75,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     UserProfileClearRequested event,
     Emitter<UserState> emit,
   ) {
-    emit(state.copyWith(user: null, status: UserStatus.initial));
+    emit(state.copyWith(status: UserStatus.initial));
   }
 }

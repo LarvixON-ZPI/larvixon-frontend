@@ -10,7 +10,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   final SettingsRepository repository;
   final List<Locale> supportedLocales;
   SettingsCubit({required this.repository, required this.supportedLocales})
-    : super(SettingsState(locale: Locale('en'), theme: ThemeMode.system));
+    : super(const SettingsState(locale: Locale('en'), theme: ThemeMode.system));
 
   Future<void> loadSettings() async {
     // Maybe they should be chained?
@@ -19,7 +19,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
     localeResult.match((failure) {}, (locale) {
       final isSupported = supportedLocales.contains(locale);
-      emit(state.copyWith(locale: isSupported ? locale : Locale('en')));
+      emit(state.copyWith(locale: isSupported ? locale : const Locale('en')));
     });
 
     themeResult.match((failure) {}, (theme) {

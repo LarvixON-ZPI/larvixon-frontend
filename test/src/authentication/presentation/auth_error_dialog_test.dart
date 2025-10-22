@@ -27,7 +27,9 @@ void main() {
       const error = InvalidCredentialsError();
 
       // Act
-      await tester.pumpWidget(createTestWidget(AuthErrorDialog(error: error)));
+      await tester.pumpWidget(
+        createTestWidget(const AuthErrorDialog(error: error)),
+      );
 
       // Assert
       expect(find.byType(AlertDialog), findsOneWidget);
@@ -46,7 +48,9 @@ void main() {
       const error = DisabledAccountError();
 
       // Act
-      await tester.pumpWidget(createTestWidget(AuthErrorDialog(error: error)));
+      await tester.pumpWidget(
+        createTestWidget(const AuthErrorDialog(error: error)),
+      );
 
       // Assert
       expect(find.byType(AlertDialog), findsOneWidget);
@@ -63,7 +67,9 @@ void main() {
       const error = MfaRequiredButNoCodeError();
 
       // Act
-      await tester.pumpWidget(createTestWidget(AuthErrorDialog(error: error)));
+      await tester.pumpWidget(
+        createTestWidget(const AuthErrorDialog(error: error)),
+      );
 
       // Assert
       expect(find.byType(AlertDialog), findsOneWidget);
@@ -85,7 +91,9 @@ void main() {
       });
 
       // Act
-      await tester.pumpWidget(createTestWidget(AuthErrorDialog(error: error)));
+      await tester.pumpWidget(
+        createTestWidget(const AuthErrorDialog(error: error)),
+      );
 
       // Assert
       expect(find.byType(AlertDialog), findsOneWidget);
@@ -104,7 +112,9 @@ void main() {
       const error = NetworkError('Network connection failed');
 
       // Act
-      await tester.pumpWidget(createTestWidget(AuthErrorDialog(error: error)));
+      await tester.pumpWidget(
+        createTestWidget(const AuthErrorDialog(error: error)),
+      );
 
       // Assert
       expect(find.byType(AlertDialog), findsOneWidget);
@@ -121,7 +131,9 @@ void main() {
       const error = ServerError('Internal server error');
 
       // Act
-      await tester.pumpWidget(createTestWidget(AuthErrorDialog(error: error)));
+      await tester.pumpWidget(
+        createTestWidget(const AuthErrorDialog(error: error)),
+      );
 
       // Assert
       expect(find.byType(AlertDialog), findsOneWidget);
@@ -138,7 +150,9 @@ void main() {
       const error = InvalidMfaCodeError();
 
       // Act
-      await tester.pumpWidget(createTestWidget(AuthErrorDialog(error: error)));
+      await tester.pumpWidget(
+        createTestWidget(const AuthErrorDialog(error: error)),
+      );
 
       // Assert
       expect(find.byType(AlertDialog), findsOneWidget);
@@ -171,7 +185,7 @@ void main() {
                 onPressed: () async {
                   await showDialog(
                     context: context,
-                    builder: (_) => AuthErrorDialog(error: error),
+                    builder: (_) => const AuthErrorDialog(error: error),
                   );
                 },
                 child: const Text('Show Dialog'),

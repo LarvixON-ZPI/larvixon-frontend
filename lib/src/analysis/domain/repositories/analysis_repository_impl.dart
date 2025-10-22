@@ -12,7 +12,7 @@ import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dar
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_upload_response.dart';
 import 'package:larvixon_frontend/src/analysis/domain/failures/failures.dart';
 
-import 'analysis_repository.dart';
+import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 
 class AnalysisRepositoryImpl implements AnalysisRepository {
   final AnalysisDatasource dataSource;

@@ -18,7 +18,7 @@ class LandingAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBarBase(
       title: LarvixonLogo(onPressed: () => context.go(LandingPage.route)),
-      menu: _Menu(),
+      menu: const _Menu(),
       rightChild: AppBarButton(
         label: context.translate.signIn,
         onPressed: () =>

@@ -1,4 +1,4 @@
-import 'api_base.dart';
+import 'package:larvixon_frontend/core/constants/api_base.dart';
 
 class AuthEndpoints {
   static const String login = "${ApiBase.baseUrl}/accounts/login/";

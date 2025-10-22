@@ -26,12 +26,7 @@ class CustomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints:
-          constraints ??
-          const BoxConstraints(
-            maxHeight: double.infinity,
-            maxWidth: double.infinity,
-          ),
+      constraints: constraints ?? const BoxConstraints(),
       child: Card(
         shadowColor: shadowColor,
         clipBehavior: Clip.antiAlias,
@@ -45,7 +40,6 @@ class CustomCard extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: mainAxisSize,
                 spacing: 6,
                 children: [

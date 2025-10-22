@@ -13,7 +13,7 @@ class AppShell extends StatelessWidget {
       appBar: appBar,
       body: Stack(
         fit: StackFit.expand,
-        children: [BackgroundWithLarvae(), child],
+        children: [const BackgroundWithLarvae(), child],
       ),
     );
   }

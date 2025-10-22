@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'colors.dart';
-import 'text_styles.dart';
+import 'package:larvixon_frontend/core/theme/colors.dart';
+import 'package:larvixon_frontend/core/theme/text_styles.dart';
 
 class AppTheme {
-  static final splashFactory = NoSplash.splashFactory;
-  static final hoverColor = Colors.transparent;
-  static final highlightColor = Colors.transparent;
-  static final focusColor = Colors.transparent;
+  static const splashFactory = NoSplash.splashFactory;
+  static const hoverColor = Colors.transparent;
+  static const highlightColor = Colors.transparent;
+  static const focusColor = Colors.transparent;
   static final fontFamily = GoogleFonts.oswald().fontFamily;
   static final inputDecorationTheme = InputDecorationTheme(
     filled: true,

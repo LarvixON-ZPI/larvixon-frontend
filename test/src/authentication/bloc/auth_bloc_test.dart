@@ -44,8 +44,8 @@ void main() {
           AuthSignInRequested(email: 'test@example.com', password: 'password'),
         ),
         expect: () => [
-          AuthState(status: AuthStatus.loading),
-          AuthState(status: AuthStatus.authenticated),
+          const AuthState(status: AuthStatus.loading),
+          const AuthState(status: AuthStatus.authenticated),
         ],
         verify: (bloc) {
           verify(
@@ -72,8 +72,8 @@ void main() {
           AuthSignInRequested(email: 'test@example.com', password: 'password'),
         ),
         expect: () => [
-          AuthState(status: AuthStatus.loading),
-          AuthState(
+          const AuthState(status: AuthStatus.loading),
+          const AuthState(
             status: AuthStatus.error,
             errorMessage: 'Exception: Login failed',
           ),
@@ -283,8 +283,8 @@ void main() {
           ),
         ),
         expect: () => [
-          AuthState(status: AuthStatus.loading),
-          AuthState(status: AuthStatus.authenticated),
+          const AuthState(status: AuthStatus.loading),
+          const AuthState(status: AuthStatus.authenticated),
         ],
       );
 
@@ -319,7 +319,7 @@ void main() {
           ),
         ),
         expect: () => [
-          AuthState(status: AuthStatus.loading),
+          const AuthState(status: AuthStatus.loading),
           const AuthState(
             status: AuthStatus.error,
             error: FieldValidationError({
@@ -357,8 +357,8 @@ void main() {
           ),
         ),
         expect: () => [
-          AuthState(status: AuthStatus.loading),
-          AuthState(
+          const AuthState(status: AuthStatus.loading),
+          const AuthState(
             status: AuthStatus.error,
             errorMessage: 'Exception: Registration failed',
           ),
@@ -374,7 +374,7 @@ void main() {
           return authBloc;
         },
         act: (bloc) => bloc.add(AuthSignOutRequested()),
-        expect: () => [AuthState(status: AuthStatus.unauthenticated)],
+        expect: () => [const AuthState(status: AuthStatus.unauthenticated)],
       );
     });
   });
