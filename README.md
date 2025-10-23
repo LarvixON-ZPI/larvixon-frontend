@@ -1,5 +1,7 @@
+<!-- markdownlint-disable MD041 -->
 
 [![Flutter CI](https://github.com/LarvixON-ZPI/larvixon-frontend/actions/workflows/flutter_ci.yml/badge.svg)](https://github.com/LarvixON-ZPI/larvixon-frontend/actions/workflows/flutter_ci.yml)
+
 # Larvixon App
 
 A Flutter powered app for the LarvixON project.
@@ -66,6 +68,7 @@ Here’s an example configuration:
 We provide automated scripts to scaffold new features with proper Clean Architecture structure:
 
 #### Create a New Feature
+
 ```bash
 # Create a complete feature structure
 dart scripts/new_feature.dart "Feature Name"
@@ -78,6 +81,7 @@ dart scripts/new_feature.dart "Feature Name"
 ```
 
 #### Clean Up Feature Folders
+
 ```bash
 # List all features
 dart scripts/cleanup_features.dart
@@ -92,4 +96,3 @@ dart scripts/cleanup_features.dart feature_name
 dart scripts/cleanup_features.dart feature_name --interactive
 
 ```
-
