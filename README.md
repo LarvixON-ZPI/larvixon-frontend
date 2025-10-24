@@ -56,7 +56,8 @@ Here’s an example configuration:
       "type": "dart",
       "program": "lib/main.dart",
       "args": [
-        "--dart-define=API_BASE_URL=http://127.0.0.1:8000/api"
+        "--dart-define=API_BASE_URL=http://127.0.0.1:8000/api",
+        "--web-port=3000"
       ]
     }
   ]
