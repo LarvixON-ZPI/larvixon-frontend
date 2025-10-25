@@ -1,7 +1,7 @@
 import 'package:larvixon_frontend/src/common/services/file_picker/file_picker_base.dart';
 import 'package:larvixon_frontend/src/common/services/file_picker/file_picker_stub.dart'
-    if (dart.library.io) 'package:larvixon_frontend/src/analysis/domain/services/file_picker_io.dart'
-    if (dart.library.html) 'package:larvixon_frontend/src/analysis/domain/services/file_picker_web.dart';
+    if (dart.library.io) 'package:larvixon_frontend/src/common/services/file_picker/file_picker_io.dart'
+    if (dart.library.html) 'package:larvixon_frontend/src/common/services/file_picker/file_picker_web.dart';
 
 class AdaptiveFilePicker {
   void Function(double progress)? onProgress;
