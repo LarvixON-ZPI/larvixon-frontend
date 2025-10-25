@@ -181,15 +181,15 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
                       return null;
                     },
                   ),
-                  AnimatedSize(
-                    duration: const Duration(milliseconds: 150),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      minHeight: 48,
+                      maxHeight: 48,
+                    ),
                     child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 100),
+                      duration: const Duration(milliseconds: 150),
                       child: _isReading
-                          ? _UploadProgressSection(
-                              progress: _readProgress,
-                              onCancel: _cancelRead,
-                            )
+                          ? _UploadProgressSection(progress: _readProgress)
                           : ElevatedButton.icon(
                               key: const ValueKey('pickFile'),
                               onPressed: _isReading ? null : _pickFile,
@@ -206,18 +206,30 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
                   ),
                   Row(
                     spacing: 16,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Flexible(
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.redAccent,
                           ),
-                          onPressed: () => Navigator.of(context).pop(),
-                          icon: const Icon(Icons.close),
-                          label: Text(context.translate.cancel),
+                          onPressed: (_isReading && !kIsWeb)
+                              ? _cancelRead
+                              : () => Navigator.of(context).pop(),
+                          icon: const Icon(Icons.close, color: Colors.white),
+                          label: Text(
+                            (_isReading && !kIsWeb)
+                                ? context.translate.cancelFileUpload
+                                : context.translate.cancel,
+                            key: ValueKey(_isReading),
+                            maxLines: 3,
+                            style: const TextStyle(color: Colors.white),
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ),
-                      const Spacer(),
+
                       Flexible(
                         flex: 2,
                         child: ElevatedButton.icon(
@@ -249,55 +261,33 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
 
 class _UploadProgressSection extends StatelessWidget {
   final double? progress;
-  final VoidCallback? onCancel;
 
-  const _UploadProgressSection({this.progress, this.onCancel});
+  const _UploadProgressSection({this.progress});
 
   @override
   Widget build(BuildContext context) {
-    if (kIsWeb || progress == null) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const SizedBox(
-            width: 24,
-            height: 24,
-            child: CircularProgressIndicator(strokeWidth: 2),
-          ),
-          const SizedBox(width: 8),
-          Text(context.translate.loadingFile),
-        ],
-      );
-    }
-
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Stack(
+          alignment: Alignment.center,
           children: [
-            LinearProgressIndicator(value: progress, minHeight: 20),
+            LinearProgressIndicator(
+              value: (kIsWeb || progress == null) ? null : progress,
+              minHeight: 20,
+              color: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.3),
+            ),
             Positioned.fill(
               child: Center(
                 child: Text(
-                  '${(progress! * 100).toStringAsFixed(0)}%',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                  (progress == null || kIsWeb)
+                      ? context.translate.loadingFile
+                      : '${(progress! * 100).toStringAsFixed(0)}%',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-              ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            TextButton.icon(
-              onPressed: onCancel,
-              icon: const Icon(Icons.cancel),
-              label: Text(context.translate.cancelFileUpload),
-              style: TextButton.styleFrom(
-                foregroundColor: Theme.of(context).colorScheme.error,
               ),
             ),
           ],
@@ -318,7 +308,12 @@ class _UploadText extends StatelessWidget {
         : context.translate.upload;
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),
-      child: Text(label, key: ValueKey(label)),
+      child: Text(
+        label,
+        key: ValueKey(label),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 }
