@@ -841,6 +841,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'To'**
   String get to;
+
+  /// No description provided for @cancelUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel upload'**
+  String get cancelUpload;
+
+  /// No description provided for @cancelFileUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel file upload'**
+  String get cancelFileUpload;
+
+  /// No description provided for @loadingFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading file'**
+  String get loadingFile;
 }
 
 class _AppLocalizationsDelegate

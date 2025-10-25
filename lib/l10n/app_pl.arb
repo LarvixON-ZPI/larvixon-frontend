@@ -209,5 +209,8 @@
   "start": "Początek",
   "end": "Koniec",
   "from": "Od",
-  "to": "Do"
+  "to": "Do",
+  "cancelUpload": "Anuluj przesyłanie",
+  "cancelFileUpload": "Anuluj przesyłanie pliku",
+  "loadingFile": "Wczytywanie pliku"
 }

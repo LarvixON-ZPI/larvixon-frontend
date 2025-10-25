@@ -209,5 +209,8 @@
   "start": "Start",
   "end": "End",
   "from": "From",
-  "to": "To"
+  "to": "To",
+  "cancelUpload": "Cancel upload",
+  "cancelFileUpload": "Cancel file upload",
+  "loadingFile": "Loading file"
 }
