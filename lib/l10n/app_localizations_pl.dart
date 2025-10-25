@@ -422,4 +422,13 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get to => 'Do';
+
+  @override
+  String get cancelUpload => 'Anuluj przesyłanie';
+
+  @override
+  String get cancelFileUpload => 'Anuluj przesyłanie pliku';
+
+  @override
+  String get loadingFile => 'Wczytywanie pliku';
 }

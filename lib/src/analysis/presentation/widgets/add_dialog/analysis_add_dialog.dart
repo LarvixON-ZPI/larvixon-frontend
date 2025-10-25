@@ -1,11 +1,12 @@
+import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui';
-
-import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_upload_cubit/analysis_upload_cubit.dart';
+import 'package:larvixon_frontend/src/common/services/file_picker/file_picker.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
@@ -14,12 +15,13 @@ class LarvaVideoAddForm extends StatefulWidget {
 
   @override
   State<LarvaVideoAddForm> createState() => _LarvaVideoAddFormState();
+
   static Future<void> showUploadLarvaVideoDialog(
     BuildContext context,
     AnalysisListCubit videoListCubit,
   ) {
     return showDialog(
-      barrierColor: Colors.black.withValues(alpha: 0.2),
+      barrierColor: Colors.black.withOpacity(0.2),
       context: context,
       barrierDismissible: false,
       builder: (context) {
@@ -28,7 +30,6 @@ class LarvaVideoAddForm extends StatefulWidget {
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 600),
-
               child: BlocProvider.value(
                 value: videoListCubit,
                 child: const LarvaVideoAddForm(),
@@ -44,20 +45,75 @@ class LarvaVideoAddForm extends StatefulWidget {
 class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
   Uint8List? _fileBytes;
   String? _fileName;
+  String? _filePath;
+  bool _isReading = false;
+  double _readProgress = 0.0;
   final TextEditingController _titleController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  void _pickFile() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.video,
-      withData: true,
-    );
+  late final AdaptiveFilePicker _filePicker;
 
-    if (result != null && result.files.isNotEmpty) {
+  @override
+  void dispose() {
+    _titleController.dispose();
+    try {
+      _filePicker.cancel();
+    } catch (_) {}
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _filePicker = AdaptiveFilePicker(
+      onDone: () {
+        if (!mounted) return;
+        setState(() {
+          _isReading = false;
+          _readProgress = 0.0;
+        });
+      },
+      onError: (e) {
+        if (!mounted) return;
+        setState(() {
+          _isReading = false;
+          _readProgress = 0.0;
+        });
+      },
+      onFilePicked: () {
+        if (!mounted) return;
+        setState(() {
+          _isReading = true;
+          _readProgress = 0.0;
+        });
+      },
+      onProgress: (progress) {
+        if (!mounted) return;
+        setState(() {
+          _readProgress = progress;
+        });
+      },
+    );
+  }
+
+  void _pickFile() async {
+    final result = await _filePicker.pickFile();
+    if (!mounted) return;
+    if (result != null) {
       setState(() {
-        _fileName = result.files.first.name;
-        _fileBytes = result.files.first.bytes;
+        _fileBytes = result.bytes;
+        _fileName = result.name;
+        _filePath = result.path;
       });
     }
+  }
+
+  void _cancelRead() {
+    _filePicker.cancel();
+    if (!mounted) return;
+    setState(() {
+      _isReading = false;
+      _readProgress = 0.0;
+    });
   }
 
   void _uploadFile(BuildContext context, GlobalKey<FormState> formKey) {
@@ -91,19 +147,17 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
             context.read<AnalysisListCubit>().fetchNewlyUploadedAnalysis(
               id: state.uploadedVideoId!,
             );
-            Future.delayed(const Duration(milliseconds: 500)).then((_) {});
             if (!mounted) return;
             Navigator.of(context).pop();
           }
         },
         builder: (context, state) {
-          final canUpload = _fileBytes == null;
+          final canUpload = _canUpload(state);
           final isUploading = state.status == VideoUploadStatus.uploading;
 
           return CustomCard(
-            color: Colors.transparent,
+            color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.8),
             title: Text(context.translate.uploadNewVideo),
-
             description: Text(context.translate.uploadVideoDescription),
             child: Form(
               key: _formKey,
@@ -114,7 +168,11 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
                   TextFormField(
                     controller: _titleController,
                     decoration: InputDecoration(
-                      hint: Text(context.translate.enterTitle),
+                      hintText: context.translate.enterTitle,
+                      fillColor: Theme.of(
+                        context,
+                      ).colorScheme.secondaryContainer,
+                      filled: true,
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -123,13 +181,27 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
                       return null;
                     },
                   ),
-                  ElevatedButton.icon(
-                    onPressed: _pickFile,
-                    icon: const Icon(Icons.upload_file),
-                    label: Text(
-                      _fileName != null
-                          ? context.translate.selectedFile(_fileName!)
-                          : context.translate.selectVideo,
+                  AnimatedSize(
+                    duration: const Duration(milliseconds: 150),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 100),
+                      child: _isReading
+                          ? _UploadProgressSection(
+                              progress: _readProgress,
+                              onCancel: _cancelRead,
+                            )
+                          : ElevatedButton.icon(
+                              key: const ValueKey('pickFile'),
+                              onPressed: _isReading ? null : _pickFile,
+                              icon: const Icon(Icons.upload_file),
+                              label: Text(
+                                _fileBytes != null
+                                    ? context.translate.selectedFile(
+                                        _fileName ?? _filePath ?? '',
+                                      )
+                                    : context.translate.selectVideo,
+                              ),
+                            ),
                     ),
                   ),
                   Row(
@@ -150,11 +222,9 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
                         flex: 2,
                         child: ElevatedButton.icon(
                           iconAlignment: IconAlignment.start,
-
                           onPressed: canUpload
                               ? null
                               : () => _uploadFile(context, _formKey),
-
                           icon: _UploadIcon(isUploading: isUploading),
                           label: _UploadText(isUploading: isUploading),
                         ),
@@ -169,21 +239,81 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
       ),
     );
   }
+
+  bool _canUpload(AnalysisUploadState state) {
+    return _fileBytes == null ||
+        _isReading ||
+        state.status == VideoUploadStatus.uploading;
+  }
 }
 
-class _UploadText extends StatefulWidget {
-  const _UploadText({required this.isUploading});
+class _UploadProgressSection extends StatelessWidget {
+  final double? progress;
+  final VoidCallback? onCancel;
 
+  const _UploadProgressSection({this.progress, this.onCancel});
+
+  @override
+  Widget build(BuildContext context) {
+    if (kIsWeb || progress == null) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(
+            width: 24,
+            height: 24,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+          const SizedBox(width: 8),
+          Text(context.translate.loadingFile),
+        ],
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Stack(
+          children: [
+            LinearProgressIndicator(value: progress, minHeight: 20),
+            Positioned.fill(
+              child: Center(
+                child: Text(
+                  '${(progress! * 100).toStringAsFixed(0)}%',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TextButton.icon(
+              onPressed: onCancel,
+              icon: const Icon(Icons.cancel),
+              label: Text(context.translate.cancelFileUpload),
+              style: TextButton.styleFrom(
+                foregroundColor: Theme.of(context).colorScheme.error,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _UploadText extends StatelessWidget {
+  const _UploadText({required this.isUploading});
   final bool isUploading;
 
   @override
-  State<_UploadText> createState() => _UploadTextState();
-}
-
-class _UploadTextState extends State<_UploadText> {
-  @override
   Widget build(BuildContext context) {
-    final label = widget.isUploading
+    final label = isUploading
         ? context.translate.uploading
         : context.translate.upload;
     return AnimatedSwitcher(
@@ -213,7 +343,6 @@ class _UploadIconState extends State<_UploadIcon>
       vsync: this,
       duration: const Duration(seconds: 1),
     );
-
     _scale = Tween<double>(
       begin: 1.0,
       end: 1.2,

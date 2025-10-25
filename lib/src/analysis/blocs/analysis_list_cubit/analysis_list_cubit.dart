@@ -57,6 +57,7 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
   }
 
   Future<void> loadAnalyses({bool refresh = false}) async {
+    if (state.hasMore == false && !refresh) return;
     emit(state.copyWith(status: AnalysisListStatus.loading));
     final result = await _repository
         .fetchVideoIds(sort: state.sort, filter: state.filter)

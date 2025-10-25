@@ -422,4 +422,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get to => 'To';
+
+  @override
+  String get cancelUpload => 'Cancel upload';
+
+  @override
+  String get cancelFileUpload => 'Cancel file upload';
+
+  @override
+  String get loadingFile => 'Loading file';
 }
