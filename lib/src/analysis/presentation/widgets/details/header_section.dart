@@ -18,6 +18,7 @@ class HeaderSection extends StatelessWidget {
         spacing: 16.0,
         children: [
           IconButton(
+            tooltip: context.translate.back,
             onPressed: () {
               if (context.canPop()) {
                 context.pop();
