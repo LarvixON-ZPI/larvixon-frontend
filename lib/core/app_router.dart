@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/core/transitions.dart';
-import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/pages/analyses_page.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/pages/analysis_details_page.dart';
@@ -146,14 +145,8 @@ class AppRouter {
                   final analysisId = int.tryParse(
                     state.pathParameters['analysisId'] ?? '',
                   );
-                  final extra = state.extra as Map<String, dynamic>?;
-                  final analysisBloc = extra != null
-                      ? extra['bloc'] as AnalysisBloc
-                      : null;
-
                   return AnalysisDetailsPage(
                     analysisId: analysisId,
-                    analysisBloc: analysisBloc,
                   ).withoutTransition(state: state);
                 },
               ),
