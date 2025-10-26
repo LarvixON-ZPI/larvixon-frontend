@@ -79,6 +79,13 @@ class AnalysisDatasource {
     );
     return response.data;
   }
+
+  Future<bool> deleteAnalysis({required int id}) async {
+    final response = await apiClient.dio.delete(
+      AnalysisEndpoints.analysisById(id),
+    );
+    return response.statusCode == 204;
+  }
 }
 
 // abstract class LarvaVideoRepository {

@@ -15,6 +15,38 @@ class AnalysisBloc extends Bloc<AnalysisEvent, AnalysisState> {
   final AnalysisRepository repository;
   AnalysisBloc({required this.repository}) : super(const AnalysisState()) {
     on<FetchAnalysisDetails>(_fetchLarvaVideoDetails);
+    on<RemoveAnalysis>(_onRemoveAnalysis);
+  }
+
+  FutureOr<void> _onRemoveAnalysis(
+    RemoveAnalysis event,
+    Emitter<AnalysisState> emit,
+  ) async {
+    emit(state.copyWith(status: AnalysisStatus.loading));
+    final result = await repository.deleteAnalysis(id: event.analysisId).run();
+
+    result.match(
+      (failure) {
+        emit(
+          state.copyWith(
+            status: AnalysisStatus.error,
+            errorMessage: failure.message,
+          ),
+        );
+      },
+      (deleted) {
+        if (deleted) {
+          emit(state.copyWith(status: AnalysisStatus.deleted));
+        } else {
+          emit(
+            state.copyWith(
+              status: AnalysisStatus.error,
+              errorMessage: "Failed to delete analysis",
+            ),
+          );
+        }
+      },
+    );
   }
 
   FutureOr<void> _fetchLarvaVideoDetails(

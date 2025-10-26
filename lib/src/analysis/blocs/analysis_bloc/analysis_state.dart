@@ -1,6 +1,6 @@
 part of 'analysis_bloc.dart';
 
-enum AnalysisStatus { initial, loading, success, error }
+enum AnalysisStatus { initial, loading, success, error, deleted }
 
 final class AnalysisState extends Equatable {
   final AnalysisStatus status;

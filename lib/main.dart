@@ -79,6 +79,8 @@ class _MainAppState extends State<MainApp> {
     _authBloc.close();
     _userBloc.close();
     _settingsCubit.close();
+    _larvaVideoRepository.dispose();
+
     super.dispose();
   }
 
