@@ -212,5 +212,19 @@
   "to": "To",
   "cancelUpload": "Cancel upload",
   "cancelFileUpload": "Cancel file upload",
-  "loadingFile": "Loading file"
+  "loadingFile": "Loading file",
+  "back": "Back",
+  "confirmDelete": "Confirm delete",
+  "confirm": "Confirm",
+  "confirmDeleteAnalysisText": "Are you sure you want to delete {title}? This action can't be undone.",
+  "@confirmDeleteAnalysisText": {
+    "placeholders": {
+      "title": {
+        "type": "String",
+        "example": "Analysis #1"
+      }
+    }
+  },
+  "delete": "Delete",
+  "export": "Export"
 }
