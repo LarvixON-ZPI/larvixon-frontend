@@ -101,7 +101,8 @@ class ActionsSection extends StatelessWidget {
                   ),
                   description: Text(
                     context.translate.confirmDeleteAnalysisText(
-                      "${context.translate.analysis} #${analysis.id}",
+                      analysis.name ??
+                          "${context.translate.analysis} #${analysis.id}",
                     ),
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
