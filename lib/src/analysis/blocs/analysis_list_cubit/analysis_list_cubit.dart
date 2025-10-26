@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_filter.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_id_list.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 import 'package:larvixon_frontend/src/common/sort_order.dart';
@@ -9,7 +12,19 @@ part 'analysis_list_state.dart';
 
 class AnalysisListCubit extends Cubit<AnalysisListState> {
   final AnalysisRepository _repository;
-  AnalysisListCubit(this._repository) : super(const AnalysisListState());
+  late final StreamSubscription<AnalysisIdList> _idsSubscription;
+  AnalysisListCubit(this._repository) : super(const AnalysisListState()) {
+    _idsSubscription = _repository.analysisIdsStream.listen((ids) {
+      emit(
+        state.copyWith(
+          videoIds: ids.ids,
+          hasMore: ids.hasMore,
+          nextPage: ids.nextPage,
+          status: AnalysisListStatus.success,
+        ),
+      );
+    });
+  }
 
   bool get canLoadMore =>
       state.hasMore && state.status != AnalysisListStatus.loading;
@@ -60,7 +75,11 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
     if (state.hasMore == false && !refresh) return;
     emit(state.copyWith(status: AnalysisListStatus.loading));
     final result = await _repository
-        .fetchVideoIds(sort: state.sort, filter: state.filter)
+        .fetchVideoIds(
+          nextPage: refresh ? null : state.nextPage,
+          sort: state.sort,
+          filter: state.filter,
+        )
         .run();
 
     result.match(
@@ -71,15 +90,10 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
         ),
       ),
       (success) {
-        final ids = refresh
-            ? success.ids
-            : {...state.analysesIds, ...success.ids}.toList();
-
         final nextPage = success.nextPage;
         emit(
           state.copyWith(
             status: AnalysisListStatus.success,
-            videoIds: ids,
             page: state.page + 1,
             nextPage: nextPage,
             hasMore: nextPage != null,
@@ -115,5 +129,11 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
       emit(state.copyWith(filter: emptyFilter));
       loadAnalyses(refresh: true);
     }
+  }
+
+  @override
+  Future<void> close() {
+    _idsSubscription.cancel();
+    return super.close();
   }
 }

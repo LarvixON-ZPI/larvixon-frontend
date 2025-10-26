@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -17,6 +18,9 @@ import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repo
 
 class AnalysisRepositoryRepository implements AnalysisRepository {
   final Random _random = Random();
+  final StreamController<AnalysisIdList> _analysisIdsController =
+      StreamController.broadcast();
+  List<int> _cachedIds = [];
   final List<String> _substances = [
     "Ethanol",
     "Caffeine",
@@ -92,10 +96,12 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
       } else {
         analysesCopy.sort((a, b) => b.uploadedAt.compareTo(a.uploadedAt));
       }
+      final ids = analysesCopy.map((a) => a.id).toList();
+      _cachedIds = ids;
+      final result = AnalysisIdList(ids: ids);
+      _analysisIdsController.add(result);
 
-      return AnalysisIdList(
-        ids: analysesCopy.map((analysis) => analysis.id).toList(),
-      );
+      return result;
     }, (error, _) => UnknownAnalysisFailure(message: error.toString()));
   }
 
@@ -190,6 +196,9 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
           0,
           Analysis(id: nextId, uploadedAt: DateTime.now(), name: title),
         );
+        _cachedIds = _analyses.map((a) => a.id).toList();
+
+        _analysisIdsController.add(AnalysisIdList(ids: _cachedIds));
         return AnalysisUploadResponse(
           id: nextId,
           message: 'Video uploaded successfully',
@@ -214,5 +223,38 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
     if (a == null) return 1;
     if (b == null) return -1;
     return a.compareTo(b);
+  }
+
+  @override
+  TaskEither<Failure, bool> deleteAnalysis({required int id}) {
+    return TaskEither.tryCatch(
+      () {
+        final idx = _analyses.indexWhere((a) => a.id == id);
+        if (idx == -1) {
+          return Future.delayed(
+            Duration(milliseconds: _random.nextInt(1500)),
+            () => false,
+          );
+        }
+        _analyses.removeAt(idx);
+        _cachedIds = _analyses.map((a) => a.id).toList();
+        _analysisIdsController.add(AnalysisIdList(ids: _cachedIds));
+        return Future.delayed(
+          Duration(milliseconds: _random.nextInt(1500)),
+          () => true,
+        );
+      },
+      (error, stackTrace) {
+        return const Failure(message: "Invalid id");
+      },
+    );
+  }
+
+  @override
+  Stream<AnalysisIdList> get analysisIdsStream => _analysisIdsController.stream;
+
+  @override
+  void dispose() {
+    _analysisIdsController.close();
   }
 }

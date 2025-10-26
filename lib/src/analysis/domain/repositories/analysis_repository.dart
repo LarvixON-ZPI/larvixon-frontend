@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:fpdart/fpdart.dart';
@@ -10,6 +11,8 @@ import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_upload_r
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
 
 abstract class AnalysisRepository {
+  Stream<AnalysisIdList> get analysisIdsStream;
+
   TaskEither<Failure, AnalysisIdList> fetchVideoIds({
     String? nextPage,
     AnalysisSort? sort,
@@ -26,4 +29,6 @@ abstract class AnalysisRepository {
     required String filename,
     required String title,
   });
+  TaskEither<Failure, bool> deleteAnalysis({required int id});
+  void dispose();
 }

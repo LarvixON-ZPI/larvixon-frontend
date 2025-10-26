@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:fpdart/fpdart.dart';
@@ -19,6 +20,11 @@ class AnalysisRepositoryImpl implements AnalysisRepository {
   final AnalysisDatasource dataSource;
   final AnalysisMapper videoMapper = AnalysisMapper();
   final AnalysisIdListMapper idListMapper = AnalysisIdListMapper();
+  final StreamController<AnalysisIdList> _analysisIdsController =
+      StreamController.broadcast();
+  final List<int> _cachedIds = [];
+  String? _nextPage;
+  bool _hasMore = true;
 
   AnalysisRepositoryImpl({required this.dataSource});
   @override
@@ -33,7 +39,10 @@ class AnalysisRepositoryImpl implements AnalysisRepository {
         filename: filename,
         title: title,
       );
-      return AnalysisUploadResponse.fromJson(data);
+      final response = AnalysisUploadResponse.fromJson(data);
+      _cachedIds.insert(0, response.id);
+      _emitUpdatedList();
+      return response;
     }, (error, stackTrace) => UploadFailure(message: error.toString()));
   }
 
@@ -63,7 +72,23 @@ class AnalysisRepositoryImpl implements AnalysisRepository {
           filter: filter,
         );
         final entity = idListMapper.dtoToEntity(results);
-        return entity;
+        if (nextPage != null) {
+          _cachedIds.addAll(entity.ids.where((id) => !_cachedIds.contains(id)));
+        } else {
+          _cachedIds
+            ..clear()
+            ..addAll(entity.ids);
+        }
+
+        _nextPage = entity.nextPage;
+        _hasMore = entity.hasMore;
+
+        _emitUpdatedList();
+
+        return AnalysisIdList(
+          ids: List.unmodifiable(_cachedIds),
+          nextPage: _nextPage,
+        );
       },
       (error, stackTrace) {
         return UnknownAnalysisFailure(message: error.toString());
@@ -96,5 +121,38 @@ class AnalysisRepositoryImpl implements AnalysisRepository {
 
       await Future.delayed(interval);
     }
+  }
+
+  @override
+  TaskEither<Failure, bool> deleteAnalysis({required int id}) {
+    return TaskEither.tryCatch(
+      () async {
+        final bool deleted = await dataSource.deleteAnalysis(id: id);
+        if (deleted) {
+          _cachedIds.remove(id);
+          _emitUpdatedList();
+        }
+        return deleted;
+      },
+      (error, stackStrace) {
+        return UnknownFailure(message: error.toString());
+      },
+    );
+  }
+
+  @override
+  Stream<AnalysisIdList> get analysisIdsStream => _analysisIdsController.stream;
+
+  @override
+  void dispose() {
+    _analysisIdsController.close();
+  }
+
+  void _emitUpdatedList() {
+    final entity = AnalysisIdList(
+      ids: List.unmodifiable(_cachedIds),
+      nextPage: _nextPage,
+    );
+    _analysisIdsController.add(entity);
   }
 }

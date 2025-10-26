@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/pages/analyses_page.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/actions/actions_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/all_results_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/best_match_result_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/header_section.dart';
@@ -15,14 +18,9 @@ class AnalysisDetailsPage extends StatelessWidget {
   static const String route = ':analysisId';
   static const String name = 'analysis-details';
 
-  const AnalysisDetailsPage({
-    super.key,
-    required this.analysisId,
-    this.analysisBloc,
-  });
+  const AnalysisDetailsPage({super.key, required this.analysisId});
 
   final int? analysisId;
-  final AnalysisBloc? analysisBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -30,24 +28,18 @@ class AnalysisDetailsPage extends StatelessWidget {
     final id = analysisId!;
 
     return SingleChildScrollView(
-      child: Center(child: SafeArea(child: _buildBlocProvider(context, id))),
-    );
-  }
-
-  Widget _buildBlocProvider(BuildContext context, int id) {
-    return analysisBloc != null
-        ? BlocProvider<AnalysisBloc>.value(
-            key: ValueKey("analysis-$id"),
-            value: analysisBloc!,
-            child: _AnalysisDetailsContent(analysisId: id),
-          )
-        : BlocProvider(
+      child: Center(
+        child: SafeArea(
+          child: BlocProvider(
             key: ValueKey("analysis-$id"),
             create: (context) =>
                 AnalysisBloc(repository: context.read<AnalysisRepository>())
                   ..add(FetchAnalysisDetails(analysisId: id)),
             child: _AnalysisDetailsContent(analysisId: id),
-          );
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -65,7 +57,12 @@ class _AnalysisDetailsContentState extends State<_AnalysisDetailsContent> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AnalysisBloc, AnalysisState>(
+    return BlocConsumer<AnalysisBloc, AnalysisState>(
+      listener: (context, state) {
+        if (state.status == AnalysisStatus.deleted) {
+          context.go(AnalysesOverviewPage.route);
+        }
+      },
       builder: (context, state) {
         if (state.isLoading) return const LoadingView();
 
@@ -77,7 +74,12 @@ class _AnalysisDetailsContentState extends State<_AnalysisDetailsContent> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              HeaderSection(analysis: analysis),
+              Row(
+                children: [
+                  Expanded(child: HeaderSection(analysis: analysis)),
+                  ActionsSection(analysis: analysis),
+                ],
+              ),
               MetaSection(analysis: analysis),
 
               if (analysis.hasResults)

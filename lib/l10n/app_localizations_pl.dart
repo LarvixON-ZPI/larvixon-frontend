@@ -431,4 +431,24 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get loadingFile => 'Wczytywanie pliku';
+
+  @override
+  String get back => 'Powrót';
+
+  @override
+  String get confirmDelete => 'Potwierdź usunięcie';
+
+  @override
+  String get confirm => 'Potwierdź';
+
+  @override
+  String confirmDeleteAnalysisText(String title) {
+    return 'Are you sure you want to delete $title? This action can\'t be undone.';
+  }
+
+  @override
+  String get delete => 'Usuń';
+
+  @override
+  String get export => 'Eksportuj';
 }

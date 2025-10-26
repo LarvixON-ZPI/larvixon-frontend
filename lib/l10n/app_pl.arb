@@ -212,5 +212,10 @@
   "to": "Do",
   "cancelUpload": "Anuluj przesyłanie",
   "cancelFileUpload": "Anuluj przesyłanie pliku",
-  "loadingFile": "Wczytywanie pliku"
+  "loadingFile": "Wczytywanie pliku",
+  "back": "Powrót",
+  "confirmDelete": "Potwierdź usunięcie",
+  "confirm": "Potwierdź",
+  "delete": "Usuń",
+  "export": "Eksportuj"
 }
