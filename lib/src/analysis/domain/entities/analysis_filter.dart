@@ -23,7 +23,6 @@ class AnalysisFilter extends Equatable {
 
   /// Applies the filter to a list of analyses.
   List<Analysis> applyFilter(List<Analysis> analyses) {
-    print("Filtering with dateRange: $createAtDateRange, status: $status");
     final List<Analysis> filtered = analyses.where((analysis) {
       final matchesDateRange =
           createAtDateRange == null ||
@@ -33,7 +32,6 @@ class AnalysisFilter extends Equatable {
 
       return matchesDateRange && matchesStatus;
     }).toList();
-    print("Filtered analyses count: ${filtered.length}");
     return filtered;
   }
 

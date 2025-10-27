@@ -34,7 +34,7 @@ class CustomCard extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Stack(
           children: [
-            if (background != null) Positioned.fill(child: background!),
+            if (background != null) background!,
 
             Padding(
               padding: const EdgeInsets.all(16),

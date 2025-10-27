@@ -8,12 +8,10 @@ class AppBarCubit extends Cubit<AppBarState> {
   AppBarCubit() : super(const AppBarState());
 
   void setBottom(PreferredSizeWidget? bottom) {
-    print('Setting bottom: $bottom');
     emit(AppBarState(bottom: bottom));
   }
 
   void clearBottom() {
-    print('Clearing bottom');
     emit(const AppBarState());
   }
 }

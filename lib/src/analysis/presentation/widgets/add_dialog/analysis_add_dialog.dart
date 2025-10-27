@@ -20,13 +20,12 @@ class LarvaVideoAddForm extends StatefulWidget {
     BuildContext context,
     AnalysisListCubit videoListCubit,
   ) {
-    return showDialog(
-      barrierColor: Colors.black.withOpacity(0.2),
+    return showGeneralDialog(
       context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+      barrierLabel: "Add video",
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return ScaleTransition(
+          scale: CurvedAnimation(parent: animation, curve: Curves.easeOutBack),
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 600),
