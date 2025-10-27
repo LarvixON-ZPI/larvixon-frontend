@@ -8,6 +8,7 @@ import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/results_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/status_row.dart';
 import 'package:larvixon_frontend/src/common/extensions/date_format_extension.dart';
+import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -37,55 +38,68 @@ class _AnalysisCardState extends State<AnalysisCard>
         builder: (context, state) {
           final analysis = state.analysis;
           final hasResults = state.analysis?.results?.isNotEmpty ?? false;
+          final hasImage = analysis?.thumbnailUrl != null;
           final enabled =
               state.status == AnalysisStatus.loading || state.analysis == null;
 
-          return GestureDetector(
+          return InkWell(
             onTap: () => context.push(
               "${AnalysesOverviewPage.route}/${widget.analysisId}",
-              extra: {"bloc": context.read<AnalysisBloc>()},
             ),
-            child: MouseRegion(
-              child: Skeletonizer(
-                enabled: enabled,
-                child: CustomCard(
-                  child: Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+            child: Skeletonizer(
+              enabled: enabled,
+              child: CustomCard(
+                color: Colors.transparent,
+                // TODO: Need to rethink that
+                // background: hasImage
+                //     ? Image.network(
+                //         analysis!.thumbnailUrl!,
+                //         fit: BoxFit.cover,
+                //         opacity: const AlwaysStoppedAnimation(0.4),
+                //         width: double.infinity,
+                //         height: double.infinity,
+                //         errorBuilder: (context, error, stackTrace) {
+                //           return const SizedBox.shrink();
+                //         },
+                //       )
+                //     : null,
+                child: Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
 
-                          children: [StatusRow(analysis: state.analysis)],
+                        children: [StatusRow(analysis: state.analysis)],
+                      ),
+                      if (state.analysis?.name != null)
+                        Text(
+                          state.analysis!.name!,
+                          style: Theme.of(context).textTheme.titleLarge,
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        if (state.analysis?.name != null)
-                          Text(
-                            state.analysis!.name!,
-                            style: Theme.of(context).textTheme.titleLarge,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                      if (analysis != null)
+                        Text(
+                          "${analysis.uploadedAt.formattedDateOnly} ${analysis.uploadedAt.formattedTimeOnly}",
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      if (hasResults)
+                        Expanded(
+                          child: ResultsSection(
+                            results: state.analysis!.results!,
                           ),
-                        if (analysis != null)
-                          Text(
-                            "${analysis.uploadedAt.formattedDateOnly} ${analysis.uploadedAt.formattedTimeOnly}",
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                        if (hasResults)
-                          Expanded(
-                            child: ResultsSection(
-                              results: state.analysis!.results!,
-                            ),
-                          ),
+                        ),
 
-                        ProgressSection(
-                          video: state.analysis,
-                          progress: state.progress,
-                        ),
-                      ],
-                    ),
+                      ProgressSection(
+                        video: state.analysis,
+                        progress: state.progress,
+                      ),
+                    ],
                   ),
                 ),
-              ),
+              ).withOnHoverEffect,
             ),
           );
         },
