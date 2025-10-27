@@ -44,7 +44,7 @@ class _MainAppState extends State<MainApp> {
   void initState() {
     super.initState();
     _authRepository = AuthRepositoryFake();
-    _larvaVideoRepository = AnalysisRepositoryRepository();
+    _larvaVideoRepository = AnalysisRepositoryFake();
     _userRepository = UserRepositoryFake();
     _settingsRepository = SettingsRepositoryImpl();
     _authBloc = AuthBloc(_authRepository)..add(AuthVerificationRequested());

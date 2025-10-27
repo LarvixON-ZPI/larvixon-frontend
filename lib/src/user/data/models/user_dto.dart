@@ -31,9 +31,6 @@ class UserProfileDTO {
   }
 
   factory UserProfileDTO.fromMap(Map<String, dynamic> map) {
-    for (var k in map.keys) {
-      print('$k: ${map[k]}, type: ${map[k].runtimeType}');
-    }
     return UserProfileDTO(
       email: map["email"] as String?,
       first_name: map["first_name"] as String?,

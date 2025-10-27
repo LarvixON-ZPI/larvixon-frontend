@@ -12,7 +12,10 @@ import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/head
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/invalid_id_view.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/loading_view.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/meta_section.dart';
+import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
+import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 import 'package:larvixon_frontend/src/common/widgets/slide_widget.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class AnalysisDetailsPage extends StatelessWidget {
   static const String route = ':analysisId';
@@ -80,6 +83,9 @@ class _AnalysisDetailsContentState extends State<_AnalysisDetailsContent> {
                   ActionsSection(analysis: analysis),
                 ],
               ),
+              if (analysis.hasImage)
+                ImageSection(imageUrl: analysis.thumbnailUrl!),
+
               MetaSection(analysis: analysis),
 
               if (analysis.hasResults)
@@ -107,6 +113,109 @@ class _AnalysisDetailsContentState extends State<_AnalysisDetailsContent> {
         : const _AnimationConfig.standard();
     _isFirstBuild = false;
     return config;
+  }
+}
+
+class ImageSection extends StatefulWidget {
+  const ImageSection({super.key, required this.imageUrl});
+
+  final String imageUrl;
+
+  @override
+  State<ImageSection> createState() => _ImageSectionState();
+}
+
+class _ImageSectionState extends State<ImageSection>
+    with TickerProviderStateMixin {
+  ImageProvider? _imageProvider;
+  bool _loadedSuccessfully = true;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadImage(widget.imageUrl);
+  }
+
+  void _loadImage(String url) {
+    final provider = NetworkImage(url);
+
+    final stream = provider.resolve(const ImageConfiguration());
+    final listener = ImageStreamListener(
+      (ImageInfo info, bool synchronousCall) {
+        if (mounted) {
+          setState(() {
+            _imageProvider = provider;
+            _loadedSuccessfully = true;
+            _loading = false;
+          });
+        }
+      },
+      onError: (_, __) {
+        if (mounted) setState(() => _loadedSuccessfully = false);
+      },
+    );
+
+    stream.addListener(listener);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadiusGeometry.circular(16),
+      child: AnimatedSize(
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+        child: Skeletonizer(
+          enabled: _loading,
+          child: !_loadedSuccessfully
+              ? const SizedBox.shrink()
+              : CustomCard(
+                  background: InkWell(
+                    onTap: () => _loading ? null : _showFullImage(context),
+                    child: _imageProvider == null
+                        ? Container(
+                            color: Colors.grey[200],
+                            width: double.infinity,
+                            height: 300,
+                          )
+                        : Image(
+                            image: _imageProvider!,
+                            fit: BoxFit.fitWidth,
+                            width: double.infinity,
+                          ).withOnHoverEffect,
+                  ),
+                ),
+        ).withOnHoverEffect,
+      ),
+    );
+  }
+
+  void _showFullImage(BuildContext context) {
+    if (_imageProvider == null) return;
+
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: "Analysis Image",
+      transitionDuration: const Duration(milliseconds: 250),
+      useRootNavigator: false,
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return ScaleTransition(
+          scale: CurvedAnimation(parent: animation, curve: Curves.easeOutBack),
+          child: GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Center(
+              child: InteractiveViewer(
+                clipBehavior: Clip.none,
+                maxScale: 4.0,
+                child: Image(image: _imageProvider!),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -143,4 +252,5 @@ extension on AnalysisState {
 extension on Analysis {
   bool get hasResults => results?.isNotEmpty ?? false;
   bool get hasManyResults => (results?.length ?? 0) > 1;
+  bool get hasImage => thumbnailUrl != null;
 }

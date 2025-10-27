@@ -22,10 +22,10 @@ class LarvaVideoGrid extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(16),
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 500,
-        childAspectRatio: 5 / 4,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
+        maxCrossAxisExtent: 600,
+        childAspectRatio: 4 / 3,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
       ),
       itemCount: analysesIds.length,
       itemBuilder: (context, index) {
