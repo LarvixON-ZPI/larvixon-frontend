@@ -16,11 +16,24 @@ import 'package:larvixon_frontend/src/common/sort_order.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 
-class AnalysisRepositoryRepository implements AnalysisRepository {
-  final Random _random = Random();
+class AnalysisRepositoryFake implements AnalysisRepository {
+  int nextPage = 1;
+  static final Random _random = Random();
+  int totalPages;
+
+  AnalysisRepositoryFake() : totalPages = _random.nextInt(10) + 4;
+
   final StreamController<AnalysisIdList> _analysisIdsController =
       StreamController.broadcast();
   List<int> _cachedIds = [];
+  static const _chars =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  String getRandomString(int length) => String.fromCharCodes(
+    Iterable.generate(
+      length,
+      (_) => _chars.codeUnitAt(_random.nextInt(_chars.length)),
+    ),
+  );
   final List<String> _substances = [
     "Ethanol",
     "Caffeine",
@@ -36,44 +49,34 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
     "Morphine",
     "Ketamine",
   ];
-  final List<Analysis> _analyses = [
-    Analysis(id: 1, uploadedAt: DateTime.now(), name: "zebrafish experiment 1"),
-    Analysis(
-      id: 2,
-      uploadedAt: DateTime.now(),
-      name: "zebrafish experiment 2",
-      thumbnailUrl:
-          "https://www.shutterstock.com/shutterstock/videos/32685646/thumb/1.jpg?ip=x480",
-    ),
-    Analysis(
-      id: 3,
-      uploadedAt: DateTime.now(),
-      name: "danio rerio study",
-      status: AnalysisProgressStatus.failed,
-    ),
-    Analysis(id: 4, uploadedAt: DateTime.now(), name: "larva lsd test"),
-    Analysis(
-      id: 5,
-      uploadedAt: DateTime.now(),
-      name: "fish larvae alcohol test",
-    ),
-    Analysis(
-      id: 6,
-      uploadedAt: DateTime.now(),
-      name: "fish larvae caffeine test",
-      status: AnalysisProgressStatus.completed,
-      results: const [("Caffeine", 0.87), ("Ethanol", 0.12)],
-      analysedAt: DateTime.now(),
-      thumbnailUrl:
-          "https://media.springernature.com/lw685/springer-static/image/chp%3A10.1007%2F978-1-4939-8940-9_13/MediaObjects/448871_1_En_13_Fig1_HTML.jpg",
-    ),
-    Analysis(
-      id: 7,
-      uploadedAt: DateTime.now(),
-      name: "fish larvae nicotine test",
-    ),
-    Analysis(id: 8, uploadedAt: DateTime.now(), name: "fish larvae THC test"),
-  ];
+  final List<Analysis> _analyses = [];
+  Iterable<Analysis> generateAnalyses({int count = 6}) sync* {
+    final random = Random();
+    final now = DateTime.now();
+
+    for (var i = 0; i < count; i++) {
+      final id = random.nextInt(100000);
+      final name = "Larva experiment ${getRandomString(random.nextInt(20))}";
+      final status = AnalysisProgressStatus
+          .values[random.nextInt(AnalysisProgressStatus.values.length)];
+      final thumbnail = "https://picsum.photos/seed/$id/640/360";
+
+      var analysis = Analysis(
+        id: id,
+        uploadedAt: now.subtract(Duration(minutes: random.nextInt(10000))),
+        name: name,
+        thumbnailUrl: thumbnail,
+        status: status,
+        analysedAt: status == AnalysisProgressStatus.completed ? now : null,
+      );
+
+      if (analysis.status == AnalysisProgressStatus.completed) {
+        analysis = _applyRandomSubstances(analysis);
+      }
+
+      yield analysis;
+    }
+  }
 
   @override
   TaskEither<Failure, AnalysisIdList> fetchVideoIds({
@@ -81,24 +84,42 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
     AnalysisSort? sort,
     AnalysisFilter? filter,
   }) {
+    final int currentPage = this.nextPage;
+    this.nextPage += 1;
+    final bool isFirstPage = currentPage == 0;
+    final bool shouldGenerateNew =
+        (isFirstPage && _analyses.isEmpty) ||
+        (!isFirstPage && currentPage < totalPages);
+
     return TaskEither.tryCatch(() async {
       await Future.delayed(const Duration(seconds: 1));
-      List<Analysis> analysesCopy = List<Analysis>.from(_analyses);
+
+      if (shouldGenerateNew) {
+        _analyses.addAll(generateAnalyses().toList());
+      }
+
+      List<Analysis> copy = List.from(_analyses);
+
       if (filter != null) {
-        analysesCopy = filter.applyFilter(analysesCopy);
+        copy = filter.applyFilter(copy);
       }
 
       if (sort != null) {
-        analysesCopy.sort((a, b) {
+        copy.sort((a, b) {
           final comparison = _compareByField(a, b, sort.field);
           return sort.order == SortOrder.ascending ? comparison : -comparison;
         });
       } else {
-        analysesCopy.sort((a, b) => b.uploadedAt.compareTo(a.uploadedAt));
+        copy.sort((a, b) => b.uploadedAt.compareTo(a.uploadedAt));
       }
-      final ids = analysesCopy.map((a) => a.id).toList();
+
+      final ids = copy.map((a) => a.id).toList();
       _cachedIds = ids;
-      final result = AnalysisIdList(ids: ids);
+
+      final hasNext = currentPage < totalPages;
+      final nextPageToken = hasNext ? (currentPage + 1).toString() : null;
+
+      final result = AnalysisIdList(ids: ids, nextPage: nextPageToken);
       _analysisIdsController.add(result);
 
       return result;
@@ -194,7 +215,12 @@ class AnalysisRepositoryRepository implements AnalysisRepository {
             1;
         _analyses.insert(
           0,
-          Analysis(id: nextId, uploadedAt: DateTime.now(), name: title),
+          Analysis(
+            id: nextId,
+            uploadedAt: DateTime.now(),
+            name: title,
+            thumbnailUrl: "https://picsum.photos/seed/$nextId/640/360",
+          ),
         );
         _cachedIds = _analyses.map((a) => a.id).toList();
 
