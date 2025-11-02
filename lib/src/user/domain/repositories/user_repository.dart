@@ -14,6 +14,11 @@ abstract class UserRepository {
     String? bio,
     String? org,
   });
+
+  TaskEither<Failure, void> updateUserProfileBasicInfo({
+    required String firstName,
+    required String lastName,
+  });
   TaskEither<Failure, void> updateUserProfilePhoto({
     required Uint8List bytes,
     required String fileName,

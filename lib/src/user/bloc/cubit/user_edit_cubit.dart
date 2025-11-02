@@ -36,6 +36,26 @@ class UserEditCubit extends Cubit<UserEditState> {
     );
   }
 
+  Future<void> updateBasicInfo({
+    required String firstName,
+    required String lastName,
+  }) async {
+    emit(state.copyWith(status: EditStatus.saving));
+    final result = await _repository
+        .updateUserProfileBasicInfo(firstName: firstName, lastName: lastName)
+        .run();
+
+    result.match(
+      (failure) {
+        print(failure.message);
+        emit(state.copyWith(status: EditStatus.error));
+      },
+      (success) {
+        emit(state.copyWith(status: EditStatus.success));
+      },
+    );
+  }
+
   Future<void> updatePhoto({
     required Uint8List bytes,
     required String fileName,

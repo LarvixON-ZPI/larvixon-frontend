@@ -58,4 +58,14 @@ class UserRepositoryFake implements UserRepository {
   }) {
     throw UnimplementedError();
   }
+
+  @override
+  TaskEither<Failure, void> updateUserProfileBasicInfo({
+    required String firstName,
+    required String lastName,
+  }) {
+    _user = _user.copyWith(firstName: firstName, lastName: lastName);
+    fetchUserProfile().run();
+    return TaskEither.right(null);
+  }
 }

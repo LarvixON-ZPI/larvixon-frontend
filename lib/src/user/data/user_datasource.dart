@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:larvixon_frontend/core/api_client.dart';
+import 'package:larvixon_frontend/src/common/extensions/non_null_map.dart';
 import 'package:larvixon_frontend/src/user/data/models/user_dto.dart';
 
 import 'package:larvixon_frontend/core/constants/endpoints_user.dart';
@@ -23,7 +24,7 @@ class UserDataSource {
   }) async {
     final response = await apiClient.dio.patch(
       UserEndpoints.profile,
-      data: dto.toMap(),
+      data: dto.toMap().toNonNull(),
     );
 
     return UserProfileDTO.fromMap(response.data);

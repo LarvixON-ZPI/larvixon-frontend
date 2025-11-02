@@ -83,4 +83,16 @@ class UserRepositoryImpl implements UserRepository {
       },
     );
   }
+
+  @override
+  TaskEither<Failure, void> updateUserProfileBasicInfo({
+    required String firstName,
+    required String lastName,
+  }) {
+    return TaskEither.tryCatch(() async {
+      final dto = UserProfileDTO(first_name: firstName, last_name: lastName);
+      await dataSource.updateUserProfile(dto: dto);
+      fetchUserProfile().run();
+    }, (error, stackTrace) => UnknownFailure(message: error.toString()));
+  }
 }
