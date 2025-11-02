@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
-import 'package:larvixon_frontend/src/common/form_validators.dart';
+import 'package:larvixon_frontend/src/common/mixins/form_validators_mixin.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 
 class ContactSection extends StatefulWidget {
@@ -11,7 +11,8 @@ class ContactSection extends StatefulWidget {
   State<ContactSection> createState() => _ContactSectionState();
 }
 
-class _ContactSectionState extends State<ContactSection> {
+class _ContactSectionState extends State<ContactSection>
+    with FormValidatorsMixin {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -83,8 +84,7 @@ class _ContactSectionState extends State<ContactSection> {
                               decoration: InputDecoration(
                                 hintText: context.translate.firstName,
                               ),
-                              validator: (v) =>
-                                  FormValidators.firstNameValidator(context, v),
+                              validator: (v) => firstNameValidator(context, v),
                             ),
                           ),
                           Expanded(
@@ -94,8 +94,7 @@ class _ContactSectionState extends State<ContactSection> {
                                 hintText: context.translate.email,
                               ),
                               keyboardType: TextInputType.emailAddress,
-                              validator: (v) =>
-                                  FormValidators.emailValidator(context, v),
+                              validator: (v) => emailValidator(context, v),
                             ),
                           ),
                         ],
@@ -108,7 +107,7 @@ class _ContactSectionState extends State<ContactSection> {
                         ),
                         minLines: 3,
                         maxLines: 6,
-                        validator: (v) => FormValidators.lengthValidator(
+                        validator: (v) => lengthValidator(
                           context,
                           v,
                           fieldName: context.translate.message,

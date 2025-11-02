@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,7 @@ import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 import 'package:larvixon_frontend/src/common/widgets/profile_avatar.dart';
 
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
-import 'package:larvixon_frontend/src/common/form_validators.dart';
+import 'package:larvixon_frontend/src/common/mixins/form_validators_mixin.dart';
 import 'package:larvixon_frontend/src/user/bloc/cubit/user_edit_cubit.dart';
 import 'package:larvixon_frontend/src/user/bloc/user_bloc.dart';
 import 'package:larvixon_frontend/src/user/domain/entities/user.dart';
@@ -247,19 +249,82 @@ class DetailsSection extends StatefulWidget {
   State<DetailsSection> createState() => _DetailsSectionState();
 }
 
-class _DetailsSectionState extends State<DetailsSection> {
+class _DetailsSectionState extends State<DetailsSection>
+    with FormValidatorsMixin {
   final _formKey = GlobalKey<FormState>();
   late final phoneController = TextEditingController(text: widget.phoneNumber);
   late final organizationController = TextEditingController(
     text: widget.organization,
   );
   late final bioController = TextEditingController(text: widget.bio);
+  Timer? _debounce;
+  bool _hasChanges = false;
+
+  @override
+  void initState() {
+    super.initState();
+    for (final controller in [
+      phoneController,
+      organizationController,
+      bioController,
+    ]) {
+      controller.addListener(_onTextChanged);
+    }
+  }
+
+  void _onTextChanged() {
+    _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 300), () {
+      final changed =
+          phoneController.text != widget.phoneNumber ||
+          organizationController.text != widget.organization ||
+          bioController.text != widget.bio;
+
+      if (changed != _hasChanges) {
+        setState(() => _hasChanges = changed);
+      }
+    });
+  }
+
   @override
   void dispose() {
+    _debounce?.cancel();
     phoneController.dispose();
     organizationController.dispose();
     bioController.dispose();
     super.dispose();
+  }
+
+  bool hasChanges() {
+    return phoneController.text != (widget.phoneNumber ?? '') ||
+        bioController.text != (widget.bio ?? '') ||
+        organizationController.text != (widget.organization ?? '');
+  }
+
+  void reset() {
+    phoneController.text = widget.phoneNumber ?? '';
+    organizationController.text = widget.organization ?? '';
+    bioController.text = widget.bio ?? '';
+  }
+
+  @override
+  void didUpdateWidget(covariant DetailsSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    final backendDataChanged =
+        widget.phoneNumber != oldWidget.phoneNumber ||
+        widget.organization != oldWidget.organization ||
+        widget.bio != oldWidget.bio;
+
+    if (backendDataChanged) {
+      phoneController.text = widget.phoneNumber ?? '';
+      organizationController.text = widget.organization ?? '';
+      bioController.text = widget.bio ?? '';
+
+      if (_hasChanges) {
+        setState(() => _hasChanges = false);
+      }
+    }
   }
 
   @override
@@ -268,6 +333,7 @@ class _DetailsSectionState extends State<DetailsSection> {
       child: BlocBuilder<UserEditCubit, UserEditState>(
         builder: (context, state) {
           final isSaving = state.status == EditStatus.saving;
+          final canSave = !isSaving && _hasChanges;
           return Form(
             key: _formKey,
             child: Column(
@@ -288,7 +354,6 @@ class _DetailsSectionState extends State<DetailsSection> {
                           Text(context.translate.phoneNumber),
                           TextFormField(
                             controller: phoneController,
-
                             readOnly: isSaving,
                           ),
                         ],
@@ -303,15 +368,14 @@ class _DetailsSectionState extends State<DetailsSection> {
                           TextFormField(
                             controller: organizationController,
                             readOnly: isSaving,
-                            validator: (value) =>
-                                FormValidators.lengthValidator(
-                                  context,
-                                  value,
-                                  fieldName: context.translate.organization,
-                                  minLength: 0,
-                                  maxLength: 255,
-                                  allowNull: true,
-                                ),
+                            validator: (value) => lengthValidator(
+                              context,
+                              value,
+                              fieldName: context.translate.organization,
+                              minLength: 0,
+                              maxLength: 255,
+                              allowNull: true,
+                            ),
                           ),
                         ],
                       ),
@@ -326,7 +390,7 @@ class _DetailsSectionState extends State<DetailsSection> {
                     TextFormField(
                       controller: bioController,
                       readOnly: isSaving,
-                      validator: (value) => FormValidators.lengthValidator(
+                      validator: (value) => lengthValidator(
                         context,
                         value,
                         fieldName: context.translate.bio,
@@ -337,34 +401,69 @@ class _DetailsSectionState extends State<DetailsSection> {
                     ),
                   ],
                 ),
-                Row(
-                  spacing: 16,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: Text(context.translate.cancel),
+                ClipRect(
+                  child: AnimatedSize(
+                    duration: const Duration(milliseconds: 150),
+                    reverseDuration: const Duration(milliseconds: 150),
+                    alignment: Alignment.bottomCenter,
+                    curve: Curves.easeInOut,
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 150),
+                      reverseDuration: const Duration(milliseconds: 150),
+                      transitionBuilder: (child, animation) => SlideTransition(
+                        position:
+                            Tween<Offset>(
+                              begin: const Offset(0, -0.1),
+                              end: Offset.zero,
+                            ).animate(
+                              CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.easeInOut,
+                              ),
+                            ),
+                        child: FadeTransition(opacity: animation, child: child),
                       ),
+                      child: _hasChanges
+                          ? Row(
+                              key: const ValueKey("SaveCancelButtons"),
+                              spacing: 16,
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: reset,
+                                    child: Text(context.translate.cancel),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: canSave
+                                        ? () {
+                                            final form = _formKey.currentState!;
+                                            if (form.validate()) {
+                                              form.save();
+                                              context
+                                                  .read<UserEditCubit>()
+                                                  .updateDetails(
+                                                    phoneNumber:
+                                                        phoneController.text,
+                                                    organization:
+                                                        organizationController
+                                                            .text,
+                                                    bio: bioController.text,
+                                                  );
+                                            }
+                                          }
+                                        : null,
+                                    child: Text(context.translate.save),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : const SizedBox.shrink(
+                              key: ValueKey("CollapsedButtons"),
+                            ),
                     ),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: isSaving
-                            ? null
-                            : () {
-                                final form = _formKey.currentState!;
-                                if (form.validate()) {
-                                  form.save();
-                                  context.read<UserEditCubit>().updateDetails(
-                                    phoneNumber: phoneController.text,
-                                    organization: organizationController.text,
-                                    bio: bioController.text,
-                                  );
-                                }
-                              },
-                        child: Text(context.translate.save),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),
