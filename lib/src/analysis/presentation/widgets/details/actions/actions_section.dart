@@ -21,13 +21,13 @@ class ActionsSection extends StatelessWidget {
         color: Colors.red,
         onPressed: () => onDeletePressed(context),
       ),
-      ActionButtonData(
-        label: context.translate.export,
-        icon: const Icon(FontAwesomeIcons.fileExport),
-        onPressed: () {
-          // TODO
-        },
-      ),
+      // ActionButtonData(
+      //   label: context.translate.export,
+      //   icon: const Icon(FontAwesomeIcons.fileExport),
+      //   onPressed: () {
+      //     // TODO
+      //   },
+      // ),
     ];
   }
 
@@ -119,7 +119,7 @@ class ActionsSection extends StatelessWidget {
                             maxLines: 1,
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
+                            backgroundColor: Colors.grey,
                             foregroundColor: Colors.white,
                           ),
                         ),
@@ -130,14 +130,14 @@ class ActionsSection extends StatelessWidget {
                           onPressed: () {
                             bloc.add(RemoveAnalysis(analysisId: analysis.id));
                           },
-                          icon: const Icon(FontAwesomeIcons.check),
+                          icon: const Icon(FontAwesomeIcons.trash),
                           label: Text(
-                            context.translate.confirm,
+                            context.translate.confirmDelete,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
+                            backgroundColor: Colors.red,
                             foregroundColor: Colors.white,
                           ),
                         ),
