@@ -210,7 +210,7 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
                       Flexible(
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.redAccent,
+                            backgroundColor: Colors.grey.shade800,
                           ),
                           onPressed: (_isReading && !kIsWeb)
                               ? _cancelRead
@@ -233,6 +233,13 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
                         flex: 2,
                         child: ElevatedButton.icon(
                           iconAlignment: IconAlignment.start,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue.shade800,
+                            foregroundColor: Colors.white,
+                            foregroundBuilder: (context, states, child) {
+                              
+                            },
+                          ),
                           onPressed: canUpload
                               ? null
                               : () => _uploadFile(context, _formKey),
