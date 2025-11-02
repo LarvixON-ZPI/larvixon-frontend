@@ -11,23 +11,26 @@ class BestMatchResultSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomCard(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "${context.translate.mostConfidentResult}: ",
-            style: Theme.of(context).textTheme.headlineSmall,
-            overflow: TextOverflow.ellipsis,
-          ),
-
-          Text(
-            "${results.first.$1} (${(results.first.$2 * 100).toStringAsFixed(2)}%)",
-            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-              color: ColorGradientExtension.gradient(score: results.first.$2),
+      child: Text.rich(
+        TextSpan(
+          children: [
+            TextSpan(
+              text: "${context.translate.mostConfidentResult}: ",
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
+            TextSpan(
+              text: "${results.first.$1}",
+              style: Theme.of(context).textTheme.headlineSmall!,
+            ),
+            TextSpan(
+              text: " (${(results.first.$2 * 100).toStringAsFixed(2)}%)",
+              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                color: ColorGradientExtension.gradient(score: results.first.$2),
+              ),
+            ),
+          ],
+        ),
+        softWrap: true,
       ),
     );
   }

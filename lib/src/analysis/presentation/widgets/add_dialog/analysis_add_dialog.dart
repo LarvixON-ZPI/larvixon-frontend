@@ -236,9 +236,6 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue.shade800,
                             foregroundColor: Colors.white,
-                            foregroundBuilder: (context, states, child) {
-                              
-                            },
                           ),
                           onPressed: canUpload
                               ? null
