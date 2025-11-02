@@ -119,7 +119,7 @@ class ActionsSection extends StatelessWidget {
                             maxLines: 1,
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey,
+                            backgroundColor: Colors.grey.shade800,
                             foregroundColor: Colors.white,
                           ),
                         ),

@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:fpdart/fpdart.dart';
-import 'package:larvixon_frontend/core/errors/failures.dart' show Failure;
+import 'package:larvixon_frontend/core/errors/failures.dart'
+    show Failure, UnknownFailure;
 
 import 'package:larvixon_frontend/src/user/domain/entities/user.dart';
 import 'package:larvixon_frontend/src/user/domain/repositories/user_repository.dart';
@@ -56,7 +57,9 @@ class UserRepositoryFake implements UserRepository {
     required Uint8List bytes,
     required String fileName,
   }) {
-    throw UnimplementedError();
+    return TaskEither.left(
+      UnknownFailure(message: "Can't upload an imagie in dev environment"),
+    );
   }
 
   @override
