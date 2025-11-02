@@ -14,6 +14,7 @@ class UserMapper implements Mapper<UserProfileDTO, User> {
       bio: profile?.bio,
       phoneNumber: profile?.phone_number,
       organization: profile?.organization,
+      profilePictureUrl: profile?.profile_picture,
       dateJoined: dto.date_joined != null
           ? DateTime.tryParse(dto.date_joined!)
           : null,

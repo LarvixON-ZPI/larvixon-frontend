@@ -56,8 +56,14 @@ class UserProfileDetailsDTO {
   final String? bio;
   final String? phone_number;
   final String? organization;
+  final String? profile_picture;
 
-  UserProfileDetailsDTO({this.bio, this.phone_number, this.organization});
+  UserProfileDetailsDTO({
+    this.bio,
+    this.phone_number,
+    this.organization,
+    this.profile_picture,
+  });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -72,6 +78,7 @@ class UserProfileDetailsDTO {
       bio: map['bio'] as String?,
       phone_number: map['phone_number'] as String?,
       organization: map['organization'] as String?,
+      profile_picture: map['profile_picture'] as String?,
     );
   }
 

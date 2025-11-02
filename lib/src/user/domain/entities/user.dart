@@ -11,6 +11,17 @@ class User extends Equatable {
   final String? organization;
   final String? profilePictureUrl;
 
+  const User.empty()
+    : email = '',
+      username = '',
+      firstName = null,
+      lastName = null,
+      dateJoined = null,
+      bio = null,
+      phoneNumber = null,
+      organization = null,
+      profilePictureUrl = null;
+
   const User({
     required this.email,
     required this.username,

@@ -3,12 +3,12 @@ part of 'user_bloc.dart';
 enum UserStatus { initial, loading, success, error }
 
 final class UserState extends Equatable {
-  final User? user;
+  final User user;
   final String? errorMessage;
   final UserStatus status;
   final bool isUpdating;
   const UserState({
-    this.user,
+    this.user = const User.empty(),
     this.errorMessage,
     this.status = UserStatus.initial,
     this.isUpdating = false,

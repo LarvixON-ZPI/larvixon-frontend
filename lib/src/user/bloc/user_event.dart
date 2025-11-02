@@ -11,6 +11,13 @@ final class UserProfileClearRequested extends UserEvent {}
 
 final class UserProfileDataRequested extends UserEvent {}
 
+class _UserStreamUpdated extends UserEvent {
+  final User user;
+  const _UserStreamUpdated(this.user);
+  @override
+  List<Object?> get props => [user];
+}
+
 final class UserProfileDataUpdateRequested extends UserEvent {
   final String? firstName;
   final String? lastName;

@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:typed_data';
 
+import 'package:dio/dio.dart';
 import 'package:larvixon_frontend/core/api_client.dart';
 import 'package:larvixon_frontend/src/user/data/models/user_dto.dart';
 
@@ -19,7 +21,7 @@ class UserDataSource {
   Future<UserProfileDTO> updateUserProfile({
     required UserProfileDTO dto,
   }) async {
-    final response = await apiClient.dio.put(
+    final response = await apiClient.dio.patch(
       UserEndpoints.profile,
       data: dto.toMap(),
     );
@@ -27,12 +29,28 @@ class UserDataSource {
     return UserProfileDTO.fromMap(response.data);
   }
 
+  Future<void> updateUserProfilePhoto({
+    required Uint8List bytes,
+    required String fileName,
+  }) async {
+    final formData = FormData.fromMap({
+      'profile_picture': MultipartFile.fromBytes(bytes, filename: fileName),
+    });
+    final response = await apiClient.dio.patch(
+      UserEndpoints.profileDetails,
+      data: formData,
+      options: Options(headers: {"Content-Type": "multipart/form-data"}),
+    );
+  }
+
   Future<UserProfileDetailsDTO> updateUserProfileDetails({
     required UserProfileDetailsDTO profileDetails,
   }) async {
-    final response = await apiClient.dio.put(
+    final formData = FormData.fromMap(profileDetails.toMap());
+    final response = await apiClient.dio.patch(
       UserEndpoints.profileDetails,
-      data: profileDetails.toMap(),
+      data: formData,
+      options: Options(headers: {"Content-Type": "multipart/form-data"}),
     );
 
     return UserProfileDetailsDTO.fromMap(response.data);
