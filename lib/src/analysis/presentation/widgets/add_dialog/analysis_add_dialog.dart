@@ -156,8 +156,14 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
 
           return CustomCard(
             color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.8),
-            title: Text(context.translate.uploadNewVideo),
-            description: Text(context.translate.uploadVideoDescription),
+            title: Text(
+              context.translate.uploadNewVideo,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            description: Text(
+              context.translate.uploadVideoDescription,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
             child: Form(
               key: _formKey,
               child: Column(
