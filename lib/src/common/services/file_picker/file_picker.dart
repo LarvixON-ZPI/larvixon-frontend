@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:larvixon_frontend/src/common/services/file_picker/file_picker_base.dart';
 import 'package:larvixon_frontend/src/common/services/file_picker/file_picker_stub.dart'
     if (dart.library.io) 'package:larvixon_frontend/src/common/services/file_picker/file_picker_io.dart'
@@ -25,7 +26,7 @@ class AdaptiveFilePicker {
     _filePicker.cancel();
   }
 
-  Future<FilePickResult?> pickFile() async {
-    return _filePicker.pickFile();
+  Future<FilePickResult?> pickFile({FileType type = FileType.video}) async {
+    return _filePicker.pickFile(type: type);
   }
 }
