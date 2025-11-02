@@ -2,8 +2,8 @@ import 'package:flutter/widgets.dart';
 
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 
-class FormValidators {
-  static String? lengthValidator(
+mixin FormValidatorsMixin {
+  String? lengthValidator(
     BuildContext context,
     String? value, {
     required String fieldName,
@@ -26,7 +26,7 @@ class FormValidators {
     return null;
   }
 
-  static String? emailValidator(BuildContext context, String? value) {
+  String? emailValidator(BuildContext context, String? value) {
     if (value == null || value.isEmpty) {
       return context.translate.fieldIsRequired;
     }
@@ -36,7 +36,7 @@ class FormValidators {
     return null;
   }
 
-  static String? passwordValidator(
+  String? passwordValidator(
     BuildContext context,
     String? value, {
     bool onlyCheckEmpty = false,
@@ -53,28 +53,28 @@ class FormValidators {
     return null;
   }
 
-  static String? firstNameValidator(BuildContext context, String? value) {
+  String? firstNameValidator(BuildContext context, String? value) {
     if (value == null || value.isEmpty) {
       return context.translate.fieldIsRequired;
     }
     return null;
   }
 
-  static String? lastNameValidator(BuildContext context, String? value) {
+  String? lastNameValidator(BuildContext context, String? value) {
     if (value == null || value.isEmpty) {
       return context.translate.fieldIsRequired;
     }
     return null;
   }
 
-  static String? usernameValidator(BuildContext context, String? value) {
+  String? usernameValidator(BuildContext context, String? value) {
     if (value == null || value.isEmpty) {
       return context.translate.fieldIsRequired;
     }
     return null;
   }
 
-  static String? confirmPasswordValidator(
+  String? confirmPasswordValidator(
     BuildContext context,
     String? password,
     String? value,
@@ -84,6 +84,16 @@ class FormValidators {
     }
     if (value != password) {
       return context.translate.passwordsDoNotMatch;
+    }
+    return null;
+  }
+
+  String? validatePhoneNumber(BuildContext context, String? value) {
+    if (value == null || value.trim().isEmpty) return null;
+
+    final regex = RegExp(r'^\+[1-9]\d{1,14}$');
+    if (!regex.hasMatch(value.trim())) {
+      return context.translate.invalidPhoneNumber;
     }
     return null;
   }

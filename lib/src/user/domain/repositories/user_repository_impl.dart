@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:typed_data';
+
 import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart'
     show Failure, UnknownFailure;
@@ -11,15 +14,18 @@ import 'package:larvixon_frontend/src/user/domain/repositories/user_repository.d
 class UserRepositoryImpl implements UserRepository {
   final UserDataSource dataSource;
   final UserMapper mapper = UserMapper();
+  final StreamController<User> _userController = StreamController.broadcast();
 
   UserRepositoryImpl({required this.dataSource});
 
   @override
-  TaskEither<Failure, User> getUserProfile() {
+  TaskEither<Failure, User> fetchUserProfile() {
     return TaskEither.tryCatch(
       () async {
         final data = await dataSource.getUserProfile();
-        return mapper.dtoToEntity(data);
+        final user = mapper.dtoToEntity(data);
+        _userController.add(user);
+        return user;
       },
       (error, stackTrace) {
         return UnknownFailure(message: error.toString());
@@ -28,29 +34,65 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  TaskEither<Failure, User> updateUserProfile({required User user}) {
+  TaskEither<Failure, void> updateUserProfileDetails({
+    String? phoneNumber,
+    String? bio,
+    String? org,
+  }) {
     return TaskEither.tryCatch(
       () async {
-        final data = await dataSource.updateUserProfile(
-          dto: mapper.entityToDto(user),
+        final dto = UserProfileDTO(
+          profile: UserProfileDetailsDTO(
+            bio: bio,
+            organization: org,
+            phone_number: phoneNumber,
+          ),
         );
-        final dataDetails = await dataSource.updateUserProfileDetails(
-          profileDetails: mapper.entityToDto(user).profile!,
-        );
-        final updatedDto = UserProfileDTO(
-          email: data.email,
-          username: data.username,
-          first_name: data.first_name,
-          last_name: data.last_name,
-          date_joined: data.date_joined,
-          profile: dataDetails,
-        );
-
-        return mapper.dtoToEntity(updatedDto);
+        await dataSource.updateUserProfileDetails(profileDetails: dto.profile!);
+        fetchUserProfile().run();
       },
       (error, stackTrace) {
         return UnknownFailure(message: error.toString());
       },
     );
+  }
+
+  @override
+  Stream<User> get userStream => _userController.stream;
+
+  @override
+  void dispose() {
+    _userController.close();
+  }
+
+  @override
+  TaskEither<Failure, void> updateUserProfilePhoto({
+    required Uint8List bytes,
+    required String fileName,
+  }) {
+    return TaskEither.tryCatch(
+      () async {
+        await dataSource.updateUserProfilePhoto(
+          bytes: bytes,
+          fileName: fileName,
+        );
+        fetchUserProfile().run();
+      },
+      (error, stackTrace) {
+        return UnknownFailure(message: error.toString());
+      },
+    );
+  }
+
+  @override
+  TaskEither<Failure, void> updateUserProfileBasicInfo({
+    required String firstName,
+    required String lastName,
+  }) {
+    return TaskEither.tryCatch(() async {
+      final dto = UserProfileDTO(first_name: firstName, last_name: lastName);
+      await dataSource.updateUserProfile(dto: dto);
+      fetchUserProfile().run();
+    }, (error, stackTrace) => UnknownFailure(message: error.toString()));
   }
 }

@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:file_picker/file_picker.dart';
+
 class FilePickResult {
   final Uint8List bytes;
   final String name;
@@ -15,5 +17,5 @@ abstract class FilePickerBase {
 
   void cancel() {}
 
-  Future<FilePickResult?> pickFile();
+  Future<FilePickResult?> pickFile({FileType type = FileType.video});
 }

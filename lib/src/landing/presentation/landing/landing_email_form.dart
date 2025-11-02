@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
-import 'package:larvixon_frontend/src/common/form_validators.dart';
+import 'package:larvixon_frontend/src/common/mixins/form_validators_mixin.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_form.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_page.dart';
 
@@ -13,7 +13,8 @@ class LandingEmailForm extends StatefulWidget {
   State<LandingEmailForm> createState() => _LandingEmailFormState();
 }
 
-class _LandingEmailFormState extends State<LandingEmailForm> {
+class _LandingEmailFormState extends State<LandingEmailForm>
+    with FormValidatorsMixin {
   final TextEditingController _emailController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -36,8 +37,7 @@ class _LandingEmailFormState extends State<LandingEmailForm> {
             child: SizedBox(
               height: 100,
               child: TextFormField(
-                validator: (value) =>
-                    FormValidators.emailValidator(context, value),
+                validator: (value) => emailValidator(context, value),
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(

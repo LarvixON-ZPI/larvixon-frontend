@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:larvixon_frontend/src/common/widgets/larvixon_logo.dart';
 
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
-import 'package:larvixon_frontend/src/common/form_validators.dart';
+import 'package:larvixon_frontend/src/common/mixins/form_validators_mixin.dart';
 import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
 import 'package:larvixon_frontend/src/authentication/domain/failures/auth_error.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_error_dialog.dart';
@@ -20,7 +20,10 @@ class AuthForm extends StatefulWidget {
 }
 
 class _AuthFormState extends State<AuthForm>
-    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
+    with
+        AutomaticKeepAliveClientMixin,
+        SingleTickerProviderStateMixin,
+        FormValidatorsMixin {
   final _formKey = GlobalKey<FormState>();
   late AuthFormMode _formMode;
   late final AnimationController _logoController;
@@ -200,7 +203,7 @@ class _AuthFormState extends State<AuthForm>
                   return _serverSideFieldErrors['email'];
                 }
                 if (_validatedFields.contains('email')) {
-                  return FormValidators.emailValidator(context, value);
+                  return emailValidator(context, value);
                 }
                 return null;
               },
@@ -232,7 +235,7 @@ class _AuthFormState extends State<AuthForm>
                   return _serverSideFieldErrors['password'];
                 }
                 if (_validatedFields.contains('password')) {
-                  return FormValidators.passwordValidator(
+                  return passwordValidator(
                     context,
                     value,
                     onlyCheckEmpty: _formMode == AuthFormMode.signIn,
@@ -282,7 +285,7 @@ class _AuthFormState extends State<AuthForm>
                               : AutovalidateMode.disabled,
                           validator: (value) {
                             if (_validatedFields.contains('confirm_password')) {
-                              return FormValidators.confirmPasswordValidator(
+                              return confirmPasswordValidator(
                                 context,
                                 _passwordController.text,
                                 value,
@@ -306,10 +309,7 @@ class _AuthFormState extends State<AuthForm>
                               return _serverSideFieldErrors['username'];
                             }
                             if (_validatedFields.contains('username')) {
-                              return FormValidators.usernameValidator(
-                                context,
-                                value,
-                              );
+                              return usernameValidator(context, value);
                             }
                             return null;
                           },
@@ -329,10 +329,7 @@ class _AuthFormState extends State<AuthForm>
                               return _serverSideFieldErrors['first_name'];
                             }
                             if (_validatedFields.contains('first_name')) {
-                              return FormValidators.firstNameValidator(
-                                context,
-                                value,
-                              );
+                              return firstNameValidator(context, value);
                             }
                             return null;
                           },
@@ -352,10 +349,7 @@ class _AuthFormState extends State<AuthForm>
                               return _serverSideFieldErrors['last_name'];
                             }
                             if (_validatedFields.contains('last_name')) {
-                              return FormValidators.lastNameValidator(
-                                context,
-                                value,
-                              );
+                              return lastNameValidator(context, value);
                             }
                             return null;
                           },

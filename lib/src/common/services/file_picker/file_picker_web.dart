@@ -3,10 +3,10 @@ import 'package:larvixon_frontend/src/common/services/file_picker/file_picker_ba
 
 class FilePickerImpl extends FilePickerBase {
   @override
-  Future<FilePickResult?> pickFile() async {
+  Future<FilePickResult?> pickFile({FileType type = FileType.video}) async {
     onFilePicked?.call();
     final result = await FilePicker.platform.pickFiles(
-      type: FileType.video,
+      type: type,
       withData: true,
       onFileLoading: (status) {
         if (status == FilePickerStatus.done) {

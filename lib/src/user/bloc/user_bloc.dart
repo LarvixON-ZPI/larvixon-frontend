@@ -11,10 +11,15 @@ part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   final UserRepository userRepository;
+  StreamSubscription<User>? _userSubscription;
   UserBloc(this.userRepository) : super(const UserState()) {
     on<UserProfileDataRequested>(_onUserProfileDataRequested);
     on<UserProfileDataUpdateRequested>(_onUserProfileDataUpdateRequested);
     on<UserProfileClearRequested>(_onUserProfileClearRequested);
+    on<_UserStreamUpdated>(_onUserStreamUpdated);
+    _userSubscription = userRepository.userStream.listen((user) {
+      add(_UserStreamUpdated(user));
+    });
   }
 
   FutureOr<void> _onUserProfileDataUpdateRequested(
@@ -23,16 +28,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   ) async {
     emit(state.copyWith(isUpdating: true));
     final result = await userRepository
-        .updateUserProfile(
-          user: state.user!.copyWith(
-            email: event.email,
-            firstName: event.firstName,
-            lastName: event.lastName,
-            username: event.username,
-            bio: event.bio,
-            organization: event.organization,
-            phoneNumber: event.phoneNumber,
-          ),
+        .updateUserProfileDetails(
+          bio: event.bio,
+          org: event.organization,
+          phoneNumber: event.phoneNumber,
         )
         .run();
 
@@ -44,13 +43,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           isUpdating: false,
         ),
       ),
-      (user) => emit(
-        state.copyWith(
-          user: user,
-          status: UserStatus.success,
-          isUpdating: false,
-        ),
-      ),
+      (user) =>
+          emit(state.copyWith(status: UserStatus.success, isUpdating: false)),
     );
   }
 
@@ -59,7 +53,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     Emitter<UserState> emit,
   ) async {
     emit(state.copyWith(status: UserStatus.loading));
-    final result = await userRepository.getUserProfile().run();
+    final result = await userRepository.fetchUserProfile().run();
     result.match(
       (error) => emit(
         state.copyWith(
@@ -67,7 +61,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           errorMessage: error.toString(),
         ),
       ),
-      (user) => emit(state.copyWith(user: user, status: UserStatus.success)),
+      (user) => emit(state.copyWith(status: UserStatus.success)),
     );
   }
 
@@ -76,5 +70,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     Emitter<UserState> emit,
   ) {
     emit(state.copyWith(status: UserStatus.initial));
+  }
+
+  void _onUserStreamUpdated(_UserStreamUpdated event, Emitter<UserState> emit) {
+    emit(state.copyWith(status: UserStatus.success, user: event.user));
+  }
+
+  @override
+  Future<void> close() {
+    _userSubscription?.cancel();
+    return super.close();
   }
 }

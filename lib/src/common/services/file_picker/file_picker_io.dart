@@ -9,8 +9,8 @@ class FilePickerImpl extends FilePickerBase {
   StreamSubscription<List<int>>? _readSub;
 
   @override
-  Future<FilePickResult?> pickFile() async {
-    final result = await FilePicker.platform.pickFiles(type: FileType.video);
+  Future<FilePickResult?> pickFile({FileType type = FileType.video}) async {
+    final result = await FilePicker.platform.pickFiles(type: type);
     if (result == null || result.files.isEmpty) return null;
     final picked = result.files.first;
     if (picked.path == null) return null;

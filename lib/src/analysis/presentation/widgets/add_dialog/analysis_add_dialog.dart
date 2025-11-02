@@ -156,8 +156,14 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
 
           return CustomCard(
             color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.8),
-            title: Text(context.translate.uploadNewVideo),
-            description: Text(context.translate.uploadVideoDescription),
+            title: Text(
+              context.translate.uploadNewVideo,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            description: Text(
+              context.translate.uploadVideoDescription,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
             child: Form(
               key: _formKey,
               child: Column(
@@ -210,7 +216,7 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
                       Flexible(
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.redAccent,
+                            backgroundColor: Colors.grey.shade800,
                           ),
                           onPressed: (_isReading && !kIsWeb)
                               ? _cancelRead
@@ -233,6 +239,10 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
                         flex: 2,
                         child: ElevatedButton.icon(
                           iconAlignment: IconAlignment.start,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue.shade800,
+                            foregroundColor: Colors.white,
+                          ),
                           onPressed: canUpload
                               ? null
                               : () => _uploadFile(context, _formKey),
