@@ -35,7 +35,7 @@ class AnalysisDTO {
       'completed_at': completed_at,
       'analysis_results': confidence_scores,
       'user_feedback': user_feedback,
-      'thumbnail_url': thumbnailUrl,
+      'thumbnail': thumbnailUrl,
       'title': title,
     };
   }
@@ -49,7 +49,7 @@ class AnalysisDTO {
       completed_at: map['completed_at'] as String?,
       confidence_scores: map['analysis_results'] as List<dynamic>?,
       user_feedback: map['user_feedback'] as String?,
-      thumbnailUrl: map['thumbnail_url'] as String?,
+      thumbnailUrl: map['thumbnail'] as String?,
       title: map['title'] as String?,
     );
   }
