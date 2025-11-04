@@ -20,7 +20,7 @@ jobs:
           channel: 'stable'
           cache: true
       - run: flutter pub get
-      - run: flutter build web --release --target=lib/main_dev.dart --base-href="/larvixon-frontend/"
+      - run: flutter build web --release --target=lib/main.dart --base-href="/larvixon-frontend/" --dart-define=API_BASE_URL=https://larvixon-backend-v1-c0dxc7aybwbmfdfe.westeurope-01.azurewebsites.net/api
       - uses: actions/upload-artifact@v4
         with:
           name: web-release
