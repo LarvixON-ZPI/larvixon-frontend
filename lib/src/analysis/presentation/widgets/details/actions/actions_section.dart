@@ -3,10 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/core/constants/breakpoints.dart';
+import 'package:larvixon_frontend/core/constants/endpoints_report.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress_status.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/actions/action_button_data.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
+import 'package:larvixon_frontend/src/common/services/file_download/file_download_service.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
 class ActionsSection extends StatelessWidget {
@@ -19,16 +22,66 @@ class ActionsSection extends StatelessWidget {
         label: context.translate.delete,
         icon: const Icon(FontAwesomeIcons.trash),
         color: Colors.red,
-        onPressed: () => onDeletePressed(context),
+        onPressed: () => _onDeletePressed(context),
       ),
-      // ActionButtonData(
-      //   label: context.translate.export,
-      //   icon: const Icon(FontAwesomeIcons.fileExport),
-      //   onPressed: () {
-      //     // TODO
-      //   },
-      // ),
+      ActionButtonData(
+        label: context.translate.export,
+        icon: const Icon(FontAwesomeIcons.fileExport),
+        onPressed: analysis.status == AnalysisProgressStatus.completed
+            ? () => _downloadAnalysisReport(context)
+            : null,
+      ),
     ];
+  }
+
+  void _downloadAnalysisReport(BuildContext context) async {
+    try {
+      final downloader = FileDownloadService(context.read());
+      await downloader.downloadFile(
+        url: ReportEndpoints.reportPdfByAnalysisId(analysis.id),
+        fileName: "analysis_${analysis.id}_report.pdf",
+      );
+    } catch (e) {
+      _showDownloadErrorDialog(context, e);
+    }
+  }
+
+  Future<Object?> _showDownloadErrorDialog(BuildContext context, Object e) {
+    return showGeneralDialog(
+      barrierDismissible: true,
+      context: context,
+      barrierLabel: "Download failed",
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return ScaleTransition(
+          scale: CurvedAnimation(parent: animation, curve: Curves.easeOutBack),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 600),
+              child: CustomCard(
+                title: Text(
+                  context.translate.error,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                description: Text(
+                  e.toString(),
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey.shade800,
+                    foregroundColor: Colors.white,
+                  ),
+                  onPressed: () {
+                    if (context.canPop()) context.pop();
+                  },
+                  child: Text("Ok"),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -70,7 +123,7 @@ class ActionsSection extends StatelessWidget {
     );
   }
 
-  void onDeletePressed(BuildContext context) {
+  void _onDeletePressed(BuildContext context) {
     final bloc = context.read<AnalysisBloc>();
     showGeneralDialog(
       context: context,

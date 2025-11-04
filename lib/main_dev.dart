@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:larvixon_frontend/core/api_client.dart';
 import 'package:larvixon_frontend/src/settings/domain/repositories/settings_repository.dart';
 import 'package:larvixon_frontend/src/settings/domain/repositories/settings_repository_impl.dart';
 import 'package:larvixon_frontend/src/settings/presentation/blocs/cubit/settings_cubit.dart';
@@ -39,10 +40,12 @@ class _MainAppState extends State<MainApp> {
   late final AnalysisRepository _larvaVideoRepository;
   late final SettingsRepository _settingsRepository;
   late final SettingsCubit _settingsCubit;
+  late final ApiClient _apiClient;
 
   @override
   void initState() {
     super.initState();
+    _apiClient = ApiClientFake();
     _authRepository = AuthRepositoryFake();
     _larvaVideoRepository = AnalysisRepositoryFake();
     _userRepository = UserRepositoryFake();
@@ -101,6 +104,7 @@ class _MainAppState extends State<MainApp> {
   MultiRepositoryProvider _buildRepositoryProvider() {
     return MultiRepositoryProvider(
       providers: [
+        RepositoryProvider<ApiClient>.value(value: _apiClient),
         RepositoryProvider<AuthRepository>.value(value: _authRepository),
         RepositoryProvider<UserRepository>.value(value: _userRepository),
         RepositoryProvider<AnalysisRepository>.value(
