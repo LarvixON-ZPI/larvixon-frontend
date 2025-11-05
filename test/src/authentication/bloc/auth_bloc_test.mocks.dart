@@ -3,11 +3,12 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
-
+import 'package:fpdart/fpdart.dart' as _i3;
+import 'package:larvixon_frontend/core/errors/failures.dart' as _i4;
 import 'package:larvixon_frontend/src/authentication/domain/repositories/auth_repository.dart'
     as _i2;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:mockito/src/dummies.dart' as _i5;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -32,16 +33,24 @@ class MockAuthRepository extends _i1.Mock implements _i2.AuthRepository {
   }
 
   @override
-  _i3.Future<void> login({required String? email, required String? password}) =>
+  _i3.TaskEither<_i4.Failure, void> login({
+    required String? email,
+    required String? password,
+  }) =>
       (super.noSuchMethod(
             Invocation.method(#login, [], {#email: email, #password: password}),
-            returnValue: _i3.Future<void>.value(),
-            returnValueForMissingStub: _i3.Future<void>.value(),
+            returnValue: _i5.dummyValue<_i3.TaskEither<_i4.Failure, void>>(
+              this,
+              Invocation.method(#login, [], {
+                #email: email,
+                #password: password,
+              }),
+            ),
           )
-          as _i3.Future<void>);
+          as _i3.TaskEither<_i4.Failure, void>);
 
   @override
-  _i3.Future<void> register({
+  _i3.TaskEither<_i4.Failure, void> register({
     required String? username,
     required String? email,
     required String? password,
@@ -58,34 +67,50 @@ class MockAuthRepository extends _i1.Mock implements _i2.AuthRepository {
               #firstName: firstName,
               #lastName: lastName,
             }),
-            returnValue: _i3.Future<void>.value(),
-            returnValueForMissingStub: _i3.Future<void>.value(),
+            returnValue: _i5.dummyValue<_i3.TaskEither<_i4.Failure, void>>(
+              this,
+              Invocation.method(#register, [], {
+                #username: username,
+                #email: email,
+                #password: password,
+                #passwordConfirm: passwordConfirm,
+                #firstName: firstName,
+                #lastName: lastName,
+              }),
+            ),
           )
-          as _i3.Future<void>);
+          as _i3.TaskEither<_i4.Failure, void>);
 
   @override
-  _i3.Future<void> refreshTokens() =>
+  _i3.TaskEither<_i4.Failure, void> refreshTokens() =>
       (super.noSuchMethod(
             Invocation.method(#refreshTokens, []),
-            returnValue: _i3.Future<void>.value(),
-            returnValueForMissingStub: _i3.Future<void>.value(),
+            returnValue: _i5.dummyValue<_i3.TaskEither<_i4.Failure, void>>(
+              this,
+              Invocation.method(#refreshTokens, []),
+            ),
           )
-          as _i3.Future<void>);
+          as _i3.TaskEither<_i4.Failure, void>);
 
   @override
-  _i3.Future<void> logout() =>
+  _i3.TaskEither<_i4.Failure, void> logout() =>
       (super.noSuchMethod(
             Invocation.method(#logout, []),
-            returnValue: _i3.Future<void>.value(),
-            returnValueForMissingStub: _i3.Future<void>.value(),
+            returnValue: _i5.dummyValue<_i3.TaskEither<_i4.Failure, void>>(
+              this,
+              Invocation.method(#logout, []),
+            ),
           )
-          as _i3.Future<void>);
+          as _i3.TaskEither<_i4.Failure, void>);
 
   @override
-  _i3.Future<bool> isLoggedIn() =>
+  _i3.TaskEither<_i4.Failure, bool> isLoggedIn() =>
       (super.noSuchMethod(
             Invocation.method(#isLoggedIn, []),
-            returnValue: _i3.Future<bool>.value(false),
+            returnValue: _i5.dummyValue<_i3.TaskEither<_i4.Failure, bool>>(
+              this,
+              Invocation.method(#isLoggedIn, []),
+            ),
           )
-          as _i3.Future<bool>);
+          as _i3.TaskEither<_i4.Failure, bool>);
 }

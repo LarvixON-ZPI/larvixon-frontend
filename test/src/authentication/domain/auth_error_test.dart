@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:larvixon_frontend/src/authentication/domain/failures/auth_error.dart';
+import 'package:larvixon_frontend/core/errors/api_failures.dart';
+import 'package:larvixon_frontend/core/errors/validation_failure_extensions.dart';
+import 'package:larvixon_frontend/src/authentication/domain/failures/auth_failures.dart';
 
 void main() {
-  group('AuthError', () {
+  group('AuthFailure', () {
     test('should parse invalid credentials error from Django response', () {
       // Arrange
       final response = Response(
@@ -19,10 +21,13 @@ void main() {
       );
 
       // Act
-      final error = AuthError.fromDioException(dioException);
+      var error = dioException.toApiFailure();
+      expect(error, isA<BadRequestFailure>());
+
+      error = AuthFailure.fromBadRequest(error as BadRequestFailure);
 
       // Assert
-      expect(error, isA<InvalidCredentialsError>());
+      expect(error, isA<InvalidCredentialsFailure>());
       expect(error.message, equals('Invalid email or password'));
     });
 
@@ -41,10 +46,13 @@ void main() {
       );
 
       // Act
-      final error = AuthError.fromDioException(dioException);
+      var error = dioException.toApiFailure();
+      expect(error, isA<BadRequestFailure>());
+
+      error = AuthFailure.fromBadRequest(error as BadRequestFailure);
 
       // Assert
-      expect(error, isA<DisabledAccountError>());
+      expect(error, isA<DisabledAccountFailure>());
       expect(error.message, equals('Account is disabled'));
     });
 
@@ -64,11 +72,9 @@ void main() {
       );
 
       // Act
-      final error = AuthError.fromDioException(dioException);
-
-      // Assert
-      expect(error, isA<FieldValidationError>());
-      final fieldError = error as FieldValidationError;
+      var error = dioException.toApiFailure();
+      expect(error, isA<ValidationFailure>());
+      final fieldError = error as ValidationFailure;
       expect(fieldError.hasFieldError('email'), isTrue);
       expect(fieldError.hasFieldError('password'), isTrue);
       expect(
@@ -81,12 +87,12 @@ void main() {
       );
     });
 
-    test('should parse MFA required from Django response', () {
+    test('should parse MFA device not found from Django response', () {
       // Arrange
       final response = Response(
         requestOptions: RequestOptions(),
-        statusCode: 202,
-        data: {'detail': 'MFA is required.'},
+        statusCode: 400,
+        data: {'detail': 'MFA device not found.'},
       );
       final dioException = DioException(
         requestOptions: RequestOptions(),
@@ -94,11 +100,14 @@ void main() {
       );
 
       // Act
-      final error = AuthError.fromDioException(dioException);
+      var error = dioException.toApiFailure();
+      expect(error, isA<BadRequestFailure>());
+
+      error = AuthFailure.fromBadRequest(error as BadRequestFailure);
 
       // Assert
-      expect(error, isA<MfaRequiredButNoCodeError>());
-      expect(error.message, equals('Multi-factor authentication is required'));
+      expect(error, isA<MfaDeviceNotFoundFailure>());
+      expect(error.message, equals('MFA device not found'));
     });
 
     test('should parse invalid MFA code error from Django response', () {
@@ -114,14 +123,32 @@ void main() {
       );
 
       // Act
-      final error = AuthError.fromDioException(dioException);
+      var error = dioException.toApiFailure();
+      expect(error, isA<BadRequestFailure>());
+
+      error = AuthFailure.fromBadRequest(error as BadRequestFailure);
 
       // Assert
-      expect(error, isA<InvalidMfaCodeError>());
+      expect(error, isA<InvalidMfaCodeFailure>());
       expect(error.message, equals('Invalid MFA code'));
     });
 
-    test('should handle network errors', () {
+    test('should handle network timeout errors', () {
+      // Arrange
+      final dioException = DioException(
+        requestOptions: RequestOptions(),
+        type: DioExceptionType.connectionTimeout,
+      );
+
+      // Act
+      final error = dioException.toApiFailure();
+
+      // Assert
+      expect(error, isA<RequestTimeoutFailure>());
+      expect(error.message, equals('timeout'));
+    });
+
+    test('should handle network connection errors', () {
       // Arrange
       final dioException = DioException(
         requestOptions: RequestOptions(),
@@ -129,11 +156,11 @@ void main() {
       );
 
       // Act
-      final error = AuthError.fromDioException(dioException);
+      final error = dioException.toApiFailure();
 
       // Assert
-      expect(error, isA<NetworkError>());
-      expect(error.message, equals('Network connection failed'));
+      expect(error, isA<ServiceUnavailableFailure>());
+      expect(error.message, equals('no_connection'));
     });
   });
 }
