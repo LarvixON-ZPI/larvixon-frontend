@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:larvixon_frontend/core/errors/api_failures.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
+import 'package:larvixon_frontend/core/errors/storage_failures.dart';
+import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
 import 'package:larvixon_frontend/src/authentication/data/auth_datasource.dart';
 import 'package:larvixon_frontend/core/token_storage.dart';
 import 'package:larvixon_frontend/src/authentication/domain/failures/auth_failures.dart';
@@ -127,24 +130,112 @@ class AuthRepositoryImpl implements AuthRepository {
         await tokenStorage.clearTokens();
       },
       (e, stackTrace) {
-        if (e is DioException) return e.toApiFailure();
-        return UnknownFailure(message: e.toString());
+        return TokenStorageFailure(
+          message: "Failed to clear tokens: ${e.toString()}",
+        );
       },
     );
   }
 
   @override
-  TaskEither<Failure, bool> isLoggedIn() {
+  TaskEither<Failure, AuthStatus> checkAuthStatus() {
     return TaskEither.tryCatch(
       () async {
-        if (await tokenStorage.hasTokens()) {
+        final token = await tokenStorage.getAccessToken();
+
+        if (token == null || token.isEmpty) {
+          return AuthStatus.unauthenticated;
+        }
+        if (JwtDecoder.isExpired(token)) {
+          final refreshResult = await refreshTokens().run();
+          return refreshResult.match(
+            (failure) => AuthStatus.unauthenticated,
+            (_) => AuthStatus.authenticated,
+          );
+        }
+
+        return AuthStatus.authenticated;
+      },
+      (error, stackTrace) => TokenStorageFailure(
+        message: 'Failed to check auth status: ${error.toString()}',
+      ),
+    );
+  }
+
+  @override
+  TaskEither<Failure, bool> hasValidToken() {
+    return TaskEither.tryCatch(
+      () async {
+        try {
+          final token = await tokenStorage.getAccessToken();
+
+          if (token == null || token.isEmpty) {
+            return false;
+          }
+
+          if (JwtDecoder.isExpired(token)) {
+            final refreshResult = await refreshTokens().run();
+            return refreshResult.match((failure) {
+              return false;
+            }, (_) => true);
+          }
+
+          // Check if token expires soon (within 5 minutes)
+          final expirationDate = JwtDecoder.getExpirationDate(token);
+          final now = DateTime.now();
+          const bufferTime = Duration(minutes: 5);
+
+          if (expirationDate.isBefore(now.add(bufferTime))) {
+            final refreshResult = await refreshTokens().run();
+            return refreshResult.match((failure) {
+              return !JwtDecoder.isExpired(token);
+            }, (_) => true);
+          }
+
+          return true;
+        } catch (e) {
+          return false;
+        }
+      },
+      (error, stackTrace) {
+        return TokenStorageFailure(
+          message: 'Failed to check token: ${error.toString()}',
+        );
+      },
+    );
+  }
+
+  @override
+  TaskEither<Failure, bool> verifyToken() {
+    return TaskEither.tryCatch(
+      () async {
+        final localCheck = await hasValidToken().run();
+        final hasLocal = localCheck.match(
+          (failure) => false,
+          (isValid) => isValid,
+        );
+
+        if (!hasLocal) {
+          return false;
+        }
+        try {
+          final token = await tokenStorage.getAccessToken();
+          if (token == null) return false;
+          await dataSource.verifyToken(token: token);
+          return true;
+        } on DioException catch (e) {
+          if (e.response?.statusCode == 401) {
+            await tokenStorage.clearTokens();
+            return false;
+          }
           return true;
         }
-        return false;
       },
-      (e, stackTrace) {
-        if (e is DioException) return e.toApiFailure();
-        return UnknownFailure(message: e.toString());
+      (error, stackTrace) {
+        if (error is DioException) {
+          return error.toApiFailure();
+        }
+        return UnknownFailure(message: error.toString());
       },
     );
   }

@@ -1,22 +1,10 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
+import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
 import 'package:larvixon_frontend/src/authentication/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryFake implements AuthRepository {
-  @override
-  TaskEither<Failure, bool> isLoggedIn() {
-    return TaskEither.tryCatch(
-      () async {
-        return await Future.delayed(
-          const Duration(milliseconds: 100),
-          () => true,
-        );
-      },
-      (error, stackTrace) {
-        return UnknownFailure(message: "Unknown failure");
-      },
-    );
-  }
+  bool _isLoggedIn = false;
 
   @override
   TaskEither<Failure, void> login({
@@ -24,7 +12,8 @@ class AuthRepositoryFake implements AuthRepository {
     required String password,
   }) {
     return TaskEither<Failure, void>.tryCatch(() async {
-      await Future.delayed(const Duration(milliseconds: 500));
+      await Future.delayed(const Duration(milliseconds: 150));
+      _isLoggedIn = true;
       return;
     }, (error, _) => UnknownFailure(message: error.toString()));
   }
@@ -33,7 +22,8 @@ class AuthRepositoryFake implements AuthRepository {
   TaskEither<Failure, void> logout() {
     return TaskEither.tryCatch(
       () async {
-        return await Future.delayed(const Duration(milliseconds: 100));
+        await Future.delayed(const Duration(milliseconds: 50));
+        _isLoggedIn = false;
       },
       (error, stackTrace) {
         return UnknownFailure(message: "Unknown failure");
@@ -67,7 +57,24 @@ class AuthRepositoryFake implements AuthRepository {
   }) {
     return TaskEither<Failure, void>.tryCatch(() async {
       await Future.delayed(const Duration(milliseconds: 500));
-      return;
+      _isLoggedIn = true;
     }, (error, _) => UnknownFailure(message: error.toString()));
+  }
+
+  @override
+  TaskEither<Failure, bool> hasValidToken() {
+    return TaskEither.right(_isLoggedIn);
+  }
+
+  @override
+  TaskEither<Failure, bool> verifyToken() {
+    return TaskEither.right(_isLoggedIn);
+  }
+
+  @override
+  TaskEither<Failure, AuthStatus> checkAuthStatus() {
+    return TaskEither.right(
+      _isLoggedIn ? AuthStatus.authenticated : AuthStatus.unauthenticated,
+    );
   }
 }

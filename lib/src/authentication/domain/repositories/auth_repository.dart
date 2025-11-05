@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
+import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
 
 abstract class AuthRepository {
   TaskEither<Failure, void> login({
@@ -20,5 +21,7 @@ abstract class AuthRepository {
 
   TaskEither<Failure, void> logout();
 
-  TaskEither<Failure, bool> isLoggedIn();
+  TaskEither<Failure, AuthStatus> checkAuthStatus();
+  TaskEither<Failure, bool> hasValidToken();
+  TaskEither<Failure, bool> verifyToken();
 }

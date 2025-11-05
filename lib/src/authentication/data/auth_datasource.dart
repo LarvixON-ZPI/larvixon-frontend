@@ -48,4 +48,12 @@ class AuthDataSource {
     );
     return response.data;
   }
+
+  Future<Map<String, dynamic>> verifyToken({required String token}) async {
+    final response = await apiClient.dio.get(
+      AuthEndpoints.verifyToken,
+      data: {"token": token},
+    );
+    return response.data;
+  }
 }

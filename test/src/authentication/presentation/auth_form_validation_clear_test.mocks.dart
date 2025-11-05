@@ -5,6 +5,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:fpdart/fpdart.dart' as _i3;
 import 'package:larvixon_frontend/core/errors/failures.dart' as _i4;
+import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart'
+    as _i6;
 import 'package:larvixon_frontend/src/authentication/domain/repositories/auth_repository.dart'
     as _i2;
 import 'package:mockito/mockito.dart' as _i1;
@@ -104,12 +106,35 @@ class MockAuthRepository extends _i1.Mock implements _i2.AuthRepository {
           as _i3.TaskEither<_i4.Failure, void>);
 
   @override
-  _i3.TaskEither<_i4.Failure, bool> isLoggedIn() =>
+  _i3.TaskEither<_i4.Failure, _i6.AuthStatus> checkAuthStatus() =>
       (super.noSuchMethod(
-            Invocation.method(#isLoggedIn, []),
+            Invocation.method(#checkAuthStatus, []),
+            returnValue: _i5
+                .dummyValue<_i3.TaskEither<_i4.Failure, _i6.AuthStatus>>(
+                  this,
+                  Invocation.method(#checkAuthStatus, []),
+                ),
+          )
+          as _i3.TaskEither<_i4.Failure, _i6.AuthStatus>);
+
+  @override
+  _i3.TaskEither<_i4.Failure, bool> hasValidToken() =>
+      (super.noSuchMethod(
+            Invocation.method(#hasValidToken, []),
             returnValue: _i5.dummyValue<_i3.TaskEither<_i4.Failure, bool>>(
               this,
-              Invocation.method(#isLoggedIn, []),
+              Invocation.method(#hasValidToken, []),
+            ),
+          )
+          as _i3.TaskEither<_i4.Failure, bool>);
+
+  @override
+  _i3.TaskEither<_i4.Failure, bool> verifyToken() =>
+      (super.noSuchMethod(
+            Invocation.method(#verifyToken, []),
+            returnValue: _i5.dummyValue<_i3.TaskEither<_i4.Failure, bool>>(
+              this,
+              Invocation.method(#verifyToken, []),
             ),
           )
           as _i3.TaskEither<_i4.Failure, bool>);

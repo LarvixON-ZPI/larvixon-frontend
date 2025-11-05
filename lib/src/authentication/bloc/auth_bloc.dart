@@ -19,6 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthSignInRequested>(_onSignInRequested);
     on<AuthSignOutRequested>(_onSignOutRequested);
     on<AuthVerificationRequested>(_onVerificationRequested);
+    on<AuthRetryVerificationRequested>(_onRetryVerificationRequested);
   }
 
   Future<void> _onSignUpRequested(
@@ -101,22 +102,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(state.copyWith(status: AuthStatus.loading));
-    final results = await _authRepository.isLoggedIn().run();
-    results.match(
-      (failure) {
-        emit(
-          state.copyWith(
-            status: AuthStatus.error,
-            errorMessage: failure.message,
-          ),
-        );
-      },
-      (isLoggedIn) {
-        if (isLoggedIn) {
-          return emit(state.copyWith(status: AuthStatus.authenticated));
+
+    final result = await _authRepository.checkAuthStatus().run();
+    result.match(
+      (failure) => emit(
+        state.copyWith(status: AuthStatus.unauthenticated, error: failure),
+      ),
+      (authStatus) {
+        if (authStatus == AuthStatus.authenticated) {
+          emit(state.copyWith(status: AuthStatus.authenticated));
+        } else {
+          emit(state.copyWith(status: AuthStatus.unauthenticated));
         }
-        return emit(state.copyWith(status: AuthStatus.unauthenticated));
       },
     );
+  }
+
+  Future<void> _onRetryVerificationRequested(
+    AuthRetryVerificationRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    await _onVerificationRequested(AuthVerificationRequested(), emit);
   }
 }
