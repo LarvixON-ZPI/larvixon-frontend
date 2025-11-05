@@ -27,7 +27,7 @@ const RESOURCES = {"flutter.js": "888483df48293866f9f41d3d9274a779",
 "assets/assets/images/logo/logo_only_dark.svg": "aa317b3debdd0f8704e6e01b11a77d97",
 "assets/fonts/PixelatedEleganceRegular-ovyAA.ttf": "ca442f278627793c0e3879830bf62b03",
 "assets/fonts/MaterialIcons-Regular.otf": "11d2913813fff5afa902f1bfd623f058",
-"assets/NOTICES": "507513d7b6a44a590def669f21262fef",
+"assets/NOTICES": "cf7d1fb95fb2b3225a2cf17797497949",
 "assets/packages/font_awesome_flutter/lib/fonts/Font-Awesome-7-Free-Solid-900.otf": "b7d0cd2035d734299bf2c6a18f11d0ec",
 "assets/packages/font_awesome_flutter/lib/fonts/Font-Awesome-7-Brands-Regular-400.otf": "091ea992c83d4e137f9093b0d27f4f33",
 "assets/packages/font_awesome_flutter/lib/fonts/Font-Awesome-7-Free-Regular-400.otf": "eae0f1a371ad2814d3c059673c333850",
@@ -46,9 +46,9 @@ const RESOURCES = {"flutter.js": "888483df48293866f9f41d3d9274a779",
 "canvaskit/skwasm.wasm": "264db41426307cfc7fa44b95a7772109",
 "canvaskit/canvaskit.js.symbols": "58832fbed59e00d2190aa295c4d70360",
 "canvaskit/skwasm.js.symbols": "0088242d10d7e7d6d2649d1fe1bda7c1",
-"flutter_bootstrap.js": "7cebfef73f17843109175795a4d1a61e",
+"flutter_bootstrap.js": "66c28258c0c9f91436a5f9c23a8f6965",
 "version.json": "ba62d3b010e02570fe95d3a8b6768e95",
-"main.dart.js": "9930f7a1babca0db1f01cd23f19e6871"};
+"main.dart.js": "00c3587877e471ef945879c1d9da2082"};
 // The application shell files that are downloaded before a service worker can
 // start.
 const CORE = ["main.dart.js",
