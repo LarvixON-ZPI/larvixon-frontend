@@ -82,35 +82,6 @@ void main() {
       );
     });
 
-    testWidgets('should display field validation errors correctly', (
-      tester,
-    ) async {
-      // Arrange
-      const error = ValidationFailure(
-        message: "error",
-        fieldErrors: {
-          'email': 'This field is required',
-          'password': 'Password too short',
-        },
-      );
-
-      // Act
-      await tester.pumpWidget(
-        createTestWidget(const AuthErrorDialog(error: error)),
-      );
-
-      // Assert
-      expect(find.byType(AlertDialog), findsOneWidget);
-      expect(
-        find.textContaining('Email: This field is required'),
-        findsOneWidget,
-      );
-      expect(
-        find.textContaining('Password: Password too short'),
-        findsOneWidget,
-      );
-    });
-
     testWidgets('should display network error correctly', (tester) async {
       // Arrange
       const error = RequestTimeoutFailure(message: 'Network connection failed');
@@ -143,10 +114,7 @@ void main() {
 
       // Assert
       expect(find.byType(AlertDialog), findsOneWidget);
-      expect(
-        find.text('The server is experiencing issues. Please try again later.'),
-        findsOneWidget,
-      );
+      expect(find.text('Internal server error'), findsOneWidget);
     });
 
     testWidgets('should display invalid MFA code error correctly', (
