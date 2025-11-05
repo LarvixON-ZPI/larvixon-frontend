@@ -1,7 +1,13 @@
-abstract class AuthRepository {
-  Future<void> login({required String email, required String password});
+import 'package:fpdart/fpdart.dart';
+import 'package:larvixon_frontend/core/errors/failures.dart';
 
-  Future<void> register({
+abstract class AuthRepository {
+  TaskEither<Failure, void> login({
+    required String email,
+    required String password,
+  });
+
+  TaskEither<Failure, void> register({
     required String username,
     required String email,
     required String password,
@@ -10,9 +16,9 @@ abstract class AuthRepository {
     required String lastName,
   });
 
-  Future<void> refreshTokens();
+  TaskEither<Failure, void> refreshTokens();
 
-  Future<void> logout();
+  TaskEither<Failure, void> logout();
 
-  Future<bool> isLoggedIn();
+  TaskEither<Failure, bool> isLoggedIn();
 }

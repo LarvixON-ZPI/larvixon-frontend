@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:larvixon_frontend/core/errors/api_failures.dart';
+import 'package:larvixon_frontend/src/authentication/domain/failures/auth_failures.dart';
 import 'package:larvixon_frontend/src/common/widgets/larvixon_logo.dart';
-
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 import 'package:larvixon_frontend/src/common/mixins/form_validators_mixin.dart';
+import 'package:larvixon_frontend/src/common/mixins/field_error_mixin.dart';
 import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
-import 'package:larvixon_frontend/src/authentication/domain/failures/auth_error.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_error_dialog.dart';
 
 enum AuthFormMode { signUp, signIn }
@@ -23,7 +24,9 @@ class _AuthFormState extends State<AuthForm>
     with
         AutomaticKeepAliveClientMixin,
         SingleTickerProviderStateMixin,
-        FormValidatorsMixin {
+        FormValidatorsMixin,
+        FieldErrorMixin<AuthForm>,
+        FormFieldValidationMixin<AuthForm> {
   final _formKey = GlobalKey<FormState>();
   late AuthFormMode _formMode;
   late final AnimationController _logoController;
@@ -35,12 +38,9 @@ class _AuthFormState extends State<AuthForm>
   final _lastNameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
-
-  Map<String, String> _serverSideFieldErrors = {};
-
-  final Set<String> _validatedFields = {};
 
   @override
   void dispose() {
@@ -61,23 +61,20 @@ class _AuthFormState extends State<AuthForm>
     if (widget.initialEmail != null) {
       _emailController.text = widget.initialEmail!;
     }
+
     _logoController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
     );
 
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.2).animate(
-      CurvedAnimation(parent: _logoController, curve: Curves.easeInOut),
-    );
-
-    _emailController.addListener(() => _onFieldChanged('email'));
-    _passwordController.addListener(() => _onFieldChanged('password'));
+    _emailController.addListener(() => onFieldChanged('email'));
+    _passwordController.addListener(() => onFieldChanged('password'));
     _confirmPasswordController.addListener(
-      () => _onFieldChanged('confirm_password'),
+      () => onFieldChanged('confirm_password'),
     );
-    _usernameController.addListener(() => _onFieldChanged('username'));
-    _firstNameController.addListener(() => _onFieldChanged('first_name'));
-    _lastNameController.addListener(() => _onFieldChanged('last_name'));
+    _usernameController.addListener(() => onFieldChanged('username'));
+    _firstNameController.addListener(() => onFieldChanged('first_name'));
+    _lastNameController.addListener(() => onFieldChanged('last_name'));
   }
 
   @override
@@ -100,154 +97,79 @@ class _AuthFormState extends State<AuthForm>
                   _logoController.value = 0.0;
                 }
 
-                if (state.status == AuthStatus.error && state.error != null) {
-                  if (state.error is FieldValidationError) {
-                    final fieldError = state.error as FieldValidationError;
-                    setState(() {
-                      _serverSideFieldErrors = {};
-                      for (final entry in fieldError.fieldErrors.entries) {
-                        if (entry.value.isNotEmpty) {
-                          _serverSideFieldErrors[entry.key] = entry.value.first;
-                        }
-                      }
-                    });
-
+                if (_hasErrors(state)) {
+                  final error = state.error!;
+                  if (error is ValidationFailure &&
+                      error.fieldErrors.isNotEmpty) {
+                    setFieldErrors(error.fieldErrors);
                     _formKey.currentState?.validate();
                   } else {
                     AuthErrorDialog.show(
                       context,
-                      error: state.error!,
-                      onRetry: () => _submitForm(),
-                      onMfaRequired: () => _showMfaDialog(),
+                      error: error,
+                      onRetry: _submitForm,
+                      onMfaRequired: _showMfaDialog,
                     );
                   }
-                } else if (state.status == AuthStatus.mfaRequired &&
-                    state.error != null) {
+                } else if (_hasMfaError(state)) {
                   _showMfaDialog();
-                }
-
-                if (state.status != AuthStatus.error &&
-                    _serverSideFieldErrors.isNotEmpty) {
-                  setState(() {
-                    _serverSideFieldErrors = {};
-                  });
+                } else if (state.status != AuthStatus.error &&
+                    fieldErrors.isNotEmpty) {
+                  clearAllErrors();
                 }
               },
-              child: AnimatedBuilder(
-                animation: _logoController,
-                child: const LarvixonLogo(useFull: false),
-                builder: (context, child) {
-                  return Transform.scale(
-                    scale: _scaleAnimation.value,
-                    child: Center(child: child),
-                  );
-                },
-              ),
+              child: AnimatedLogo(logoController: _logoController),
             ),
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               spacing: 16,
               children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      setState(() => _formMode = AuthFormMode.signIn);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _formMode == AuthFormMode.signIn
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(
-                              context,
-                            ).colorScheme.surfaceContainerHighest,
-                      foregroundColor: _formMode == AuthFormMode.signIn
-                          ? Theme.of(context).colorScheme.onPrimary
-                          : Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-
-                    child: Text(context.translate.signIn),
-                  ),
-                ),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      setState(() => _formMode = AuthFormMode.signUp);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _formMode == AuthFormMode.signUp
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(
-                              context,
-                            ).colorScheme.surfaceContainerHighest,
-                      foregroundColor: _formMode == AuthFormMode.signUp
-                          ? Theme.of(context).colorScheme.onPrimary
-                          : Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-                    child: Text(context.translate.signUp),
-                  ),
-                ),
+                _buildModeButton(context, AuthFormMode.signIn),
+                _buildModeButton(context, AuthFormMode.signUp),
               ],
             ),
-
             TextFormField(
               controller: _emailController,
               decoration: InputDecoration(hintText: context.translate.email),
               autofillHints: const [AutofillHints.email],
-              autovalidateMode:
-                  (_validatedFields.contains('email') ||
-                      _serverSideFieldErrors.containsKey('email'))
-                  ? AutovalidateMode.always
-                  : AutovalidateMode.disabled,
-              validator: (value) {
-                if (_serverSideFieldErrors['email'] != null) {
-                  return _serverSideFieldErrors['email'];
-                }
-                if (_validatedFields.contains('email')) {
-                  return emailValidator(context, value);
-                }
-                return null;
-              },
+              autovalidateMode: getAutovalidateMode('email'),
+              validator: (value) => validateField(
+                context,
+                'email',
+                (context, value) => emailValidator(context, value),
+                value,
+              ),
             ),
             TextFormField(
               controller: _passwordController,
-              autofillHints: const [AutofillHints.password],
               decoration: InputDecoration(
                 hintText: context.translate.password,
                 suffixIcon: IconButton(
                   icon: Icon(
                     _obscurePassword ? Icons.visibility_off : Icons.visibility,
                   ),
-                  onPressed: () {
-                    setState(() {
-                      _obscurePassword = !_obscurePassword;
-                    });
-                  },
+                  onPressed: () =>
+                      setState(() => _obscurePassword = !_obscurePassword),
                 ),
               ),
               obscureText: _obscurePassword,
-              autovalidateMode:
-                  (_validatedFields.contains('password') ||
-                      _serverSideFieldErrors.containsKey('password'))
-                  ? AutovalidateMode.always
-                  : AutovalidateMode.disabled,
-              validator: (value) {
-                if (_serverSideFieldErrors['password'] != null) {
-                  return _serverSideFieldErrors['password'];
-                }
-                if (_validatedFields.contains('password')) {
-                  return passwordValidator(
-                    context,
-                    value,
-                    onlyCheckEmpty: _formMode == AuthFormMode.signIn,
-                  );
-                }
-                return null;
-              },
+              autofillHints: const [AutofillHints.password],
+              autovalidateMode: getAutovalidateMode('password'),
+              validator: (value) => validateField(
+                context,
+                'password',
+                (context, value) => passwordValidator(
+                  context,
+                  value,
+                  onlyCheckEmpty: _formMode == AuthFormMode.signIn,
+                ),
+                value,
+              ),
               onFieldSubmitted: _formMode == AuthFormMode.signIn
                   ? (_) => _submitForm()
                   : null,
             ),
-
             AnimatedSize(
               duration: const Duration(milliseconds: 600),
               curve: Curves.ease,
@@ -259,100 +181,87 @@ class _AuthFormState extends State<AuthForm>
                     spacing: 6.0,
                     children: [
                       if (_formMode == AuthFormMode.signUp) ...[
-                        TextFormField(
-                          controller: _confirmPasswordController,
-                          autofillHints: const [AutofillHints.password],
-                          decoration: InputDecoration(
-                            hintText: context.translate.confirmPassword,
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _obscureConfirmPassword
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
+                        Column(
+                          spacing: 6.0,
+                          children: [
+                            TextFormField(
+                              controller: _confirmPasswordController,
+                              decoration: InputDecoration(
+                                hintText: context.translate.confirmPassword,
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscureConfirmPassword
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                  ),
+                                  onPressed: () => setState(
+                                    () => _obscureConfirmPassword =
+                                        !_obscureConfirmPassword,
+                                  ),
+                                ),
                               ),
-                              onPressed: () {
-                                setState(() {
-                                  _obscureConfirmPassword =
-                                      !_obscureConfirmPassword;
-                                });
-                              },
-                            ),
-                          ),
-                          obscureText: _obscureConfirmPassword,
-                          autovalidateMode:
-                              _validatedFields.contains('confirm_password')
-                              ? AutovalidateMode.always
-                              : AutovalidateMode.disabled,
-                          validator: (value) {
-                            if (_validatedFields.contains('confirm_password')) {
-                              return confirmPasswordValidator(
+                              obscureText: _obscureConfirmPassword,
+                              autovalidateMode: getAutovalidateMode(
+                                'confirm_password',
+                              ),
+                              validator: (value) => validateField(
                                 context,
-                                _passwordController.text,
+                                'confirm_password',
+                                (context, value) => confirmPasswordValidator(
+                                  context,
+                                  _passwordController.text,
+                                  value,
+                                ),
                                 value,
-                              );
-                            }
-                            return null;
-                          },
-                        ),
-                        TextFormField(
-                          controller: _usernameController,
-                          autofillHints: const [AutofillHints.username],
-                          decoration: InputDecoration(
-                            hintText: context.translate.username,
-                          ),
-                          autovalidateMode:
-                              _validatedFields.contains('username')
-                              ? AutovalidateMode.always
-                              : AutovalidateMode.disabled,
-                          validator: (value) {
-                            if (_serverSideFieldErrors['username'] != null) {
-                              return _serverSideFieldErrors['username'];
-                            }
-                            if (_validatedFields.contains('username')) {
-                              return usernameValidator(context, value);
-                            }
-                            return null;
-                          },
-                        ),
-                        TextFormField(
-                          controller: _firstNameController,
-                          autofillHints: const [AutofillHints.givenName],
-                          decoration: InputDecoration(
-                            hintText: context.translate.firstName,
-                          ),
-                          autovalidateMode:
-                              _validatedFields.contains('first_name')
-                              ? AutovalidateMode.always
-                              : AutovalidateMode.disabled,
-                          validator: (value) {
-                            if (_serverSideFieldErrors['first_name'] != null) {
-                              return _serverSideFieldErrors['first_name'];
-                            }
-                            if (_validatedFields.contains('first_name')) {
-                              return firstNameValidator(context, value);
-                            }
-                            return null;
-                          },
-                        ),
-                        TextFormField(
-                          controller: _lastNameController,
-                          autofillHints: const [AutofillHints.familyName],
-                          decoration: InputDecoration(
-                            hintText: context.translate.lastName,
-                          ),
-                          autovalidateMode:
-                              _validatedFields.contains('last_name')
-                              ? AutovalidateMode.always
-                              : AutovalidateMode.disabled,
-                          validator: (value) {
-                            if (_serverSideFieldErrors['last_name'] != null) {
-                              return _serverSideFieldErrors['last_name'];
-                            }
-                            if (_validatedFields.contains('last_name')) {
-                              return lastNameValidator(context, value);
-                            }
-                            return null;
-                          },
+                              ),
+                            ),
+                            TextFormField(
+                              controller: _usernameController,
+                              decoration: InputDecoration(
+                                hintText: context.translate.username,
+                              ),
+                              autovalidateMode: getAutovalidateMode('username'),
+                              validator: (value) => validateField(
+                                context,
+                                'username',
+                                (context, value) =>
+                                    usernameValidator(context, value),
+                                value,
+                              ),
+                            ),
+                            TextFormField(
+                              controller: _firstNameController,
+                              decoration: InputDecoration(
+                                hintText: context.translate.firstName,
+                              ),
+                              autovalidateMode: getAutovalidateMode(
+                                'first_name',
+                              ),
+                              validator: (value) => validateField(
+                                context,
+                                'first_name',
+                                (context, value) =>
+                                    firstNameValidator(context, value),
+                                value,
+                              ),
+                            ),
+                            TextFormField(
+                              controller: _lastNameController,
+                              decoration: InputDecoration(
+                                hintText: context.translate.lastName,
+                              ),
+                              autovalidateMode: getAutovalidateMode(
+                                'last_name',
+                              ),
+                              validator: (value) => validateField(
+                                context,
+                                'last_name',
+                                (context, value) =>
+                                    lastNameValidator(context, value),
+                                value,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ],
@@ -379,18 +288,42 @@ class _AuthFormState extends State<AuthForm>
     );
   }
 
-  void _submitForm() {
-    _validatedFields.addAll(['email', 'password']);
-    if (_formMode == AuthFormMode.signUp) {
-      _validatedFields.addAll([
-        'username',
-        'first_name',
-        'last_name',
-        'confirm_password',
-      ]);
-    }
+  bool _hasMfaError(AuthState state) {
+    return state.status == AuthStatus.mfaRequired && state.error != null;
+  }
 
+  bool _hasErrors(AuthState state) =>
+      state.status == AuthStatus.error && state.error != null;
+
+  Widget _buildModeButton(BuildContext context, AuthFormMode mode) {
+    final selected = _formMode == mode;
+    final colors = Theme.of(context).colorScheme;
+    return Expanded(
+      child: ElevatedButton(
+        onPressed: () => setState(() {
+          _formMode = mode;
+          clearAllErrors();
+        }),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: selected
+              ? colors.primary
+              : colors.surfaceContainerHighest,
+          foregroundColor: selected
+              ? colors.onPrimary
+              : colors.onSurfaceVariant,
+        ),
+        child: Text(
+          mode == AuthFormMode.signIn
+              ? context.translate.signIn
+              : context.translate.signUp,
+        ),
+      ),
+    );
+  }
+
+  void _submitForm() {
     if (!_formKey.currentState!.validate()) return;
+
     if (_formMode == AuthFormMode.signIn) {
       context.read<AuthBloc>().add(
         AuthSignInRequested(
@@ -398,37 +331,21 @@ class _AuthFormState extends State<AuthForm>
           password: _passwordController.text.trim(),
         ),
       );
-      return;
-    }
-
-    context.read<AuthBloc>().add(
-      AuthSignUpRequested(
-        username: _usernameController.text.trim(),
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-        confirmPassword: _confirmPasswordController.text.trim(),
-        firstName: _firstNameController.text.trim(),
-        lastName: _lastNameController.text.trim(),
-      ),
-    );
-  }
-
-  void _onFieldChanged(String fieldName) {
-    bool serverErrorCleared = false;
-    if (_serverSideFieldErrors.containsKey(fieldName)) {
-      _serverSideFieldErrors.remove(fieldName);
-      serverErrorCleared = true;
-    }
-
-    if (_validatedFields.contains(fieldName) || serverErrorCleared) {
-      setState(() {
-        // This setState will cause the form to rebuild and re-run validators
-      });
+    } else {
+      context.read<AuthBloc>().add(
+        AuthSignUpRequested(
+          username: _usernameController.text.trim(),
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+          confirmPassword: _confirmPasswordController.text.trim(),
+          firstName: _firstNameController.text.trim(),
+          lastName: _lastNameController.text.trim(),
+        ),
+      );
     }
   }
 
   void _showMfaDialog() {
-    // TODO: Implement MFA dialog
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -446,4 +363,26 @@ class _AuthFormState extends State<AuthForm>
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class AnimatedLogo extends StatelessWidget {
+  const AnimatedLogo({super.key, required AnimationController logoController})
+    : _logoController = logoController;
+
+  final AnimationController _logoController;
+
+  @override
+  Widget build(BuildContext context) {
+    final scaleAnimation = Tween<double>(begin: 1.0, end: 1.2).animate(
+      CurvedAnimation(parent: _logoController, curve: Curves.easeInOut),
+    );
+    return AnimatedBuilder(
+      animation: _logoController,
+      child: const LarvixonLogo(useFull: false),
+      builder: (context, child) => Transform.scale(
+        scale: scaleAnimation.value,
+        child: Center(child: child),
+      ),
+    );
+  }
 }
