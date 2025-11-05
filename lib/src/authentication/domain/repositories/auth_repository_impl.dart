@@ -37,8 +37,8 @@ class AuthRepositoryImpl implements AuthRepository {
         final apiFailure = e is DioException
             ? e.toApiFailure()
             : UnknownFailure(message: e.toString());
-        if (apiFailure is ValidationFailure) {
-          final authFailure = AuthFailure.fromValidationFailure(apiFailure);
+        if (apiFailure is BadRequestFailure) {
+          final authFailure = AuthFailure.fromBadRequest(apiFailure);
           if (authFailure is! UnknownAuthFailure) return authFailure;
         }
         return apiFailure;
@@ -81,8 +81,8 @@ class AuthRepositoryImpl implements AuthRepository {
         final apiFailure = e is DioException
             ? e.toApiFailure()
             : UnknownFailure(message: e.toString());
-        if (apiFailure is ValidationFailure) {
-          final authFailure = AuthFailure.fromValidationFailure(apiFailure);
+        if (apiFailure is BadRequestFailure) {
+          final authFailure = AuthFailure.fromBadRequest(apiFailure);
           if (authFailure is! UnknownAuthFailure) return authFailure;
         }
         return apiFailure;

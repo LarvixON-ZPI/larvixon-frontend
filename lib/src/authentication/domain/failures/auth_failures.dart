@@ -1,39 +1,43 @@
 import 'package:larvixon_frontend/core/errors/api_failures.dart';
 
-sealed class AuthFailure extends ValidationFailure {
-  const AuthFailure({required super.message}) : super(fieldErrors: const {});
+sealed class AuthFailure extends BadRequestFailure {
+  const AuthFailure({required super.message});
 
-  factory AuthFailure.fromValidationFailure(ValidationFailure failure) {
-    final data = failure.responseData;
-    final message = failure.message;
-    if (data is! Map<String, dynamic>) {
-      return UnknownAuthFailure(message: message);
-    }
-    final nonFieldErrors = data['non_field_errors'] as List<dynamic>?;
-    if (nonFieldErrors != null && nonFieldErrors.isNotEmpty) {
-      final errorMessage = nonFieldErrors.first.toString();
-
-      if (errorMessage.contains('Invalid email or password')) {
-        return const InvalidCredentialsFailure();
-      } else if (errorMessage.contains('Account is disabled')) {
-        return const DisabledAccountFailure();
-      } else if (errorMessage.contains('Must include email and password')) {
-        return const MissingCredentialsFailure();
+  factory AuthFailure.fromBadRequest(BadRequestFailure failure) {
+    if (failure is ValidationFailure) {
+      final data = failure.responseData;
+      if (data is! Map<String, dynamic>) {
+        return UnknownAuthFailure(message: failure.message);
       }
-      return UnknownAuthFailure(message: errorMessage);
+
+      final nonFieldErrors = data['non_field_errors'] as List<dynamic>?;
+      if (nonFieldErrors != null && nonFieldErrors.isNotEmpty) {
+        final errorMessage = nonFieldErrors.first.toString();
+
+        if (errorMessage.contains('Invalid email or password')) {
+          return const InvalidCredentialsFailure();
+        } else if (errorMessage.contains('Account is disabled')) {
+          return const DisabledAccountFailure();
+        } else if (errorMessage.contains('Must include email and password')) {
+          return const MissingCredentialsFailure();
+        }
+        return UnknownAuthFailure(message: errorMessage);
+      }
+
+      final detail = data['detail']?.toString();
+      if (detail != null) {
+        return switch (detail) {
+          'MFA device not found.' => const MfaDeviceNotFoundFailure(),
+          'MFA device is not confirmed.' =>
+            const MfaDeviceNotConfirmedFailure(),
+          'MFA secret key not found.' => const MfaSecretMissingFailure(),
+          'Invalid MFA code.' => const InvalidMfaCodeFailure(),
+          _ => UnknownAuthFailure(message: detail),
+        };
+      }
     }
 
-    final detail = data['detail']?.toString();
-    if (detail != null) {
-      return switch (detail) {
-        'MFA device not found.' => const MfaDeviceNotFoundFailure(),
-        'MFA device is not confirmed.' => const MfaDeviceNotConfirmedFailure(),
-        'MFA secret key not found.' => const MfaSecretMissingFailure(),
-        'Invalid MFA code.' => const InvalidMfaCodeFailure(),
-        _ => UnknownAuthFailure(message: detail),
-      };
-    }
-    return UnknownAuthFailure(message: message);
+    return UnknownAuthFailure(message: failure.message);
   }
 }
 

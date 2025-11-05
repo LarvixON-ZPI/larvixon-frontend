@@ -17,10 +17,12 @@ base class ApiFailure extends Failure {
     switch (statusCode) {
       case 400:
         final fieldErrors = _extractFieldErrors(data);
-        if (fieldErrors.isNotEmpty) {
+        if (data != null) {
           return ValidationFailure(
             fieldErrors: fieldErrors,
-            message: 'validation_failed',
+            message: fieldErrors.isNotEmpty
+                ? 'validation_failed'
+                : 'bad_request',
             responseData: data,
           );
         }
