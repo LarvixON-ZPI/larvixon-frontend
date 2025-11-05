@@ -1,24 +1,15 @@
 import 'dart:async';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/core/constants/breakpoints.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/pages/analyses_page.dart';
 import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
 import 'package:larvixon_frontend/src/common/services/file_picker/file_picker.dart';
-import 'package:larvixon_frontend/src/common/services/file_picker/file_picker_base.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
-import 'package:larvixon_frontend/src/common/widgets/profile_avatar.dart';
 
-import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
-import 'package:larvixon_frontend/src/common/mixins/form_validators_mixin.dart';
 import 'package:larvixon_frontend/src/user/bloc/cubit/user_edit_cubit.dart';
 import 'package:larvixon_frontend/src/user/bloc/user_bloc.dart';
-import 'package:larvixon_frontend/src/user/domain/entities/user.dart';
 import 'package:larvixon_frontend/src/user/domain/repositories/user_repository.dart';
 import 'package:larvixon_frontend/src/user/presentation/widgets/basic_info_section.dart';
 import 'package:larvixon_frontend/src/user/presentation/widgets/credentials_section.dart';
@@ -73,7 +64,7 @@ class AccountPage extends StatelessWidget {
                             child: Row(
                               spacing: 16,
                               children: [
-                                ProfilePicutreSection(
+                                ProfilePictureSection(
                                   profilePictureUrl: profilePictureUrl,
                                   onTap: () => _pickImage(context),
                                 ),
@@ -135,8 +126,8 @@ class AccountPage extends StatelessWidget {
   }
 }
 
-class ProfilePicutreSection extends StatelessWidget {
-  const ProfilePicutreSection({
+class ProfilePictureSection extends StatelessWidget {
+  const ProfilePictureSection({
     super.key,
     required this.profilePictureUrl,
     this.onTap,
@@ -144,21 +135,38 @@ class ProfilePicutreSection extends StatelessWidget {
 
   final String? profilePictureUrl;
   final VoidCallback? onTap;
-  bool get hasImage => profilePictureUrl != null;
+
+  bool get hasImage =>
+      profilePictureUrl != null && profilePictureUrl!.isNotEmpty;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserEditCubit, UserEditState>(
       builder: (context, state) {
         final isUploading = state.status == EditStatus.uploadingPhoto;
+
         return InkWell(
           onTap: isUploading ? null : onTap,
           child: CircleAvatar(
             radius: 64,
-            backgroundImage: hasImage ? NetworkImage(profilePictureUrl!) : null,
+            backgroundColor: Colors.grey.shade200,
             child: hasImage
-                ? null
-                : Icon(Icons.person, size: 64, color: Colors.grey),
+                ? ClipOval(
+                    child: Image.network(
+                      profilePictureUrl!,
+                      width: 128,
+                      height: 128,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(
+                          Icons.person,
+                          size: 64,
+                          color: Colors.grey,
+                        );
+                      },
+                    ),
+                  )
+                : const Icon(Icons.person, size: 64, color: Colors.grey),
           ).withOnHoverEffect,
         );
       },
