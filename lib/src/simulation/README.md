@@ -1,8 +1,8 @@
-# About Us Feature
+# Simulation Feature
 
 ## Overview
 
-This feature handles About Us functionality in the Larvixon application.
+This feature handles Simulation functionality in the Larvixon application.
 
 ## Architecture
 
@@ -10,7 +10,7 @@ This feature is structured into three main layers:
 
 ### Domain Layer (`domain/`)
 
-- **entities/**: Core business objects (e.g., AboutUs)
+- **entities/**: Core business objects (e.g., Simulation)
 - **repositories/**: Abstract interfaces for data access
 - **failures/**: Domain-specific error types
 
