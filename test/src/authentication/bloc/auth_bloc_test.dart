@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/api_failures.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
+import 'package:larvixon_frontend/core/errors/storage_failures.dart';
 import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
 import 'package:larvixon_frontend/src/authentication/domain/repositories/auth_repository.dart';
 import 'package:larvixon_frontend/src/authentication/domain/failures/auth_failures.dart';
@@ -21,6 +22,9 @@ void main() {
     );
     provideDummy<TaskEither<Failure, bool>>(
       TaskEither<Failure, bool>.right(true),
+    );
+    provideDummy<TaskEither<Failure, AuthStatus>>(
+      TaskEither<Failure, AuthStatus>.right(AuthStatus.authenticated),
     );
   });
 
@@ -436,6 +440,158 @@ void main() {
         },
         act: (bloc) => bloc.add(AuthSignOutRequested()),
         expect: () => [const AuthState(status: AuthStatus.unauthenticated)],
+      );
+    });
+
+    group('AuthVerificationRequested', () {
+      blocTest<AuthBloc, AuthState>(
+        'emits [loading, authenticated] when user is authenticated',
+        build: () {
+          when(mockAuthRepository.checkAuthStatus()).thenReturn(
+            TaskEither<Failure, AuthStatus>.right(AuthStatus.authenticated),
+          );
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthVerificationRequested()),
+        expect: () => [
+          const AuthState(status: AuthStatus.loading),
+          const AuthState(status: AuthStatus.authenticated),
+        ],
+        verify: (_) {
+          verify(mockAuthRepository.checkAuthStatus()).called(1);
+        },
+      );
+
+      blocTest<AuthBloc, AuthState>(
+        'emits [loading, unauthenticated] when user is not authenticated',
+        build: () {
+          when(mockAuthRepository.checkAuthStatus()).thenReturn(
+            TaskEither<Failure, AuthStatus>.right(AuthStatus.unauthenticated),
+          );
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthVerificationRequested()),
+        expect: () => [
+          const AuthState(status: AuthStatus.loading),
+          const AuthState(status: AuthStatus.unauthenticated),
+        ],
+        verify: (_) {
+          verify(mockAuthRepository.checkAuthStatus()).called(1);
+        },
+      );
+
+      blocTest<AuthBloc, AuthState>(
+        'emits [loading, unauthenticated] when verification fails with storage error',
+        build: () {
+          when(mockAuthRepository.checkAuthStatus()).thenReturn(
+            TaskEither<Failure, AuthStatus>.left(
+              TokenStorageFailure(message: 'Failed to read token'),
+            ),
+          );
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthVerificationRequested()),
+        expect: () => [
+          const AuthState(status: AuthStatus.loading),
+          isA<AuthState>()
+              .having((s) => s.status, 'status', AuthStatus.unauthenticated)
+              .having((s) => s.error, 'error', isA<TokenStorageFailure>())
+              .having(
+                (s) => s.error?.message,
+                'error.message',
+                'Failed to read token',
+              ),
+        ],
+        verify: (_) {
+          verify(mockAuthRepository.checkAuthStatus()).called(1);
+        },
+      );
+
+      blocTest<AuthBloc, AuthState>(
+        'emits [loading, unauthenticated] when verification fails with unknown error',
+        build: () {
+          when(mockAuthRepository.checkAuthStatus()).thenReturn(
+            TaskEither<Failure, AuthStatus>.left(
+              UnknownFailure(message: 'Unexpected error'),
+            ),
+          );
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthVerificationRequested()),
+        expect: () => [
+          const AuthState(status: AuthStatus.loading),
+          isA<AuthState>()
+              .having((s) => s.status, 'status', AuthStatus.unauthenticated)
+              .having((s) => s.error, 'error', isA<UnknownFailure>()),
+        ],
+      );
+
+      blocTest<AuthBloc, AuthState>(
+        'defaults to unauthenticated on network failure during verification',
+        build: () {
+          when(mockAuthRepository.checkAuthStatus()).thenReturn(
+            TaskEither<Failure, AuthStatus>.left(
+              const ServiceUnavailableFailure(message: 'Network unavailable'),
+            ),
+          );
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthVerificationRequested()),
+        expect: () => [
+          const AuthState(status: AuthStatus.loading),
+          isA<AuthState>()
+              .having((s) => s.status, 'status', AuthStatus.unauthenticated)
+              .having((s) => s.error, 'error', isA<ServiceUnavailableFailure>())
+              .having(
+                (s) => s.error?.message,
+                'error.message',
+                'Network unavailable',
+              ),
+        ],
+      );
+    });
+
+    group('AuthRetryVerificationRequested', () {
+      blocTest<AuthBloc, AuthState>(
+        'retries verification and succeeds',
+        build: () {
+          when(mockAuthRepository.checkAuthStatus()).thenReturn(
+            TaskEither<Failure, AuthStatus>.right(AuthStatus.authenticated),
+          );
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthRetryVerificationRequested()),
+        expect: () => [
+          const AuthState(status: AuthStatus.loading),
+          const AuthState(status: AuthStatus.authenticated),
+        ],
+        verify: (_) {
+          verify(mockAuthRepository.checkAuthStatus()).called(1);
+        },
+      );
+
+      blocTest<AuthBloc, AuthState>(
+        'retries verification and fails',
+        build: () {
+          when(mockAuthRepository.checkAuthStatus()).thenReturn(
+            TaskEither<Failure, AuthStatus>.left(
+              TokenStorageFailure(message: 'Storage error'),
+            ),
+          );
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthRetryVerificationRequested()),
+        expect: () => [
+          const AuthState(status: AuthStatus.loading),
+          isA<AuthState>()
+              .having((s) => s.status, 'status', AuthStatus.unauthenticated)
+              .having((s) => s.error, 'error', isA<TokenStorageFailure>())
+              .having(
+                (s) => s.error?.message,
+                'error.message',
+                'Storage error',
+              ),
+        ],
       );
     });
   });
