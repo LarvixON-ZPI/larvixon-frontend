@@ -222,6 +222,9 @@ class _DetailsSectionState extends State<DetailsSection>
                     TextFormField(
                       controller: _bioController,
                       readOnly: isSaving,
+                      minLines: 2,
+                      maxLines: null,
+                      keyboardType: TextInputType.multiline,
                       autovalidateMode: getAutovalidateMode('bio'),
                       validator: (value) => validateField(
                         context,
