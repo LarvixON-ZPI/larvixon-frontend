@@ -105,6 +105,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get contact => 'Kontakt';
 
   @override
+  String get simulation => 'Symulacja';
+
+  @override
   String get enterEmail => 'Wprowadź swój email';
 
   @override

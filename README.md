@@ -35,6 +35,10 @@ To run the Larvixon App, follow these steps:
 5. Run the following commands:
 
 ```bash
+# Unity submodule
+git submodule update --init --recursive
+
+# Flutter dependencies
 flutter pub get
 flutter run --dart-define=API_BASE_URL=http://127.0.0.1:8000/api
 ```

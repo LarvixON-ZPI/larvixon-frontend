@@ -266,6 +266,12 @@ abstract class AppLocalizations {
   /// **'Contact'**
   String get contact;
 
+  /// No description provided for @simulation.
+  ///
+  /// In en, this message translates to:
+  /// **'Simulation'**
+  String get simulation;
+
   /// No description provided for @enterEmail.
   ///
   /// In en, this message translates to:

@@ -9,6 +9,7 @@ import 'package:larvixon_frontend/src/common/widgets/larvixon_logo.dart';
 import 'package:larvixon_frontend/src/about_us/presentation/pages/about_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/landing/landing_page.dart';
+import 'package:larvixon_frontend/src/simulation/presentation/pages/simulation_page.dart';
 import 'package:larvixon_frontend/src/settings/presentation/widgets/locale_dropdown_menu.dart';
 
 class LandingAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -28,6 +29,10 @@ class LandingAppBar extends StatelessWidget implements PreferredSizeWidget {
         AppBarButton(
           label: context.translate.about,
           onPressed: () => context.go(AboutPage.route),
+        ),
+        AppBarButton(
+          label: context.translate.simulation,
+          onPressed: () => context.go(SimulationPage.route),
         ),
         AppBarButton(
           label: context.translate.contact,
@@ -59,6 +64,10 @@ class _Menu extends StatelessWidget {
         PopupMenuItem(
           onTap: () => context.go(AboutPage.route),
           child: Text(context.translate.about),
+        ),
+        PopupMenuItem(
+          onTap: () => context.go(SimulationPage.route),
+          child: Text(context.translate.simulation),
         ),
         PopupMenuItem(
           onTap: () => context.go(ContactPage.route),

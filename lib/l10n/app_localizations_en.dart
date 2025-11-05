@@ -105,6 +105,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get contact => 'Contact';
 
   @override
+  String get simulation => 'Simulation';
+
+  @override
   String get enterEmail => 'Enter email';
 
   @override
