@@ -43,7 +43,7 @@ class _MainAppState extends State<MainApp> {
   late final ApiClient _apiClient;
   late final AuthDataSource _authDataSource;
   late final UserDataSource _userDataSource;
-  late final AnalysisRepository _larvaVideoRepository;
+  late final AnalysisRepository _analysesRepository;
   late final AnalysisDatasource _larvaVideoDataSource;
   late final SettingsRepository _settingsRepository;
   late final SettingsCubit _settingsCubit;
@@ -60,7 +60,7 @@ class _MainAppState extends State<MainApp> {
       dataSource: _authDataSource,
       tokenStorage: _tokenStorage,
     );
-    _larvaVideoRepository = AnalysisRepositoryImpl(
+    _analysesRepository = AnalysisRepositoryImpl(
       dataSource: _larvaVideoDataSource,
     );
     _userRepository = UserRepositoryImpl(dataSource: _userDataSource);
@@ -79,8 +79,7 @@ class _MainAppState extends State<MainApp> {
     _authBloc.close();
     _userBloc.close();
     _settingsCubit.close();
-    _larvaVideoRepository.dispose();
-
+    _analysesRepository.dispose();
     super.dispose();
   }
 
@@ -94,7 +93,7 @@ class _MainAppState extends State<MainApp> {
         RepositoryProvider<UserDataSource>.value(value: _userDataSource),
         RepositoryProvider<UserRepository>.value(value: _userRepository),
         RepositoryProvider<AnalysisRepository>.value(
-          value: _larvaVideoRepository,
+          value: _analysesRepository,
         ),
         RepositoryProvider<SettingsRepository>.value(
           value: _settingsRepository,

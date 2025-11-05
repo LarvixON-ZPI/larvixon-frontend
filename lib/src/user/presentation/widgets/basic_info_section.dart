@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:larvixon_frontend/core/errors/api_failures.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
+import 'package:larvixon_frontend/src/common/mixins/field_error_mixin.dart';
 import 'package:larvixon_frontend/src/common/mixins/form_validators_mixin.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 import 'package:larvixon_frontend/src/user/bloc/cubit/user_edit_cubit.dart';
@@ -29,28 +31,33 @@ class BasicInfoSection extends StatefulWidget {
 }
 
 class _BasicInfoSectionState extends State<BasicInfoSection>
-    with FormValidatorsMixin {
+    with
+        FormValidatorsMixin,
+        FieldErrorMixin<BasicInfoSection>,
+        FormFieldValidationMixin<BasicInfoSection> {
   final _formKey = GlobalKey<FormState>();
-  late final firstNameController = TextEditingController(
+  late final _firstNameController = TextEditingController(
     text: widget.firstName,
   );
-  late final lastNameController = TextEditingController(text: widget.lastName);
+  late final _lastNameController = TextEditingController(text: widget.lastName);
   Timer? _debounce;
   bool _hasChanges = false;
   @override
   void initState() {
     super.initState();
-    for (final controller in [firstNameController, lastNameController]) {
+    for (final controller in [_firstNameController, _lastNameController]) {
       controller.addListener(_onTextChanged);
     }
+    _firstNameController.addListener(() => onFieldChanged('first_name'));
+    _lastNameController.addListener(() => onFieldChanged('last_name'));
   }
 
   void _onTextChanged() {
     _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 300), () {
       final changed =
-          firstNameController.text != widget.firstName ||
-          lastNameController.text != widget.lastName;
+          _firstNameController.text != widget.firstName ||
+          _lastNameController.text != widget.lastName;
 
       if (changed != _hasChanges) {
         setState(() => _hasChanges = changed);
@@ -61,20 +68,20 @@ class _BasicInfoSectionState extends State<BasicInfoSection>
   @override
   void dispose() {
     _debounce?.cancel();
-    firstNameController.dispose();
-    lastNameController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     super.dispose();
   }
 
   bool hasChanges() {
-    return firstNameController.text != widget.firstName ||
-        lastNameController.text != widget.lastName;
+    return _firstNameController.text != widget.firstName ||
+        _lastNameController.text != widget.lastName;
   }
 
   void reset() {
     _formKey.currentState?.reset();
-    firstNameController.text = widget.firstName;
-    lastNameController.text = widget.lastName;
+    _firstNameController.text = widget.firstName;
+    _lastNameController.text = widget.lastName;
   }
 
   @override
@@ -86,8 +93,8 @@ class _BasicInfoSectionState extends State<BasicInfoSection>
         widget.lastName != oldWidget.lastName;
 
     if (backendDataChanged) {
-      firstNameController.text = widget.firstName;
-      lastNameController.text = widget.lastName;
+      _firstNameController.text = widget.firstName;
+      _lastNameController.text = widget.lastName;
 
       if (_hasChanges) {
         setState(() => _hasChanges = false);
@@ -98,7 +105,16 @@ class _BasicInfoSectionState extends State<BasicInfoSection>
   @override
   Widget build(BuildContext context) {
     return CustomCard(
-      child: BlocBuilder<UserEditCubit, UserEditState>(
+      child: BlocConsumer<UserEditCubit, UserEditState>(
+        listener: (context, state) {
+          if (state.status == EditStatus.error) {
+            final error = state.error;
+            if (error is ValidationFailure && state.fieldErrors.isNotEmpty) {
+              setFieldErrors(error.fieldErrors);
+              _formKey.currentState?.validate();
+            }
+          }
+        },
         builder: (context, state) {
           final isSaving = state.status == EditStatus.saving;
           final canSave = !isSaving && _hasChanges;
@@ -120,9 +136,18 @@ class _BasicInfoSectionState extends State<BasicInfoSection>
                         children: [
                           Text(context.translate.firstName),
                           TextFormField(
-                            controller: firstNameController,
-                            validator: (value) =>
-                                firstNameValidator(context, value),
+                            controller: _firstNameController,
+                            decoration: InputDecoration(
+                              hintText: context.translate.firstName,
+                            ),
+                            autovalidateMode: getAutovalidateMode('first_name'),
+                            validator: (value) => validateField(
+                              context,
+                              'first_name',
+                              (context, value) =>
+                                  firstNameValidator(context, value),
+                              value,
+                            ),
                           ),
                         ],
                       ),
@@ -134,9 +159,18 @@ class _BasicInfoSectionState extends State<BasicInfoSection>
                         children: [
                           Text(context.translate.lastName),
                           TextFormField(
-                            controller: lastNameController,
-                            validator: (value) =>
-                                lastNameValidator(context, value),
+                            controller: _lastNameController,
+                            decoration: InputDecoration(
+                              hintText: context.translate.lastName,
+                            ),
+                            autovalidateMode: getAutovalidateMode('last_name'),
+                            validator: (value) => validateField(
+                              context,
+                              'last_name',
+                              (context, value) =>
+                                  lastNameValidator(context, value),
+                              value,
+                            ),
                           ),
                         ],
                       ),
@@ -206,8 +240,8 @@ class _BasicInfoSectionState extends State<BasicInfoSection>
     if (form.validate()) {
       form.save();
       context.read<UserEditCubit>().updateBasicInfo(
-        firstName: firstNameController.text,
-        lastName: lastNameController.text,
+        firstName: _firstNameController.text,
+        lastName: _lastNameController.text,
       );
     }
   }

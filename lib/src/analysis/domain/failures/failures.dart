@@ -1,3 +1,4 @@
+import 'package:larvixon_frontend/core/errors/api_failures.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
 
 sealed class AnalysisFailure extends Failure {

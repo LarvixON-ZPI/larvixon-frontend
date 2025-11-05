@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart' show Equatable;
+import 'package:larvixon_frontend/core/errors/api_failures.dart';
+import 'package:larvixon_frontend/core/errors/failures.dart';
 import 'package:meta/meta.dart';
 
-import 'package:larvixon_frontend/src/authentication/domain/failures/auth_error.dart';
+import 'package:larvixon_frontend/src/authentication/domain/failures/auth_failures.dart';
 import 'package:larvixon_frontend/src/authentication/domain/repositories/auth_repository.dart';
 
 part 'auth_event.dart';
@@ -24,107 +26,97 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(state.copyWith(status: AuthStatus.loading));
-    try {
-      await _authRepository.register(
-        email: event.email,
-        password: event.password,
-        passwordConfirm: event.confirmPassword,
-        firstName: event.firstName,
-        lastName: event.lastName,
-        username: event.username,
-      );
-      emit(state.copyWith(status: AuthStatus.authenticated));
-    } catch (error) {
-      if (error is AuthError) {
+    final result = await _authRepository
+        .register(
+          email: event.email,
+          password: event.password,
+          passwordConfirm: event.confirmPassword,
+          firstName: event.firstName,
+          lastName: event.lastName,
+          username: event.username,
+        )
+        .run();
+    result.match(
+      (failure) {
+        print(failure);
         emit(
           state.copyWith(
             status: AuthStatus.error,
-            error: error,
-            errorMessage: error.message,
+            error: failure,
+            errorMessage: failure.message,
           ),
         );
-      } else {
-        emit(
-          state.copyWith(
-            status: AuthStatus.error,
-            errorMessage: error.toString(),
-          ),
-        );
-      }
-    }
+      },
+      (success) {
+        emit(state.copyWith(status: AuthStatus.authenticated));
+      },
+    );
   }
 
-  FutureOr<void> _onSignInRequested(
+  Future<void> _onSignInRequested(
     AuthSignInRequested event,
     Emitter<AuthState> emit,
   ) async {
     emit(state.copyWith(status: AuthStatus.loading));
-    try {
-      await _authRepository.login(email: event.email, password: event.password);
-      emit(state.copyWith(status: AuthStatus.authenticated));
-    } catch (error) {
-      if (error is MfaRequiredButNoCodeError) {
-        emit(
-          state.copyWith(
-            status: AuthStatus.mfaRequired,
-            error: error,
-            errorMessage: error.message,
-          ),
-        );
-      } else if (error is AuthError) {
-        emit(
-          state.copyWith(
-            status: AuthStatus.error,
-            error: error,
-            errorMessage: error.message,
-          ),
-        );
-      } else {
-        emit(
-          state.copyWith(
-            status: AuthStatus.error,
-            errorMessage: error.toString(),
-          ),
-        );
-      }
-    }
+    final result = await _authRepository
+        .login(email: event.email, password: event.password)
+        .run();
+
+    result.match((failure) {
+      emit(
+        state.copyWith(
+          status: failure is MfaRequiredButNoCodeFailure
+              ? AuthStatus.mfaRequired
+              : AuthStatus.error,
+          error: failure,
+          errorMessage: failure.message,
+        ),
+      );
+    }, (success) => emit(state.copyWith(status: AuthStatus.authenticated)));
+    return;
   }
 
-  FutureOr<void> _onSignOutRequested(
+  Future<void> _onSignOutRequested(
     AuthSignOutRequested event,
     Emitter<AuthState> emit,
   ) async {
-    try {
-      await _authRepository.logout();
-      emit(state.copyWith(status: AuthStatus.unauthenticated));
-    } catch (error) {
-      emit(
-        state.copyWith(
-          status: AuthStatus.error,
-          errorMessage: error.toString(),
-        ),
-      );
-    }
+    final result = await _authRepository.logout().run();
+    result.match(
+      (failure) {
+        emit(
+          state.copyWith(
+            status: AuthStatus.error,
+            errorMessage: failure.message,
+          ),
+        );
+      },
+      (success) {
+        emit(state.copyWith(status: AuthStatus.unauthenticated));
+      },
+    );
   }
 
-  FutureOr<void> _onVerificationRequested(
+  Future<void> _onVerificationRequested(
     AuthVerificationRequested event,
     Emitter<AuthState> emit,
   ) async {
     emit(state.copyWith(status: AuthStatus.loading));
-    try {
-      if (await _authRepository.isLoggedIn()) {
-        emit(state.copyWith(status: AuthStatus.authenticated));
-      } else {
-        emit(state.copyWith(status: AuthStatus.unauthenticated));
-      }
-    } catch (error) {
-      emit(
-        state.copyWith(
-          status: AuthStatus.error,
-          errorMessage: error.toString(),
-        ),
-      );
-    }
+    final results = await _authRepository.isLoggedIn().run();
+    results.match(
+      (failure) {
+        emit(
+          state.copyWith(
+            status: AuthStatus.error,
+            errorMessage: failure.message,
+          ),
+        );
+      },
+      (isLoggedIn) {
+        if (isLoggedIn) {
+          return emit(state.copyWith(status: AuthStatus.authenticated));
+        }
+        return emit(state.copyWith(status: AuthStatus.unauthenticated));
+      },
+    );
   }
 }

@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:larvixon_frontend/core/errors/api_failures.dart';
+import 'package:larvixon_frontend/core/errors/failures.dart';
 import 'package:larvixon_frontend/src/user/domain/repositories/user_repository.dart';
 
 part 'user_edit_state.dart';
@@ -10,7 +12,7 @@ class UserEditCubit extends Cubit<UserEditState> {
   final UserRepository _repository;
   UserEditCubit({required UserRepository repository})
     : _repository = repository,
-      super(const UserEditState());
+      super(const UserEditState(fieldErrors: {}));
 
   Future<void> updateDetails({
     String? phoneNumber,
@@ -28,8 +30,19 @@ class UserEditCubit extends Cubit<UserEditState> {
 
     result.match(
       (failure) {
-        emit(state.copyWith(status: EditStatus.error));
+        final fieldErrors = failure is ValidationFailure
+            ? Map<String, String>.unmodifiable(failure.fieldErrors)
+            : const <String, String>{};
+
+        emit(
+          state.copyWith(
+            status: EditStatus.error,
+            error: failure,
+            fieldErrors: fieldErrors,
+          ),
+        );
       },
+
       (success) {
         emit(state.copyWith(status: EditStatus.success));
       },
@@ -47,11 +60,24 @@ class UserEditCubit extends Cubit<UserEditState> {
 
     result.match(
       (failure) {
-        print(failure.message);
-        emit(state.copyWith(status: EditStatus.error));
+        final fieldErrors = failure is ValidationFailure
+            ? Map<String, String>.unmodifiable(failure.fieldErrors)
+            : const <String, String>{};
+        emit(
+          state.copyWith(
+            status: EditStatus.error,
+            error: failure,
+            fieldErrors: fieldErrors,
+          ),
+        );
       },
       (success) {
-        emit(state.copyWith(status: EditStatus.success));
+        emit(
+          state.copyWith(
+            status: EditStatus.success,
+            fieldErrors: const <String, String>{},
+          ),
+        );
       },
     );
   }
@@ -66,16 +92,21 @@ class UserEditCubit extends Cubit<UserEditState> {
         .run();
     result.match(
       (failure) {
-        print("Error: ${failure.message}");
         emit(
           state.copyWith(
             status: EditStatus.error,
             errorMessage: failure.message,
+            error: failure,
           ),
         );
       },
       (success) {
-        emit(state.copyWith(status: EditStatus.success));
+        emit(
+          state.copyWith(
+            status: EditStatus.success,
+            fieldErrors: const <String, String>{},
+          ),
+        );
       },
     );
   }

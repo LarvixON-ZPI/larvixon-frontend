@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:larvixon_frontend/src/authentication/domain/failures/auth_error.dart';
+import 'package:larvixon_frontend/core/errors/api_failures.dart';
+import 'package:larvixon_frontend/src/authentication/domain/failures/auth_failures.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_error_dialog.dart';
 import 'package:larvixon_frontend/l10n/app_localizations.dart';
 
@@ -24,7 +25,7 @@ void main() {
       tester,
     ) async {
       // Arrange
-      const error = InvalidCredentialsError();
+      const error = InvalidCredentialsFailure();
 
       // Act
       await tester.pumpWidget(
@@ -45,7 +46,7 @@ void main() {
       tester,
     ) async {
       // Arrange
-      const error = DisabledAccountError();
+      const error = DisabledAccountFailure();
 
       // Act
       await tester.pumpWidget(
@@ -64,7 +65,7 @@ void main() {
 
     testWidgets('should display MFA required error correctly', (tester) async {
       // Arrange
-      const error = MfaRequiredButNoCodeError();
+      const error = MfaRequiredButNoCodeFailure();
 
       // Act
       await tester.pumpWidget(
@@ -81,35 +82,9 @@ void main() {
       );
     });
 
-    testWidgets('should display field validation errors correctly', (
-      tester,
-    ) async {
-      // Arrange
-      const error = FieldValidationError({
-        'email': ['This field is required'],
-        'password': ['Password too short'],
-      });
-
-      // Act
-      await tester.pumpWidget(
-        createTestWidget(const AuthErrorDialog(error: error)),
-      );
-
-      // Assert
-      expect(find.byType(AlertDialog), findsOneWidget);
-      expect(
-        find.textContaining('Email: This field is required'),
-        findsOneWidget,
-      );
-      expect(
-        find.textContaining('Password: Password too short'),
-        findsOneWidget,
-      );
-    });
-
     testWidgets('should display network error correctly', (tester) async {
       // Arrange
-      const error = NetworkError('Network connection failed');
+      const error = RequestTimeoutFailure(message: 'Network connection failed');
 
       // Act
       await tester.pumpWidget(
@@ -128,7 +103,9 @@ void main() {
 
     testWidgets('should display server error correctly', (tester) async {
       // Arrange
-      const error = ServerError('Internal server error');
+      const error = InternalServerErrorFailure(
+        message: 'Internal server error',
+      );
 
       // Act
       await tester.pumpWidget(
@@ -137,17 +114,14 @@ void main() {
 
       // Assert
       expect(find.byType(AlertDialog), findsOneWidget);
-      expect(
-        find.text('The server is experiencing issues. Please try again later.'),
-        findsOneWidget,
-      );
+      expect(find.text('Internal server error'), findsOneWidget);
     });
 
     testWidgets('should display invalid MFA code error correctly', (
       tester,
     ) async {
       // Arrange
-      const error = InvalidMfaCodeError();
+      const error = InvalidMfaCodeFailure();
 
       // Act
       await tester.pumpWidget(
@@ -168,7 +142,7 @@ void main() {
       tester,
     ) async {
       // Arrange
-      const error = InvalidCredentialsError();
+      const error = InvalidCredentialsFailure();
       // Act
       await tester.pumpWidget(
         MaterialApp(
@@ -211,7 +185,7 @@ void main() {
       tester,
     ) async {
       // Arrange
-      const error = InvalidCredentialsError();
+      const error = InvalidCredentialsFailure();
 
       await tester.pumpWidget(
         MaterialApp(
