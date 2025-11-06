@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
 import 'package:larvixon_frontend/src/authentication/data/auth_datasource.dart';
 import 'package:larvixon_frontend/src/authentication/domain/repositories/auth_repository_impl.dart';

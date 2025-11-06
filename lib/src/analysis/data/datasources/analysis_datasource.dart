@@ -67,6 +67,7 @@ class AnalysisDatasource {
     required Uint8List bytes,
     required String filename,
     required String title,
+    ProgressCallback? onProgress,
   }) async {
     final formData = FormData.fromMap({
       'video': MultipartFile.fromBytes(bytes, filename: filename),
@@ -76,6 +77,7 @@ class AnalysisDatasource {
       AnalysisEndpoints.uploadVideo,
       data: formData,
       options: Options(headers: {"Content-Type": "multipart/form-data"}),
+      onSendProgress: onProgress,
     );
     return response.data;
   }

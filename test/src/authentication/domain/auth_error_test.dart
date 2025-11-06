@@ -72,7 +72,7 @@ void main() {
       );
 
       // Act
-      var error = dioException.toApiFailure();
+      final error = dioException.toApiFailure();
       expect(error, isA<ValidationFailure>());
       final fieldError = error as ValidationFailure;
       expect(fieldError.hasFieldError('email'), isTrue);

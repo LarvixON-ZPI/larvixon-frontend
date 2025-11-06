@@ -32,12 +32,16 @@ class AnalysisRepositoryImpl implements AnalysisRepository {
     required Uint8List bytes,
     required String filename,
     required String title,
+    void Function(double progress)? onProgress,
   }) {
     return TaskEither.tryCatch(() async {
       final data = await dataSource.uploadVideo(
         bytes: bytes,
         filename: filename,
         title: title,
+        onProgress: (sent, total) {
+          if (total > 0) onProgress?.call(sent / total);
+        },
       );
       final response = AnalysisUploadResponse.fromJson(data);
       _cachedIds.insert(0, response.id);
