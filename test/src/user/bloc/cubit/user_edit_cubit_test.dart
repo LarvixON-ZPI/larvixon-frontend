@@ -186,9 +186,7 @@ void main() {
         verify: (_) {
           verify(
             mockRepository.updateUserProfileDetails(
-              phoneNumber: null,
-              bio: null,
-              org: null,
+              
             ),
           ).called(1);
         },

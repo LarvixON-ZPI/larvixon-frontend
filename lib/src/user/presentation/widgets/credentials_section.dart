@@ -31,7 +31,6 @@ class CredentialsSection extends StatelessWidget {
                 TextFormField(
                   initialValue: username,
                   readOnly: true,
-                  decoration: InputDecoration(),
                 ),
               ],
             ),
@@ -45,7 +44,6 @@ class CredentialsSection extends StatelessWidget {
                 TextFormField(
                   initialValue: email,
                   readOnly: true,
-                  decoration: InputDecoration(),
                 ),
               ],
             ),

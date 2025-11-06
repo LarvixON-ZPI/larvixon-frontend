@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-import 'file_download_base.dart';
+import 'package:larvixon_frontend/src/common/services/file_download/file_download_base.dart';
 
 class FileDownloadImpl implements FileDownloadBase {
   @override

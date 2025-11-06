@@ -113,7 +113,7 @@ void main() {
       // Update with new values - need to rebuild the entire widget tree
       // because TextFormField with initialValue doesn't update automatically
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           home: Scaffold(
