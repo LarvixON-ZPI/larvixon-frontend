@@ -16,9 +16,20 @@ class AnalysisUploadCubit extends Cubit<AnalysisUploadState> {
     required String filename,
     required String title,
   }) async {
-    emit(state.copyWith(status: VideoUploadStatus.uploading));
+    emit(
+      state.copyWith(status: VideoUploadStatus.uploading, uploadProgress: 0.0),
+    );
     final result = await repository
-        .uploadVideo(bytes: bytes, filename: filename, title: title)
+        .uploadVideo(
+          bytes: bytes,
+          filename: filename,
+          title: title,
+          onProgress: (progress) {
+            Future.microtask(() {
+              emit(state.copyWith(uploadProgress: progress));
+            });
+          },
+        )
         .run();
 
     result.match(

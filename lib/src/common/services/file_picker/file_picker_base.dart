@@ -6,7 +6,13 @@ class FilePickResult {
   final Uint8List bytes;
   final String name;
   final String? path;
-  const FilePickResult({required this.bytes, required this.name, this.path});
+  final int? size;
+  const FilePickResult({
+    required this.bytes,
+    required this.name,
+    this.path,
+    this.size,
+  });
 }
 
 abstract class FilePickerBase {

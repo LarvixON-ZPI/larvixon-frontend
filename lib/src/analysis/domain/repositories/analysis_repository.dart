@@ -28,6 +28,7 @@ abstract class AnalysisRepository {
     required Uint8List bytes,
     required String filename,
     required String title,
+    void Function(double progress)? onProgress,
   });
   TaskEither<Failure, bool> deleteAnalysis({required int id});
   void dispose();

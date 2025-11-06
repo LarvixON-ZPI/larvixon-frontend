@@ -206,10 +206,17 @@ class AnalysisRepositoryFake implements AnalysisRepository {
     required Uint8List bytes,
     required String filename,
     required String title,
+    void Function(double progress)? onProgress,
   }) {
     return TaskEither.tryCatch(
       () async {
-        await Future.delayed(const Duration(milliseconds: 250));
+        const totalChunks = 20;
+        for (int i = 1; i <= totalChunks; i++) {
+          await Future.delayed(const Duration(milliseconds: 150));
+          final progress = i / totalChunks;
+          onProgress?.call(progress);
+        }
+        await Future.delayed(const Duration(milliseconds: 300));
         final nextId =
             (_analyses.isEmpty ? 0 : _analyses.map((e) => e.id).reduce(max)) +
             1;

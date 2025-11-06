@@ -226,5 +226,16 @@
     }
   },
   "delete": "Delete",
-  "export": "Export"
+  "export": "Export",
+  "maximumFileSize": "Maximum file size is {size}",
+  "@maximumFileSize": {
+    "placeholders": {
+      "size": {
+        "type": "String",
+        "example": "10"
+      }
+    }
+  },
+  "fileSizeError": "This file is too big! Please select another one.",
+  "success": "Success"
 }
