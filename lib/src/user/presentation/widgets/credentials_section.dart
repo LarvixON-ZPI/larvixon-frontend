@@ -28,10 +28,7 @@ class CredentialsSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(context.translate.username),
-                TextFormField(
-                  initialValue: username,
-                  readOnly: true,
-                ),
+                TextFormField(initialValue: username, readOnly: true),
               ],
             ),
           ),
@@ -41,10 +38,7 @@ class CredentialsSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(context.translate.email),
-                TextFormField(
-                  initialValue: email,
-                  readOnly: true,
-                ),
+                TextFormField(initialValue: email, readOnly: true),
               ],
             ),
           ),

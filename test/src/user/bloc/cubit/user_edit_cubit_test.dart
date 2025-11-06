@@ -184,11 +184,7 @@ void main() {
         },
         act: (cubit) => cubit.updateDetails(),
         verify: (_) {
-          verify(
-            mockRepository.updateUserProfileDetails(
-              
-            ),
-          ).called(1);
+          verify(mockRepository.updateUserProfileDetails()).called(1);
         },
       );
     });
