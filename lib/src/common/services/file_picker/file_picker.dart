@@ -1,5 +1,5 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:larvixon_frontend/src/common/services/file_picker/file_picker_base.dart';
+import 'package:larvixon_frontend/src/common/services/file_picker/file_pick_result.dart';
 import 'package:larvixon_frontend/src/common/services/file_picker/file_picker_stub.dart'
     if (dart.library.io) 'package:larvixon_frontend/src/common/services/file_picker/file_picker_io.dart'
     if (dart.library.html) 'package:larvixon_frontend/src/common/services/file_picker/file_picker_web.dart';

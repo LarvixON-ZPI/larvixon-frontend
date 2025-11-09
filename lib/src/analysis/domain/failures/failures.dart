@@ -5,6 +5,10 @@ sealed class AnalysisFailure extends Failure {
   const AnalysisFailure({required super.message});
 }
 
+final class CanceledUploadFailure extends AnalysisFailure {
+  CanceledUploadFailure() : super(message: "Upload canceled by user");
+}
+
 final class UploadFailure extends AnalysisFailure {
   const UploadFailure({required super.message});
 }

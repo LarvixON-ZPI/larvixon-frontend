@@ -44,7 +44,7 @@ class _MainAppState extends State<MainApp> {
   late final AuthDataSource _authDataSource;
   late final UserDataSource _userDataSource;
   late final AnalysisRepository _analysesRepository;
-  late final AnalysisDatasource _larvaVideoDataSource;
+  late final AnalysisDataSource _larvaVideoDataSource;
   late final SettingsRepository _settingsRepository;
   late final SettingsCubit _settingsCubit;
 
@@ -55,7 +55,7 @@ class _MainAppState extends State<MainApp> {
     _apiClient = ApiClient(_tokenStorage);
     _authDataSource = AuthDataSource(_apiClient);
     _userDataSource = UserDataSource(_apiClient);
-    _larvaVideoDataSource = AnalysisDatasource(apiClient: _apiClient);
+    _larvaVideoDataSource = AnalysisDataSource.getImplementation(_apiClient);
     _authRepository = AuthRepositoryImpl(
       dataSource: _authDataSource,
       tokenStorage: _tokenStorage,

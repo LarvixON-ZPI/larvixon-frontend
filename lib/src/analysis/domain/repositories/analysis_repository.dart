@@ -1,12 +1,13 @@
 import 'dart:async';
-import 'dart:typed_data';
 
+import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_filter.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_id_list.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_upload_response.dart';
+import 'package:larvixon_frontend/src/common/services/file_picker/file_pick_result.dart';
 
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
 
@@ -25,10 +26,10 @@ abstract class AnalysisRepository {
     Duration interval = const Duration(seconds: 5),
   });
   TaskEither<Failure, AnalysisUploadResponse> uploadVideo({
-    required Uint8List bytes,
-    required String filename,
+    required FilePickResult fileResult,
     required String title,
     void Function(double progress)? onProgress,
+    CancelToken? cancelToken,
   });
   TaskEither<Failure, bool> deleteAnalysis({required int id});
   void dispose();
