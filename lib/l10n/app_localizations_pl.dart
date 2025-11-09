@@ -477,6 +477,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get restart => 'Restart';
 
   @override
+  String get toggleUI => 'Przełącz UI';
+
+  @override
   String get simulationDescription =>
-      'Interaktywna symulacja oparta na Unity.\n\nUżyj kontrolek nad oknem symulacji, aby nią zarządzać - pauzuj, wznów i restartuj.\n\nUżyj kontrolek wewnątrz okna symulacji, aby zmienić stan larwy albo prędkość symulacji.\nW prawym panelu możesz wybrać, jaką substancję podać biednej larwie oraz określić jej intensywność.';
+      'Interaktywna symulacja oparta na Unity.\n\nUżyj kontrolek nad oknem symulacji, aby nią zarządzać - pauzuj, wznów, restartuj lub przełącz UI.\n\nUżyj kontrolek wewnątrz okna symulacji, aby zmienić stan larwy albo prędkość symulacji.\nW prawym panelu możesz wybrać, jaką substancję podać biednej larwie oraz określić jej intensywność.';
 }

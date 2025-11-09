@@ -76,6 +76,13 @@ class _SimulationPageState extends State<SimulationPage> {
                             tooltip: context.translate.restart,
                           ),
                         ),
+                        CustomCard(
+                          child: IconButton(
+                            onPressed: _onToggleUI,
+                            icon: const Icon(Icons.layers),
+                            tooltip: context.translate.toggleUI,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -162,6 +169,12 @@ class _SimulationPageState extends State<SimulationPage> {
         _isPaused = false;
       });
       _sendMessageToUnity('restart');
+    }
+  }
+
+  void _onToggleUI() {
+    if (_unityWidgetController != null) {
+      _sendMessageToUnity('ui');
     }
   }
 

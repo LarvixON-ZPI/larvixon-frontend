@@ -938,10 +938,16 @@ abstract class AppLocalizations {
   /// **'Restart'**
   String get restart;
 
+  /// No description provided for @toggleUI.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle UI'**
+  String get toggleUI;
+
   /// No description provided for @simulationDescription.
   ///
   /// In en, this message translates to:
-  /// **'Interactive simulation powered by Unity.\n\nUse the controls above the simulation to manage the simulation - pause, resume and restart.\n\nUse the controls inside the simulation to change larva state or simulation speed.\nIn the right panel, you can select which substance you want to give to the poor larva, and specify the intensity.'**
+  /// **'Interactive simulation powered by Unity.\n\nUse the controls above the simulation to manage the simulation - pause, resume, restart and toggle UI.\n\nUse the controls inside the simulation to change larva state or simulation speed.\nIn the right panel, you can select which substance you want to give to the poor larva, and specify the intensity.'**
   String get simulationDescription;
 }
 
