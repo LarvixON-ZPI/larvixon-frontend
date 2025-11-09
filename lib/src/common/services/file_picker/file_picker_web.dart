@@ -28,7 +28,6 @@ class FilePickerImpl extends FilePickerBase {
       }
 
       final file = files[0];
-      print(file);
       completer.complete(
         FilePickResult(
           streamFactory: ({CancelToken? cancelToken}) =>

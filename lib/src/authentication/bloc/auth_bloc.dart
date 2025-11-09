@@ -38,7 +38,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         .run();
     result.match(
       (failure) {
-        print(failure);
         emit(
           state.copyWith(
             status: AuthStatus.error,
