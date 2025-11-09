@@ -1,8 +1,12 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:larvixon_frontend/core/errors/api_failures.dart';
+import 'package:larvixon_frontend/core/errors/failures.dart';
+import 'package:larvixon_frontend/core/errors/storage_failures.dart';
 import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
 import 'package:larvixon_frontend/src/authentication/domain/repositories/auth_repository.dart';
-import 'package:larvixon_frontend/src/authentication/domain/failures/auth_error.dart';
+import 'package:larvixon_frontend/src/authentication/domain/failures/auth_failures.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -11,6 +15,19 @@ import 'auth_bloc_test.mocks.dart';
 // Generate mock repository
 @GenerateMocks([AuthRepository])
 void main() {
+  setUpAll(() {
+    // Provide a dummy TaskEither for Mockito
+    provideDummy<TaskEither<Failure, void>>(
+      TaskEither<Failure, void>.right(unit),
+    );
+    provideDummy<TaskEither<Failure, bool>>(
+      TaskEither<Failure, bool>.right(true),
+    );
+    provideDummy<TaskEither<Failure, AuthStatus>>(
+      TaskEither<Failure, AuthStatus>.right(AuthStatus.authenticated),
+    );
+  });
+
   group('AuthBloc', () {
     late MockAuthRepository mockAuthRepository;
     late AuthBloc authBloc;
@@ -37,7 +54,7 @@ void main() {
               email: 'test@example.com',
               password: 'password',
             ),
-          ).thenAnswer((_) async => {});
+          ).thenReturn(TaskEither<Failure, void>.right(unit));
           return authBloc;
         },
         act: (bloc) => bloc.add(
@@ -65,7 +82,11 @@ void main() {
               email: 'test@example.com',
               password: 'password',
             ),
-          ).thenThrow(Exception('Login failed'));
+          ).thenReturn(
+            TaskEither<Failure, void>.left(
+              UnknownFailure(message: 'Login failed'),
+            ),
+          );
           return authBloc;
         },
         act: (bloc) => bloc.add(
@@ -73,10 +94,10 @@ void main() {
         ),
         expect: () => [
           const AuthState(status: AuthStatus.loading),
-          const AuthState(
-            status: AuthStatus.error,
-            errorMessage: 'Exception: Login failed',
-          ),
+          isA<AuthState>()
+              .having((s) => s.status, 'status', AuthStatus.error)
+              .having((s) => s.errorMessage, 'errorMessage', 'Login failed')
+              .having((s) => s.error, 'error', isA<UnknownFailure>()),
         ],
       );
 
@@ -88,7 +109,9 @@ void main() {
               email: 'test@example.com',
               password: 'wrong-password',
             ),
-          ).thenThrow(const InvalidCredentialsError());
+          ).thenReturn(
+            TaskEither<Failure, void>.left(const InvalidCredentialsFailure()),
+          );
           return authBloc;
         },
         act: (bloc) => bloc.add(
@@ -101,7 +124,7 @@ void main() {
           const AuthState(status: AuthStatus.loading),
           const AuthState(
             status: AuthStatus.error,
-            error: InvalidCredentialsError(),
+            error: InvalidCredentialsFailure(),
             errorMessage: 'Invalid email or password',
           ),
         ],
@@ -115,7 +138,9 @@ void main() {
               email: 'disabled@example.com',
               password: 'password',
             ),
-          ).thenThrow(const DisabledAccountError());
+          ).thenReturn(
+            TaskEither<Failure, void>.left(const DisabledAccountFailure()),
+          );
           return authBloc;
         },
         act: (bloc) => bloc.add(
@@ -128,7 +153,7 @@ void main() {
           const AuthState(status: AuthStatus.loading),
           const AuthState(
             status: AuthStatus.error,
-            error: DisabledAccountError(),
+            error: DisabledAccountFailure(),
             errorMessage: 'Account is disabled',
           ),
         ],
@@ -142,7 +167,9 @@ void main() {
               email: 'mfa@example.com',
               password: 'password',
             ),
-          ).thenThrow(const MfaRequiredButNoCodeError());
+          ).thenReturn(
+            TaskEither<Failure, void>.left(const MfaRequiredButNoCodeFailure()),
+          );
           return authBloc;
         },
         act: (bloc) => bloc.add(
@@ -152,7 +179,7 @@ void main() {
           const AuthState(status: AuthStatus.loading),
           const AuthState(
             status: AuthStatus.mfaRequired,
-            error: MfaRequiredButNoCodeError(),
+            error: MfaRequiredButNoCodeFailure(),
             errorMessage: 'Multi-factor authentication is required',
           ),
         ],
@@ -161,11 +188,16 @@ void main() {
       blocTest<AuthBloc, AuthState>(
         'emits [loading, error] when login fails with field validation errors',
         build: () {
-          when(mockAuthRepository.login(email: '', password: '')).thenThrow(
-            const FieldValidationError({
-              'email': ['This field is required.'],
-              'password': ['This field is required.'],
-            }),
+          when(mockAuthRepository.login(email: '', password: '')).thenReturn(
+            TaskEither<Failure, void>.left(
+              const ValidationFailure(
+                fieldErrors: {
+                  'email': 'This field is required.',
+                  'password': 'This field is required.',
+                },
+                message: 'validation_failed',
+              ),
+            ),
           );
           return authBloc;
         },
@@ -174,11 +206,14 @@ void main() {
           const AuthState(status: AuthStatus.loading),
           const AuthState(
             status: AuthStatus.error,
-            error: FieldValidationError({
-              'email': ['This field is required.'],
-              'password': ['This field is required.'],
-            }),
-            errorMessage: 'Validation errors occurred',
+            error: ValidationFailure(
+              fieldErrors: {
+                'email': 'This field is required.',
+                'password': 'This field is required.',
+              },
+              message: 'validation_failed',
+            ),
+            errorMessage: 'validation_failed',
           ),
         ],
       );
@@ -191,7 +226,11 @@ void main() {
               email: 'test@example.com',
               password: 'password',
             ),
-          ).thenThrow(const NetworkError('Network connection failed'));
+          ).thenReturn(
+            TaskEither<Failure, void>.left(
+              const RequestTimeoutFailure(message: 'timeout'),
+            ),
+          );
           return authBloc;
         },
         act: (bloc) => bloc.add(
@@ -201,8 +240,8 @@ void main() {
           const AuthState(status: AuthStatus.loading),
           const AuthState(
             status: AuthStatus.error,
-            error: NetworkError('Network connection failed'),
-            errorMessage: 'Network connection failed',
+            error: RequestTimeoutFailure(message: 'timeout'),
+            errorMessage: 'timeout',
           ),
         ],
       );
@@ -215,7 +254,13 @@ void main() {
               email: 'test@example.com',
               password: 'password',
             ),
-          ).thenThrow(const ServerError('Internal server error'));
+          ).thenReturn(
+            TaskEither<Failure, void>.left(
+              const InternalServerErrorFailure(
+                message: 'internal_server_error',
+              ),
+            ),
+          );
           return authBloc;
         },
         act: (bloc) => bloc.add(
@@ -225,8 +270,8 @@ void main() {
           const AuthState(status: AuthStatus.loading),
           const AuthState(
             status: AuthStatus.error,
-            error: ServerError('Internal server error'),
-            errorMessage: 'Internal server error',
+            error: InternalServerErrorFailure(message: 'internal_server_error'),
+            errorMessage: 'internal_server_error',
           ),
         ],
       );
@@ -239,7 +284,9 @@ void main() {
               email: 'mfa@example.com',
               password: 'password',
             ),
-          ).thenThrow(const InvalidMfaCodeError());
+          ).thenReturn(
+            TaskEither<Failure, void>.left(const InvalidMfaCodeFailure()),
+          );
           return authBloc;
         },
         act: (bloc) => bloc.add(
@@ -249,7 +296,7 @@ void main() {
           const AuthState(status: AuthStatus.loading),
           const AuthState(
             status: AuthStatus.error,
-            error: InvalidMfaCodeError(),
+            error: InvalidMfaCodeFailure(),
             errorMessage: 'Invalid MFA code',
           ),
         ],
@@ -269,7 +316,7 @@ void main() {
               lastName: 'User',
               username: 'testuser',
             ),
-          ).thenAnswer((_) async => {});
+          ).thenReturn(TaskEither<Failure, void>.right(unit));
           return authBloc;
         },
         act: (bloc) => bloc.add(
@@ -300,11 +347,16 @@ void main() {
               lastName: 'User',
               username: 'existing-user',
             ),
-          ).thenThrow(
-            const FieldValidationError({
-              'username': ['This username is already taken.'],
-              'email': ['Enter a valid email address.'],
-            }),
+          ).thenReturn(
+            TaskEither<Failure, void>.left(
+              const ValidationFailure(
+                fieldErrors: {
+                  'username': 'This username is already taken.',
+                  'email': 'Enter a valid email address.',
+                },
+                message: 'validation_failed',
+              ),
+            ),
           );
           return authBloc;
         },
@@ -322,11 +374,14 @@ void main() {
           const AuthState(status: AuthStatus.loading),
           const AuthState(
             status: AuthStatus.error,
-            error: FieldValidationError({
-              'username': ['This username is already taken.'],
-              'email': ['Enter a valid email address.'],
-            }),
-            errorMessage: 'Validation errors occurred',
+            error: ValidationFailure(
+              fieldErrors: {
+                'username': 'This username is already taken.',
+                'email': 'Enter a valid email address.',
+              },
+              message: 'validation_failed',
+            ),
+            errorMessage: 'validation_failed',
           ),
         ],
       );
@@ -343,7 +398,11 @@ void main() {
               lastName: 'User',
               username: 'testuser',
             ),
-          ).thenThrow(Exception('Registration failed'));
+          ).thenReturn(
+            TaskEither<Failure, void>.left(
+              UnknownFailure(message: 'Registration failed'),
+            ),
+          );
           return authBloc;
         },
         act: (bloc) => bloc.add(
@@ -358,10 +417,14 @@ void main() {
         ),
         expect: () => [
           const AuthState(status: AuthStatus.loading),
-          const AuthState(
-            status: AuthStatus.error,
-            errorMessage: 'Exception: Registration failed',
-          ),
+          isA<AuthState>()
+              .having((s) => s.status, 'status', AuthStatus.error)
+              .having(
+                (s) => s.errorMessage,
+                'errorMessage',
+                'Registration failed',
+              )
+              .having((s) => s.error, 'error', isA<UnknownFailure>()),
         ],
       );
     });
@@ -370,11 +433,165 @@ void main() {
       blocTest<AuthBloc, AuthState>(
         'emits [loading, unauthenticated] when logout is successful',
         build: () {
-          when(mockAuthRepository.logout()).thenAnswer((_) async => {});
+          when(
+            mockAuthRepository.logout(),
+          ).thenReturn(TaskEither<Failure, void>.right(unit));
           return authBloc;
         },
         act: (bloc) => bloc.add(AuthSignOutRequested()),
         expect: () => [const AuthState(status: AuthStatus.unauthenticated)],
+      );
+    });
+
+    group('AuthVerificationRequested', () {
+      blocTest<AuthBloc, AuthState>(
+        'emits [loading, authenticated] when user is authenticated',
+        build: () {
+          when(mockAuthRepository.checkAuthStatus()).thenReturn(
+            TaskEither<Failure, AuthStatus>.right(AuthStatus.authenticated),
+          );
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthVerificationRequested()),
+        expect: () => [
+          const AuthState(status: AuthStatus.loading),
+          const AuthState(status: AuthStatus.authenticated),
+        ],
+        verify: (_) {
+          verify(mockAuthRepository.checkAuthStatus()).called(1);
+        },
+      );
+
+      blocTest<AuthBloc, AuthState>(
+        'emits [loading, unauthenticated] when user is not authenticated',
+        build: () {
+          when(mockAuthRepository.checkAuthStatus()).thenReturn(
+            TaskEither<Failure, AuthStatus>.right(AuthStatus.unauthenticated),
+          );
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthVerificationRequested()),
+        expect: () => [
+          const AuthState(status: AuthStatus.loading),
+          const AuthState(status: AuthStatus.unauthenticated),
+        ],
+        verify: (_) {
+          verify(mockAuthRepository.checkAuthStatus()).called(1);
+        },
+      );
+
+      blocTest<AuthBloc, AuthState>(
+        'emits [loading, unauthenticated] when verification fails with storage error',
+        build: () {
+          when(mockAuthRepository.checkAuthStatus()).thenReturn(
+            TaskEither<Failure, AuthStatus>.left(
+              TokenStorageFailure(message: 'Failed to read token'),
+            ),
+          );
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthVerificationRequested()),
+        expect: () => [
+          const AuthState(status: AuthStatus.loading),
+          isA<AuthState>()
+              .having((s) => s.status, 'status', AuthStatus.unauthenticated)
+              .having((s) => s.error, 'error', isA<TokenStorageFailure>())
+              .having(
+                (s) => s.error?.message,
+                'error.message',
+                'Failed to read token',
+              ),
+        ],
+        verify: (_) {
+          verify(mockAuthRepository.checkAuthStatus()).called(1);
+        },
+      );
+
+      blocTest<AuthBloc, AuthState>(
+        'emits [loading, unauthenticated] when verification fails with unknown error',
+        build: () {
+          when(mockAuthRepository.checkAuthStatus()).thenReturn(
+            TaskEither<Failure, AuthStatus>.left(
+              UnknownFailure(message: 'Unexpected error'),
+            ),
+          );
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthVerificationRequested()),
+        expect: () => [
+          const AuthState(status: AuthStatus.loading),
+          isA<AuthState>()
+              .having((s) => s.status, 'status', AuthStatus.unauthenticated)
+              .having((s) => s.error, 'error', isA<UnknownFailure>()),
+        ],
+      );
+
+      blocTest<AuthBloc, AuthState>(
+        'defaults to unauthenticated on network failure during verification',
+        build: () {
+          when(mockAuthRepository.checkAuthStatus()).thenReturn(
+            TaskEither<Failure, AuthStatus>.left(
+              const ServiceUnavailableFailure(message: 'Network unavailable'),
+            ),
+          );
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthVerificationRequested()),
+        expect: () => [
+          const AuthState(status: AuthStatus.loading),
+          isA<AuthState>()
+              .having((s) => s.status, 'status', AuthStatus.unauthenticated)
+              .having((s) => s.error, 'error', isA<ServiceUnavailableFailure>())
+              .having(
+                (s) => s.error?.message,
+                'error.message',
+                'Network unavailable',
+              ),
+        ],
+      );
+    });
+
+    group('AuthRetryVerificationRequested', () {
+      blocTest<AuthBloc, AuthState>(
+        'retries verification and succeeds',
+        build: () {
+          when(mockAuthRepository.checkAuthStatus()).thenReturn(
+            TaskEither<Failure, AuthStatus>.right(AuthStatus.authenticated),
+          );
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthRetryVerificationRequested()),
+        expect: () => [
+          const AuthState(status: AuthStatus.loading),
+          const AuthState(status: AuthStatus.authenticated),
+        ],
+        verify: (_) {
+          verify(mockAuthRepository.checkAuthStatus()).called(1);
+        },
+      );
+
+      blocTest<AuthBloc, AuthState>(
+        'retries verification and fails',
+        build: () {
+          when(mockAuthRepository.checkAuthStatus()).thenReturn(
+            TaskEither<Failure, AuthStatus>.left(
+              TokenStorageFailure(message: 'Storage error'),
+            ),
+          );
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthRetryVerificationRequested()),
+        expect: () => [
+          const AuthState(status: AuthStatus.loading),
+          isA<AuthState>()
+              .having((s) => s.status, 'status', AuthStatus.unauthenticated)
+              .having((s) => s.error, 'error', isA<TokenStorageFailure>())
+              .having(
+                (s) => s.error?.message,
+                'error.message',
+                'Storage error',
+              ),
+        ],
       );
     });
   });

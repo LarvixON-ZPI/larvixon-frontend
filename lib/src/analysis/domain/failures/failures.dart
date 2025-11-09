@@ -1,7 +1,12 @@
+import 'package:larvixon_frontend/core/errors/api_failures.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
 
 sealed class AnalysisFailure extends Failure {
   const AnalysisFailure({required super.message});
+}
+
+final class CanceledUploadFailure extends AnalysisFailure {
+  CanceledUploadFailure() : super(message: "Upload canceled by user");
 }
 
 final class UploadFailure extends AnalysisFailure {

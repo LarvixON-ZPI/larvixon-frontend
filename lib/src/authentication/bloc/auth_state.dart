@@ -12,7 +12,7 @@ enum AuthStatus {
 final class AuthState extends Equatable {
   final AuthStatus status;
   final String? errorMessage;
-  final AuthError? error;
+  final Failure? error;
   // TODO: Add user field
   // final User? user;
 
@@ -25,7 +25,7 @@ final class AuthState extends Equatable {
   AuthState copyWith({
     AuthStatus? status,
     String? errorMessage,
-    AuthError? error,
+    Failure? error,
   }) {
     return AuthState(
       status: status ?? this.status,

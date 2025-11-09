@@ -19,7 +19,7 @@ class BestMatchResultSection extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             TextSpan(
-              text: "${results.first.$1}",
+              text: results.first.$1,
               style: Theme.of(context).textTheme.headlineSmall!,
             ),
             TextSpan(

@@ -2,11 +2,10 @@
 base class Failure {
   final String message;
   const Failure({required this.message});
-}
-
-final class ApiFailure extends Failure {
-  final int statusCode;
-  ApiFailure({required this.statusCode, required super.message});
+  @override
+  String toString() {
+    return '$runtimeType(message: $message)';
+  }
 }
 
 final class UnknownFailure extends Failure {

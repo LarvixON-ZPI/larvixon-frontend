@@ -456,6 +456,18 @@ class AppLocalizationsPl extends AppLocalizations {
   String get export => 'Eksportuj';
 
   @override
+  String maximumFileSize(String size) {
+    return 'Maksymalny rozmiar pliku to $size';
+  }
+
+  @override
+  String get fileSizeError =>
+      'Wybrany plik jest zbyt duży! Proszę wybrać inny plik';
+
+  @override
+  String get success => 'Sukces';
+
+  @override
   String get pause => 'Pauza';
 
   @override

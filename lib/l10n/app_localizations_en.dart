@@ -456,6 +456,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get export => 'Export';
 
   @override
+  String maximumFileSize(String size) {
+    return 'Maximum file size is $size';
+  }
+
+  @override
+  String get fileSizeError =>
+      'This file is too big! Please select another one.';
+
+  @override
+  String get success => 'Success';
+
+  @override
   String get pause => 'Pause';
 
   @override

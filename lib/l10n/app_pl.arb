@@ -228,6 +228,17 @@
   },
   "delete": "Usuń",
   "export": "Eksportuj",
+  "maximumFileSize": "Maksymalny rozmiar pliku to {size}",
+  "@maximumFileSize": {
+    "placeholders": {
+      "size": {
+        "type": "String",
+        "example": "10"
+      }
+    }
+  },
+  "fileSizeError": "Wybrany plik jest zbyt duży! Proszę wybrać inny plik",
+  "success": "Sukces",
   "@@_Simulation": {},
   "pause": "Pauza",
   "resume": "Wznów",

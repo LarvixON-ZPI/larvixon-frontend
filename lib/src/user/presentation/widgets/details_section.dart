@@ -1,8 +1,9 @@
 import 'dart:async';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:larvixon_frontend/core/errors/api_failures.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
+import 'package:larvixon_frontend/src/common/mixins/field_error_mixin.dart';
 import 'package:larvixon_frontend/src/common/mixins/form_validators_mixin.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 import 'package:larvixon_frontend/src/user/bloc/cubit/user_edit_cubit.dart';
@@ -26,13 +27,16 @@ class DetailsSection extends StatefulWidget {
 }
 
 class _DetailsSectionState extends State<DetailsSection>
-    with FormValidatorsMixin {
+    with
+        FormValidatorsMixin,
+        FieldErrorMixin<DetailsSection>,
+        FormFieldValidationMixin<DetailsSection> {
   final _formKey = GlobalKey<FormState>();
-  late final phoneController = TextEditingController(text: widget.phoneNumber);
-  late final organizationController = TextEditingController(
+  late final _phoneController = TextEditingController(text: widget.phoneNumber);
+  late final _organizationController = TextEditingController(
     text: widget.organization,
   );
-  late final bioController = TextEditingController(text: widget.bio);
+  late final _bioController = TextEditingController(text: widget.bio);
   Timer? _debounce;
   bool _hasChanges = false;
 
@@ -40,21 +44,24 @@ class _DetailsSectionState extends State<DetailsSection>
   void initState() {
     super.initState();
     for (final controller in [
-      phoneController,
-      organizationController,
-      bioController,
+      _phoneController,
+      _organizationController,
+      _bioController,
     ]) {
       controller.addListener(_onTextChanged);
     }
+    _phoneController.addListener(() => onFieldChanged('phone_number'));
+    _organizationController.addListener(() => onFieldChanged('organization'));
+    _bioController.addListener(() => onFieldChanged('bio'));
   }
 
   void _onTextChanged() {
     _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 300), () {
       final changed =
-          phoneController.text != widget.phoneNumber ||
-          organizationController.text != widget.organization ||
-          bioController.text != widget.bio;
+          _phoneController.text != widget.phoneNumber ||
+          _organizationController.text != widget.organization ||
+          _bioController.text != widget.bio;
 
       if (changed != _hasChanges) {
         setState(() => _hasChanges = changed);
@@ -65,9 +72,9 @@ class _DetailsSectionState extends State<DetailsSection>
   @override
   void dispose() {
     _debounce?.cancel();
-    phoneController.dispose();
-    organizationController.dispose();
-    bioController.dispose();
+    _phoneController.dispose();
+    _organizationController.dispose();
+    _bioController.dispose();
     super.dispose();
   }
 
@@ -77,24 +84,24 @@ class _DetailsSectionState extends State<DetailsSection>
     if (form.validate()) {
       form.save();
       context.read<UserEditCubit>().updateDetails(
-        phoneNumber: phoneController.text,
-        organization: organizationController.text,
-        bio: bioController.text,
+        phoneNumber: _phoneController.text,
+        organization: _organizationController.text,
+        bio: _bioController.text,
       );
     }
   }
 
   bool hasChanges() {
-    return phoneController.text != (widget.phoneNumber ?? '') ||
-        bioController.text != (widget.bio ?? '') ||
-        organizationController.text != (widget.organization ?? '');
+    return _phoneController.text != (widget.phoneNumber ?? '') ||
+        _bioController.text != (widget.bio ?? '') ||
+        _organizationController.text != (widget.organization ?? '');
   }
 
   void _reset() {
     _formKey.currentState?.reset();
-    phoneController.text = widget.phoneNumber ?? '';
-    organizationController.text = widget.organization ?? '';
-    bioController.text = widget.bio ?? '';
+    _phoneController.text = widget.phoneNumber ?? '';
+    _organizationController.text = widget.organization ?? '';
+    _bioController.text = widget.bio ?? '';
   }
 
   @override
@@ -107,9 +114,9 @@ class _DetailsSectionState extends State<DetailsSection>
         widget.bio != oldWidget.bio;
 
     if (backendDataChanged) {
-      phoneController.text = widget.phoneNumber ?? '';
-      organizationController.text = widget.organization ?? '';
-      bioController.text = widget.bio ?? '';
+      _phoneController.text = widget.phoneNumber ?? '';
+      _organizationController.text = widget.organization ?? '';
+      _bioController.text = widget.bio ?? '';
 
       if (_hasChanges) {
         setState(() => _hasChanges = false);
@@ -120,7 +127,17 @@ class _DetailsSectionState extends State<DetailsSection>
   @override
   Widget build(BuildContext context) {
     return CustomCard(
-      child: BlocBuilder<UserEditCubit, UserEditState>(
+      child: BlocConsumer<UserEditCubit, UserEditState>(
+        listenWhen: (previous, current) =>
+            previous.status != current.status &&
+            current.status == EditStatus.error,
+        listener: (context, state) {
+          final error = state.error;
+          if (error is ValidationFailure && state.fieldErrors.isNotEmpty) {
+            setFieldErrors(error.fieldErrors);
+            _formKey.currentState?.validate();
+          }
+        },
         builder: (context, state) {
           final isSaving = state.status == EditStatus.saving;
           final canSave = !isSaving && _hasChanges;
@@ -143,14 +160,22 @@ class _DetailsSectionState extends State<DetailsSection>
                         children: [
                           Text(context.translate.phoneNumber),
                           TextFormField(
-                            controller: phoneController,
+                            controller: _phoneController,
                             readOnly: isSaving,
                             autofillHints: const [
                               AutofillHints.telephoneNumber,
                             ],
                             keyboardType: TextInputType.phone,
-                            validator: (value) =>
-                                validatePhoneNumber(context, value),
+                            autovalidateMode: getAutovalidateMode(
+                              'phone_number',
+                            ),
+                            validator: (value) => validateField(
+                              context,
+                              'phone_number',
+                              (context, value) =>
+                                  validatePhoneNumber(context, value),
+                              value,
+                            ),
                           ),
                         ],
                       ),
@@ -162,15 +187,26 @@ class _DetailsSectionState extends State<DetailsSection>
                         children: [
                           Text(context.translate.organization),
                           TextFormField(
-                            controller: organizationController,
+                            controller: _organizationController,
                             readOnly: isSaving,
-                            validator: (value) => lengthValidator(
+                            autofillHints: const [
+                              AutofillHints.organizationName,
+                            ],
+                            autovalidateMode: getAutovalidateMode(
+                              'organization',
+                            ),
+                            validator: (value) => validateField(
                               context,
+                              'organization',
+                              (context, value) => lengthValidator(
+                                context,
+                                value,
+                                fieldName: context.translate.organization,
+                                minLength: 0,
+                                maxLength: 255,
+                                allowNull: true,
+                              ),
                               value,
-                              fieldName: context.translate.organization,
-                              minLength: 0,
-                              maxLength: 255,
-                              allowNull: true,
                             ),
                           ),
                         ],
@@ -184,15 +220,24 @@ class _DetailsSectionState extends State<DetailsSection>
                   children: [
                     Text(context.translate.bio),
                     TextFormField(
-                      controller: bioController,
+                      controller: _bioController,
                       readOnly: isSaving,
-                      validator: (value) => lengthValidator(
+                      minLines: 2,
+                      maxLines: null,
+                      keyboardType: TextInputType.multiline,
+                      autovalidateMode: getAutovalidateMode('bio'),
+                      validator: (value) => validateField(
                         context,
+                        'bio',
+                        (context, value) => lengthValidator(
+                          context,
+                          value,
+                          fieldName: context.translate.bio,
+                          minLength: 0,
+                          maxLength: 500,
+                          allowNull: true,
+                        ),
                         value,
-                        fieldName: context.translate.bio,
-                        minLength: 0,
-                        maxLength: 500,
-                        allowNull: true,
                       ),
                     ),
                   ],

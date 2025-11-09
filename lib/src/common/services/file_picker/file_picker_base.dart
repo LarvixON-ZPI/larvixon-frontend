@@ -1,13 +1,5 @@
-import 'dart:typed_data';
-
 import 'package:file_picker/file_picker.dart';
-
-class FilePickResult {
-  final Uint8List bytes;
-  final String name;
-  final String? path;
-  const FilePickResult({required this.bytes, required this.name, this.path});
-}
+import 'package:larvixon_frontend/src/common/services/file_picker/file_pick_result.dart';
 
 abstract class FilePickerBase {
   void Function(double progress)? onProgress;

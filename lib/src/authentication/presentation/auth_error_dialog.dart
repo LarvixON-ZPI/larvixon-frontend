@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:larvixon_frontend/core/errors/api_failures.dart';
+import 'package:larvixon_frontend/core/errors/failures.dart';
 
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
-import 'package:larvixon_frontend/src/authentication/domain/failures/auth_error.dart';
+import 'package:larvixon_frontend/src/authentication/domain/failures/auth_failures.dart';
 
 class AuthErrorDialog extends StatelessWidget {
-  final AuthError error;
+  final Failure error;
   final VoidCallback? onRetry;
   final VoidCallback? onMfaRequired;
 
@@ -26,50 +28,41 @@ class AuthErrorDialog extends StatelessWidget {
 
   String _getErrorTitle(BuildContext context) {
     return switch (error) {
-      InvalidCredentialsError() => context.translate.signInFailed,
-      DisabledAccountError() => context.translate.accountDisabled,
-      MfaRequiredButNoCodeError() => context.translate.mfaRequired,
-      MfaError() => context.translate.authenticationError,
-      FieldValidationError() => context.translate.validationError,
-      NetworkError() => context.translate.connectionError,
-      ServerError() => context.translate.serverError,
+      InvalidCredentialsFailure() => context.translate.signInFailed,
+      DisabledAccountFailure() => context.translate.accountDisabled,
+      MfaRequiredButNoCodeFailure() => context.translate.mfaRequired,
+      MfaFailure() => context.translate.authenticationError,
+      ValidationFailure() => context.translate.validationError,
+      RequestTimeoutFailure() => context.translate.connectionError,
+      InternalServerErrorFailure() => context.translate.serverError,
       _ => context.translate.error,
     };
   }
 
   String _getErrorMessage(BuildContext context) {
     return switch (error) {
-      InvalidCredentialsError() => context.translate.invalidCredentialsMessage,
-
-      DisabledAccountError() => context.translate.accountDisabledMessage,
-
-      MfaRequiredButNoCodeError() => context.translate.mfaRequiredMessage,
-
-      MfaDeviceNotFoundError() => context.translate.mfaDeviceNotFoundMessage,
-
-      MfaDeviceNotConfirmedError() =>
+      InvalidCredentialsFailure() =>
+        context.translate.invalidCredentialsMessage,
+      DisabledAccountFailure() => context.translate.accountDisabledMessage,
+      MfaRequiredButNoCodeFailure() => context.translate.mfaRequiredMessage,
+      MfaDeviceNotFoundFailure() => context.translate.mfaDeviceNotFoundMessage,
+      MfaDeviceNotConfirmedFailure() =>
         context.translate.mfaDeviceNotConfirmedMessage,
-
-      MfaSecretMissingError() => context.translate.mfaSecretMissingMessage,
-
-      InvalidMfaCodeError() => context.translate.invalidMfaCodeMessage,
-
-      FieldValidationError(:final fieldErrors) => _buildFieldErrorMessage(
+      MfaSecretMissingFailure() => context.translate.mfaSecretMissingMessage,
+      InvalidMfaCodeFailure() => context.translate.invalidMfaCodeMessage,
+      ValidationFailure(:final fieldErrors) => _buildFieldErrorMessage(
         context,
         fieldErrors,
       ),
-
-      NetworkError() => context.translate.networkErrorMessage,
-
-      ServerError() => context.translate.serverErrorMessage,
-
+      RequestTimeoutFailure() => context.translate.networkErrorMessage,
+      ServiceUnavailableFailure() => context.translate.serverErrorMessage,
       _ => error.message,
     };
   }
 
   String _buildFieldErrorMessage(
     BuildContext context,
-    Map<String, List<String>> fieldErrors,
+    Map<String, String> fieldErrors,
   ) {
     final buffer = StringBuffer();
 
@@ -78,7 +71,7 @@ class AuthErrorDialog extends StatelessWidget {
       final errors = entry.value;
 
       if (errors.isNotEmpty) {
-        buffer.writeln('$field: ${errors.first}');
+        buffer.writeln('$field: $error');
       }
     }
 
@@ -98,10 +91,8 @@ class AuthErrorDialog extends StatelessWidget {
 
   List<Widget> _buildActions(BuildContext context) {
     final actions = <Widget>[];
-
     actions.add(_buildCancelButton(context));
-
-    if (error is MfaRequiredButNoCodeError && onMfaRequired != null) {
+    if (error is MfaRequiredButNoCodeFailure && onMfaRequired != null) {
       actions.add(_buildMFAButton(context));
     } else if (_isRetriableError() && onRetry != null) {
       actions.add(_buildRetryButton(context));
@@ -143,16 +134,16 @@ class AuthErrorDialog extends StatelessWidget {
 
   bool _isRetriableError() {
     return switch (error) {
-      NetworkError() => true,
-      ServerError() => true,
-      InvalidMfaCodeError() => true,
+      RequestTimeoutFailure() => true,
+      ServiceUnavailableFailure() => true,
+      InvalidMfaCodeFailure() => true,
       _ => false,
     };
   }
 
   static Future<void> show(
     BuildContext context, {
-    required AuthError error,
+    required Failure error,
     VoidCallback? onRetry,
     VoidCallback? onMfaRequired,
   }) {

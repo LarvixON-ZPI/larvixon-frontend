@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:larvixon_frontend/core/errors/api_failures.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart'
     show Failure, UnknownFailure;
 import 'package:larvixon_frontend/src/user/data/mappers/user_mapper.dart';
@@ -27,8 +29,10 @@ class UserRepositoryImpl implements UserRepository {
         _userController.add(user);
         return user;
       },
-      (error, stackTrace) {
-        return UnknownFailure(message: error.toString());
+      (e, stackTrace) {
+        return e is DioException
+            ? e.toApiFailure()
+            : UnknownFailure(message: e.toString());
       },
     );
   }
@@ -51,8 +55,10 @@ class UserRepositoryImpl implements UserRepository {
         await dataSource.updateUserProfileDetails(profileDetails: dto.profile!);
         fetchUserProfile().run();
       },
-      (error, stackTrace) {
-        return UnknownFailure(message: error.toString());
+      (e, stackTrace) {
+        return e is DioException
+            ? e.toApiFailure()
+            : UnknownFailure(message: e.toString());
       },
     );
   }
@@ -78,8 +84,10 @@ class UserRepositoryImpl implements UserRepository {
         );
         fetchUserProfile().run();
       },
-      (error, stackTrace) {
-        return UnknownFailure(message: error.toString());
+      (e, stackTrace) {
+        return e is DioException
+            ? e.toApiFailure()
+            : UnknownFailure(message: e.toString());
       },
     );
   }
@@ -89,10 +97,17 @@ class UserRepositoryImpl implements UserRepository {
     required String firstName,
     required String lastName,
   }) {
-    return TaskEither.tryCatch(() async {
-      final dto = UserProfileDTO(first_name: firstName, last_name: lastName);
-      await dataSource.updateUserProfile(dto: dto);
-      fetchUserProfile().run();
-    }, (error, stackTrace) => UnknownFailure(message: error.toString()));
+    return TaskEither.tryCatch(
+      () async {
+        final dto = UserProfileDTO(first_name: firstName, last_name: lastName);
+        await dataSource.updateUserProfile(dto: dto);
+        fetchUserProfile().run();
+      },
+      (e, stackTrace) {
+        return e is DioException
+            ? e.toApiFailure()
+            : UnknownFailure(message: e.toString());
+      },
+    );
   }
 }

@@ -53,7 +53,6 @@ class UserDataSource {
       data: formData,
       options: Options(headers: {"Content-Type": "multipart/form-data"}),
     );
-
     return UserProfileDetailsDTO.fromMap(response.data);
   }
 }

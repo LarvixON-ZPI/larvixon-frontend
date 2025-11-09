@@ -47,3 +47,5 @@ class AuthSignUpRequested extends AuthEvent {
 }
 
 class AuthVerificationRequested extends AuthEvent {}
+
+class AuthRetryVerificationRequested extends AuthEvent {}

@@ -1,19 +1,21 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:larvixon_frontend/src/authentication/domain/failures/auth_error.dart';
+import 'package:larvixon_frontend/core/errors/api_failures.dart';
+import 'package:larvixon_frontend/core/errors/validation_failure_extensions.dart';
+import 'package:larvixon_frontend/src/authentication/domain/failures/auth_failures.dart';
 
 void main() {
-  group('FieldValidationError', () {
+  group('ValidationFailure', () {
     test('should correctly identify field errors', () {
       // Arrange
       const fieldErrors = {
-        'email': ['This field is required.'],
-        'password': [
-          'Password is too short.',
-          'Password must contain numbers.',
-        ],
-        'username': <String>[],
+        'email': 'This field is required.',
+        'password': 'Password is too short.',
+        'username': '',
       };
-      const error = FieldValidationError(fieldErrors);
+      const error = ValidationFailure(
+        fieldErrors: fieldErrors,
+        message: 'validation_failed',
+      );
 
       // Act & Assert
       expect(error.hasFieldError('email'), isTrue);
@@ -21,20 +23,20 @@ void main() {
       expect(
         error.hasFieldError('username'),
         isFalse,
-      ); // Empty list should return false
+      ); // Empty string should return false
       expect(error.hasFieldError('nonexistent'), isFalse);
     });
 
-    test('should return first error message for a field', () {
+    test('should return error message for a field', () {
       // Arrange
       const fieldErrors = {
-        'email': ['This field is required.'],
-        'password': [
-          'Password is too short.',
-          'Password must contain numbers.',
-        ],
+        'email': 'This field is required.',
+        'password': 'Password is too short.',
       };
-      const error = FieldValidationError(fieldErrors);
+      const error = ValidationFailure(
+        fieldErrors: fieldErrors,
+        message: 'validation_failed',
+      );
 
       // Act & Assert
       expect(error.getFieldError('email'), equals('This field is required.'));
@@ -42,10 +44,13 @@ void main() {
       expect(error.getFieldError('nonexistent'), isNull);
     });
 
-    test('should return null for empty error lists', () {
+    test('should return null for empty error strings', () {
       // Arrange
-      const fieldErrors = {'username': <String>[]};
-      const error = FieldValidationError(fieldErrors);
+      const fieldErrors = {'username': ''};
+      const error = ValidationFailure(
+        fieldErrors: fieldErrors,
+        message: 'validation_failed',
+      );
 
       // Act & Assert
       expect(error.getFieldError('username'), isNull);
@@ -54,77 +59,87 @@ void main() {
 
     test('should have correct error message', () {
       // Arrange
-      const fieldErrors = {
-        'email': ['This field is required.'],
-      };
-      const error = FieldValidationError(fieldErrors);
+      const fieldErrors = {'email': 'This field is required.'};
+      const error = ValidationFailure(
+        fieldErrors: fieldErrors,
+        message: 'Validation errors occurred',
+      );
 
       // Act & Assert
       expect(error.message, equals('Validation errors occurred'));
     });
   });
 
-  group('Error Type Hierarchy', () {
-    test('should correctly identify error types', () {
-      const invalidCredentials = InvalidCredentialsError();
-      const disabledAccount = DisabledAccountError();
-      const mfaRequired = MfaRequiredButNoCodeError();
-      const invalidMfaCode = InvalidMfaCodeError();
-      const networkError = NetworkError('Connection failed');
-      const serverError = ServerError('Internal error');
-      const fieldError = FieldValidationError({
-        'email': ['Required'],
-      });
+  group('AuthFailure Type Hierarchy', () {
+    test('should correctly identify auth failure types', () {
+      const invalidCredentials = InvalidCredentialsFailure();
+      const disabledAccount = DisabledAccountFailure();
+      const mfaRequired = MfaRequiredButNoCodeFailure();
+      const invalidMfaCode = InvalidMfaCodeFailure();
 
-      // Test AuthError base type
-      expect(invalidCredentials, isA<AuthError>());
-      expect(disabledAccount, isA<AuthError>());
-      expect(mfaRequired, isA<AuthError>());
-      expect(invalidMfaCode, isA<AuthError>());
-      expect(networkError, isA<AuthError>());
-      expect(serverError, isA<AuthError>());
-      expect(fieldError, isA<AuthError>());
+      // Test AuthFailure base type
+      expect(invalidCredentials, isA<AuthFailure>());
+      expect(disabledAccount, isA<AuthFailure>());
+      expect(mfaRequired, isA<AuthFailure>());
+      expect(invalidMfaCode, isA<AuthFailure>());
 
       // Test specific types
-      expect(invalidCredentials, isA<InvalidCredentialsError>());
-      expect(disabledAccount, isA<DisabledAccountError>());
-      expect(mfaRequired, isA<MfaRequiredButNoCodeError>());
-      expect(invalidMfaCode, isA<InvalidMfaCodeError>());
-      expect(networkError, isA<NetworkError>());
-      expect(serverError, isA<ServerError>());
-      expect(fieldError, isA<FieldValidationError>());
+      expect(invalidCredentials, isA<InvalidCredentialsFailure>());
+      expect(disabledAccount, isA<DisabledAccountFailure>());
+      expect(mfaRequired, isA<MfaRequiredButNoCodeFailure>());
+      expect(invalidMfaCode, isA<InvalidMfaCodeFailure>());
 
       // Test MFA inheritance
-      expect(mfaRequired, isA<MfaError>());
-      expect(invalidMfaCode, isA<MfaError>());
+      expect(mfaRequired, isA<MfaFailure>());
+      expect(invalidMfaCode, isA<MfaFailure>());
+    });
+
+    test('should correctly identify API failure types', () {
+      const networkError = RequestTimeoutFailure(message: 'Connection failed');
+      const serverError = InternalServerErrorFailure(message: 'Internal error');
+      const fieldError = ValidationFailure(
+        fieldErrors: {'email': 'Required'},
+        message: 'Validation error',
+      );
+
+      // Test ApiFailure base type
+      expect(networkError, isA<ApiFailure>());
+      expect(serverError, isA<ApiFailure>());
+      expect(fieldError, isA<ApiFailure>());
+
+      // Test specific types
+      expect(networkError, isA<RequestTimeoutFailure>());
+      expect(serverError, isA<InternalServerErrorFailure>());
+      expect(fieldError, isA<ValidationFailure>());
     });
 
     test('should have correct error messages', () {
       expect(
-        const InvalidCredentialsError().message,
+        const InvalidCredentialsFailure().message,
         equals('Invalid email or password'),
       );
       expect(
-        const DisabledAccountError().message,
+        const DisabledAccountFailure().message,
         equals('Account is disabled'),
       );
       expect(
-        const MfaRequiredButNoCodeError().message,
+        const MfaRequiredButNoCodeFailure().message,
         equals('Multi-factor authentication is required'),
       );
-      expect(const InvalidMfaCodeError().message, equals('Invalid MFA code'));
+      expect(const InvalidMfaCodeFailure().message, equals('Invalid MFA code'));
       expect(
-        const NetworkError('Connection failed').message,
+        const RequestTimeoutFailure(message: 'Connection failed').message,
         equals('Connection failed'),
       );
       expect(
-        const ServerError('Internal error').message,
+        const InternalServerErrorFailure(message: 'Internal error').message,
         equals('Internal error'),
       );
       expect(
-        const FieldValidationError({
-          'email': ['Required'],
-        }).message,
+        const ValidationFailure(
+          fieldErrors: {'email': 'Required'},
+          message: 'Validation errors occurred',
+        ).message,
         equals('Validation errors occurred'),
       );
     });

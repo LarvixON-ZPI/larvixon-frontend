@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'dart:typed_data';
 
+import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:larvixon_frontend/core/errors/api_failures.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
 import 'package:larvixon_frontend/src/analysis/data/datasources/analysis_datasource.dart';
 import 'package:larvixon_frontend/src/analysis/data/mappers/analysis_id_list_mapper.dart';
@@ -13,11 +14,12 @@ import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_upload_response.dart';
 import 'package:larvixon_frontend/src/analysis/domain/failures/failures.dart';
+import 'package:larvixon_frontend/src/common/services/file_picker/file_pick_result.dart';
 
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 
 class AnalysisRepositoryImpl implements AnalysisRepository {
-  final AnalysisDatasource dataSource;
+  final AnalysisDataSource dataSource;
   final AnalysisMapper videoMapper = AnalysisMapper();
   final AnalysisIdListMapper idListMapper = AnalysisIdListMapper();
   final StreamController<AnalysisIdList> _analysisIdsController =
@@ -28,22 +30,40 @@ class AnalysisRepositoryImpl implements AnalysisRepository {
 
   AnalysisRepositoryImpl({required this.dataSource});
   @override
-  TaskEither<AnalysisFailure, AnalysisUploadResponse> uploadVideo({
-    required Uint8List bytes,
-    required String filename,
+  TaskEither<Failure, AnalysisUploadResponse> uploadVideo({
+    required FilePickResult fileResult,
     required String title,
+    void Function(double progress)? onProgress,
+    CancelToken? cancelToken,
   }) {
-    return TaskEither.tryCatch(() async {
-      final data = await dataSource.uploadVideo(
-        bytes: bytes,
-        filename: filename,
-        title: title,
-      );
-      final response = AnalysisUploadResponse.fromJson(data);
-      _cachedIds.insert(0, response.id);
-      _emitUpdatedList();
-      return response;
-    }, (error, stackTrace) => UploadFailure(message: error.toString()));
+    return TaskEither.tryCatch(
+      () async {
+        final data = await dataSource.uploadVideo(
+          streamFactory: fileResult.streamFactory,
+          totalBytes: fileResult.size ?? 0,
+          filename: fileResult.name,
+          title: title,
+          onProgress: (sent, total) {
+            if (total > 0) onProgress?.call(sent / total);
+          },
+          cancelToken: cancelToken,
+          file: fileResult.nativeFile,
+        );
+        final response = AnalysisUploadResponse.fromJson(data);
+        _cachedIds.insert(0, response.id);
+        _emitUpdatedList();
+        return response;
+      },
+      (e, stackTrace) {
+        if (e is DioException && e.type == DioExceptionType.cancel) {
+          return CanceledUploadFailure();
+        }
+
+        return e is DioException
+            ? e.toApiFailure()
+            : UnknownApiFailure(statusCode: 0, message: e.toString());
+      },
+    );
   }
 
   @override
@@ -98,7 +118,7 @@ class AnalysisRepositoryImpl implements AnalysisRepository {
 
   @override
   Future<List<Analysis>> fetchVideosDetails() {
-    // TODO: implement fetchVideosDetails
+    // TODO: implement fetchVideosDetails, its not really needed tho i think
     throw UnimplementedError();
   }
 

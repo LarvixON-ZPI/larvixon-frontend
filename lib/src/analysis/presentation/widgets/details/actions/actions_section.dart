@@ -74,7 +74,7 @@ class ActionsSection extends StatelessWidget {
                   onPressed: () {
                     if (context.canPop()) context.pop();
                   },
-                  child: Text("Ok"),
+                  child: const Text("Ok"),
                 ),
               ),
             ),

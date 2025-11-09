@@ -902,6 +902,24 @@ abstract class AppLocalizations {
   /// **'Export'**
   String get export;
 
+  /// No description provided for @maximumFileSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum file size is {size}'**
+  String maximumFileSize(String size);
+
+  /// No description provided for @fileSizeError.
+  ///
+  /// In en, this message translates to:
+  /// **'This file is too big! Please select another one.'**
+  String get fileSizeError;
+
+  /// No description provided for @success.
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get success;
+
   /// No description provided for @pause.
   ///
   /// In en, this message translates to:
