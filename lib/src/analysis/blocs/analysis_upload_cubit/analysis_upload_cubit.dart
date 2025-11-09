@@ -78,12 +78,7 @@ class AnalysisUploadCubit extends Cubit<AnalysisUploadState> {
     }
     _cancelToken?.cancel('User cancelled upload');
     _cancelToken = null;
-    emit(
-      state.copyWith(
-        status: VideoUploadStatus.initial,
-        uploadProgress: 0,
-      ),
-    );
+    emit(state.copyWith(status: VideoUploadStatus.initial, uploadProgress: 0));
     return;
   }
 
