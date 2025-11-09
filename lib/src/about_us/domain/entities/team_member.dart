@@ -68,8 +68,7 @@ const TeamMember margarynka = TeamMember(
   name: "Martyna",
   surname: "Łopianiak",
   roles: [MemberRole.backend],
-  imageUrl:
-      "https://media.licdn.com/dms/image/v2/D4D03AQFJ8sg0F35iZw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1707508655674?e=1762992000&v=beta&t=XYV4eGXpETomOMPcqJH_8aZsdjuiTYk8HLZsNFvWyOE",
+  imageUrl: "assets/images/team/martyna.jpg",
   links: [
     (platform: SocialMediaPlatform.github, url: "https://github.com/charmosaa"),
     (
@@ -81,8 +80,7 @@ const TeamMember margarynka = TeamMember(
 const TeamMember krzysztof = TeamMember(
   name: "Krzysztof",
   surname: "Kulka",
-  imageUrl:
-      "https://media.licdn.com/dms/image/v2/D4D03AQH6dZ0tBa0bxA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1704545256993?e=1762992000&v=beta&t=8L1x210-aMT0LX8GHzOWzfrzJnrGCn3CvhqCyl-iWN4",
+  imageUrl: "assets/images/team/krzysztof.jpg",
   roles: [MemberRole.ml],
   links: [
     (
@@ -98,8 +96,7 @@ const TeamMember krzysztof = TeamMember(
 const TeamMember patryk = TeamMember(
   name: "Patryk",
   surname: "Łuszczek",
-  imageUrl:
-      "https://scontent.fktw4-1.fna.fbcdn.net/v/t39.30808-6/311482015_1845762285763020_9214169842881339684_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=7rBSKwjCpNIQ7kNvwGRaIl_&_nc_oc=AdnckvoKNxjrAIA2nl24i5vE23uv6_DowmhhgqfS3l0vinXSK0fzb4JcKLmCp5Zegm4&_nc_zt=23&_nc_ht=scontent.fktw4-1.fna&_nc_gid=11RiVA5wXejOWHgg1nJhrQ&oh=00_AfccF6T23H6Y42DWs11fsg1KnrMNAzFdYLd76UvDVkCAGA&oe=68F1669B",
+  imageUrl: "assets/images/team/patryk.jpeg",
   roles: [MemberRole.frontend, MemberRole.ui, MemberRole.ux],
   links: [
     (platform: SocialMediaPlatform.github, url: "https://github.com/Wasloso"),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/src/about_us/domain/entities/team_member.dart';
 import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
+import 'package:larvixon_frontend/src/common/widgets/profile_avatar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TeamMemberDetails extends StatefulWidget {
@@ -146,19 +147,9 @@ class _TeamMemberDetailsState extends State<TeamMemberDetails>
             spacing: 16,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
-                radius: avatarRadius,
-                backgroundImage: hasImage
-                    ? NetworkImage(teamMember.imageUrl!)
-                    : null,
-                backgroundColor: Colors.grey[200],
-                child: hasImage
-                    ? null
-                    : Icon(
-                        Icons.person,
-                        size: avatarRadius,
-                        color: Colors.grey,
-                      ),
+              ProfileAvatar(
+                imageUrl: widget.teamMember.imageUrl,
+                size: avatarRadius,
               ).withOnHoverEffect,
               if (hasRoles)
                 Expanded(
