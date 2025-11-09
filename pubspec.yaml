@@ -47,5 +47,6 @@ flutter:
         - asset: fonts/PixelatedEleganceRegular-ovyAA.ttf
   assets: 
       - assets/images/logo/
+      - assets/images/team/
 
 

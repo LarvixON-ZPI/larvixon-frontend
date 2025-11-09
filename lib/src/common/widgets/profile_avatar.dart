@@ -7,18 +7,23 @@ class ProfileAvatar extends StatelessWidget {
   const ProfileAvatar({super.key, this.size = 120, this.imageUrl, this.onTap});
 
   final double size;
+  ImageProvider? get _imageProvider {
+    if (imageUrl == null) return null;
+    return imageUrl!.startsWith('assets/')
+        ? AssetImage(imageUrl!)
+        : NetworkImage(imageUrl!);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final bool hasImage = imageUrl != null;
     return GestureDetector(
       onTap: onTap,
       child: CircleAvatar(
         radius: size,
-        backgroundImage: hasImage ? NetworkImage(imageUrl!) : null,
-        child: hasImage
-            ? null
-            : Icon(Icons.person, size: size, color: Colors.grey),
+        backgroundImage: _imageProvider,
+        child: _imageProvider == null
+            ? Icon(Icons.person, size: size, color: Colors.grey)
+            : null,
       ).withOnHoverEffect,
     );
   }
