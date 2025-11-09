@@ -901,6 +901,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Export'**
   String get export;
+
+  /// No description provided for @pause.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get pause;
+
+  /// No description provided for @resume.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume'**
+  String get resume;
+
+  /// No description provided for @restart.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart'**
+  String get restart;
+
+  /// No description provided for @simulationDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Interactive simulation powered by Unity.\n\nUse the controls above the simulation to manage the simulation - pause, resume and restart.\n\nUse the controls inside the simulation to change larva state or simulation speed.\nIn the right panel, you can select which substance you want to give to the poor larva, and specify the intensity.'**
+  String get simulationDescription;
 }
 
 class _AppLocalizationsDelegate

@@ -446,7 +446,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String confirmDeleteAnalysisText(String title) {
-    return 'Are you sure you want to delete $title? This action can\'t be undone.';
+    return 'Czy na pewno chcesz usunąć $title? Tej operacji nie można cofnąć.';
   }
 
   @override
@@ -454,4 +454,17 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get export => 'Eksportuj';
+
+  @override
+  String get pause => 'Pauza';
+
+  @override
+  String get resume => 'Wznów';
+
+  @override
+  String get restart => 'Restart';
+
+  @override
+  String get simulationDescription =>
+      'Interaktywna symulacja oparta na Unity.\n\nUżyj kontrolek nad oknem symulacji, aby nią zarządzać - pauzuj, wznów i restartuj.\n\nUżyj kontrolek wewnątrz okna symulacji, aby zmienić stan larwy albo prędkość symulacji.\nW prawym panelu możesz wybrać, jaką substancję podać biednej larwie oraz określić jej intensywność.';
 }

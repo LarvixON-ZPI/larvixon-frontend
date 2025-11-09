@@ -217,6 +217,20 @@
   "back": "Powrót",
   "confirmDelete": "Potwierdź usunięcie",
   "confirm": "Potwierdź",
+  "confirmDeleteAnalysisText": "Czy na pewno chcesz usunąć {title}? Tej operacji nie można cofnąć.",
+  "@confirmDeleteAnalysisText": {
+    "placeholders": {
+      "title": {
+        "type": "String",
+        "example": "Analiza #1"
+      }
+    }
+  },
   "delete": "Usuń",
-  "export": "Eksportuj"
+  "export": "Eksportuj",
+  "@@_Simulation": {},
+  "pause": "Pauza",
+  "resume": "Wznów",
+  "restart": "Restart",
+  "simulationDescription": "Interaktywna symulacja oparta na Unity.\n\nUżyj kontrolek nad oknem symulacji, aby nią zarządzać - pauzuj, wznów i restartuj.\n\nUżyj kontrolek wewnątrz okna symulacji, aby zmienić stan larwy albo prędkość symulacji.\nW prawym panelu możesz wybrać, jaką substancję podać biednej larwie oraz określić jej intensywność."
 }
