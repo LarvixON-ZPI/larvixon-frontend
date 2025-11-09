@@ -443,7 +443,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String confirmDeleteAnalysisText(String title) {
-    return 'Are you sure you want to delete $title? This action can\'t be undone.';
+    return 'Na pewno chcesz usunąć $title? Ta akcja nie może zostać cofnięta.';
   }
 
   @override
