@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:larvixon_frontend/core/errors/api_failures.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
+import 'package:larvixon_frontend/src/common/services/file_picker/file_pick_result.dart';
 import 'package:larvixon_frontend/src/user/domain/repositories/user_repository.dart';
 
 part 'user_edit_state.dart';
@@ -82,13 +83,18 @@ class UserEditCubit extends Cubit<UserEditState> {
     );
   }
 
-  Future<void> updatePhoto({
-    required Uint8List bytes,
-    required String fileName,
-  }) async {
+  Future<void> updatePhoto({required FilePickResult fileResult}) async {
     emit(state.copyWith(status: EditStatus.uploadingPhoto));
+
+    // Convert stream to bytes
+    final List<int> allBytes = [];
+    await for (final chunk in fileResult.stream) {
+      allBytes.addAll(chunk);
+    }
+    final bytes = Uint8List.fromList(allBytes);
+
     final result = await _repository
-        .updateUserProfilePhoto(bytes: bytes, fileName: fileName)
+        .updateUserProfilePhoto(bytes: bytes, fileName: fileResult.name)
         .run();
     result.match(
       (failure) {

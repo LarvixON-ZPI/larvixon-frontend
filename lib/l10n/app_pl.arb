@@ -228,5 +228,14 @@
     }
   },
   "fileSizeError": "Wybrany plik jest zbyt duży! Proszę wybrać inny plik",
-  "success": "Sukces"
+  "success": "Sukces",
+  "confirmDeleteAnalysisText": "Na pewno chcesz usunąć {title}? Ta akcja nie może zostać cofnięta.",
+  "@confirmDeleteAnalysisText": {
+    "placeholders": {
+      "title": {
+        "type": "String",
+        "example": "Analysis #1"
+      }
+    }
+  }
 }

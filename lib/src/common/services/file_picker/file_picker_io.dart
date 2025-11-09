@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:larvixon_frontend/src/common/services/file_picker/file_pick_result.dart';
 import 'package:larvixon_frontend/src/common/services/file_picker/file_picker_base.dart';
 
 class FilePickerImpl extends FilePickerBase {
@@ -10,45 +11,75 @@ class FilePickerImpl extends FilePickerBase {
 
   @override
   Future<FilePickResult?> pickFile({FileType type = FileType.video}) async {
-    final result = await FilePicker.platform.pickFiles(type: type);
-    if (result == null || result.files.isEmpty) return null;
-    final picked = result.files.first;
-    if (picked.path == null) return null;
-
     onFilePicked?.call();
 
+    final result = await FilePicker.platform.pickFiles(
+      type: type,
+      withReadStream: true,
+    );
+    if (result == null || result.files.isEmpty) {
+      onDone?.call();
+      return null;
+    }
+    final picked = result.files.first;
+    if (picked.path == null) return null;
     final file = File(picked.path!);
     final total = await file.length();
-    final builder = BytesBuilder(copy: false);
-    int read = 0;
 
-    final completer = Completer<FilePickResult?>();
-    try {
+    Stream<List<int>> createStream({CancelToken? cancelToken}) {
+      final controller = StreamController<List<int>>(
+        onPause: () => _readSub?.pause(),
+        onResume: () => _readSub?.resume(),
+        onCancel: () => _readSub?.cancel(),
+      );
+      bool isCancelled = false;
+
+      cancelToken?.whenCancel.then((_) {
+        isCancelled = true;
+        _readSub?.cancel();
+        if (!controller.isClosed) {
+          controller.close();
+        }
+      });
+
+      _readSub?.cancel();
       _readSub = file.openRead().listen(
         (chunk) {
-          builder.add(chunk);
-          read += chunk.length;
-          onProgress?.call(total > 0 ? read / total : 0.0);
+          if (isCancelled || (cancelToken?.isCancelled ?? false)) {
+            _readSub?.cancel();
+            if (!controller.isClosed) {
+              controller.close();
+            }
+            return;
+          }
+          if (!controller.isClosed) {
+            controller.add(chunk);
+          }
         },
         onDone: () {
-          final bytes = Uint8List.fromList(builder.toBytes());
-          onProgress?.call(1.0);
-          onDone?.call();
-          completer.complete(
-            FilePickResult(bytes: bytes, name: picked.name, path: picked.path),
-          );
+          if (!controller.isClosed) {
+            controller.close();
+          }
         },
         onError: (e) {
-          onError?.call(e);
-          completer.completeError(e);
+          if (!controller.isClosed) {
+            controller.addError(e);
+            controller.close();
+          }
         },
         cancelOnError: true,
       );
-    } catch (e) {
-      onError?.call(e);
-      completer.completeError(e);
+
+      return controller.stream;
     }
-    return completer.future;
+
+    return FilePickResult(
+      streamFactory: createStream,
+      name: picked.name,
+      size: total,
+      path: picked.path,
+      nativeFile: file,
+    );
   }
 
   @override

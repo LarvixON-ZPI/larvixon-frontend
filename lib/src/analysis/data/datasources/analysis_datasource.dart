@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:typed_data';
-
 import 'package:dio/dio.dart';
 import 'package:larvixon_frontend/core/api_client.dart';
 import 'package:larvixon_frontend/core/constants/endpoints_analysis.dart';
@@ -10,10 +7,27 @@ import 'package:larvixon_frontend/src/analysis/data/models/analysis_id_list_dto.
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_filter.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
 
-class AnalysisDatasource {
-  final ApiClient apiClient;
+import 'package:larvixon_frontend/src/analysis/data/datasources/analysis_datasource_stub.dart'
+    if (dart.library.html) 'analysis_datasource_web.dart'
+    if (dart.library.io) 'analysis_datasource_io.dart';
 
-  AnalysisDatasource({required this.apiClient});
+abstract class AnalysisDataSource {
+  final ApiClient apiClient;
+  AnalysisDataSource({required this.apiClient});
+
+  factory AnalysisDataSource.getImplementation(ApiClient apiClient) =>
+      AnalysisDataSourceImpl(apiClient: apiClient);
+  Future<Map<String, dynamic>> uploadVideo({
+    required Stream<List<int>> Function({CancelToken? cancelToken})
+    streamFactory,
+    required dynamic file,
+    required String filename,
+    required String title,
+    required int totalBytes,
+
+    ProgressCallback? onProgress,
+    CancelToken? cancelToken,
+  });
 
   Future<AnalysisIdListDTO> fetchAnalysisIds({
     String? nextPage,
@@ -63,25 +77,6 @@ class AnalysisDatasource {
     return AnalysisDTO.fromMap(response.data);
   }
 
-  Future<Map<String, dynamic>> uploadVideo({
-    required Uint8List bytes,
-    required String filename,
-    required String title,
-    ProgressCallback? onProgress,
-  }) async {
-    final formData = FormData.fromMap({
-      'video': MultipartFile.fromBytes(bytes, filename: filename),
-      'title': title,
-    });
-    final response = await apiClient.dio.post(
-      AnalysisEndpoints.uploadVideo,
-      data: formData,
-      options: Options(headers: {"Content-Type": "multipart/form-data"}),
-      onSendProgress: onProgress,
-    );
-    return response.data;
-  }
-
   Future<bool> deleteAnalysis({required int id}) async {
     final response = await apiClient.dio.delete(
       AnalysisEndpoints.analysisById(id),
@@ -89,14 +84,3 @@ class AnalysisDatasource {
     return response.statusCode == 204;
   }
 }
-
-// abstract class LarvaVideoRepository {
-//   Future<List<int>> fetchVideoIds();
-//   Future<LarvaVideo> fetchVideoDetailsById(int id);
-//   Future<List<LarvaVideo>> fetchVideosDetails();
-//   Future<void> addVideo(LarvaVideo video);
-//   Stream<LarvaVideo> watchVideoProgressById({
-//     required int id,
-//     Duration interval = const Duration(seconds: 5),
-//   });
-// }

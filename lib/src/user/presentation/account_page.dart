@@ -26,10 +26,7 @@ class AccountPage extends StatelessWidget {
     final picker = AdaptiveFilePicker();
     final result = await picker.pickFile(type: FileType.image);
     if (result != null) {
-      context.read<UserEditCubit>().updatePhoto(
-        bytes: result.bytes,
-        fileName: result.name,
-      );
+      context.read<UserEditCubit>().updatePhoto(fileResult: result);
     }
   }
 

@@ -4,9 +4,10 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i4;
-import 'dart:typed_data' as _i5;
 
 import 'package:bloc/bloc.dart' as _i6;
+import 'package:larvixon_frontend/src/common/services/file_picker/file_pick_result.dart'
+    as _i5;
 import 'package:larvixon_frontend/src/user/bloc/cubit/user_edit_cubit.dart'
     as _i2;
 import 'package:mockito/mockito.dart' as _i1;
@@ -91,15 +92,9 @@ class MockUserEditCubit extends _i1.Mock implements _i2.UserEditCubit {
           as _i4.Future<void>);
 
   @override
-  _i4.Future<void> updatePhoto({
-    required _i5.Uint8List? bytes,
-    required String? fileName,
-  }) =>
+  _i4.Future<void> updatePhoto({required _i5.FilePickResult? fileResult}) =>
       (super.noSuchMethod(
-            Invocation.method(#updatePhoto, [], {
-              #bytes: bytes,
-              #fileName: fileName,
-            }),
+            Invocation.method(#updatePhoto, [], {#fileResult: fileResult}),
             returnValue: _i4.Future<void>.value(),
             returnValueForMissingStub: _i4.Future<void>.value(),
           )

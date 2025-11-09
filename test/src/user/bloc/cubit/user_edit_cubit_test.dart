@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/api_failures.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
+import 'package:larvixon_frontend/src/common/services/file_picker/file_pick_result.dart';
 import 'package:larvixon_frontend/src/user/bloc/cubit/user_edit_cubit.dart';
 import 'package:larvixon_frontend/src/user/domain/repositories/user_repository.dart';
 import 'package:mockito/annotations.dart';
@@ -286,6 +287,15 @@ void main() {
     });
 
     group('updatePhoto', () {
+      // Helper to create FilePickResult for testing
+      FilePickResult createTestFileResult(List<int> bytes, String fileName) {
+        return FilePickResult(
+          streamFactory: ({cancelToken}) => Stream.value(bytes),
+          name: fileName,
+          size: bytes.length,
+        );
+      }
+
       final testBytes = Uint8List.fromList([1, 2, 3, 4]);
       const testFileName = 'photo.jpg';
 
@@ -300,8 +310,9 @@ void main() {
           ).thenReturn(TaskEither.right(null));
           return UserEditCubit(repository: mockRepository);
         },
-        act: (cubit) =>
-            cubit.updatePhoto(bytes: testBytes, fileName: testFileName),
+        act: (cubit) => cubit.updatePhoto(
+          fileResult: createTestFileResult(testBytes, testFileName),
+        ),
         expect: () => [
           const UserEditState(
             status: EditStatus.uploadingPhoto,
@@ -334,8 +345,9 @@ void main() {
           );
           return UserEditCubit(repository: mockRepository);
         },
-        act: (cubit) =>
-            cubit.updatePhoto(bytes: testBytes, fileName: testFileName),
+        act: (cubit) => cubit.updatePhoto(
+          fileResult: createTestFileResult(testBytes, testFileName),
+        ),
         expect: () => [
           const UserEditState(
             status: EditStatus.uploadingPhoto,
@@ -364,8 +376,7 @@ void main() {
         act: (cubit) {
           final largeBytes = Uint8List(1024 * 1024); // 1MB
           return cubit.updatePhoto(
-            bytes: largeBytes,
-            fileName: 'large_photo.jpg',
+            fileResult: createTestFileResult(largeBytes, 'large_photo.jpg'),
           );
         },
         expect: () => [
@@ -392,8 +403,9 @@ void main() {
           status: EditStatus.error,
           fieldErrors: {'photo': 'Invalid photo'},
         ),
-        act: (cubit) =>
-            cubit.updatePhoto(bytes: testBytes, fileName: testFileName),
+        act: (cubit) => cubit.updatePhoto(
+          fileResult: createTestFileResult(testBytes, testFileName),
+        ),
         expect: () => [
           const UserEditState(
             status: EditStatus.uploadingPhoto,
@@ -401,6 +413,47 @@ void main() {
           ),
           const UserEditState(status: EditStatus.success, fieldErrors: {}),
         ],
+      );
+
+      blocTest<UserEditCubit, UserEditState>(
+        'handles chunked stream correctly',
+        build: () {
+          when(
+            mockRepository.updateUserProfilePhoto(
+              bytes: anyNamed('bytes'),
+              fileName: anyNamed('fileName'),
+            ),
+          ).thenReturn(TaskEither.right(null));
+          return UserEditCubit(repository: mockRepository);
+        },
+        act: (cubit) {
+          // Create a FilePickResult with chunked stream
+          final chunk1 = [1, 2, 3];
+          final chunk2 = [4, 5, 6];
+          final fileResult = FilePickResult(
+            streamFactory: ({cancelToken}) =>
+                Stream.fromIterable([chunk1, chunk2]),
+            name: 'chunked_photo.jpg',
+            size: 6,
+          );
+          return cubit.updatePhoto(fileResult: fileResult);
+        },
+        expect: () => [
+          const UserEditState(
+            status: EditStatus.uploadingPhoto,
+            fieldErrors: {},
+          ),
+          const UserEditState(status: EditStatus.success, fieldErrors: {}),
+        ],
+        verify: (_) {
+          // Verify the combined bytes [1, 2, 3, 4, 5, 6] were sent
+          verify(
+            mockRepository.updateUserProfilePhoto(
+              bytes: Uint8List.fromList([1, 2, 3, 4, 5, 6]),
+              fileName: 'chunked_photo.jpg',
+            ),
+          ).called(1);
+        },
       );
     });
 

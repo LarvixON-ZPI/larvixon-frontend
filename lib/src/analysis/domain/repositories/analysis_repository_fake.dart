@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
-import 'dart:typed_data';
 
+import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_field_enum.dart';
@@ -11,6 +11,7 @@ import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_upload_response.dart';
 import 'package:larvixon_frontend/src/analysis/domain/failures/failures.dart';
+import 'package:larvixon_frontend/src/common/services/file_picker/file_pick_result.dart';
 import 'package:larvixon_frontend/src/common/sort_order.dart';
 
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
@@ -202,19 +203,30 @@ class AnalysisRepositoryFake implements AnalysisRepository {
   }
 
   @override
-  TaskEither<AnalysisFailure, AnalysisUploadResponse> uploadVideo({
-    required Uint8List bytes,
-    required String filename,
+  TaskEither<Failure, AnalysisUploadResponse> uploadVideo({
+    required FilePickResult fileResult,
     required String title,
     void Function(double progress)? onProgress,
+    CancelToken? cancelToken,
   }) {
     return TaskEither.tryCatch(
       () async {
-        const totalChunks = 20;
-        for (int i = 1; i <= totalChunks; i++) {
-          await Future.delayed(const Duration(milliseconds: 150));
-          final progress = i / totalChunks;
-          onProgress?.call(progress);
+        int bytesRead = 0;
+        final totalBytes = fileResult.size ?? 0;
+
+        await for (final chunk in fileResult.stream) {
+          if (cancelToken?.isCancelled ?? false) {
+            throw DioException(
+              requestOptions: RequestOptions(),
+              type: DioExceptionType.cancel,
+            );
+          }
+          bytesRead += chunk.length;
+          await Future.delayed(const Duration(milliseconds: 50));
+          if (totalBytes > 0) {
+            final uploadProgress = bytesRead / totalBytes;
+            onProgress?.call(uploadProgress);
+          }
         }
         await Future.delayed(const Duration(milliseconds: 300));
         final nextId =

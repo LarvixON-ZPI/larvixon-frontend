@@ -18,7 +18,10 @@ class AuthInterceptor extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     final accessToken = await _tokenStorage.getAccessToken();
-    if (accessToken != null) {
+    if (accessToken?.isNotEmpty == true &&
+        options.path != AuthEndpoints.login &&
+        options.path != AuthEndpoints.register &&
+        options.path != AuthEndpoints.refreshToken) {
       options.headers['Authorization'] = 'Bearer $accessToken';
     }
     handler.next(options);
@@ -41,16 +44,16 @@ class AuthInterceptor extends Interceptor {
           for (var requestNeedRetry in _requestsNeedRetry) {
             dio
                 .fetch(requestNeedRetry.options)
-                .then((response) {
-                  requestNeedRetry.handler.resolve(response);
-                })
-                .catchError((_) {});
+                .then((r) => requestNeedRetry.handler.resolve(r))
+                .catchError((e) => requestNeedRetry.handler.reject(e));
           }
-          _requestsNeedRetry.clear();
-          _isRefreshing = false;
         } else {
-          _requestsNeedRetry.clear();
+          for (var requestNeedRetry in _requestsNeedRetry) {
+            requestNeedRetry.handler.reject(err);
+          }
         }
+        _requestsNeedRetry.clear();
+        _isRefreshing = false;
       } else {
         _requestsNeedRetry.add((
           options: response.requestOptions,
@@ -58,7 +61,7 @@ class AuthInterceptor extends Interceptor {
         ));
       }
     } else {
-      return handler.next(err);
+      handler.next(err);
     }
   }
 
@@ -76,9 +79,12 @@ class AuthInterceptor extends Interceptor {
         await _tokenStorage.saveRefreshToken(newRefreshToken);
         return true;
       } else {
+        await _tokenStorage.clearTokens();
+
         return false;
       }
     } catch (e) {
+      await _tokenStorage.clearTokens();
       return false;
     }
   }
