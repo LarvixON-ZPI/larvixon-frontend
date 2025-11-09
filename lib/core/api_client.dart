@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:larvixon_frontend/core/auth_interceptor.dart';
 import 'package:larvixon_frontend/core/token_storage.dart';
@@ -19,6 +20,11 @@ class ApiClient {
   Dio _createDio() {
     final dioInstance = Dio(baseOptions);
     dioInstance.interceptors.add(AuthInterceptor(_tokenStorage, dioInstance));
+    if (kDebugMode) {
+      dioInstance.interceptors.add(
+        LogInterceptor(requestBody: true, responseBody: true),
+      );
+    }
     return dioInstance;
   }
 }
