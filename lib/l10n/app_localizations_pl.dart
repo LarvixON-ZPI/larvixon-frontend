@@ -446,7 +446,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String confirmDeleteAnalysisText(String title) {
-    return 'Czy na pewno chcesz usunąć $title? Tej operacji nie można cofnąć.';
+    return 'Na pewno chcesz usunąć $title? Ta akcja nie może zostać cofnięta.';
   }
 
   @override
