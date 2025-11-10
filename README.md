@@ -40,7 +40,7 @@ git submodule update --init --recursive
 
 # Flutter dependencies
 flutter pub get
-flutter run --dart-define=API_BASE_URL=http://127.0.0.1:8000/api
+flutter run --dart-define=API_BASE_URL=http://127.0.0.1:8000/api --web-port=3000
 ```
 
 If you don't specify the API_BASE_URL, it will fallback to default value *<http://127.0.0.1:8000/api>*
