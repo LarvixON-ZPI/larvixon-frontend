@@ -50,8 +50,7 @@ const TeamMember jantar = TeamMember(
   name: "Mikołaj",
   surname: "Kubś",
   roles: [MemberRole.backend, MemberRole.frontend, MemberRole.simulation],
-  imageUrl:
-      "https://media.licdn.com/dms/image/v2/D4D03AQG6oFUiS0OdKg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1688760300402?e=1762992000&v=beta&t=SSEU3vqUAOiimvZcrGUnlUPIkqAYaPQ5ol4oByILCjU",
+  imageUrl: "assets/images/team/mikolaj.jpg",
   links: [
     (
       platform: SocialMediaPlatform.github,
