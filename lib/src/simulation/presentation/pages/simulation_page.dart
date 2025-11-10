@@ -178,10 +178,7 @@ class _SimulationPageState extends State<SimulationPage> {
     }
   }
 
-  void onUnityMessage(message) {
-    print('Received message from Unity: $message');
-    // Handle messages from Unity here if needed
-  }
+  void onUnityMessage(dynamic message) {}
 
   @override
   void dispose() {
