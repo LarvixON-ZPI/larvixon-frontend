@@ -2,7 +2,7 @@ name: Web Release
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -14,10 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          lfs: true
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.35.5'
-          channel: 'stable'
+          flutter-version: "3.35.5"
+          channel: "stable"
           cache: true
       - run: flutter pub get
       - run: flutter build web --release --target=lib/main.dart --base-href="/larvixon-frontend/" --dart-define=API_BASE_URL=https://larvixon-backend-v1-c0dxc7aybwbmfdfe.westeurope-01.azurewebsites.net/api
