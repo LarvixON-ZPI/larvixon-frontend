@@ -105,6 +105,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get contact => 'Kontakt';
 
   @override
+  String get simulation => 'Symulacja';
+
+  @override
   String get enterEmail => 'Wprowadź swój email';
 
   @override
@@ -463,4 +466,20 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get success => 'Sukces';
+
+  @override
+  String get pause => 'Pauza';
+
+  @override
+  String get resume => 'Wznów';
+
+  @override
+  String get restart => 'Restart';
+
+  @override
+  String get toggleUI => 'Przełącz UI';
+
+  @override
+  String get simulationDescription =>
+      'Interaktywna symulacja oparta na Unity.\n\nUżyj kontrolek nad oknem symulacji, aby nią zarządzać - pauzuj, wznów, restartuj lub przełącz UI.\n\nUżyj kontrolek wewnątrz okna symulacji, aby zmienić stan larwy albo prędkość symulacji.\nW prawym panelu możesz wybrać, jaką substancję podać biednej larwie oraz określić jej intensywność.';
 }

@@ -105,6 +105,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get contact => 'Contact';
 
   @override
+  String get simulation => 'Simulation';
+
+  @override
   String get enterEmail => 'Enter email';
 
   @override
@@ -463,4 +466,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get success => 'Success';
+
+  @override
+  String get pause => 'Pause';
+
+  @override
+  String get resume => 'Resume';
+
+  @override
+  String get restart => 'Restart';
+
+  @override
+  String get toggleUI => 'Toggle UI';
+
+  @override
+  String get simulationDescription =>
+      'Interactive simulation powered by Unity.\n\nUse the controls above the simulation to manage the simulation - pause, resume, restart and toggle UI.\n\nUse the controls inside the simulation to change larva state or simulation speed.\nIn the right panel, you can select which substance you want to give to the poor larva, and specify the intensity.';
 }

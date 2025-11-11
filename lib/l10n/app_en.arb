@@ -84,6 +84,7 @@
   "larvixon": "Larvixon",
   "about": "About",
   "contact": "Contact",
+  "simulation": "Simulation",
   "enterEmail": "Enter email",
   "@@_LandingPage": {},
   "larvixonHeader": "ML-Powered Diagnostics in Minutes",
@@ -237,5 +238,11 @@
     }
   },
   "fileSizeError": "This file is too big! Please select another one.",
-  "success": "Success"
+  "success": "Success",
+  "@@_Simulation": {},
+  "pause": "Pause",
+  "resume": "Resume",
+  "restart": "Restart",
+  "toggleUI": "Toggle UI",
+  "simulationDescription": "Interactive simulation powered by Unity.\n\nUse the controls above the simulation to manage the simulation - pause, resume, restart and toggle UI.\n\nUse the controls inside the simulation to change larva state or simulation speed.\nIn the right panel, you can select which substance you want to give to the poor larva, and specify the intensity."
 }

@@ -1,6 +1,6 @@
 name: larvixon_frontend
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -27,6 +27,7 @@ dependencies:
   shared_preferences: ^2.5.3
   font_awesome_flutter: ^10.10.0
   flutter_svg: ^2.2.1
+  flutter_unity_widget: ^2022.2.0
   mask_text_input_formatter: ^2.9.0
   jwt_decoder: ^2.0.1
 
@@ -40,13 +41,11 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  generate: true 
+  generate: true
   fonts:
     - family: PixelatedElegance
       fonts:
         - asset: fonts/PixelatedEleganceRegular-ovyAA.ttf
-  assets: 
-      - assets/images/logo/
-      - assets/images/team/
-
-
+  assets:
+    - assets/images/logo/
+    - assets/images/team/

@@ -84,6 +84,7 @@
   "larvixon": "Larvixon",
   "about": "O nas",
   "contact": "Kontakt",
+  "simulation": "Symulacja",
   "@@_LandingPage": {},
   "larvixonHeader": "Diagnostyka wspomagana AI w kilka minut",
   "larvixonSubheader": "Przełomowy system szybkiego wykrywania toksyn i substancji odurzających.",
@@ -216,6 +217,15 @@
   "back": "Powrót",
   "confirmDelete": "Potwierdź usunięcie",
   "confirm": "Potwierdź",
+  "confirmDeleteAnalysisText": "Czy na pewno chcesz usunąć {title}? Tej operacji nie można cofnąć.",
+  "@confirmDeleteAnalysisText": {
+    "placeholders": {
+      "title": {
+        "type": "String",
+        "example": "Analiza #1"
+      }
+    }
+  },
   "delete": "Usuń",
   "export": "Eksportuj",
   "maximumFileSize": "Maksymalny rozmiar pliku to {size}",
@@ -229,13 +239,10 @@
   },
   "fileSizeError": "Wybrany plik jest zbyt duży! Proszę wybrać inny plik",
   "success": "Sukces",
-  "confirmDeleteAnalysisText": "Na pewno chcesz usunąć {title}? Ta akcja nie może zostać cofnięta.",
-  "@confirmDeleteAnalysisText": {
-    "placeholders": {
-      "title": {
-        "type": "String",
-        "example": "Analysis #1"
-      }
-    }
-  }
+  "@@_Simulation": {},
+  "pause": "Pauza",
+  "resume": "Wznów",
+  "restart": "Restart",
+  "toggleUI": "Przełącz UI",
+  "simulationDescription": "Interaktywna symulacja oparta na Unity.\n\nUżyj kontrolek nad oknem symulacji, aby nią zarządzać - pauzuj, wznów, restartuj lub przełącz UI.\n\nUżyj kontrolek wewnątrz okna symulacji, aby zmienić stan larwy albo prędkość symulacji.\nW prawym panelu możesz wybrać, jaką substancję podać biednej larwie oraz określić jej intensywność."
 }

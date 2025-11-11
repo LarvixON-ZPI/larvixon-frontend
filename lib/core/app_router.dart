@@ -11,6 +11,7 @@ import 'package:larvixon_frontend/src/home/larvixon_app_bar.dart';
 import 'package:larvixon_frontend/src/about_us/presentation/pages/about_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/landing_appbar.dart';
 import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
+import 'package:larvixon_frontend/src/simulation/presentation/pages/simulation_page.dart';
 import 'package:larvixon_frontend/src/common/app_shell.dart';
 import 'package:larvixon_frontend/src/settings/presentation/pages/settings_page.dart';
 
@@ -82,6 +83,13 @@ class AppRouter {
             path: AboutPage.route,
             pageBuilder: (context, state) {
               return const AboutPage().withoutTransition(state: state);
+            },
+          ),
+          GoRoute(
+            name: SimulationPage.name,
+            path: SimulationPage.route,
+            pageBuilder: (context, state) {
+              return const SimulationPage().withoutTransition(state: state);
             },
           ),
           GoRoute(
@@ -177,11 +185,16 @@ class AppRouter {
       final onLanding = state.uri.path == LandingPage.route;
       final onAbout = state.uri.path == AboutPage.route;
       final onContact = state.uri.path == ContactPage.route;
+      final onSimulation = state.uri.path == SimulationPage.route;
 
       switch (authState.status) {
         case AuthStatus.initial:
         case AuthStatus.unauthenticated:
-          if (!loggingIn && !onLanding && !onAbout && !onContact) {
+          if (!loggingIn &&
+              !onLanding &&
+              !onAbout &&
+              !onContact &&
+              !onSimulation) {
             return LandingPage.route;
           }
           return null;
