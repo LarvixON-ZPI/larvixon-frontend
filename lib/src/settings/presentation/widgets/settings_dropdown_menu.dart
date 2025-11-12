@@ -4,7 +4,8 @@ import 'package:larvixon_frontend/src/settings/presentation/widgets/locale_dropd
 import 'package:larvixon_frontend/src/settings/presentation/widgets/theme_selection_buttons.dart';
 
 class SettingsDropdownMenu extends StatefulWidget {
-  const SettingsDropdownMenu({super.key});
+  final Offset offest;
+  const SettingsDropdownMenu({super.key, this.offest = Offset.zero});
 
   @override
   State<SettingsDropdownMenu> createState() => _SettingsDropdownMenuState();
@@ -17,12 +18,13 @@ class _SettingsDropdownMenuState extends State<SettingsDropdownMenu>
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<Widget>(
+      tooltip: context.translate.settings,
       icon: AnimatedRotation(
         duration: const Duration(milliseconds: 300),
         turns: _isOpen ? 0.25 : 0.0,
         child: Icon(Icons.settings, color: Theme.of(context).iconTheme.color),
       ),
-      offset: const Offset(0, 40),
+      offset: widget.offest,
       onOpened: () => setState(() => _isOpen = true),
       onCanceled: () => setState(() => _isOpen = false),
       itemBuilder: (context) => [

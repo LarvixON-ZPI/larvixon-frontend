@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/core/constants/breakpoints.dart';
 import 'package:larvixon_frontend/src/about_us/presentation/widgets/team_members_card.dart';
-import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
-
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
+import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
 class AboutSection extends StatelessWidget {
   const AboutSection({super.key});
@@ -14,28 +13,18 @@ class AboutSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                context.translate.about,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                context.translate.aboutDescription,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ],
+        CustomCard(
+          title: Text(
+            context.translate.about,
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          description: Text(
+            context.translate.aboutDescription,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
         ),
-
         LayoutBuilder(
           builder: (context, constraints) {
             final isNarrow = constraints.maxWidth < Breakpoints.small;
@@ -58,6 +47,7 @@ class AboutSection extends StatelessWidget {
                         ),
                         description: Text(
                           context.translate.ourMissionDescription,
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),
                     ),
@@ -75,6 +65,7 @@ class AboutSection extends StatelessWidget {
                         ),
                         description: Text(
                           context.translate.ourVisionDescription,
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),
                     ),

@@ -4,17 +4,18 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:larvixon_frontend/core/constants/breakpoints.dart';
+import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
 import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
+import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 import 'package:larvixon_frontend/src/common/services/file_picker/file_picker.dart';
 import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
-
 import 'package:larvixon_frontend/src/user/bloc/cubit/user_edit_cubit.dart';
 import 'package:larvixon_frontend/src/user/bloc/user_bloc.dart';
 import 'package:larvixon_frontend/src/user/domain/repositories/user_repository.dart';
+import 'package:larvixon_frontend/src/user/presentation/widgets/actions_section.dart';
 import 'package:larvixon_frontend/src/user/presentation/widgets/basic_info_section.dart';
 import 'package:larvixon_frontend/src/user/presentation/widgets/credentials_section.dart';
 import 'package:larvixon_frontend/src/user/presentation/widgets/details_section.dart';
-import 'package:larvixon_frontend/src/user/presentation/widgets/actions_section.dart';
 
 class AccountPage extends StatelessWidget {
   static const String route = '/account';
@@ -54,8 +55,11 @@ class AccountPage extends StatelessWidget {
 
                       return Column(
                         children: [
-                          const Row(
-                            children: [Expanded(child: ActionsSection())],
+                          Row(
+                            children: [
+                              const Expanded(child: HeaderSection()),
+                              _ActionsSection(),
+                            ],
                           ),
                           CustomCard(
                             child: Row(
@@ -167,6 +171,25 @@ class ProfilePictureSection extends StatelessWidget {
           ).withOnHoverEffect,
         );
       },
+    );
+  }
+}
+
+class _ActionsSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        CustomCard(
+          child: IconButton(
+            icon: Icon(Icons.logout, color: Theme.of(context).iconTheme.color!),
+            tooltip: context.translate.logout,
+            onPressed: () {
+              context.read<AuthBloc>().add(AuthSignOutRequested());
+            },
+          ),
+        ),
+      ],
     );
   }
 }
