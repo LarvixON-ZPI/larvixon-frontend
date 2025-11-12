@@ -8,7 +8,7 @@ import 'package:larvixon_frontend/src/common/widgets/layout/nav_item.dart';
 import 'package:larvixon_frontend/src/common/widgets/layout/nav_menu.dart';
 import 'package:larvixon_frontend/src/common/widgets/layout/app_bar_base.dart';
 import 'package:larvixon_frontend/src/common/widgets/ui/larvixon_logo.dart';
-import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
+import 'package:larvixon_frontend/src/contact/presentation/pages/contact_page.dart';
 import 'package:larvixon_frontend/src/settings/presentation/pages/settings_page.dart';
 import 'package:larvixon_frontend/src/user/presentation/pages/account_page.dart';
 
