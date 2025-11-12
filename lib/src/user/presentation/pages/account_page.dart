@@ -12,7 +12,7 @@ import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 import 'package:larvixon_frontend/src/user/bloc/cubit/user_edit_cubit.dart';
 import 'package:larvixon_frontend/src/user/bloc/user_bloc.dart';
 import 'package:larvixon_frontend/src/user/domain/repositories/user_repository.dart';
-import 'package:larvixon_frontend/src/user/presentation/widgets/actions_section.dart';
+import 'package:larvixon_frontend/src/user/presentation/widgets/header_section.dart';
 import 'package:larvixon_frontend/src/user/presentation/widgets/basic_info_section.dart';
 import 'package:larvixon_frontend/src/user/presentation/widgets/credentials_section.dart';
 import 'package:larvixon_frontend/src/user/presentation/widgets/details_section.dart';
@@ -55,12 +55,7 @@ class AccountPage extends StatelessWidget {
 
                       return Column(
                         children: [
-                          Row(
-                            children: [
-                              const Expanded(child: HeaderSection()),
-                              _ActionsSection(),
-                            ],
-                          ),
+                          const HeaderSection(),
                           CustomCard(
                             child: Row(
                               spacing: 16,
@@ -171,25 +166,6 @@ class ProfilePictureSection extends StatelessWidget {
           ).withOnHoverEffect,
         );
       },
-    );
-  }
-}
-
-class _ActionsSection extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        CustomCard(
-          child: IconButton(
-            icon: Icon(Icons.logout, color: Theme.of(context).iconTheme.color!),
-            tooltip: context.translate.logout,
-            onPressed: () {
-              context.read<AuthBloc>().add(AuthSignOutRequested());
-            },
-          ),
-        ),
-      ],
     );
   }
 }

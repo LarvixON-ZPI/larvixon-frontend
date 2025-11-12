@@ -80,12 +80,7 @@ class _AnalysisDetailsContentState extends State<_AnalysisDetailsContent> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Row(
-                children: [
-                  Expanded(child: HeaderSection(analysis: analysis)),
-                  ActionsSection(analysis: analysis),
-                ],
-              ),
+              HeaderSection(analysis: analysis),
               if (analysis.hasImage)
                 ImageSection(imageUrl: analysis.thumbnailUrl!),
 
