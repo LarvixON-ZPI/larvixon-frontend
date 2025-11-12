@@ -231,7 +231,6 @@ class _ActionConfirmationDialog extends StatelessWidget {
 
     showDialog(
       context: context,
-      barrierDismissible: true,
       builder: (dialogContext) => _ActionConfirmationDialog(action: action),
     );
   }

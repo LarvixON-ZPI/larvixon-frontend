@@ -4,7 +4,6 @@ import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/pages/analyses_page.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/actions/actions_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/all_results_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/best_match_result_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/header_section.dart';
