@@ -19,24 +19,39 @@ class AnalysesOverviewPage extends StatefulWidget {
 class _AnalysesOverviewPageState extends State<AnalysesOverviewPage>
     with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
+  bool _isLoadingMore = false;
+
+  void _onScroll() {
+    if (_isBottom && !_isLoadingMore) {
+      _isLoadingMore = true;
+      final cubit = context.read<AnalysisListCubit>();
+      cubit.loadAnalyses().whenComplete(() {
+        _isLoadingMore = false;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      final cubit = context.read<AnalysisListCubit>();
-      if (cubit.state.isEmpty) {
-        cubit.loadAnalyses();
-      }
-    });
+    final cubit = context.read<AnalysisListCubit>();
+    cubit.loadAnalyses().then((_) => _ensureScrollableContent(cubit));
   }
 
-  void _onScroll() {
-    if (_isBottom) {
-      context.read<AnalysisListCubit>().loadAnalyses();
+  Future<void> _ensureScrollableContent(AnalysisListCubit cubit) async {
+    await WidgetsBinding.instance.endOfFrame;
+
+    if (!_scrollController.hasClients) return;
+    final position = _scrollController.position;
+
+    while (mounted &&
+        position.maxScrollExtent == 0 &&
+        cubit.state.hasMore &&
+        !cubit.state.isLoading) {
+      await cubit.loadAnalyses();
+      await WidgetsBinding.instance.endOfFrame;
     }
   }
 
@@ -56,15 +71,30 @@ class _AnalysesOverviewPageState extends State<AnalysesOverviewPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-          child: AnalysesSidebar(),
-        ),
-        Expanded(child: _AnalysesContent(scrollController: _scrollController)),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        _ensureScrollableContent(context.read<AnalysisListCubit>());
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+              child: AnalysesSidebar(),
+            ),
+            Expanded(
+              child: BlocListener<AnalysisListCubit, AnalysisListState>(
+                listener: (context, state) {
+                  _ensureScrollableContent(context.read());
+                },
+                listenWhen: (previous, current) =>
+                    previous.sort != current.sort ||
+                    previous.filter != current.filter,
+                child: _AnalysesContent(scrollController: _scrollController),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
