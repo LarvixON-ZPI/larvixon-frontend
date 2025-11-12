@@ -331,6 +331,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get noAnalysesFound => 'Nie znaleziono analiz.';
 
   @override
+  String get analyses => 'Analizy';
+
+  @override
   String get loadingAnalysesError => 'Wystąpił błąd podczas ładowania analiz.';
 
   @override
