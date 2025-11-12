@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
-import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 
 class SimulationPage extends StatefulWidget {
   static const String route = '/simulation';

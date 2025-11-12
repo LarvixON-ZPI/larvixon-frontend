@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
@@ -12,9 +11,10 @@ import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/head
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/invalid_id_view.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/loading_view.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/meta_section.dart';
+import 'package:larvixon_frontend/src/common/extensions/navigation_extensions.dart';
 import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
-import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
-import 'package:larvixon_frontend/src/common/widgets/slide_widget.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
+import 'package:larvixon_frontend/src/common/widgets/utils/slide_widget.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class AnalysisDetailsPage extends StatelessWidget {
@@ -61,9 +61,12 @@ class _AnalysisDetailsContentState extends State<_AnalysisDetailsContent> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AnalysisBloc, AnalysisState>(
+      listenWhen: (previous, current) =>
+          previous.status != AnalysisStatus.deleted &&
+          current.status == AnalysisStatus.deleted,
       listener: (context, state) {
         if (state.status == AnalysisStatus.deleted) {
-          context.go(AnalysesOverviewPage.route);
+          context.popOrGo(AnalysesOverviewPage.route);
         }
       },
       builder: (context, state) {

@@ -1,6 +1,6 @@
 import 'package:larvixon_frontend/src/analysis/data/models/analysis_id_list_dto.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_id_list.dart';
-import 'package:larvixon_frontend/src/common/base_mapper.dart';
+import 'package:larvixon_frontend/src/common/utils/base_mapper.dart';
 
 class AnalysisIdListMapper
     implements Mapper<AnalysisIdListDTO, AnalysisIdList> {

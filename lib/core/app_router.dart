@@ -11,14 +11,14 @@ import 'package:larvixon_frontend/src/analysis/presentation/pages/analysis_detai
 import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_form.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_page.dart';
-import 'package:larvixon_frontend/src/common/app_shell.dart';
-import 'package:larvixon_frontend/src/common/widgets/adaptive_app_bar.dart';
-import 'package:larvixon_frontend/src/home/home_page.dart';
+import 'package:larvixon_frontend/src/common/widgets/layout/app_shell.dart';
+import 'package:larvixon_frontend/src/common/widgets/layout/adaptive_app_bar.dart';
+import 'package:larvixon_frontend/src/home/presentation/home_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/landing/landing_page.dart';
 import 'package:larvixon_frontend/src/settings/presentation/pages/settings_page.dart';
 import 'package:larvixon_frontend/src/simulation/presentation/pages/simulation_page.dart';
-import 'package:larvixon_frontend/src/user/presentation/account_page.dart';
+import 'package:larvixon_frontend/src/user/presentation/pages/account_page.dart';
 
 class GoRouterAuthNotifier extends ChangeNotifier {
   final AuthBloc authBloc;

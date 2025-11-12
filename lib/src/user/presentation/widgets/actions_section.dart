@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/pages/analyses_page.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
-import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 
 class HeaderSection extends StatelessWidget {
   const HeaderSection({super.key});

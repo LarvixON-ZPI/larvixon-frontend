@@ -3,7 +3,7 @@ import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_results.
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/animated_confidence_bar.dart';
 import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
-import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 
 class AllResultsSection extends StatelessWidget {
   const AllResultsSection({super.key, required this.results});

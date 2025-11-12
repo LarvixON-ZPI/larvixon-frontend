@@ -1,4 +1,4 @@
-import 'package:larvixon_frontend/src/common/base_mapper.dart';
+import 'package:larvixon_frontend/src/common/utils/base_mapper.dart';
 import 'package:larvixon_frontend/src/user/data/models/user_dto.dart';
 import 'package:larvixon_frontend/src/user/domain/entities/user.dart';
 

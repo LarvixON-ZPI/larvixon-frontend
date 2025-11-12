@@ -6,7 +6,7 @@ import 'package:larvixon_frontend/core/errors/api_failures.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 import 'package:larvixon_frontend/src/common/mixins/field_error_mixin.dart';
 import 'package:larvixon_frontend/src/common/mixins/form_validators_mixin.dart';
-import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 import 'package:larvixon_frontend/src/user/bloc/cubit/user_edit_cubit.dart';
 
 class BasicInfoSection extends StatefulWidget {

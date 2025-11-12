@@ -6,7 +6,7 @@ import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_filter.d
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_id_list.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
-import 'package:larvixon_frontend/src/common/sort_order.dart';
+import 'package:larvixon_frontend/src/common/enums/sort_order.dart';
 
 part 'analysis_list_state.dart';
 

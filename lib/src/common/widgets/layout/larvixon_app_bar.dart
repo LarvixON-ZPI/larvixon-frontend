@@ -4,13 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/src/about_us/presentation/pages/about_page.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/pages/analyses_page.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
-import 'package:larvixon_frontend/src/common/nav_item.dart';
-import 'package:larvixon_frontend/src/common/nav_menu.dart';
-import 'package:larvixon_frontend/src/common/widgets/app_bar_base.dart';
-import 'package:larvixon_frontend/src/common/widgets/larvixon_logo.dart';
+import 'package:larvixon_frontend/src/common/widgets/layout/nav_item.dart';
+import 'package:larvixon_frontend/src/common/widgets/layout/nav_menu.dart';
+import 'package:larvixon_frontend/src/common/widgets/layout/app_bar_base.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/larvixon_logo.dart';
 import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
 import 'package:larvixon_frontend/src/settings/presentation/pages/settings_page.dart';
-import 'package:larvixon_frontend/src/user/presentation/account_page.dart';
+import 'package:larvixon_frontend/src/user/presentation/pages/account_page.dart';
 
 class LarvixonAppBar extends StatelessWidget implements PreferredSizeWidget {
   const LarvixonAppBar({super.key});

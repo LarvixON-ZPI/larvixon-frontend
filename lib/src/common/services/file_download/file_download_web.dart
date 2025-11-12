@@ -24,6 +24,7 @@ class FileDownloadImpl implements FileDownloadBase {
   }) async {
     final blob = html.Blob([bytes]);
     final url = html.Url.createObjectUrlFromBlob(blob);
+    // ignore: unused_local_variable
     final anchor = html.AnchorElement(href: url)
       ..download = fileName
       ..click();

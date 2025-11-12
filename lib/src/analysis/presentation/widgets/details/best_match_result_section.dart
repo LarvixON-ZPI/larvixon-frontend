@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_results.dart';
 import 'package:larvixon_frontend/src/common/extensions/color_gradient.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
-import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 
 class BestMatchResultSection extends StatelessWidget {
   const BestMatchResultSection({super.key, required this.results});

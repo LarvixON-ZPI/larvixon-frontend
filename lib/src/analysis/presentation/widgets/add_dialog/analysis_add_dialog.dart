@@ -6,7 +6,7 @@ import 'package:larvixon_frontend/src/analysis/blocs/analysis_upload_cubit/analy
 import 'package:larvixon_frontend/src/common/services/file_picker/file_pick_result.dart';
 import 'package:larvixon_frontend/src/common/services/file_picker/file_picker.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
-import 'package:larvixon_frontend/src/common/widgets/dialog_utils.dart';
+import 'package:larvixon_frontend/src/common/utils/dialog_utils.dart';
 
 class LarvaVideoAddForm extends StatefulWidget {
   const LarvaVideoAddForm({super.key});

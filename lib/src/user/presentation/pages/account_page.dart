@@ -8,7 +8,7 @@ import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
 import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 import 'package:larvixon_frontend/src/common/services/file_picker/file_picker.dart';
-import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 import 'package:larvixon_frontend/src/user/bloc/cubit/user_edit_cubit.dart';
 import 'package:larvixon_frontend/src/user/bloc/user_bloc.dart';
 import 'package:larvixon_frontend/src/user/domain/repositories/user_repository.dart';

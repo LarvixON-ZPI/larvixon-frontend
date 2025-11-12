@@ -2,7 +2,7 @@ import 'package:larvixon_frontend/src/analysis/data/models/analysis_dto.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress_status.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_results.dart';
-import 'package:larvixon_frontend/src/common/base_mapper.dart';
+import 'package:larvixon_frontend/src/common/utils/base_mapper.dart';
 
 class AnalysisMapper implements Mapper<AnalysisDTO, Analysis> {
   @override

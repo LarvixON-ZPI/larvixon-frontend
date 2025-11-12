@@ -8,8 +8,8 @@ import 'package:larvixon_frontend/src/analysis/presentation/widgets/add_dialog/a
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/analyses/filter_popup_menu.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/analyses/sort_popup_menu.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
-import 'package:larvixon_frontend/src/common/widgets/icon_text_button.dart';
-import 'package:larvixon_frontend/src/common/widgets/side_bar_base.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/icon_text_button.dart';
+import 'package:larvixon_frontend/src/common/widgets/layout/side_bar_base.dart';
 import 'package:larvixon_frontend/src/settings/presentation/widgets/settings_dropdown_menu.dart';
 
 class AnalysesSidebar extends StatelessWidget {

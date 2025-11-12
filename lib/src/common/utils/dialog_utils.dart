@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 
 class DialogUtils {
   static Future<T?> showScaleDialog<T>({
