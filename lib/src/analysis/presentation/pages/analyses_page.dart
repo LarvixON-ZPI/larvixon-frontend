@@ -16,15 +16,21 @@ class AnalysesOverviewPage extends StatefulWidget {
   State<AnalysesOverviewPage> createState() => _AnalysesOverviewPageState();
 }
 
-class _AnalysesOverviewPageState extends State<AnalysesOverviewPage> {
+class _AnalysesOverviewPageState extends State<AnalysesOverviewPage>
+    with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<AnalysisListCubit>().loadAnalyses();
+      if (!mounted) return;
+      final cubit = context.read<AnalysisListCubit>();
+      if (cubit.state.isEmpty) {
+        cubit.loadAnalyses();
+      }
     });
   }
 
@@ -49,6 +55,7 @@ class _AnalysesOverviewPageState extends State<AnalysesOverviewPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -60,6 +67,9 @@ class _AnalysesOverviewPageState extends State<AnalysesOverviewPage> {
       ],
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class _AnalysesContent extends StatelessWidget {
