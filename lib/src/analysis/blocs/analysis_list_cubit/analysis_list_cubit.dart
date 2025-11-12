@@ -21,6 +21,9 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
           videoIds: ids.ids,
           hasMore: ids.hasMore,
           nextPage: ids.nextPage,
+          page: state.page + 1,
+          // ignore: avoid_redundant_argument_values
+          errorMessage: null,
           status: AnalysisListStatus.success,
         ),
       );
@@ -53,21 +56,8 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
           ),
         );
       },
-
       (success) {
-        final ids = success.ids;
-        final nextPage = success.nextPage;
-        final merged = {...state.analysesIds, ...ids}.toList();
-
-        emit(
-          state.copyWith(
-            status: AnalysisListStatus.success,
-            videoIds: merged,
-            page: state.page + 1,
-            nextPage: nextPage,
-            hasMore: nextPage != null,
-          ),
-        );
+        // Handled by subscription :)
       },
     );
   }

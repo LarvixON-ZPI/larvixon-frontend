@@ -32,7 +32,7 @@ class LandingAppBar extends StatelessWidget implements PreferredSizeWidget {
           .map(
             (i) => TextButton.icon(
               icon: Icon(i.icon),
-              onPressed: i.onTap ?? () => context.go(i.route),
+              onPressed: i.onTap ?? () => context.go(i.route, extra: i.extra),
               label: Text(i.label),
               style: TextButton.styleFrom(
                 foregroundColor: Theme.of(context).iconTheme.color,
@@ -65,6 +65,7 @@ class LandingAppBar extends StatelessWidget implements PreferredSizeWidget {
         label: context.translate.signIn,
         icon: Icons.person,
         route: AuthPage.route,
+        extra: {'mode': AuthFormMode.signIn},
       ),
     ];
   }

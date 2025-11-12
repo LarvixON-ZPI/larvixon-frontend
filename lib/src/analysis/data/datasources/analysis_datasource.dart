@@ -56,18 +56,14 @@ abstract class AnalysisDataSource {
     }
 
     if (nextPage != null) {
-      final response = await apiClient.dio.get(
-        nextPage,
-        queryParameters: queryParameters,
-      );
-      return AnalysisIdListDTO.fromMap(response.data);
-    } else {
-      final response = await apiClient.dio.get(
-        AnalysisEndpoints.videoIDs,
-        queryParameters: queryParameters,
-      );
+      final response = await apiClient.dio.get(nextPage);
       return AnalysisIdListDTO.fromMap(response.data);
     }
+    final response = await apiClient.dio.get(
+      AnalysisEndpoints.videoIDs,
+      queryParameters: queryParameters,
+    );
+    return AnalysisIdListDTO.fromMap(response.data);
   }
 
   Future<AnalysisDTO> fetchAnalysisDetailsById(int id) async {

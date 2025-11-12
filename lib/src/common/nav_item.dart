@@ -5,11 +5,13 @@ class NavItem {
   final IconData icon;
   final String route;
   final VoidCallback? onTap;
+  final Object? extra;
 
   const NavItem({
     required this.label,
     required this.icon,
     required this.route,
+    this.extra,
     this.onTap,
   });
 }
