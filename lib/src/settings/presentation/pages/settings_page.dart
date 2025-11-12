@@ -19,29 +19,31 @@ class _SettingsPageState extends State<SettingsPage> {
     return Center(
       child: SingleChildScrollView(
         child: SafeArea(
-          child: Column(
-            children: [
-              CustomCard(
-                constraints: const BoxConstraints(maxWidth: 600),
-                child: Column(
-                  spacing: 16,
-                  children: [
-                    Text(context.translate.appearance),
-                    const ThemeSelectionButtons(),
-                  ],
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                CustomCard(
+                  title: Text(
+                    context.translate.appearance,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  child: const ThemeSelectionButtons(),
                 ),
-              ),
-              CustomCard(
-                constraints: const BoxConstraints(maxWidth: 600),
-                child: Column(
-                  spacing: 16,
-                  children: [
-                    Text(context.translate.language),
-                    const LocaleWrapList(),
-                  ],
+                CustomCard(
+                  title: Text(
+                    context.translate.language,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  child: const Center(child: LocaleWrapList()),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

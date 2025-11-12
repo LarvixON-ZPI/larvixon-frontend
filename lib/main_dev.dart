@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/core/api_client.dart';
-import 'package:larvixon_frontend/src/settings/domain/repositories/settings_repository.dart';
-import 'package:larvixon_frontend/src/settings/domain/repositories/settings_repository_impl.dart';
-import 'package:larvixon_frontend/src/settings/presentation/blocs/cubit/settings_cubit.dart';
-
 import 'package:larvixon_frontend/core/app_router.dart';
 import 'package:larvixon_frontend/core/theme/app_theme.dart';
 import 'package:larvixon_frontend/l10n/app_localizations.dart';
@@ -14,6 +10,9 @@ import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repo
 import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
 import 'package:larvixon_frontend/src/authentication/domain/repositories/auth_repository.dart';
 import 'package:larvixon_frontend/src/authentication/domain/repositories/auth_repository_fake.dart';
+import 'package:larvixon_frontend/src/settings/domain/repositories/settings_repository.dart';
+import 'package:larvixon_frontend/src/settings/domain/repositories/settings_repository_impl.dart';
+import 'package:larvixon_frontend/src/settings/presentation/blocs/cubit/settings_cubit.dart';
 import 'package:larvixon_frontend/src/user/bloc/user_bloc.dart';
 import 'package:larvixon_frontend/src/user/domain/repositories/user_repository.dart';
 import 'package:larvixon_frontend/src/user/domain/repositories/user_repository_fake.dart';

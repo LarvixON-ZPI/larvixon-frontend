@@ -14,9 +14,8 @@ import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_upload_response.dart';
 import 'package:larvixon_frontend/src/analysis/domain/failures/failures.dart';
-import 'package:larvixon_frontend/src/common/services/file_picker/file_pick_result.dart';
-
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
+import 'package:larvixon_frontend/src/common/services/file_picker/file_pick_result.dart';
 
 class AnalysisRepositoryImpl implements AnalysisRepository {
   final AnalysisDataSource dataSource;

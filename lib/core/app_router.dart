@@ -4,22 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/core/transitions.dart';
+import 'package:larvixon_frontend/src/about_us/presentation/pages/about_page.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/pages/analyses_page.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/pages/analysis_details_page.dart';
-import 'package:larvixon_frontend/src/home/larvixon_app_bar.dart';
-import 'package:larvixon_frontend/src/about_us/presentation/pages/about_page.dart';
-import 'package:larvixon_frontend/src/landing/presentation/landing_appbar.dart';
-import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
-import 'package:larvixon_frontend/src/simulation/presentation/pages/simulation_page.dart';
-import 'package:larvixon_frontend/src/common/app_shell.dart';
-import 'package:larvixon_frontend/src/settings/presentation/pages/settings_page.dart';
-
 import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_form.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_page.dart';
+import 'package:larvixon_frontend/src/common/app_shell.dart';
+import 'package:larvixon_frontend/src/common/widgets/adaptive_app_bar.dart';
 import 'package:larvixon_frontend/src/home/home_page.dart';
+import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/landing/landing_page.dart';
+import 'package:larvixon_frontend/src/settings/presentation/pages/settings_page.dart';
+import 'package:larvixon_frontend/src/simulation/presentation/pages/simulation_page.dart';
 import 'package:larvixon_frontend/src/user/presentation/account_page.dart';
 
 class GoRouterAuthNotifier extends ChangeNotifier {
@@ -37,17 +35,17 @@ class GoRouterAuthNotifier extends ChangeNotifier {
   }
 }
 
+// lib/core/app_router.dart
 class AppRouter {
   final AuthBloc authBloc;
 
   AppRouter(this.authBloc);
+
   final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(
     debugLabel: 'Root',
   );
-  final GlobalKey<NavigatorState> _landingShellNavigatorKey =
-      GlobalKey<NavigatorState>(debugLabel: 'LandingShell');
-  final GlobalKey<NavigatorState> _appShellNavigatorKey =
-      GlobalKey<NavigatorState>(debugLabel: 'AppShell');
+  final GlobalKey<NavigatorState> _shellNavigatorKey =
+      GlobalKey<NavigatorState>(debugLabel: 'Shell');
 
   late final router = GoRouter(
     initialLocation: LandingPage.route,
@@ -55,15 +53,12 @@ class AppRouter {
     refreshListenable: GoRouterAuthNotifier(authBloc),
     routes: [
       ShellRoute(
-        navigatorKey: _landingShellNavigatorKey,
-        pageBuilder: (context, state, child) {
-          return AppShell(
-            appBar: const LandingAppBar(),
-            child: child,
-          ).withSlideTransition(state);
+        navigatorKey: _shellNavigatorKey,
+        builder: (context, state, child) {
+          return AppShell(appBar: const AdaptiveAppBar(), child: child);
         },
-
         routes: [
+          // ==================== PUBLIC ROUTES ====================
           GoRoute(
             name: LandingPage.name,
             path: LandingPage.route,
@@ -105,24 +100,8 @@ class AppRouter {
               return page.withoutTransition(state: state);
             },
           ),
-        ],
-      ),
 
-      ShellRoute(
-        navigatorKey: _appShellNavigatorKey,
-        pageBuilder: (context, state, child) {
-          return MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                create: (context) =>
-                    AnalysisListCubit(context.read())..fetchAnalysesList(),
-              ),
-            ],
-            child: AppShell(appBar: const LarvixonAppBar(), child: child),
-          ).withSlideTransition(state);
-        },
-
-        routes: [
+          // ==================== AUTHENTICATED ROUTES ====================
           GoRoute(
             path: HomePage.route,
             name: HomePage.name,
@@ -134,9 +113,10 @@ class AppRouter {
             path: AnalysesOverviewPage.route,
             name: AnalysesOverviewPage.name,
             pageBuilder: (context, state) {
-              return const AnalysesOverviewPage().withoutTransition(
-                state: state,
-              );
+              return BlocProvider(
+                create: (context) => AnalysisListCubit(context.read()),
+                child: const AnalysesOverviewPage(),
+              ).withoutTransition(state: state);
             },
             routes: [
               GoRoute(
@@ -160,7 +140,6 @@ class AppRouter {
               ),
             ],
           ),
-
           GoRoute(
             path: AccountPage.route,
             name: AccountPage.name,
@@ -168,7 +147,6 @@ class AppRouter {
               return const AccountPage().withoutTransition(state: state);
             },
           ),
-
           GoRoute(
             path: SettingsPage.route,
             name: SettingsPage.name,
@@ -181,26 +159,28 @@ class AppRouter {
     ],
     redirect: (context, state) {
       final authState = authBloc.state;
-      final loggingIn = state.uri.path == AuthPage.route;
-      final onLanding = state.uri.path == LandingPage.route;
-      final onAbout = state.uri.path == AboutPage.route;
-      final onContact = state.uri.path == ContactPage.route;
-      final onSimulation = state.uri.path == SimulationPage.route;
+      final isAuthRoute = state.uri.path == AuthPage.route;
+      final isPublicRoute = [
+        LandingPage.route,
+        AboutPage.route,
+        ContactPage.route,
+        SimulationPage.route,
+      ].contains(state.uri.path);
 
       switch (authState.status) {
         case AuthStatus.initial:
         case AuthStatus.unauthenticated:
-          if (!loggingIn &&
-              !onLanding &&
-              !onAbout &&
-              !onContact &&
-              !onSimulation) {
+          if (!isAuthRoute && !isPublicRoute) {
             return LandingPage.route;
           }
           return null;
+
         case AuthStatus.authenticated:
-          if (loggingIn || onLanding) return AnalysesOverviewPage.route;
+          if (isAuthRoute || state.uri.path == LandingPage.route) {
+            return AnalysesOverviewPage.route;
+          }
           return null;
+
         case AuthStatus.mfaRequired:
         case AuthStatus.error:
         case AuthStatus.loading:
@@ -208,34 +188,4 @@ class AppRouter {
       }
     },
   );
-
-  Page<T> buildPageWithDefaultTransition<T>(
-    BuildContext context,
-    GoRouterState state,
-    Widget child,
-  ) {
-    return CustomTransitionPage(
-      key: state.pageKey,
-      child: child,
-      transitionDuration: const Duration(milliseconds: 500),
-      reverseTransitionDuration: const Duration(milliseconds: 500),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        final tween = Tween<Offset>(
-          begin: const Offset(1.0, 0.0),
-          end: Offset.zero,
-        );
-
-        final curvedAnimation = CurvedAnimation(
-          parent: animation,
-          curve: Curves.easeInOut,
-          reverseCurve: Curves.easeInOut,
-        );
-
-        return SlideTransition(
-          position: tween.animate(curvedAnimation),
-          child: child,
-        );
-      },
-    );
-  }
 }

@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:larvixon_frontend/core/errors/failures.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_field_enum.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_filter.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_id_list.dart';
@@ -11,11 +12,9 @@ import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_upload_response.dart';
 import 'package:larvixon_frontend/src/analysis/domain/failures/failures.dart';
+import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 import 'package:larvixon_frontend/src/common/services/file_picker/file_pick_result.dart';
 import 'package:larvixon_frontend/src/common/sort_order.dart';
-
-import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
-import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 
 class AnalysisRepositoryFake implements AnalysisRepository {
   int nextPage = 1;
@@ -85,6 +84,10 @@ class AnalysisRepositoryFake implements AnalysisRepository {
     AnalysisSort? sort,
     AnalysisFilter? filter,
   }) {
+    if (nextPage == null) {
+      _analyses.clear();
+      this.nextPage = 0;
+    }
     final int currentPage = this.nextPage;
     this.nextPage += 1;
     final bool isFirstPage = currentPage == 0;
@@ -121,7 +124,7 @@ class AnalysisRepositoryFake implements AnalysisRepository {
       final nextPageToken = hasNext ? (currentPage + 1).toString() : null;
 
       final result = AnalysisIdList(ids: ids, nextPage: nextPageToken);
-      _analysisIdsController.add(result);
+      if (!_analysisIdsController.isClosed) _analysisIdsController.add(result);
 
       return result;
     }, (error, _) => UnknownAnalysisFailure(message: error.toString()));

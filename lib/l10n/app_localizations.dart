@@ -674,6 +674,12 @@ abstract class AppLocalizations {
   /// **'No analyses found.'**
   String get noAnalysesFound;
 
+  /// No description provided for @analyses.
+  ///
+  /// In en, this message translates to:
+  /// **'Analizy'**
+  String get analyses;
+
   /// No description provided for @loadingAnalysesError.
   ///
   /// In en, this message translates to:

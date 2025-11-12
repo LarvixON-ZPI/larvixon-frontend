@@ -15,6 +15,7 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
   late final StreamSubscription<AnalysisIdList> _idsSubscription;
   AnalysisListCubit(this._repository) : super(const AnalysisListState()) {
     _idsSubscription = _repository.analysisIdsStream.listen((ids) {
+      if (isClosed) return;
       emit(
         state.copyWith(
           videoIds: ids.ids,
@@ -72,6 +73,7 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
   }
 
   Future<void> loadAnalyses({bool refresh = false}) async {
+    if (isClosed) return;
     if (state.hasMore == false && !refresh) return;
     emit(state.copyWith(status: AnalysisListStatus.loading));
     final result = await _repository
@@ -81,7 +83,7 @@ class AnalysisListCubit extends Cubit<AnalysisListState> {
           filter: state.filter,
         )
         .run();
-
+    if (isClosed) return;
     result.match(
       (failire) => emit(
         state.copyWith(
