@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
-
-import 'package:larvixon_frontend/src/common/mixins/form_validators_mixin.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
+import 'package:larvixon_frontend/src/common/mixins/form_validators_mixin.dart';
+import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
 
 class ContactSection extends StatefulWidget {
   const ContactSection({super.key});
@@ -45,23 +44,21 @@ class _ContactSectionState extends State<ContactSection>
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-
-            children: [
-              Text(
+        SizedBox(
+          width: double.infinity,
+          child: CustomCard(
+            title: Center(
+              child: Text(
                 context.translate.contact,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                context.translate.contactDescription,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ],
+            ),
+            description: Text(
+              context.translate.contactDescription,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
           ),
         ),
 
