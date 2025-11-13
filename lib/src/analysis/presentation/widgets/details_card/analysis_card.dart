@@ -9,7 +9,7 @@ import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/status_row.dart';
 import 'package:larvixon_frontend/src/common/extensions/date_format_extension.dart';
 import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
-import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class AnalysisCard extends StatefulWidget {
@@ -38,6 +38,7 @@ class _AnalysisCardState extends State<AnalysisCard>
         builder: (context, state) {
           final analysis = state.analysis;
           final hasResults = state.analysis?.results?.isNotEmpty ?? false;
+          // ignore: unused_local_variable
           final hasImage = analysis?.thumbnailUrl != null;
           final enabled =
               state.status == AnalysisStatus.loading || state.analysis == null;

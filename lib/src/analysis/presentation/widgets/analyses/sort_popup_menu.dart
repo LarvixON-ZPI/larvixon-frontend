@@ -5,7 +5,7 @@ import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysi
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_field_enum.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
-import 'package:larvixon_frontend/src/common/sort_order.dart';
+import 'package:larvixon_frontend/src/common/enums/sort_order.dart';
 
 class SortPopupMenu extends StatelessWidget {
   final AnalysisSort initialSorting;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:larvixon_frontend/src/common/widgets/background.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/background.dart';
 
 class AppShell extends StatelessWidget {
   final Widget child;

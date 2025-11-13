@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:larvixon_frontend/src/common/nav_item.dart';
+import 'package:larvixon_frontend/src/common/widgets/layout/nav_item.dart';
 
 class NavMenu extends StatelessWidget {
   final List<NavItem> items;

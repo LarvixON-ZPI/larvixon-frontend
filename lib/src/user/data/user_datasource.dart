@@ -37,6 +37,7 @@ class UserDataSource {
     final formData = FormData.fromMap({
       'profile_picture': MultipartFile.fromBytes(bytes, filename: fileName),
     });
+    // ignore: unused_local_variable
     final response = await apiClient.dio.patch(
       UserEndpoints.profileDetails,
       data: formData,

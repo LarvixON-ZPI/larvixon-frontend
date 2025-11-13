@@ -25,7 +25,6 @@ class AnalysisRepositoryImpl implements AnalysisRepository {
       StreamController.broadcast();
   final List<int> _cachedIds = [];
   String? _nextPage;
-  bool _hasMore = true;
 
   AnalysisRepositoryImpl({required this.dataSource});
   @override
@@ -100,7 +99,6 @@ class AnalysisRepositoryImpl implements AnalysisRepository {
         }
 
         _nextPage = entity.nextPage;
-        _hasMore = entity.hasMore;
 
         _emitUpdatedList();
 

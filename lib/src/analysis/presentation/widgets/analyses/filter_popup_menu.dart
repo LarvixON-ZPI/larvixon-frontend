@@ -6,7 +6,7 @@ import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_filter.d
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress_status.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/analyses/sort_popup_menu.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
-import 'package:larvixon_frontend/src/common/widgets/date_range_input.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/date_range_input.dart';
 
 class FilterPopupMenu extends StatelessWidget {
   final AnalysisFilter initialFiltering;

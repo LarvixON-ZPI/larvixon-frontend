@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
-import 'package:larvixon_frontend/src/home/larvixon_app_bar.dart';
-import 'package:larvixon_frontend/src/landing/presentation/landing_appbar.dart';
+import 'package:larvixon_frontend/src/common/widgets/layout/larvixon_app_bar.dart';
+import 'package:larvixon_frontend/src/landing/presentation/widgets/landing_appbar.dart';
 
 class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
   const AdaptiveAppBar({super.key});

@@ -10,7 +10,7 @@ import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/actions/action_button_data.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 import 'package:larvixon_frontend/src/common/services/file_download/file_download_service.dart';
-import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 
 class ActionsSection extends StatelessWidget {
   const ActionsSection({super.key, required this.analysis});

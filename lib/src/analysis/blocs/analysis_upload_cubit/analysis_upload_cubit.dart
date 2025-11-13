@@ -18,7 +18,6 @@ class AnalysisUploadCubit extends Cubit<AnalysisUploadState> {
     required String title,
   }) async {
     _cancelToken = CancelToken();
-    const double lastProgress = 0.0;
     emit(
       state.copyWith(status: VideoUploadStatus.uploading, uploadProgress: 0.0),
     );

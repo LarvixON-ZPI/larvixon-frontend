@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/src/about_us/domain/entities/team_member.dart';
 import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
-import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
-import 'package:larvixon_frontend/src/common/widgets/profile_avatar.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/profile_avatar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TeamMemberDetails extends StatefulWidget {
@@ -106,7 +106,6 @@ class _TeamMemberDetailsState extends State<TeamMemberDetails>
   @override
   Widget build(BuildContext context) {
     final teamMember = widget.teamMember;
-    final hasImage = teamMember.imageUrl != null;
     final hasRoles = teamMember.roles?.isNotEmpty ?? false;
     final hasLinks = teamMember.links?.isNotEmpty ?? false;
 

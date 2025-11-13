@@ -3,7 +3,7 @@ import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/status_row.dart';
 import 'package:larvixon_frontend/src/common/extensions/date_format_extension.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
-import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 
 class MetaSection extends StatefulWidget {
   const MetaSection({super.key, required this.analysis});

@@ -1,6 +1,6 @@
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_field_enum.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
-import 'package:larvixon_frontend/src/common/sort_order.dart';
+import 'package:larvixon_frontend/src/common/enums/sort_order.dart';
 
 extension AnalysisSortQueryParams on AnalysisSort {
   String toQueryParam() {

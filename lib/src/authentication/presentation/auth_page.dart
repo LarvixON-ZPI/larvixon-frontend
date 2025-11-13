@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/src/common/extensions/default_padding.dart';
-import 'package:larvixon_frontend/src/common/widgets/custom_card.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 
 import 'package:larvixon_frontend/src/authentication/presentation/auth_form.dart';
 

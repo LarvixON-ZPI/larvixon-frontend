@@ -14,7 +14,7 @@ import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_upload_r
 import 'package:larvixon_frontend/src/analysis/domain/failures/failures.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 import 'package:larvixon_frontend/src/common/services/file_picker/file_pick_result.dart';
-import 'package:larvixon_frontend/src/common/sort_order.dart';
+import 'package:larvixon_frontend/src/common/enums/sort_order.dart';
 
 class AnalysisRepositoryFake implements AnalysisRepository {
   int nextPage = 1;

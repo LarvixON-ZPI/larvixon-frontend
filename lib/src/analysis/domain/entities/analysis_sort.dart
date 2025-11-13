@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_field_enum.dart';
-import 'package:larvixon_frontend/src/common/sort_order.dart';
+import 'package:larvixon_frontend/src/common/enums/sort_order.dart';
 
 @immutable
 class AnalysisSort extends Equatable {

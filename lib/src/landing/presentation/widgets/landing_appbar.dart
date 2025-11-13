@@ -5,13 +5,13 @@ import 'package:larvixon_frontend/src/about_us/presentation/pages/about_page.dar
 import 'package:larvixon_frontend/src/authentication/presentation/auth_form.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_page.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
-import 'package:larvixon_frontend/src/common/nav_item.dart';
-import 'package:larvixon_frontend/src/common/nav_menu.dart';
-import 'package:larvixon_frontend/src/common/widgets/app_bar_base.dart';
-import 'package:larvixon_frontend/src/common/widgets/app_bar_button.dart';
-import 'package:larvixon_frontend/src/common/widgets/larvixon_logo.dart';
-import 'package:larvixon_frontend/src/landing/presentation/contact/contact_page.dart';
-import 'package:larvixon_frontend/src/landing/presentation/landing/landing_page.dart';
+import 'package:larvixon_frontend/src/common/widgets/layout/nav_item.dart';
+import 'package:larvixon_frontend/src/common/widgets/layout/nav_menu.dart';
+import 'package:larvixon_frontend/src/common/widgets/layout/app_bar_base.dart';
+import 'package:larvixon_frontend/src/common/widgets/layout/app_bar_button.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/larvixon_logo.dart';
+import 'package:larvixon_frontend/src/contact/presentation/pages/contact_page.dart';
+import 'package:larvixon_frontend/src/landing/presentation/pages/landing_page.dart';
 import 'package:larvixon_frontend/src/simulation/presentation/pages/simulation_page.dart';
 
 class LandingAppBar extends StatelessWidget implements PreferredSizeWidget {
