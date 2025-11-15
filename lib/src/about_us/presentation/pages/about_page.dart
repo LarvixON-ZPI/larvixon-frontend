@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:larvixon_frontend/src/common/extensions/default_padding.dart';
+import 'package:larvixon_frontend/core/constants/page.dart';
 import 'package:larvixon_frontend/src/about_us/presentation/widgets/about_section.dart';
+import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
+import 'package:larvixon_frontend/src/common/widgets/layout/header_section_base.dart';
 
 class AboutPage extends StatelessWidget {
   static const String route = '/about';
@@ -10,11 +12,16 @@ class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Center(
-        child: SafeArea(
+      child: SafeArea(
+        child: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 600),
-            child: const AboutSection().withDefaultPagePadding,
+            constraints: kDefaultPageWidthConstraitns,
+            child: Column(
+              children: [
+                HeaderSectionBase(title: context.translate.about),
+                const AboutSection(),
+              ],
+            ),
           ),
         ),
       ),

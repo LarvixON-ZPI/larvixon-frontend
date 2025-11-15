@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:larvixon_frontend/core/constants/common_icons.dart';
 import 'package:larvixon_frontend/src/about_us/presentation/pages/about_page.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_form.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_page.dart';
@@ -47,17 +47,17 @@ class LandingAppBar extends StatelessWidget implements PreferredSizeWidget {
     return [
       NavItem(
         label: context.translate.about,
-        icon: FontAwesomeIcons.peopleGroup,
+        icon: CommonIcons.aboutUs,
         route: AboutPage.route,
       ),
       NavItem(
         label: context.translate.contact,
-        icon: FontAwesomeIcons.circleQuestion,
+        icon: CommonIcons.contact,
         route: ContactPage.route,
       ),
       NavItem(
         label: context.translate.simulation,
-        icon: FontAwesomeIcons.gamepad,
+        icon: CommonIcons.simulation,
         route: SimulationPage.route,
       ),
 

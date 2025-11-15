@@ -13,7 +13,6 @@ import 'package:larvixon_frontend/src/authentication/presentation/auth_form.dart
 import 'package:larvixon_frontend/src/authentication/presentation/auth_page.dart';
 import 'package:larvixon_frontend/src/common/widgets/layout/app_shell.dart';
 import 'package:larvixon_frontend/src/common/widgets/layout/adaptive_app_bar.dart';
-import 'package:larvixon_frontend/src/home/presentation/home_page.dart';
 import 'package:larvixon_frontend/src/contact/presentation/pages/contact_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/pages/landing_page.dart';
 import 'package:larvixon_frontend/src/settings/presentation/pages/settings_page.dart';
@@ -35,7 +34,6 @@ class GoRouterAuthNotifier extends ChangeNotifier {
   }
 }
 
-// lib/core/app_router.dart
 class AppRouter {
   final AuthBloc authBloc;
 
@@ -64,6 +62,12 @@ class AppRouter {
             path: LandingPage.route,
             pageBuilder: (context, state) {
               return const LandingPage().withoutTransition(state: state);
+            },
+            redirect: (context, state) {
+              if (authBloc.state.status == AuthStatus.authenticated) {
+                return AnalysesOverviewPage.route;
+              }
+              return null;
             },
           ),
           GoRoute(
@@ -103,13 +107,6 @@ class AppRouter {
 
           // ==================== AUTHENTICATED ROUTES ====================
           GoRoute(
-            path: HomePage.route,
-            name: HomePage.name,
-            pageBuilder: (context, state) {
-              return const HomePage().withoutTransition(state: state);
-            },
-          ),
-          GoRoute(
             path: AnalysesOverviewPage.route,
             name: AnalysesOverviewPage.name,
             pageBuilder: (context, state) {
@@ -125,7 +122,7 @@ class AppRouter {
                 redirect: (context, state) {
                   final analysisId = state.pathParameters['analysisId'];
                   if (analysisId == null) {
-                    return HomePage.route;
+                    return AnalysesOverviewPage.route;
                   }
                   return null;
                 },

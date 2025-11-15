@@ -14,12 +14,6 @@ class AboutSection extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CustomCard(
-          title: Text(
-            context.translate.about,
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-          ),
           description: Text(
             context.translate.aboutDescription,
             style: Theme.of(context).textTheme.bodyLarge,

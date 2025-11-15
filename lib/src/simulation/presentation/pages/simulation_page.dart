@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
+import 'package:larvixon_frontend/core/constants/page.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
+import 'package:larvixon_frontend/src/common/widgets/layout/header_section_base.dart';
 import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 
 class SimulationPage extends StatefulWidget {
@@ -24,17 +26,45 @@ class _SimulationPageState extends State<SimulationPage> {
         const double maxWidth = 1552;
         final double width = constraints.maxWidth.clamp(0, maxWidth);
 
-        return SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
+        return SingleChildScrollView(
+          child: SafeArea(
+            child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
+                  ConstrainedBox(
+                    constraints: kDefaultPageWidthConstraitns,
+                    child: Column(
+                      children: [
+                        HeaderSectionBase(
+                          title: context.translate.simulation,
+                          subtitle: context.translate.simulationDescription,
+                        ),
+                        CustomCard(
+                          child: Column(
+                            spacing: 6,
+                            children: [
+                              _HowToStep(
+                                number: 1,
+                                text: context.translate.simulation_how_to_1,
+                              ),
+                              _HowToStep(
+                                number: 2,
+                                text: context.translate.simulation_how_to_2,
+                              ),
+                              _HowToStep(
+                                number: 3,
+                                text: context.translate.simulation_how_to_3,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
+                  ),
+
+                  ConstrainedBox(
+                    constraints: kDefaultPageWidthConstraitns,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       spacing: 8,
@@ -86,7 +116,6 @@ class _SimulationPageState extends State<SimulationPage> {
                       ],
                     ),
                   ),
-
                   Container(
                     margin: const EdgeInsets.all(12),
                     constraints: BoxConstraints(
@@ -106,20 +135,6 @@ class _SimulationPageState extends State<SimulationPage> {
                           onUnityMessage: onUnityMessage,
                         ),
                       ),
-                    ),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    child: Text(
-                      context.translate.simulationDescription,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodyMedium?.copyWith(color: Colors.white),
                     ),
                   ),
                 ],
@@ -184,5 +199,26 @@ class _SimulationPageState extends State<SimulationPage> {
   void dispose() {
     _unityWidgetController?.dispose();
     super.dispose();
+  }
+}
+
+class _HowToStep extends StatelessWidget {
+  final int number;
+  final String text;
+
+  const _HowToStep({required this.number, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CircleAvatar(radius: 12, child: Text(number.toString())),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(text, style: Theme.of(context).textTheme.bodyLarge),
+        ),
+      ],
+    );
   }
 }

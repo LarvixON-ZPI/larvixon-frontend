@@ -12,7 +12,7 @@ class HeaderSectionBase extends StatelessWidget {
     super.key,
     required this.title,
     this.subtitle,
-    this.fallbackRoute,
+    this.fallbackRoute = '/',
     this.showBackButton = true,
     this.onBack,
   });
@@ -39,12 +39,8 @@ class HeaderSectionBase extends StatelessWidget {
                 if (subtitle != null)
                   Text(
                     subtitle!,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withValues(alpha: 0.7),
-                    ),
-                    maxLines: 2,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    maxLines: 4,
                     overflow: TextOverflow.ellipsis,
                   ),
               ],
