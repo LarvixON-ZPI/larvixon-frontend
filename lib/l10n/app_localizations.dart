@@ -260,6 +260,12 @@ abstract class AppLocalizations {
   /// **'About'**
   String get about;
 
+  /// No description provided for @tapATeamMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a team member to learn more'**
+  String get tapATeamMember;
+
   /// No description provided for @contact.
   ///
   /// In en, this message translates to:

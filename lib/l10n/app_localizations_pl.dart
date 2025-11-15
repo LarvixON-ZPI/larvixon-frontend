@@ -102,6 +102,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get about => 'O nas';
 
   @override
+  String get tapATeamMember =>
+      'Wybierz członka zespołu, aby dowiedzieć się więcej';
+
+  @override
   String get contact => 'Kontakt';
 
   @override

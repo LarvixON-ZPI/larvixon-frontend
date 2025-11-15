@@ -102,6 +102,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get about => 'About';
 
   @override
+  String get tapATeamMember => 'Tap a team member to learn more';
+
+  @override
   String get contact => 'Contact';
 
   @override
