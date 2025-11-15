@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:larvixon_frontend/core/constants/endpoints_report.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress_status.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/pages/analyses_page.dart';
 import 'package:larvixon_frontend/src/common/extensions/navigation_extensions.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
@@ -23,10 +24,17 @@ class HeaderSection extends StatelessWidget {
       title: "${context.translate.analysis} #${analysis.id}",
       fallbackRoute: AnalysesOverviewPage.route,
       actions: [
-        ActionItem.export(
-          label: context.translate.export,
-          onPressed: () => _downloadAnalysisReport(context),
-        ),
+        if (analysis.status == AnalysisProgressStatus.completed)
+          ActionItem.export(
+            label: context.translate.export,
+            onPressed: () => _downloadAnalysisReport(context),
+          ),
+        if (analysis.status == AnalysisProgressStatus.failed)
+          ActionItem(
+            icon: const Icon(FontAwesomeIcons.arrowsRotate),
+            label: context.translate.retry,
+            onPressed: () => {},
+          ),
         ActionItem(
           label: context.translate.delete,
           icon: const Icon(FontAwesomeIcons.trash),

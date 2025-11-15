@@ -50,6 +50,7 @@ class TeamMembersCard extends StatelessWidget {
         context.translate.ourTeam,
         style: Theme.of(context).textTheme.titleLarge,
       ),
+      description: Text(context.translate.tapATeamMember),
       child: SizedBox(
         width: double.infinity,
         child: Wrap(

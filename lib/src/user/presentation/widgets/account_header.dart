@@ -7,8 +7,8 @@ import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart
 import 'package:larvixon_frontend/src/common/widgets/layout/header_with_actions.dart';
 import 'package:larvixon_frontend/src/common/widgets/ui/action_item.dart';
 
-class HeaderSection extends StatelessWidget {
-  const HeaderSection({super.key});
+class AccountHeader extends StatelessWidget {
+  const AccountHeader({super.key});
 
   @override
   Widget build(BuildContext context) {

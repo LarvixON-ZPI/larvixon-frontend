@@ -260,6 +260,12 @@ abstract class AppLocalizations {
   /// **'About'**
   String get about;
 
+  /// No description provided for @tapATeamMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a team member to learn more'**
+  String get tapATeamMember;
+
   /// No description provided for @contact.
   ///
   /// In en, this message translates to:
@@ -953,8 +959,26 @@ abstract class AppLocalizations {
   /// No description provided for @simulationDescription.
   ///
   /// In en, this message translates to:
-  /// **'Interactive simulation powered by Unity.\n\nUse the controls above the simulation to manage the simulation - pause, resume, restart and toggle UI.\n\nUse the controls inside the simulation to change larva state or simulation speed.\nIn the right panel, you can select which substance you want to give to the poor larva, and specify the intensity.'**
+  /// **'Interactive simulation powered by Unity.'**
   String get simulationDescription;
+
+  /// No description provided for @simulation_how_to_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the controls above the simulation to manage the simulation - pause, resume, restart and toggle UI.'**
+  String get simulation_how_to_1;
+
+  /// No description provided for @simulation_how_to_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the controls inside the simulation to change larva state or simulation speed.'**
+  String get simulation_how_to_2;
+
+  /// No description provided for @simulation_how_to_3.
+  ///
+  /// In en, this message translates to:
+  /// **'In the right panel, you can select which substance you want to give to the poor larva, and specify the intensity.'**
+  String get simulation_how_to_3;
 }
 
 class _AppLocalizationsDelegate

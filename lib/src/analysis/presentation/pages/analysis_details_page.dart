@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:larvixon_frontend/core/constants/page.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
@@ -75,7 +76,7 @@ class _AnalysisDetailsContentState extends State<_AnalysisDetailsContent> {
         final animationConfig = _buildAnimationConfig();
 
         return ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 600),
+          constraints: kDefaultPageWidthConstraitns,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

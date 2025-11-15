@@ -116,20 +116,20 @@ class _ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final onTap = action.requiresConfirmation
+        ? () => _showConfirmationDialog(context)
+        : action.onPressed;
+
     return CustomCard(
       child: showLabel
           ? TextButton.icon(
-              onPressed: action.requiresConfirmation
-                  ? () => _showConfirmationDialog(context)
-                  : action.onPressed,
+              onPressed: onTap,
               icon: action.icon,
               label: Text(action.label),
               style: TextButton.styleFrom(foregroundColor: action.color),
             )
           : IconButton(
-              onPressed: action.requiresConfirmation
-                  ? () => _showConfirmationDialog(context)
-                  : action.onPressed,
+              onPressed: onTap,
               icon: action.icon,
               tooltip: action.label,
               style: IconButton.styleFrom(foregroundColor: action.color),

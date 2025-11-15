@@ -102,6 +102,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get about => 'About';
 
   @override
+  String get tapATeamMember => 'Tap a team member to learn more';
+
+  @override
   String get contact => 'Contact';
 
   @override
@@ -484,5 +487,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get simulationDescription =>
-      'Interactive simulation powered by Unity.\n\nUse the controls above the simulation to manage the simulation - pause, resume, restart and toggle UI.\n\nUse the controls inside the simulation to change larva state or simulation speed.\nIn the right panel, you can select which substance you want to give to the poor larva, and specify the intensity.';
+      'Interactive simulation powered by Unity.';
+
+  @override
+  String get simulation_how_to_1 =>
+      'Use the controls above the simulation to manage the simulation - pause, resume, restart and toggle UI.';
+
+  @override
+  String get simulation_how_to_2 =>
+      'Use the controls inside the simulation to change larva state or simulation speed.';
+
+  @override
+  String get simulation_how_to_3 =>
+      'In the right panel, you can select which substance you want to give to the poor larva, and specify the intensity.';
 }

@@ -4,13 +4,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:larvixon_frontend/core/constants/breakpoints.dart';
+import 'package:larvixon_frontend/core/constants/page.dart';
 import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
 import 'package:larvixon_frontend/src/common/services/file_picker/file_picker.dart';
 import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 import 'package:larvixon_frontend/src/user/bloc/cubit/user_edit_cubit.dart';
 import 'package:larvixon_frontend/src/user/bloc/user_bloc.dart';
 import 'package:larvixon_frontend/src/user/domain/repositories/user_repository.dart';
-import 'package:larvixon_frontend/src/user/presentation/widgets/header_section.dart';
+import 'package:larvixon_frontend/src/user/presentation/widgets/account_header.dart';
 import 'package:larvixon_frontend/src/user/presentation/widgets/basic_info_section.dart';
 import 'package:larvixon_frontend/src/user/presentation/widgets/credentials_section.dart';
 import 'package:larvixon_frontend/src/user/presentation/widgets/details_section.dart';
@@ -35,7 +36,7 @@ class AccountPage extends StatelessWidget {
       child: SafeArea(
         child: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 600),
+            constraints: kDefaultPageWidthConstraitns,
             child: BlocProvider(
               create: (context) =>
                   UserEditCubit(repository: context.read<UserRepository>()),
@@ -53,7 +54,7 @@ class AccountPage extends StatelessWidget {
 
                       return Column(
                         children: [
-                          const HeaderSection(),
+                          const AccountHeader(),
                           CustomCard(
                             child: Row(
                               spacing: 16,

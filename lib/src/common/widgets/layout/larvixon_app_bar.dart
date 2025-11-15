@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:larvixon_frontend/core/constants/common_icons.dart';
 import 'package:larvixon_frontend/src/about_us/presentation/pages/about_page.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/pages/analyses_page.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
@@ -10,6 +10,7 @@ import 'package:larvixon_frontend/src/common/widgets/layout/app_bar_base.dart';
 import 'package:larvixon_frontend/src/common/widgets/ui/larvixon_logo.dart';
 import 'package:larvixon_frontend/src/contact/presentation/pages/contact_page.dart';
 import 'package:larvixon_frontend/src/settings/presentation/pages/settings_page.dart';
+import 'package:larvixon_frontend/src/simulation/presentation/pages/simulation_page.dart';
 import 'package:larvixon_frontend/src/user/presentation/pages/account_page.dart';
 
 class LarvixonAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -42,29 +43,33 @@ class LarvixonAppBar extends StatelessWidget implements PreferredSizeWidget {
     return [
       NavItem(
         label: context.translate.analyses,
-        icon: FontAwesomeIcons.briefcaseMedical,
+        icon: CommonIcons.analyses,
         route: AnalysesOverviewPage.route,
       ),
-
+      NavItem(
+        label: context.translate.simulation,
+        icon: CommonIcons.simulation,
+        route: SimulationPage.route,
+      ),
       NavItem(
         label: context.translate.contact,
-        icon: FontAwesomeIcons.circleQuestion,
+        icon: CommonIcons.contact,
         route: ContactPage.route,
       ),
       NavItem(
         label: context.translate.about,
-        icon: FontAwesomeIcons.peopleGroup,
+        icon: CommonIcons.aboutUs,
         route: AboutPage.route,
       ),
 
       NavItem(
         label: context.translate.account,
-        icon: Icons.person,
+        icon: CommonIcons.account,
         route: AccountPage.route,
       ),
       NavItem(
         label: context.translate.settings,
-        icon: Icons.settings,
+        icon: CommonIcons.settings,
         route: SettingsPage.route,
       ),
     ];

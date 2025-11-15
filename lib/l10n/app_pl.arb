@@ -83,6 +83,7 @@
   "getStarted": "Zaczynajmy",
   "larvixon": "Larvixon",
   "about": "O nas",
+  "tapATeamMember": "Wybierz członka zespołu, aby dowiedzieć się więcej",
   "contact": "Kontakt",
   "simulation": "Symulacja",
   "@@_LandingPage": {},
@@ -245,5 +246,8 @@
   "resume": "Wznów",
   "restart": "Restart",
   "toggleUI": "Przełącz UI",
-  "simulationDescription": "Interaktywna symulacja oparta na Unity.\n\nUżyj kontrolek nad oknem symulacji, aby nią zarządzać - pauzuj, wznów, restartuj lub przełącz UI.\n\nUżyj kontrolek wewnątrz okna symulacji, aby zmienić stan larwy albo prędkość symulacji.\nW prawym panelu możesz wybrać, jaką substancję podać biednej larwie oraz określić jej intensywność."
+  "simulationDescription": "Interaktywna symulacja oparta na Unity.",
+  "simulation_how_to_1": "Użyj kontrolek nad oknem symulacji, aby nią zarządzać - pauzuj, wznów, restartuj lub przełącz UI.",
+  "simulation_how_to_2": "Użyj kontrolek wewnątrz okna symulacji, aby zmienić stan larwy albo prędkość symulacji.",
+  "simulation_how_to_3": "W prawym panelu możesz wybrać, jaką substancję podać biednej larwie oraz określić jej intensywność."
 }
