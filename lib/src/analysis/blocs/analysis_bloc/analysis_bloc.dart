@@ -13,9 +13,13 @@ part 'analysis_state.dart';
 
 class AnalysisBloc extends Bloc<AnalysisEvent, AnalysisState> {
   final AnalysisRepository repository;
+  StreamSubscription<int>? _updatesSubscription;
+  StreamSubscription<Either<Failure, Analysis>>? _progressSubscription;
+
   AnalysisBloc({required this.repository}) : super(const AnalysisState()) {
     on<FetchAnalysisDetails>(_fetchLarvaVideoDetails);
     on<RemoveAnalysis>(_onRemoveAnalysis);
+    on<RetryAnalysis>(_onRetryAnalysis);
   }
 
   FutureOr<void> _onRemoveAnalysis(
@@ -49,11 +53,49 @@ class AnalysisBloc extends Bloc<AnalysisEvent, AnalysisState> {
     );
   }
 
+  FutureOr<void> _onRetryAnalysis(
+    RetryAnalysis event,
+    Emitter<AnalysisState> emit,
+  ) async {
+    emit(state.copyWith(status: AnalysisStatus.loading));
+    final result = await repository.retryAnalysis(id: event.analysisId).run();
+
+    result.match(
+      (failure) {
+        emit(
+          state.copyWith(
+            status: AnalysisStatus.error,
+            errorMessage: failure.message,
+          ),
+        );
+      },
+      (analysis) {
+        emit(
+          state.copyWith(
+            status: AnalysisStatus.success,
+            analysis: analysis,
+            progress: analysis.status.progressValue,
+          ),
+        );
+      },
+    );
+  }
+
   FutureOr<void> _fetchLarvaVideoDetails(
     FetchAnalysisDetails event,
     Emitter<AnalysisState> emit,
   ) async {
     emit(state.copyWith(status: AnalysisStatus.loading));
+
+    // Listen for updates to this specific analysis
+    _updatesSubscription?.cancel();
+    _updatesSubscription = repository.analysisUpdatesStream.listen((updatedId) {
+      if (updatedId == event.analysisId && !isClosed) {
+        // Restart watching by canceling current subscription and re-adding event
+        _progressSubscription?.cancel();
+        add(FetchAnalysisDetails(analysisId: event.analysisId, refresh: true));
+      }
+    });
 
     await emit.forEach<Either<Failure, Analysis>>(
       repository.watchVideoProgressById(id: event.analysisId),
@@ -75,5 +117,12 @@ class AnalysisBloc extends Bloc<AnalysisEvent, AnalysisState> {
         );
       },
     );
+  }
+
+  @override
+  Future<void> close() {
+    _updatesSubscription?.cancel();
+    _progressSubscription?.cancel();
+    return super.close();
   }
 }

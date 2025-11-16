@@ -23,6 +23,8 @@ class AnalysisRepositoryImpl implements AnalysisRepository {
   final AnalysisIdListMapper idListMapper = AnalysisIdListMapper();
   final StreamController<AnalysisIdList> _analysisIdsController =
       StreamController.broadcast();
+  final StreamController<int> _analysisUpdatesController =
+      StreamController.broadcast();
   final List<int> _cachedIds = [];
   String? _nextPage;
 
@@ -158,11 +160,40 @@ class AnalysisRepositoryImpl implements AnalysisRepository {
   }
 
   @override
+  TaskEither<Failure, Analysis> retryAnalysis({required int id}) {
+    return TaskEither.tryCatch(
+      () async {
+        await dataSource.retryAnalysis(id: id);
+
+        final updatedDto = await dataSource.fetchAnalysisDetailsById(id);
+        final updatedAnalysis = videoMapper.dtoToEntity(updatedDto);
+
+        _emitUpdatedList();
+
+        _analysisUpdatesController.add(id);
+        return updatedAnalysis;
+      },
+      (error, stackTrace) {
+        return error is DioException
+            ? AnalysisApiFailure(
+                apiFailure: error.toApiFailure(),
+                message: error.message ?? 'Failed to retry analysis',
+              )
+            : UnknownAnalysisFailure(message: error.toString());
+      },
+    );
+  }
+
+  @override
   Stream<AnalysisIdList> get analysisIdsStream => _analysisIdsController.stream;
+
+  @override
+  Stream<int> get analysisUpdatesStream => _analysisUpdatesController.stream;
 
   @override
   void dispose() {
     _analysisIdsController.close();
+    _analysisUpdatesController.close();
   }
 
   void _emitUpdatedList() {

@@ -4,4 +4,6 @@ class AnalysisEndpoints {
   static const String videoIDs = '${ApiBase.baseUrl}/analysis/ids/';
   static String analysisById(int id) => '${ApiBase.baseUrl}/analysis/$id/';
   static String uploadVideo = '${ApiBase.baseUrl}/videoprocessor/upload/';
+  static String retryAnalysis(int id) =>
+      '${ApiBase.baseUrl}/analysis/$id/retry/';
 }

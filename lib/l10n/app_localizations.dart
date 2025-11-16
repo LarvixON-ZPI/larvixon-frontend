@@ -683,7 +683,7 @@ abstract class AppLocalizations {
   /// No description provided for @analyses.
   ///
   /// In en, this message translates to:
-  /// **'Analizy'**
+  /// **'Analyses'**
   String get analyses;
 
   /// No description provided for @loadingAnalysesError.

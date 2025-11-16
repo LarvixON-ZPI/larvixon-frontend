@@ -31,3 +31,11 @@ final class RemoveAnalysis extends AnalysisEvent {
   @override
   List<Object> get props => [analysisId];
 }
+
+final class RetryAnalysis extends AnalysisEvent {
+  final int analysisId;
+  const RetryAnalysis({required this.analysisId});
+
+  @override
+  List<Object> get props => [analysisId];
+}

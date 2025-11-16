@@ -79,4 +79,11 @@ abstract class AnalysisDataSource {
     );
     return response.statusCode == 204;
   }
+
+  Future<Map<String, dynamic>> retryAnalysis({required int id}) async {
+    final response = await apiClient.dio.post(
+      AnalysisEndpoints.retryAnalysis(id),
+    );
+    return response.data;
+  }
 }

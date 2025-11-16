@@ -25,6 +25,8 @@ class AnalysisRepositoryFake implements AnalysisRepository {
 
   final StreamController<AnalysisIdList> _analysisIdsController =
       StreamController.broadcast();
+  final StreamController<int> _analysisUpdatesController =
+      StreamController.broadcast();
   List<int> _cachedIds = [];
   static const _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
@@ -299,10 +301,69 @@ class AnalysisRepositoryFake implements AnalysisRepository {
   }
 
   @override
+  TaskEither<Failure, Analysis> retryAnalysis({required int id}) {
+    return TaskEither.tryCatch(
+      () async {
+        final idx = _analyses.indexWhere((a) => a.id == id);
+        if (idx == -1) {
+          throw Exception("Analysis not found");
+        }
+
+        final analysis = _analyses[idx];
+        if (analysis.status != AnalysisProgressStatus.failed) {
+          throw Exception("Analysis is not in failed state");
+        }
+
+        final retriedAnalysis = analysis.copyWith(
+          status: AnalysisProgressStatus.pending,
+        );
+        _analyses[idx] = retriedAnalysis;
+
+        _analysisUpdatesController.add(id);
+
+        Future.delayed(Duration(seconds: _random.nextInt(1) + 2), () async {
+          _analyses[idx] = _analyses[idx].copyWith(
+            status: AnalysisProgressStatus.processing,
+          );
+          _analysisUpdatesController.add(id);
+
+          await Future.delayed(Duration(seconds: _random.nextInt(5) + 3));
+
+          final success = _random.nextDouble() < 0.9;
+          final finalStatus = success
+              ? AnalysisProgressStatus.completed
+              : AnalysisProgressStatus.failed;
+
+          var finalAnalysis = _analyses[idx].copyWith(
+            status: finalStatus,
+            analysedAt: success ? DateTime.now() : null,
+          );
+
+          if (success) {
+            finalAnalysis = _applyRandomSubstances(finalAnalysis);
+          }
+
+          _analyses[idx] = finalAnalysis;
+          _analysisUpdatesController.add(id);
+        });
+
+        return retriedAnalysis;
+      },
+      (error, stackTrace) {
+        return UnknownAnalysisFailure(message: error.toString());
+      },
+    );
+  }
+
+  @override
   Stream<AnalysisIdList> get analysisIdsStream => _analysisIdsController.stream;
+
+  @override
+  Stream<int> get analysisUpdatesStream => _analysisUpdatesController.stream;
 
   @override
   void dispose() {
     _analysisIdsController.close();
+    _analysisUpdatesController.close();
   }
 }
