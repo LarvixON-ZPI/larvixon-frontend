@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:larvixon_frontend/core/not_found_page.dart';
 import 'package:larvixon_frontend/core/transitions.dart';
 import 'package:larvixon_frontend/src/about_us/presentation/pages/about_page.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
@@ -154,6 +155,9 @@ class AppRouter {
         ],
       ),
     ],
+    errorPageBuilder: (context, state) {
+      return const NotFoundPage().withoutTransition(state: state);
+    },
     redirect: (context, state) {
       final authState = authBloc.state;
       final isAuthRoute = state.uri.path == AuthPage.route;
