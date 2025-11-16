@@ -979,6 +979,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'In the right panel, you can select which substance you want to give to the poor larva, and specify the intensity.'**
   String get simulation_how_to_3;
+
+  /// No description provided for @notFound_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Page Not Found'**
+  String get notFound_title;
+
+  /// No description provided for @notFound_description.
+  ///
+  /// In en, this message translates to:
+  /// **'The page you\'re looking for doesn\'t exist or was moved.'**
+  String get notFound_description;
 }
 
 class _AppLocalizationsDelegate

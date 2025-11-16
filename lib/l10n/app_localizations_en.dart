@@ -500,4 +500,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get simulation_how_to_3 =>
       'In the right panel, you can select which substance you want to give to the poor larva, and specify the intensity.';
+
+  @override
+  String get notFound_title => 'Page Not Found';
+
+  @override
+  String get notFound_description =>
+      'The page you\'re looking for doesn\'t exist or was moved.';
 }

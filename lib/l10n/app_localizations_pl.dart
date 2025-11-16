@@ -500,4 +500,11 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get simulation_how_to_3 =>
       'W prawym panelu możesz wybrać, jaką substancję podać biednej larwie oraz określić jej intensywność.';
+
+  @override
+  String get notFound_title => 'Nie znaleziono strony';
+
+  @override
+  String get notFound_description =>
+      'Strona, której szukasz, nie istnieje lub została przeniesiona.';
 }
