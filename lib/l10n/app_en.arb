@@ -175,7 +175,7 @@
   "darkMode": "Dark Mode",
   "systemDefault": "System Default",
   "noAnalysesFound": "No analyses found.",
-  "analyses": "Analizy",
+  "analyses": "Analyses",
   "loadingAnalysesError": "An error occurred while loading analyses.",
   "addYourFirstAnalysis": "Add your first analysis by uploading a video.",
   "clickToUpload": "Click to upload a video",

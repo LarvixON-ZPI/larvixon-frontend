@@ -33,7 +33,7 @@ class HeaderSection extends StatelessWidget {
           ActionItem(
             icon: const Icon(FontAwesomeIcons.arrowsRotate),
             label: context.translate.retry,
-            onPressed: () => {},
+            onPressed: () => _onRetryPressed(context),
           ),
         ActionItem(
           label: context.translate.delete,
@@ -54,6 +54,11 @@ class HeaderSection extends StatelessWidget {
     } catch (e) {
       _showDownloadErrorDialog(context, e);
     }
+  }
+
+  void _onRetryPressed(BuildContext context) {
+    final bloc = context.read<AnalysisBloc>();
+    bloc.add(RetryAnalysis(analysisId: analysis.id));
   }
 
   Future<Object?> _showDownloadErrorDialog(BuildContext context, Object e) {

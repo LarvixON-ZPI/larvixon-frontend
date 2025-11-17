@@ -13,6 +13,7 @@ import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
 
 abstract class AnalysisRepository {
   Stream<AnalysisIdList> get analysisIdsStream;
+  Stream<int> get analysisUpdatesStream;
 
   TaskEither<Failure, AnalysisIdList> fetchVideoIds({
     String? nextPage,
@@ -32,5 +33,6 @@ abstract class AnalysisRepository {
     CancelToken? cancelToken,
   });
   TaskEither<Failure, bool> deleteAnalysis({required int id});
+  TaskEither<Failure, Analysis> retryAnalysis({required int id});
   void dispose();
 }
