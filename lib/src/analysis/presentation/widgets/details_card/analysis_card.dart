@@ -72,9 +72,11 @@ class _AnalysisCardState extends State<AnalysisCard>
                           ),
                         ),
 
-                      ProgressSection(
-                        video: state.analysis,
-                        progress: state.progress,
+                      Skeleton.ignore(
+                        child: ProgressSection(
+                          video: state.analysis,
+                          progress: state.progress,
+                        ),
                       ),
                     ],
                   ),

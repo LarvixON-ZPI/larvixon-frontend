@@ -9,11 +9,9 @@ import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/all_
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/best_match_result_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/header_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/invalid_id_view.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/loading_view.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/meta_section.dart';
 import 'package:larvixon_frontend/src/common/extensions/navigation_extensions.dart';
 import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
-import 'package:larvixon_frontend/src/common/widgets/layout/header_section_base.dart';
 import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 import 'package:larvixon_frontend/src/common/widgets/utils/slide_widget.dart';
 import 'package:skeletonizer/skeletonizer.dart';
