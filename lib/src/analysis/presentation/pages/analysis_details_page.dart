@@ -9,7 +9,6 @@ import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/all_
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/best_match_result_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/header_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/invalid_id_view.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/loading_view.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details/meta_section.dart';
 import 'package:larvixon_frontend/src/common/extensions/navigation_extensions.dart';
 import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
@@ -70,35 +69,54 @@ class _AnalysisDetailsContentState extends State<_AnalysisDetailsContent> {
         }
       },
       builder: (context, state) {
-        if (state.isLoading) return const LoadingView();
-
-        final analysis = state.analysis!;
+        final analysis = state.analysis ?? _createPlaceholderAnalysis();
         final animationConfig = _buildAnimationConfig();
 
-        return ConstrainedBox(
-          constraints: kDefaultPageWidthConstraitns,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              HeaderSection(analysis: analysis),
-              if (analysis.hasImage)
-                ImageSection(imageUrl: analysis.thumbnailUrl!),
+        final skeletonEnabled =
+            state.status == AnalysisStatus.initial ||
+            state.status == AnalysisStatus.loading;
 
-              MetaSection(analysis: analysis),
+        return Skeletonizer(
+          enabled: skeletonEnabled,
+          ignorePointers: false,
+          child: ConstrainedBox(
+            constraints: kDefaultPageWidthConstraitns,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Skeleton.keep(
+                  child: HeaderSection(
+                    analysis: analysis,
+                    enableActions: !skeletonEnabled,
+                  ),
+                ),
+                if (analysis.hasImage)
+                  Skeleton.replace(
+                    replacement: Skeleton.shade(
+                      child: CustomCard(
+                        color: Colors.grey[200],
+                        background: Container(height: 300),
+                      ),
+                    ),
+                    child: ImageSection(imageUrl: analysis.thumbnailUrl!),
+                  ),
 
-              if (analysis.hasResults)
-                SlideUpTransition(
-                  delay: animationConfig.resultsDelay,
-                  duration: animationConfig.mainDuration,
-                  child: BestMatchResultSection(results: analysis.results!),
-                ),
-              if (analysis.hasManyResults)
-                SlideUpTransition(
-                  delay: animationConfig.manyResultsDelay,
-                  duration: animationConfig.allResultsDuration,
-                  child: AllResultsSection(results: analysis.results!),
-                ),
-            ],
+                MetaSection(analysis: analysis),
+
+                if (analysis.hasResults)
+                  SlideUpTransition(
+                    delay: animationConfig.resultsDelay,
+                    duration: animationConfig.mainDuration,
+                    child: BestMatchResultSection(results: analysis.results!),
+                  ),
+                if (analysis.hasManyResults)
+                  SlideUpTransition(
+                    delay: animationConfig.manyResultsDelay,
+                    duration: animationConfig.allResultsDuration,
+                    child: AllResultsSection(results: analysis.results!),
+                  ),
+              ],
+            ),
           ),
         );
       },
@@ -111,6 +129,16 @@ class _AnalysisDetailsContentState extends State<_AnalysisDetailsContent> {
         : const _AnimationConfig.standard();
     _isFirstBuild = false;
     return config;
+  }
+
+  Analysis _createPlaceholderAnalysis() {
+    return Analysis(
+      id: widget.analysisId,
+      name: 'Loading analysis...',
+      uploadedAt: DateTime.now(),
+      analysedAt: DateTime.now(),
+      thumbnailUrl: '',
+    );
   }
 }
 
