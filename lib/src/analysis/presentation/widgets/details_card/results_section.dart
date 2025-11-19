@@ -42,7 +42,7 @@ class _ResultsSectionState extends State<ResultsSection>
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        const entryHeight = 55.0;
+        const entryHeight = 68.0;
         final totalHeight = constraints.maxHeight;
         final visibleCount = widget.results.length;
         final maxFit = ((totalHeight / entryHeight).floor()).clamp(
@@ -51,6 +51,9 @@ class _ResultsSectionState extends State<ResultsSection>
         );
         final visibleResults = widget.results.take(maxFit).toList();
         final remaining = widget.results.length - visibleResults.length;
+        final remainingText = maxFit == 0
+            ? context.translate.viewResults
+            : '+${context.translate.andMore(remaining)}';
 
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -114,7 +117,7 @@ class _ResultsSectionState extends State<ResultsSection>
                   child: Padding(
                     padding: const EdgeInsets.only(top: 4.0),
                     child: Text(
-                      '+${context.translate.andMore(remaining)}',
+                      remainingText,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
