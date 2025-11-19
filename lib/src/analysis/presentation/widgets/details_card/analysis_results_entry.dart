@@ -23,9 +23,7 @@ class AnalysisResultsEntry extends StatelessWidget {
             "$label ${(confidence * 100).toStringAsFixed(2)}%",
             style: Theme.of(context).textTheme.bodyLarge,
           ),
-          AnimatedConfidenceBar(
-            confidence: confidence,
-          ),
+          AnimatedConfidenceBar(confidence: confidence),
         ],
       ),
     );
