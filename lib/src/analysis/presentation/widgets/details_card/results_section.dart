@@ -54,7 +54,6 @@ class _ResultsSectionState extends State<ResultsSection>
 
         return Column(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             ...visibleResults.asMap().entries.map((entry) {
               final index = entry.key;

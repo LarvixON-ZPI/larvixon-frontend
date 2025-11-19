@@ -25,7 +25,6 @@ class AnalysisResultsEntry extends StatelessWidget {
           ),
           AnimatedConfidenceBar(
             confidence: confidence,
-            includePercentage: false,
           ),
         ],
       ),

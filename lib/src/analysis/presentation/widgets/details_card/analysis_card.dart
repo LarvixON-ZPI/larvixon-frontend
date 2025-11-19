@@ -44,8 +44,9 @@ class _AnalysisCardState extends State<AnalysisCard>
             ),
             child: Skeletonizer(
               enabled: skeletonEnabled,
+
               child: CustomCard(
-                color: Colors.transparent,
+                color: Theme.of(context).cardColor.withValues(alpha: 0.7),
                 child: Expanded(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -53,7 +54,6 @@ class _AnalysisCardState extends State<AnalysisCard>
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Left — ID
                           Expanded(
                             flex: 2,
                             child: Align(
@@ -65,9 +65,7 @@ class _AnalysisCardState extends State<AnalysisCard>
                                         context,
                                       ).textTheme.titleLarge,
                                     )
-                                  : const SizedBox(
-                                      height: 24,
-                                    ), // keeps height consistent
+                                  : const SizedBox(height: 24),
                             ),
                           ),
 
@@ -85,7 +83,7 @@ class _AnalysisCardState extends State<AnalysisCard>
                               alignment: Alignment.centerRight,
                               child: analysis != null
                                   ? Text(
-                                      "${analysis.uploadedAt.formattedDateOnly}",
+                                      analysis.uploadedAt.formattedDateOnly,
                                       style: Theme.of(
                                         context,
                                       ).textTheme.titleMedium,
