@@ -166,6 +166,7 @@ class AppRouter {
         AboutPage.route,
         ContactPage.route,
         SimulationPage.route,
+        SettingsPage.route,
       ].contains(state.uri.path);
 
       switch (authState.status) {
