@@ -991,6 +991,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The page you\'re looking for doesn\'t exist or was moved.'**
   String get notFound_description;
+
+  /// No description provided for @viewResults.
+  ///
+  /// In en, this message translates to:
+  /// **'View results'**
+  String get viewResults;
 }
 
 class _AppLocalizationsDelegate

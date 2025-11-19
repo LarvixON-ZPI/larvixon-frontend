@@ -13,17 +13,17 @@ class AnalysisResultsEntry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(6.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 4.0,
         children: [
-          Text(label, style: Theme.of(context).textTheme.bodyMedium),
-          AnimatedConfidenceBar(
-            confidence: confidence,
-            includePercentage: true,
+          Text(
+            "$label ${(confidence * 100).toStringAsFixed(2)}%",
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
+          AnimatedConfidenceBar(confidence: confidence),
         ],
       ),
     );

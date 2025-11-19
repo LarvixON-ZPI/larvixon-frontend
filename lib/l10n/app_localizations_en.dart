@@ -507,4 +507,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get notFound_description =>
       'The page you\'re looking for doesn\'t exist or was moved.';
+
+  @override
+  String get viewResults => 'View results';
 }

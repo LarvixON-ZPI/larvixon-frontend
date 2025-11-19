@@ -179,8 +179,9 @@ class _ImageSectionState extends State<ImageSection>
                           )
                         : Image(
                             image: _imageProvider!,
-                            fit: BoxFit.fitWidth,
+                            fit: BoxFit.cover,
                             width: double.infinity,
+                            height: 300,
                           ).withOnHoverEffect,
                   ),
                 ),

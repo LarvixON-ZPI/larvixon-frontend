@@ -79,24 +79,29 @@ class _ProgressSectionState extends State<ProgressSection>
 
     if (!enabled) return const SizedBox.shrink();
 
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        return Column(
-          spacing: 6,
-          children: [
-            Text(
-              '${(_progressAnimation.value * 100).toStringAsFixed(1)}%',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            LinearProgressIndicator(
-              value: _progressAnimation.value,
-              backgroundColor: Colors.grey.shade300,
-              valueColor: AlwaysStoppedAnimation<Color?>(_colorAnimation.value),
-            ),
-          ],
-        );
-      },
+    return Expanded(
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            spacing: 6,
+            children: [
+              Text(
+                '${(_progressAnimation.value * 100).toStringAsFixed(1)}%',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              LinearProgressIndicator(
+                value: _progressAnimation.value,
+                backgroundColor: Colors.grey.shade300,
+                valueColor: AlwaysStoppedAnimation<Color?>(
+                  _colorAnimation.value,
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

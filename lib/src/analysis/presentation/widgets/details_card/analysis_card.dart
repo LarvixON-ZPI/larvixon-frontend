@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_bloc/analysis_bloc.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis.dart';
+import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress_status.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/pages/analyses_page.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/progress_section.dart';
@@ -30,17 +32,11 @@ class _AnalysisCardState extends State<AnalysisCard>
       create: (context) =>
           AnalysisBloc(repository: context.read<AnalysisRepository>())
             ..add(FetchAnalysisDetails(analysisId: widget.analysisId)),
-      child: BlocConsumer<AnalysisBloc, AnalysisState>(
-        listenWhen: (previous, current) {
-          return previous.progress != current.progress;
-        },
-        listener: (context, state) {},
+      child: BlocBuilder<AnalysisBloc, AnalysisState>(
         builder: (context, state) {
           final analysis = state.analysis;
           final hasResults = state.analysis?.results?.isNotEmpty ?? false;
-          // ignore: unused_local_variable
-          final hasImage = analysis?.thumbnailUrl != null;
-          final enabled =
+          final skeletonEnabled =
               state.status == AnalysisStatus.loading || state.analysis == null;
 
           return InkWell(
@@ -48,44 +44,27 @@ class _AnalysisCardState extends State<AnalysisCard>
               "${AnalysesOverviewPage.route}/${widget.analysisId}",
             ),
             child: Skeletonizer(
-              enabled: enabled,
+              enabled: skeletonEnabled,
+
               child: CustomCard(
-                color: Colors.transparent,
-                // TODO: Need to rethink that
-                // background: hasImage
-                //     ? Image.network(
-                //         analysis!.thumbnailUrl!,
-                //         fit: BoxFit.cover,
-                //         opacity: const AlwaysStoppedAnimation(0.4),
-                //         width: double.infinity,
-                //         height: double.infinity,
-                //         errorBuilder: (context, error, stackTrace) {
-                //           return const SizedBox.shrink();
-                //         },
-                //       )
-                //     : null,
+                color: Theme.of(context).cardColor.withValues(alpha: 0.7),
                 child: Expanded(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-
-                        children: [StatusRow(analysis: state.analysis)],
-                      ),
-                      if (state.analysis?.name != null)
+                      _HeaderRow(analysis: analysis),
+                      const Divider(),
+                      if (state.analysis?.name case final name?) ...[
                         Text(
-                          state.analysis!.name!,
+                          name,
                           style: Theme.of(context).textTheme.titleLarge,
                           textAlign: TextAlign.center,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                      if (analysis != null)
-                        Text(
-                          "${analysis.uploadedAt.formattedDateOnly} ${analysis.uploadedAt.formattedTimeOnly}",
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
+                        const Divider(),
+                      ],
+
                       if (hasResults)
                         Expanded(
                           child: ResultsSection(
@@ -110,4 +89,45 @@ class _AnalysisCardState extends State<AnalysisCard>
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class _HeaderRow extends StatelessWidget {
+  const _HeaderRow({super.key, required this.analysis});
+
+  final Analysis? analysis;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      spacing: 2,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: analysis?.id != null
+              ? Text(
+                  "#${analysis!.id}",
+                  style: Theme.of(context).textTheme.titleLarge,
+                )
+              : const SizedBox(height: 24),
+        ),
+
+        Expanded(
+          flex: 3,
+          child: StatusRow(analysis: analysis, showText: false),
+        ),
+
+        Expanded(
+          flex: 2,
+          child: analysis != null
+              ? Text(
+                  analysis!.uploadedAt.formattedDateOnly,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  textAlign: TextAlign.right,
+                )
+              : const SizedBox(height: 24),
+        ),
+      ],
+    );
+  }
 }
