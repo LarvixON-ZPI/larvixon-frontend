@@ -30,17 +30,12 @@ class _AnalysisCardState extends State<AnalysisCard>
       create: (context) =>
           AnalysisBloc(repository: context.read<AnalysisRepository>())
             ..add(FetchAnalysisDetails(analysisId: widget.analysisId)),
-      child: BlocConsumer<AnalysisBloc, AnalysisState>(
-        listenWhen: (previous, current) {
-          return previous.progress != current.progress;
-        },
-        listener: (context, state) {},
+      child: BlocBuilder<AnalysisBloc, AnalysisState>(
         builder: (context, state) {
           final analysis = state.analysis;
           final hasResults = state.analysis?.results?.isNotEmpty ?? false;
           // ignore: unused_local_variable
-          final hasImage = analysis?.thumbnailUrl != null;
-          final enabled =
+          final skeletonEnabled =
               state.status == AnalysisStatus.loading || state.analysis == null;
 
           return InkWell(
@@ -48,44 +43,70 @@ class _AnalysisCardState extends State<AnalysisCard>
               "${AnalysesOverviewPage.route}/${widget.analysisId}",
             ),
             child: Skeletonizer(
-              enabled: enabled,
+              enabled: skeletonEnabled,
               child: CustomCard(
                 color: Colors.transparent,
-                // TODO: Need to rethink that
-                // background: hasImage
-                //     ? Image.network(
-                //         analysis!.thumbnailUrl!,
-                //         fit: BoxFit.cover,
-                //         opacity: const AlwaysStoppedAnimation(0.4),
-                //         width: double.infinity,
-                //         height: double.infinity,
-                //         errorBuilder: (context, error, stackTrace) {
-                //           return const SizedBox.shrink();
-                //         },
-                //       )
-                //     : null,
                 child: Expanded(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Left — ID
+                          Expanded(
+                            flex: 2,
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: analysis?.id != null
+                                  ? Text(
+                                      "#${analysis!.id}",
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.titleLarge,
+                                    )
+                                  : const SizedBox(
+                                      height: 24,
+                                    ), // keeps height consistent
+                            ),
+                          ),
 
-                        children: [StatusRow(analysis: state.analysis)],
+                          Expanded(
+                            flex: 3,
+                            child: StatusRow(
+                              analysis: analysis,
+                              showText: false,
+                            ),
+                          ),
+
+                          Expanded(
+                            flex: 2,
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: analysis != null
+                                  ? Text(
+                                      "${analysis.uploadedAt.formattedDateOnly}",
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.titleMedium,
+                                      textAlign: TextAlign.right,
+                                    )
+                                  : const SizedBox(height: 24),
+                            ),
+                          ),
+                        ],
                       ),
-                      if (state.analysis?.name != null)
+                      const Divider(),
+                      if (state.analysis?.name case final name?)
                         Text(
-                          state.analysis!.name!,
+                          name,
                           style: Theme.of(context).textTheme.titleLarge,
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.left,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                      if (analysis != null)
-                        Text(
-                          "${analysis.uploadedAt.formattedDateOnly} ${analysis.uploadedAt.formattedTimeOnly}",
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
+                      const Divider(),
+
                       if (hasResults)
                         Expanded(
                           child: ResultsSection(

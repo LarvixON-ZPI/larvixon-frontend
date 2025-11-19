@@ -8,9 +8,11 @@ class StatusRow extends StatelessWidget {
     super.key,
     required this.analysis,
     this.showPercent = false,
+    this.showText = true,
   });
   final Analysis? analysis;
   final bool showPercent;
+  final bool showText;
 
   static const Duration _animationDuration = Duration(milliseconds: 400);
 
@@ -31,6 +33,7 @@ class StatusRow extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         spacing: 4,
         children: [
           _AnimatedStatusIcon(
@@ -39,15 +42,17 @@ class StatusRow extends StatelessWidget {
             color: statusColor,
             rotate: _shouldRotate,
           ),
-
-          AnimatedDefaultTextStyle(
-            duration: _animationDuration,
-            curve: Curves.easeInOut,
-            style: TextStyle(color: statusColor, fontWeight: FontWeight.bold),
-            child: Text(
-              "$displayText${(_shouldShowProgressPercent) ? ' (${((analysis?.status.progressValue ?? 0.0) * 100).toStringAsFixed(0)}%)' : ''}",
+          if (showText)
+            AnimatedDefaultTextStyle(
+              duration: _animationDuration,
+              curve: Curves.easeInOut,
+              style: TextStyle(color: statusColor, fontWeight: FontWeight.bold),
+              child: Text(
+                "$displayText${(_shouldShowProgressPercent) ? ' (${((analysis?.status.progressValue ?? 0.0) * 100).toStringAsFixed(0)}%)' : ''}",
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
             ),
-          ),
         ],
       ),
     );

@@ -42,7 +42,7 @@ class _ResultsSectionState extends State<ResultsSection>
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        const entryHeight = 80.0;
+        const entryHeight = 55.0;
         final totalHeight = constraints.maxHeight;
         final visibleCount = widget.results.length;
         final maxFit = ((totalHeight / entryHeight).floor()).clamp(
@@ -54,6 +54,7 @@ class _ResultsSectionState extends State<ResultsSection>
 
         return Column(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             ...visibleResults.asMap().entries.map((entry) {
               final index = entry.key;
@@ -115,9 +116,7 @@ class _ResultsSectionState extends State<ResultsSection>
                     padding: const EdgeInsets.only(top: 4.0),
                     child: Text(
                       '+${context.translate.andMore(remaining)}',
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodySmall?.copyWith(color: Colors.grey),
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
                 ),
