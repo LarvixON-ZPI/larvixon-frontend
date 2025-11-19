@@ -14,33 +14,40 @@ import 'package:larvixon_frontend/src/common/widgets/ui/action_item.dart';
 import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 
 class HeaderSection extends StatelessWidget {
-  const HeaderSection({super.key, required this.analysis});
+  const HeaderSection({
+    super.key,
+    required this.analysis,
+    this.enableActions = true,
+  });
 
   final Analysis analysis;
+  final bool enableActions;
 
   @override
   Widget build(BuildContext context) {
     return HeaderWithActions(
       title: "${context.translate.analysis} #${analysis.id}",
       fallbackRoute: AnalysesOverviewPage.route,
-      actions: [
-        if (analysis.status == AnalysisProgressStatus.completed)
-          ActionItem.export(
-            label: context.translate.export,
-            onPressed: () => _downloadAnalysisReport(context),
-          ),
-        if (analysis.status == AnalysisProgressStatus.failed)
-          ActionItem(
-            icon: const Icon(FontAwesomeIcons.arrowsRotate),
-            label: context.translate.retry,
-            onPressed: () => _onRetryPressed(context),
-          ),
-        ActionItem(
-          label: context.translate.delete,
-          icon: const Icon(FontAwesomeIcons.trash),
-          onPressed: () => _onDeletePressed(context),
-        ),
-      ],
+      actions: enableActions
+          ? [
+              if (analysis.status == AnalysisProgressStatus.completed)
+                ActionItem.export(
+                  label: context.translate.export,
+                  onPressed: () => _downloadAnalysisReport(context),
+                ),
+              if (analysis.status == AnalysisProgressStatus.failed)
+                ActionItem(
+                  icon: const Icon(FontAwesomeIcons.arrowsRotate),
+                  label: context.translate.retry,
+                  onPressed: () => _onRetryPressed(context),
+                ),
+              ActionItem(
+                label: context.translate.delete,
+                icon: const Icon(FontAwesomeIcons.trash),
+                onPressed: () => _onDeletePressed(context),
+              ),
+            ]
+          : [],
     );
   }
 
