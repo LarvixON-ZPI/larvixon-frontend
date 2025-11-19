@@ -12,6 +12,7 @@ import 'package:larvixon_frontend/src/common/widgets/layout/app_bar_button.dart'
 import 'package:larvixon_frontend/src/common/widgets/ui/larvixon_logo.dart';
 import 'package:larvixon_frontend/src/contact/presentation/pages/contact_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/pages/landing_page.dart';
+import 'package:larvixon_frontend/src/settings/presentation/pages/settings_page.dart';
 import 'package:larvixon_frontend/src/simulation/presentation/pages/simulation_page.dart';
 
 class LandingAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -59,6 +60,11 @@ class LandingAppBar extends StatelessWidget implements PreferredSizeWidget {
         label: context.translate.simulation,
         icon: CommonIcons.simulation,
         route: SimulationPage.route,
+      ),
+      NavItem(
+        label: context.translate.settings,
+        icon: CommonIcons.settings,
+        route: SettingsPage.route,
       ),
 
       NavItem(
