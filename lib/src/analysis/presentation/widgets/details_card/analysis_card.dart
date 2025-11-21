@@ -8,46 +8,37 @@ import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repo
 import 'package:larvixon_frontend/src/analysis/presentation/pages/analyses_page.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/progress_section.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/results_section.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/status_row.dart';
 import 'package:larvixon_frontend/src/common/extensions/date_format_extension.dart';
 import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class AnalysisCard extends StatefulWidget {
+class AnalysisCard extends StatelessWidget {
   final int analysisId;
   const AnalysisCard({super.key, required this.analysisId});
 
   @override
-  State<AnalysisCard> createState() => _AnalysisCardState();
-}
-
-class _AnalysisCardState extends State<AnalysisCard>
-    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
     return BlocProvider(
-      key: ValueKey(widget.key),
+      key: ValueKey(analysisId),
       create: (context) =>
           AnalysisBloc(repository: context.read<AnalysisRepository>())
-            ..add(FetchAnalysisDetails(analysisId: widget.analysisId)),
+            ..add(FetchAnalysisDetails(analysisId: analysisId)),
       child: BlocBuilder<AnalysisBloc, AnalysisState>(
         builder: (context, state) {
           final analysis = state.analysis;
           final hasResults = state.analysis?.results?.isNotEmpty ?? false;
+          final status =
+              state.analysis?.status ?? AnalysisProgressStatus.pending;
           final skeletonEnabled =
               state.status == AnalysisStatus.loading || state.analysis == null;
 
           return InkWell(
-            onTap: () => context.push(
-              "${AnalysesOverviewPage.route}/${widget.analysisId}",
-            ),
+            onTap: () =>
+                context.push("${AnalysesOverviewPage.route}/$analysisId"),
             child: Skeletonizer(
               enabled: skeletonEnabled,
-
               child: CustomCard(
-                color: Theme.of(context).cardColor.withValues(alpha: 0.7),
                 child: Expanded(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -64,18 +55,21 @@ class _AnalysisCardState extends State<AnalysisCard>
                         ),
                         const Divider(),
                       ],
+                      Expanded(
+                        child: Skeleton.ignore(
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 200),
+                            child: hasResults
+                                ? ResultsSection(
+                                    key: const ValueKey("results"),
+                                    results: state.analysis!.results!,
+                                  )
+                                : ProgressSection(
+                                    key: const ValueKey("progress"),
 
-                      if (hasResults)
-                        Expanded(
-                          child: ResultsSection(
-                            results: state.analysis!.results!,
+                                    status: status,
+                                  ),
                           ),
-                        ),
-
-                      Skeleton.ignore(
-                        child: ProgressSection(
-                          video: state.analysis,
-                          progress: state.progress,
                         ),
                       ),
                     ],
@@ -88,13 +82,10 @@ class _AnalysisCardState extends State<AnalysisCard>
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }
 
 class _HeaderRow extends StatelessWidget {
-  const _HeaderRow({super.key, required this.analysis});
+  const _HeaderRow({required this.analysis});
 
   final Analysis? analysis;
 
@@ -112,11 +103,6 @@ class _HeaderRow extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleLarge,
                 )
               : const SizedBox(height: 24),
-        ),
-
-        Expanded(
-          flex: 3,
-          child: StatusRow(analysis: analysis, showText: false),
         ),
 
         Expanded(

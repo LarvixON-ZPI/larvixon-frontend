@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_results.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/animated_confidence_bar.dart';
-import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
+import 'package:larvixon_frontend/src/common/extensions/color_gradient.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 
@@ -21,37 +21,99 @@ class AllResultsSection extends StatelessWidget {
             style: theme.textTheme.titleLarge,
           ),
           const SizedBox(height: 8),
-          ...results.asMap().entries.map((entry) {
-            final i = entry.key;
-            final (substance, confidence) = entry.value;
-            return Container(
-              color: i.isEven
-                  ? theme.colorScheme.surfaceContainerHighest.withValues(
-                      alpha: 0.8,
-                    )
-                  : Colors.transparent,
-              padding: const EdgeInsets.symmetric(vertical: 6),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(substance, style: theme.textTheme.titleLarge),
+          Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+            child: Table(
+              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+              columnWidths: const {
+                0: FlexColumnWidth(2),
+                1: FlexColumnWidth(),
+                2: FlexColumnWidth(3),
+              },
+              children: [
+                TableRow(
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.surfaceContainerHighest,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8),
                     ),
-                    Expanded(
-                      flex: 3,
-                      child: AnimatedConfidenceBar(
-                        confidence: confidence,
-                        includePercentage: true,
-                        textStyle: theme.textTheme.titleMedium,
+                  ),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Text(
+                        context.translate.substance,
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Text(
+                        context.translate.confidence,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.all(12), child: Text("")),
                   ],
                 ),
-              ),
-            ).withOnHoverEffect;
-          }),
+                ...results.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final (substance, confidence) = entry.value;
+                  final isLast = index == results.length - 1;
+
+                  return TableRow(
+                    decoration: BoxDecoration(
+                      color: index.isEven
+                          ? Colors.transparent
+                          : theme.colorScheme.surfaceContainerHighest
+                                .withValues(alpha: 0.3),
+                      borderRadius: isLast
+                          ? const BorderRadius.only(
+                              bottomLeft: Radius.circular(8),
+                              bottomRight: Radius.circular(8),
+                            )
+                          : null,
+                    ),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 16,
+                        ),
+                        child: Text(
+                          substance,
+                          style: theme.textTheme.bodyLarge,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 16,
+                        ),
+                        child: Text(
+                          "${(confidence * 100).toStringAsFixed(1)}%",
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: ColorGradientExtension.gradient(
+                              score: confidence,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 16,
+                        ),
+                        child: AnimatedConfidenceBar(confidence: confidence),
+                      ),
+                    ],
+                  );
+                }),
+              ],
+            ),
+          ),
         ],
       ),
     );
