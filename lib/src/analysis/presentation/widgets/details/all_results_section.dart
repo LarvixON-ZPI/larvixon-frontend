@@ -26,9 +26,9 @@ class AllResultsSection extends StatelessWidget {
             child: Table(
               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
               columnWidths: const {
-                0: FlexColumnWidth(2),
+                0: FlexColumnWidth(),
                 1: FlexColumnWidth(),
-                2: FlexColumnWidth(3),
+                2: FlexColumnWidth(2),
               },
               children: [
                 TableRow(
