@@ -272,10 +272,6 @@ class _AnimationConfig {
       manyResultsDelay = const Duration(milliseconds: 400);
 }
 
-extension on AnalysisState {
-  bool get isLoading => status == AnalysisStatus.initial || analysis == null;
-}
-
 extension on Analysis {
   bool get hasResults => results?.isNotEmpty ?? false;
   bool get hasManyResults => (results?.length ?? 0) > 1;
