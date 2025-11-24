@@ -5,6 +5,8 @@ import 'package:larvixon_frontend/src/about_us/presentation/pages/about_page.dar
 import 'package:larvixon_frontend/src/authentication/presentation/auth_form.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_page.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
+import 'package:larvixon_frontend/src/common/pages/privacy_page.dart';
+import 'package:larvixon_frontend/src/common/pages/terms_page.dart';
 import 'package:larvixon_frontend/src/common/widgets/layout/nav_item.dart';
 import 'package:larvixon_frontend/src/common/widgets/layout/nav_menu.dart';
 import 'package:larvixon_frontend/src/common/widgets/layout/app_bar_base.dart';
@@ -65,6 +67,16 @@ class LandingAppBar extends StatelessWidget implements PreferredSizeWidget {
         label: context.translate.settings,
         icon: CommonIcons.settings,
         route: SettingsPage.route,
+      ),
+      NavItem(
+        label: context.translate.privacy,
+        icon: Icons.privacy_tip_rounded,
+        route: PrivacyPolicyPage.route,
+      ),
+      NavItem(
+        label: context.translate.terms,
+        icon: Icons.description_outlined ,
+        route: TermsOfUsePage.route,
       ),
 
       NavItem(

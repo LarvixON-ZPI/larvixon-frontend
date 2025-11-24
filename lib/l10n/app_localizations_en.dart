@@ -510,4 +510,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get viewResults => 'View results';
+
+  @override
+  String get optional => 'Optional';
+
+  @override
+  String get privacyPolicy => 'Privacy policy';
+
+  @override
+  String get termsOfUse => 'Terms of use';
 }

@@ -12,6 +12,8 @@ import 'package:larvixon_frontend/src/analysis/presentation/pages/analysis_detai
 import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_form.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_page.dart';
+import 'package:larvixon_frontend/src/common/pages/privacy_page.dart';
+import 'package:larvixon_frontend/src/common/pages/terms_page.dart';
 import 'package:larvixon_frontend/src/common/widgets/layout/app_shell.dart';
 import 'package:larvixon_frontend/src/common/widgets/layout/adaptive_app_bar.dart';
 import 'package:larvixon_frontend/src/contact/presentation/pages/contact_page.dart';
@@ -105,7 +107,20 @@ class AppRouter {
               return page.withoutTransition(state: state);
             },
           ),
-
+          GoRoute(
+            name: PrivacyPolicyPage.name,
+            path: PrivacyPolicyPage.route,
+            pageBuilder: (context, state) {
+              return const PrivacyPolicyPage().withoutTransition(state: state);
+            },
+          ),
+          GoRoute(
+            name: TermsOfUsePage.name,
+            path: TermsOfUsePage.route,
+            pageBuilder: (context, state) {
+              return const TermsOfUsePage().withoutTransition(state: state);
+            },
+          ),
           // ==================== AUTHENTICATED ROUTES ====================
           GoRoute(
             path: AnalysesOverviewPage.route,
@@ -167,6 +182,8 @@ class AppRouter {
         ContactPage.route,
         SimulationPage.route,
         SettingsPage.route,
+        PrivacyPolicyPage.route,
+        TermsOfUsePage.route,
       ].contains(state.uri.path);
 
       switch (authState.status) {

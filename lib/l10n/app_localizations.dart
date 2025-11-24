@@ -997,6 +997,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View results'**
   String get viewResults;
+
+  /// No description provided for @optional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get optional;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @termsOfUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of use'**
+  String get termsOfUse;
 }
 
 class _AppLocalizationsDelegate

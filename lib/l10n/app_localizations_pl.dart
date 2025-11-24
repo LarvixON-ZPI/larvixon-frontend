@@ -129,7 +129,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get privacy => 'Prywatność';
 
   @override
-  String get terms => 'Warunki korzystania';
+  String get terms => 'Regulamin';
 
   @override
   String get follow => 'Obserwuj nas';
@@ -510,4 +510,13 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get viewResults => 'Przejdź do wyników';
+
+  @override
+  String get optional => 'Opcjonalne';
+
+  @override
+  String get privacyPolicy => 'Polityka prywatności';
+
+  @override
+  String get termsOfUse => 'Warunki użytkowania';
 }
