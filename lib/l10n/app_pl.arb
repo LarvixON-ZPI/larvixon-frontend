@@ -252,5 +252,10 @@
   "simulation_how_to_3": "W prawym panelu możesz wybrać, jaką substancję podać biednej larwie oraz określić jej intensywność.",
   "notFound_title": "Nie znaleziono strony",
   "notFound_description": "Strona, której szukasz, nie istnieje lub została przeniesiona.",
-  "viewResults": "Przejdź do wyników"
+  "viewResults": "Przejdź do wyników",
+  "optional": "Opcjonalne",
+  "privacy": "Prywatność",
+  "privacyPolicy": "Polityka prywatności",
+  "terms": "Regulamin",
+  "termsOfUse": "Warunki użytkowania"
 }
