@@ -63,11 +63,7 @@ class LandingAppBar extends StatelessWidget implements PreferredSizeWidget {
         icon: CommonIcons.simulation,
         route: SimulationPage.route,
       ),
-      NavItem(
-        label: context.translate.settings,
-        icon: CommonIcons.settings,
-        route: SettingsPage.route,
-      ),
+
       NavItem(
         label: context.translate.privacy,
         icon: Icons.privacy_tip_rounded,
@@ -75,10 +71,14 @@ class LandingAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       NavItem(
         label: context.translate.terms,
-        icon: Icons.description_outlined ,
+        icon: Icons.description_outlined,
         route: TermsOfUsePage.route,
       ),
-
+      NavItem(
+        label: context.translate.settings,
+        icon: CommonIcons.settings,
+        route: SettingsPage.route,
+      ),
       NavItem(
         label: context.translate.signIn,
         icon: Icons.person,
