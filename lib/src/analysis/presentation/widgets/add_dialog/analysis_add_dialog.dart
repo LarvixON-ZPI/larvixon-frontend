@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_upload_cubit/analysis_upload_cubit.dart';
+import 'package:larvixon_frontend/src/common/mixins/form_validators_mixin.dart';
 import 'package:larvixon_frontend/src/common/services/file_picker/file_pick_result.dart';
 import 'package:larvixon_frontend/src/common/services/file_picker/file_picker.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
@@ -17,6 +18,7 @@ class LarvaVideoAddForm extends StatefulWidget {
   ) {
     return DialogUtils.showScaleDialog(
       barrierLabel: "Upload video dialog",
+      barrierDismissible: false,
       context: context,
       title: Text(
         context.translate.uploadNewVideo,
@@ -44,7 +46,7 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
   int? _fileSize;
   bool _fileSizeError = false;
 
-  final _titleController = TextEditingController();
+  final _descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   late final AdaptiveFilePicker _filePicker;
 
@@ -59,7 +61,7 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
 
   @override
   void dispose() {
-    _titleController.dispose();
+    _descriptionController.dispose();
     _filePicker.cancel();
     super.dispose();
   }
@@ -145,7 +147,7 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
 
     context.read<AnalysisUploadCubit>().uploadVideo(
       fileResult: _fileResult!,
-      title: _titleController.text,
+      description: _descriptionController.text,
     );
   }
 
@@ -161,8 +163,8 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
           child: Column(
             spacing: 16,
             children: [
-              _TitleField(
-                controller: _titleController,
+              _DescriptionField(
+                controller: _descriptionController,
                 maximumFileSizeString: _formatMaximumFileSize(
                   _maxFileSizeBytes,
                 ),
@@ -280,8 +282,8 @@ class _ErrorSection extends StatelessWidget {
   }
 }
 
-class _TitleField extends StatelessWidget {
-  const _TitleField({
+class _DescriptionField extends StatelessWidget with FormValidatorsMixin {
+  const _DescriptionField({
     required this.controller,
     required this.maximumFileSizeString,
   });
@@ -299,14 +301,23 @@ class _TitleField extends StatelessWidget {
         ),
         TextFormField(
           controller: controller,
+          minLines: 3,
+          maxLines: 5,
+          maxLength: 1024,
           decoration: InputDecoration(
-            hintText: context.translate.enterTitle,
+            hintText:
+                "${context.translate.enterDescription} (${context.translate.optional.toLowerCase()})",
             fillColor: Theme.of(context).colorScheme.secondaryContainer,
             filled: true,
           ),
-          validator: (value) => (value == null || value.isEmpty)
-              ? context.translate.fieldIsRequired
-              : null,
+          validator: (value) => lengthValidator(
+            context,
+            value,
+            fieldName: context.translate.description,
+            minLength: 0,
+            maxLength: 1024,
+            allowNull: true,
+          ),
         ),
       ],
     );
@@ -452,7 +463,9 @@ class _UploadButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final targetColor = isSuccess
+    final targetColor = (!canUpload && !isUploading && !isSuccess)
+        ? Theme.of(context).disabledColor
+        : isSuccess
         ? Colors.green.shade800
         : Colors.blue.shade800;
 

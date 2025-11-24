@@ -11,7 +11,7 @@ class AnalysisMapper implements Mapper<AnalysisDTO, Analysis> {
       id: dto.id,
       uploadedAt: DateTime.parse(dto.created_at),
       status: AnalysisProgressStatus.fromString(dto.status),
-      name: dto.title ?? 'Unnamed',
+      description: dto.description,
       analysedAt: dto.completed_at != null
           ? DateTime.parse(dto.completed_at!)
           : null,

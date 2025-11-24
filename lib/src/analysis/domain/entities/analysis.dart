@@ -8,20 +8,19 @@ class Analysis extends Equatable {
   final DateTime uploadedAt;
   final AnalysisProgressStatus status;
   final String? errorMessage;
-  final String? name;
   final DateTime? analysedAt;
   final String? thumbnailUrl;
   final AnalysisResults? results;
+  final String? description;
 
   const Analysis({
     required this.id,
     required this.uploadedAt,
-    this.name,
     this.status = AnalysisProgressStatus.pending,
     this.analysedAt,
     this.thumbnailUrl,
     this.results,
-
+    this.description,
     this.errorMessage,
   });
 
@@ -31,20 +30,20 @@ class Analysis extends Equatable {
     AnalysisProgressStatus? status,
     double? progress,
     String? errorMessage,
-    String? name,
     DateTime? analysedAt,
     AnalysisResults? results,
     String? thumbnailUrl,
+    String? description,
   }) {
     return Analysis(
       id: id ?? this.id,
       uploadedAt: uploadedAt ?? this.uploadedAt,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
-      name: name ?? this.name,
       analysedAt: analysedAt ?? this.analysedAt,
       results: results ?? this.results,
       thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
+      description: description ?? this.description,
     );
   }
 
@@ -54,7 +53,6 @@ class Analysis extends Equatable {
     uploadedAt,
     status,
     errorMessage,
-    name,
     analysedAt,
     results,
     thumbnailUrl,

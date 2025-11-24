@@ -203,6 +203,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get enterTitle => 'Wprowadź tytuł';
 
   @override
+  String get enterDescription => 'Wprowadź opis';
+
+  @override
   String get uploading => 'Przesyłanie';
 
   @override
@@ -510,4 +513,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get viewResults => 'Przejdź do wyników';
+
+  @override
+  String get optional => 'Opcjonalne';
 }

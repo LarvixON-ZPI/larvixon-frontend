@@ -10,7 +10,7 @@ class AnalysisDataSourceImpl extends AnalysisDataSource {
     streamFactory,
     required dynamic file,
     required String filename,
-    required String title,
+    String? description,
     required int totalBytes,
     ProgressCallback? onProgress,
     CancelToken? cancelToken,

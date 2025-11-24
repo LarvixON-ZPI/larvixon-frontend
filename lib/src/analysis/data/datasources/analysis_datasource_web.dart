@@ -16,7 +16,7 @@ class AnalysisDataSourceImpl extends AnalysisDataSource {
     streamFactory,
     required dynamic file,
     required String filename,
-    required String title,
+    String? description,
     required int totalBytes,
     ProgressCallback? onProgress,
     CancelToken? cancelToken,
@@ -27,7 +27,7 @@ class AnalysisDataSourceImpl extends AnalysisDataSource {
 
     final formData = html.FormData();
     formData.appendBlob('video', file, filename);
-    formData.append('title', title);
+    if (description != null) formData.append('description', description);
 
     xhr.upload.onProgress.listen((html.ProgressEvent e) {
       if (e.lengthComputable) {

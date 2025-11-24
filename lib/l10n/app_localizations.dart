@@ -440,6 +440,12 @@ abstract class AppLocalizations {
   /// **'Enter title'**
   String get enterTitle;
 
+  /// No description provided for @enterDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter description'**
+  String get enterDescription;
+
   /// No description provided for @uploading.
   ///
   /// In en, this message translates to:
@@ -997,6 +1003,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View results'**
   String get viewResults;
+
+  /// No description provided for @optional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get optional;
 }
 
 class _AppLocalizationsDelegate

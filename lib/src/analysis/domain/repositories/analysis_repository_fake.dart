@@ -58,7 +58,8 @@ class AnalysisRepositoryFake implements AnalysisRepository {
 
     for (var i = 0; i < count; i++) {
       final id = random.nextInt(100000);
-      final name = "Larva experiment ${getRandomString(random.nextInt(20))}";
+      final name =
+          "Larva experiment description ${getRandomString(random.nextInt(20))}";
       final status = AnalysisProgressStatus
           .values[random.nextInt(AnalysisProgressStatus.values.length)];
       final thumbnail = "https://picsum.photos/seed/$id/640/360";
@@ -66,7 +67,7 @@ class AnalysisRepositoryFake implements AnalysisRepository {
       var analysis = Analysis(
         id: id,
         uploadedAt: now.subtract(Duration(minutes: random.nextInt(10000))),
-        name: name,
+        description: name,
         thumbnailUrl: thumbnail,
         status: status,
         analysedAt: status == AnalysisProgressStatus.completed ? now : null,
@@ -210,7 +211,7 @@ class AnalysisRepositoryFake implements AnalysisRepository {
   @override
   TaskEither<Failure, AnalysisUploadResponse> uploadVideo({
     required FilePickResult fileResult,
-    required String title,
+    String? description,
     void Function(double progress)? onProgress,
     CancelToken? cancelToken,
   }) {
@@ -242,7 +243,7 @@ class AnalysisRepositoryFake implements AnalysisRepository {
           Analysis(
             id: nextId,
             uploadedAt: DateTime.now(),
-            name: title,
+            description: description,
             thumbnailUrl: "https://picsum.photos/seed/$nextId/640/360",
           ),
         );
@@ -262,7 +263,6 @@ class AnalysisRepositoryFake implements AnalysisRepository {
 
   int _compareByField(Analysis a, Analysis b, AnalysisField field) {
     return switch (field) {
-      AnalysisField.title => _compareNullableStrings(a.name, b.name),
       AnalysisField.createdAt => a.uploadedAt.compareTo(b.uploadedAt),
       AnalysisField.status => a.status.index.compareTo(b.status.index),
     };

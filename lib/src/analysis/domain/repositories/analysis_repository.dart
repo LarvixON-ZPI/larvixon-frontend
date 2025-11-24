@@ -28,7 +28,7 @@ abstract class AnalysisRepository {
   });
   TaskEither<Failure, AnalysisUploadResponse> uploadVideo({
     required FilePickResult fileResult,
-    required String title,
+    String? description,
     void Function(double progress)? onProgress,
     CancelToken? cancelToken,
   });

@@ -201,6 +201,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterTitle => 'Enter title';
 
   @override
+  String get enterDescription => 'Enter description';
+
+  @override
   String get uploading => 'Uploading';
 
   @override
@@ -510,4 +513,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get viewResults => 'View results';
+
+  @override
+  String get optional => 'Optional';
 }

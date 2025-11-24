@@ -128,14 +128,14 @@ class MockAnalysisRepository extends _i1.Mock
   @override
   _i5.TaskEither<_i6.Failure, _i11.AnalysisUploadResponse> uploadVideo({
     required _i12.FilePickResult? fileResult,
-    required String? title,
+    required String? description,
     void Function(double)? onProgress,
     _i13.CancelToken? cancelToken,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#uploadVideo, [], {
               #fileResult: fileResult,
-              #title: title,
+              #title: description,
               #onProgress: onProgress,
               #cancelToken: cancelToken,
             }),
@@ -146,7 +146,7 @@ class MockAnalysisRepository extends _i1.Mock
                   this,
                   Invocation.method(#uploadVideo, [], {
                     #fileResult: fileResult,
-                    #title: title,
+                    #title: description,
                     #onProgress: onProgress,
                     #cancelToken: cancelToken,
                   }),

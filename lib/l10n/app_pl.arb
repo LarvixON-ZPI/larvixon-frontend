@@ -125,6 +125,7 @@
   },
   "unknownError": "Wystąpił nieznany błąd",
   "enterTitle": "Wprowadź tytuł",
+  "enterDescription": "Wprowadź opis",
   "@@_VideoStatuses": {},
   "uploading": "Przesyłanie",
   "uploaded": "Przesłano",
@@ -252,5 +253,6 @@
   "simulation_how_to_3": "W prawym panelu możesz wybrać, jaką substancję podać biednej larwie oraz określić jej intensywność.",
   "notFound_title": "Nie znaleziono strony",
   "notFound_description": "Strona, której szukasz, nie istnieje lub została przeniesiona.",
-  "viewResults": "Przejdź do wyników"
+  "viewResults": "Przejdź do wyników",
+  "optional": "Opcjonalne"
 }

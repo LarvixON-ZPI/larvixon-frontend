@@ -12,7 +12,6 @@ extension AnalysisSortQueryParams on AnalysisSort {
   String _fieldToApiName(AnalysisField field) {
     return switch (field) {
       AnalysisField.createdAt => 'created_at',
-      AnalysisField.title => 'title',
       AnalysisField.status => 'status',
     };
   }

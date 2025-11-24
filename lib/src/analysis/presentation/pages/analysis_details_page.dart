@@ -134,7 +134,7 @@ class _AnalysisDetailsContentState extends State<_AnalysisDetailsContent> {
   Analysis _createPlaceholderAnalysis() {
     return Analysis(
       id: widget.analysisId,
-      name: 'Loading analysis...',
+      description: 'Loading analysis...',
       uploadedAt: DateTime.now(),
       analysedAt: DateTime.now(),
       thumbnailUrl: '',

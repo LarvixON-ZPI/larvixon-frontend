@@ -10,6 +10,7 @@ import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/details_card/results_section.dart';
 import 'package:larvixon_frontend/src/common/extensions/date_format_extension.dart';
 import 'package:larvixon_frontend/src/common/extensions/on_hover_extension.dart';
+import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -45,16 +46,6 @@ class AnalysisCard extends StatelessWidget {
                     children: [
                       _HeaderRow(analysis: analysis),
                       const Divider(),
-                      if (state.analysis?.name case final name?) ...[
-                        Text(
-                          name,
-                          style: Theme.of(context).textTheme.titleLarge,
-                          textAlign: TextAlign.center,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const Divider(),
-                      ],
                       Expanded(
                         child: Skeleton.ignore(
                           child: AnimatedSwitcher(
@@ -99,7 +90,7 @@ class _HeaderRow extends StatelessWidget {
           flex: 2,
           child: analysis?.id != null
               ? Text(
-                  "#${analysis!.id}",
+                  "${context.translate.analysis} #${analysis!.id}",
                   style: Theme.of(context).textTheme.titleLarge,
                 )
               : const SizedBox(height: 24),

@@ -55,20 +55,11 @@ class _MetaSectionState extends State<MetaSection>
 
   @override
   Widget build(BuildContext context) {
+    final analysis = widget.analysis;
     return CustomCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  "${context.translate.title}: ${widget.analysis.name ?? context.translate.notSet}",
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-              ),
-            ],
-          ),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -76,15 +67,16 @@ class _MetaSectionState extends State<MetaSection>
                 "${context.translate.status}: ",
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
-              StatusRow(analysis: widget.analysis, showPercent: true),
+              StatusRow(analysis: analysis, showPercent: true),
             ],
           ),
+          Divider(),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(
                 child: Text(
-                  "${context.translate.createdAt}: ${widget.analysis.uploadedAt.formattedDateTime}",
+                  "${context.translate.createdAt}: ${analysis.uploadedAt.formattedDateTime}",
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ),
@@ -105,6 +97,20 @@ class _MetaSectionState extends State<MetaSection>
               ],
             ),
           ),
+          if (analysis.description != null &&
+              analysis.description!.trim().isNotEmpty) ...[
+            Divider(),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    "${context.translate.description}: ${widget.analysis.description ?? context.translate.notSet}",
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ],
       ),
     );
