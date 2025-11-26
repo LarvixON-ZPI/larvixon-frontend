@@ -15,28 +15,65 @@ permissions:
   contents: write
 
 jobs:
-  check-main-branch:
-    name: Verify Tag is on Main
+  prepare-tag:
+    name: Prepare Tag (Create if manual)
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    outputs:
+      RELEASE_TAG: ${{ steps.set_tag.outputs.TAG }}
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Check if tag is on main branch
+      - id: set_tag
+        name: Determine release tag
         run: |
-          TAG_COMMIT=$(git rev-list -n 1 ${{ github.ref }})
-          MAIN_COMMITS=$(git rev-list origin/main)
-          if echo "$MAIN_COMMITS" | grep -q "$TAG_COMMIT"; then
-            echo "Tag is on main branch ✓"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ github.event.inputs.version_tag }}"
           else
-            echo "Error: Tag must be on main branch"
+            TAG="${GITHUB_REF_NAME}"
+          fi
+          echo "TAG=$TAG"
+          echo "TAG=${TAG}" >> $GITHUB_OUTPUT
+      - name: Create missing tag if needed
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          TAG=${{ steps.set_tag.outputs.TAG }}
+
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Tag already exists: $TAG"
+          else
+            echo "Creating tag $TAG"
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            git tag "$TAG"
+            git push origin "$TAG"
+          fi
+
+  check-main-branch:
+    name: Verify Tag is on Main
+    runs-on: ubuntu-latest
+    needs: prepare-tag
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Ensure tag commit is in main
+        run: |
+          TAG=${{ needs.prepare-tag.outputs.RELEASE_TAG }}
+          TAG_COMMIT=$(git rev-list -n 1 "$TAG")
+          MAIN_COMMITS=$(git rev-list origin/main)
+
+          if echo "$MAIN_COMMITS" | grep -q "$TAG_COMMIT"; then
+            echo "Tag $TAG is on main ✓"
+          else
+            echo "Error: Tag $TAG is not on main."
             exit 1
           fi
 
   build-android:
     name: Build Android APK
-    needs: [check-main-branch]
+    needs: check-main-branch
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -56,7 +93,7 @@ jobs:
 
   build-windows:
     name: Build Windows EXE
-    needs: [check-main-branch]
+    needs: check-main-branch
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
@@ -76,7 +113,7 @@ jobs:
 
   build-linux:
     name: Build Linux App
-    needs: [check-main-branch]
+    needs: check-main-branch
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -99,7 +136,7 @@ jobs:
 
   build-web:
     name: Build and Deploy Web
-    needs: [check-main-branch]
+    needs: check-main-branch
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -123,37 +160,36 @@ jobs:
 
   create-release:
     name: Create GitHub Release
-    needs: [check-main-branch, build-android, build-windows, build-linux, build-web]
+    needs: [build-android, build-windows, build-linux, build-web, check-main-branch]
     runs-on: ubuntu-latest
     steps:
-      - name: Set release tag
-        id: set_tag
-        run: |
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "TAG=${{ github.event.inputs.version_tag }}" >> $GITHUB_ENV
-          else
-            echo "TAG=${GITHUB_REF_NAME}" >> $GITHUB_ENV
-          fi
+      - name: Set tag from earlier job
+        run: echo "TAG=${{ needs.check-main-branch.needs.prepare-tag.outputs.RELEASE_TAG }}" >> $GITHUB_ENV
+
       - uses: actions/download-artifact@v4
         with:
           name: android-release
           path: artifacts/android
+
       - uses: actions/download-artifact@v4
         with:
           name: windows-release
           path: artifacts/windows
+
       - uses: actions/download-artifact@v4
         with:
           name: linux-release
           path: artifacts/linux
+
       - name: Create archives
         run: |
           cd artifacts/windows
-          zip -r ../../larvixon-windows-${{ env.TAG }}.zip .
+          zip -r ../../larvixon-windows-${TAG}.zip .
           cd ../linux
-          tar -czf ../../larvixon-linux-${{ env.TAG }}.tar.gz .
+          tar -czf ../../larvixon-linux-${TAG}.tar.gz .
           cd ../android
-          cp app-release.apk ../../larvixon-android-${{ env.TAG }}.apk
+          cp app-release.apk ../../larvixon-android-${TAG}.apk
+
       - uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ env.TAG }}

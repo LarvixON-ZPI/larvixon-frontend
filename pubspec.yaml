@@ -31,6 +31,7 @@ dependencies:
   mask_text_input_formatter: ^2.9.0
   jwt_decoder: ^2.0.1
   markdown_widget: ^2.3.2+8
+  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:
@@ -55,3 +56,18 @@ flutter:
 dependency_overrides:
   flutter_unity_widget:
     path: plugins/flutter_unity_widget-2022.2.1
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  windows:
+    generate: true
+  linux:
+    generate: true
+  web:
+    generate: true
+    background_color: "#0175C2"
+    theme_color: "#0175C2"
+  image_path: "assets/images/app_icon/logo_only_dark.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/images/app_icon/logo_only_dark.png"
