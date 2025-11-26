@@ -105,6 +105,14 @@ jobs:
     needs: [build-android, build-windows, build-linux, build-web]
     runs-on: ubuntu-latest
     steps:
+      - name: Set release tag
+        id: set_tag
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "TAG=${{ github.event.inputs.version_tag }}" >> $GITHUB_ENV
+          else
+            echo "TAG=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          fi
       - uses: actions/download-artifact@v4
         with:
           name: android-release
@@ -120,18 +128,18 @@ jobs:
       - name: Create archives
         run: |
           cd artifacts/windows
-          zip -r ../../larvixon-windows-${{ needs.check-version.outputs.tag_name }}.zip .
+          zip -r ../../larvixon-windows-${{ env.TAG }}.zip .
           cd ../linux
-          tar -czf ../../larvixon-linux-${{ needs.check-version.outputs.tag_name }}.tar.gz .
+          tar -czf ../../larvixon-linux-${{ env.TAG }}.tar.gz .
           cd ../android
-          cp app-release.apk ../../larvixon-android-${{ needs.check-version.outputs.tag_name }}.apk
+          cp app-release.apk ../../larvixon-android-${{ env.TAG }}.apk
       - uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ needs.check-version.outputs.tag_name }}
+          tag_name: ${{ env.TAG }}
           files: |
-            larvixon-android-${{ needs.check-version.outputs.tag_name }}.apk
-            larvixon-windows-${{ needs.check-version.outputs.tag_name }}.zip
-            larvixon-linux-${{ needs.check-version.outputs.tag_name }}.tar.gz
+            larvixon-android-${{ env.TAG }}.apk
+            larvixon-windows-${{ env.TAG }}.zip
+            larvixon-linux-${{ env.TAG }}.tar.gz
           draft: true
           prerelease: false
           generate_release_notes: true
