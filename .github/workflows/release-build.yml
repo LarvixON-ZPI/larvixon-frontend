@@ -19,8 +19,6 @@ permissions:
 jobs:
   build-android:
     name: Build Android APK
-    needs: check-version
-    if: needs.check-version.outputs.has_tag == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -40,8 +38,6 @@ jobs:
 
   build-windows:
     name: Build Windows EXE
-    needs: check-version
-    if: needs.check-version.outputs.has_tag == 'true'
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
@@ -61,8 +57,6 @@ jobs:
 
   build-linux:
     name: Build Linux App
-    needs: check-version
-    if: needs.check-version.outputs.has_tag == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -85,8 +79,6 @@ jobs:
 
   build-web:
     name: Build and Deploy Web
-    needs: check-version
-    if: needs.check-version.outputs.has_tag == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -110,7 +102,7 @@ jobs:
 
   create-release:
     name: Create GitHub Release
-    needs: [check-version, build-android, build-windows, build-linux, build-web]
+    needs: [build-android, build-windows, build-linux, build-web]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
