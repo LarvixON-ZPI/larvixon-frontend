@@ -47,10 +47,6 @@ jobs:
               echo "tag_name=" >> $GITHUB_OUTPUT
             fi
           fi
-              echo "has_tag=false" >> $GITHUB_OUTPUT
-              echo "tag_name=" >> $GITHUB_OUTPUT
-            fi
-          fi
 
   build-android:
     name: Build Android APK
