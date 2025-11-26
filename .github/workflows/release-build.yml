@@ -4,10 +4,8 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-    types: [closed]
+    tags:
+      - 'v*'
   workflow_dispatch:
     inputs:
       version_tag:
@@ -19,35 +17,6 @@ permissions:
   contents: write
 
 jobs:
-  check-version:
-    name: Check for Version Tag
-    runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
-    outputs:
-      has_tag: ${{ steps.check.outputs.has_tag }}
-      tag_name: ${{ steps.check.outputs.tag_name }}
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Check for version tag
-        id: check
-        run: |
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            TAG="${{ github.event.inputs.version_tag }}"
-            echo "has_tag=true" >> $GITHUB_OUTPUT
-            echo "tag_name=$TAG" >> $GITHUB_OUTPUT
-          else
-            TAG=$(git describe --exact-match --tags HEAD 2>/dev/null || echo "")
-            if [[ $TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+.*$ ]]; then
-              echo "has_tag=true" >> $GITHUB_OUTPUT
-              echo "tag_name=$TAG" >> $GITHUB_OUTPUT
-            else
-              echo "has_tag=false" >> $GITHUB_OUTPUT
-              echo "tag_name=" >> $GITHUB_OUTPUT
-            fi
-          fi
-
   build-android:
     name: Build Android APK
     needs: check-version
