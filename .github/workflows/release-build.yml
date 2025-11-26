@@ -1,0 +1,178 @@
+name: Flutter Release Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    types: [closed]
+  workflow_dispatch:
+    inputs:
+      version_tag:
+        description: 'Version tag (e.g., v1.0.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  check-version:
+    name: Check for Version Tag
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true) || github.event_name == 'workflow_dispatch'
+    outputs:
+      has_tag: ${{ steps.check.outputs.has_tag }}
+      tag_name: ${{ steps.check.outputs.tag_name }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Check for version tag
+        id: check
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            TAG="${{ github.event.inputs.version_tag }}"
+            echo "has_tag=true" >> $GITHUB_OUTPUT
+            echo "tag_name=$TAG" >> $GITHUB_OUTPUT
+          else
+            TAG=$(git describe --exact-match --tags HEAD 2>/dev/null || echo "")
+            if [[ $TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+.*$ ]]; then
+              echo "has_tag=true" >> $GITHUB_OUTPUT
+              echo "tag_name=$TAG" >> $GITHUB_OUTPUT
+            else
+              echo "has_tag=false" >> $GITHUB_OUTPUT
+              echo "tag_name=" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+  build-android:
+    name: Build Android APK
+    needs: check-version
+    if: needs.check-version.outputs.has_tag == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.5'
+          channel: 'stable'
+          cache: true
+      - run: flutter pub get
+      - run: flutter build apk --release --target=lib/main.dart --dart-define=API_BASE_URL=${{ secrets.API_BASE_URL }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-release
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+  build-windows:
+    name: Build Windows EXE
+    needs: check-version
+    if: needs.check-version.outputs.has_tag == 'true'
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.5'
+          channel: 'stable'
+          cache: true
+      - run: flutter pub get
+      - run: flutter build windows --release --target=lib/main.dart --dart-define=API_BASE_URL=${{ secrets.API_BASE_URL }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-release
+          path: build/windows/x64/runner/Release/
+
+  build-linux:
+    name: Build Linux App
+    needs: check-version
+    if: needs.check-version.outputs.has_tag == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+      - run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ninja-build libgtk-3-dev
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.5'
+          channel: 'stable'
+          cache: true
+      - run: flutter pub get
+      - run: flutter build linux --release --target=lib/main.dart --dart-define=API_BASE_URL=${{ secrets.API_BASE_URL }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-release
+          path: build/linux/x64/release/bundle/
+
+  build-web:
+    name: Build and Deploy Web
+    needs: check-version
+    if: needs.check-version.outputs.has_tag == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.5'
+          channel: 'stable'
+          cache: true
+      - run: flutter pub get
+      - run: flutter build web --release --target=lib/main.dart --base-href="/larvixon-frontend/" --dart-define=API_BASE_URL=${{ secrets.API_BASE_URL }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-release
+          path: build/web
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web
+
+  create-release:
+    name: Create GitHub Release
+    needs: [check-version, build-android, build-windows, build-linux, build-web]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: android-release
+          path: artifacts/android
+      - uses: actions/download-artifact@v4
+        with:
+          name: windows-release
+          path: artifacts/windows
+      - uses: actions/download-artifact@v4
+        with:
+          name: linux-release
+          path: artifacts/linux
+      - name: Create archives
+        run: |
+          cd artifacts/windows
+          zip -r ../../larvixon-windows-${{ needs.check-version.outputs.tag_name }}.zip .
+          cd ../linux
+          tar -czf ../../larvixon-linux-${{ needs.check-version.outputs.tag_name }}.tar.gz .
+          cd ../android
+          cp app-release.apk ../../larvixon-android-${{ needs.check-version.outputs.tag_name }}.apk
+      - uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ needs.check-version.outputs.tag_name }}
+          files: |
+            larvixon-android-${{ needs.check-version.outputs.tag_name }}.apk
+            larvixon-windows-${{ needs.check-version.outputs.tag_name }}.zip
+            larvixon-linux-${{ needs.check-version.outputs.tag_name }}.tar.gz
+          draft: true
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

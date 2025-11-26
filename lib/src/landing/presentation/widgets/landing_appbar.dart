@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/core/constants/common_icons.dart';
@@ -7,15 +8,15 @@ import 'package:larvixon_frontend/src/authentication/presentation/auth_page.dart
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 import 'package:larvixon_frontend/src/common/pages/privacy_page.dart';
 import 'package:larvixon_frontend/src/common/pages/terms_page.dart';
-import 'package:larvixon_frontend/src/common/widgets/layout/nav_item.dart';
-import 'package:larvixon_frontend/src/common/widgets/layout/nav_menu.dart';
 import 'package:larvixon_frontend/src/common/widgets/layout/app_bar_base.dart';
 import 'package:larvixon_frontend/src/common/widgets/layout/app_bar_button.dart';
+import 'package:larvixon_frontend/src/common/widgets/layout/nav_item.dart';
+import 'package:larvixon_frontend/src/common/widgets/layout/nav_menu.dart';
 import 'package:larvixon_frontend/src/common/widgets/ui/larvixon_logo.dart';
 import 'package:larvixon_frontend/src/contact/presentation/pages/contact_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/pages/landing_page.dart';
 import 'package:larvixon_frontend/src/settings/presentation/pages/settings_page.dart';
-import 'package:larvixon_frontend/src/simulation/presentation/pages/simulation_page.dart';
+import 'package:larvixon_frontend/src/simulation/presentation/pages/simulation_page_loader.dart';
 
 class LandingAppBar extends StatelessWidget implements PreferredSizeWidget {
   const LandingAppBar({super.key});
@@ -58,11 +59,12 @@ class LandingAppBar extends StatelessWidget implements PreferredSizeWidget {
         icon: CommonIcons.contact,
         route: ContactPage.route,
       ),
-      NavItem(
-        label: context.translate.simulation,
-        icon: CommonIcons.simulation,
-        route: SimulationPage.route,
-      ),
+      if (kIsWeb)
+        NavItem(
+          label: context.translate.simulation,
+          icon: CommonIcons.simulation,
+          route: SimulationPage.route,
+        ),
 
       NavItem(
         label: context.translate.privacy,

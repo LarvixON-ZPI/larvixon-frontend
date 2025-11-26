@@ -411,10 +411,9 @@ packages:
   flutter_unity_widget:
     dependency: "direct main"
     description:
-      name: flutter_unity_widget
-      sha256: "91ed7166754f8c35358dfc92b8812d9ec5fbf1f6d67276a2462fda8ac6eef7f3"
-      url: "https://pub.dev"
-    source: hosted
+      path: "plugins/flutter_unity_widget-2022.2.1"
+      relative: true
+    source: path
     version: "2022.2.1"
   flutter_web_plugins:
     dependency: transitive
