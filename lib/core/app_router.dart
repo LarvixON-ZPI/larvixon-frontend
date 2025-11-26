@@ -14,12 +14,12 @@ import 'package:larvixon_frontend/src/authentication/presentation/auth_form.dart
 import 'package:larvixon_frontend/src/authentication/presentation/auth_page.dart';
 import 'package:larvixon_frontend/src/common/pages/privacy_page.dart';
 import 'package:larvixon_frontend/src/common/pages/terms_page.dart';
-import 'package:larvixon_frontend/src/common/widgets/layout/app_shell.dart';
 import 'package:larvixon_frontend/src/common/widgets/layout/adaptive_app_bar.dart';
+import 'package:larvixon_frontend/src/common/widgets/layout/app_shell.dart';
 import 'package:larvixon_frontend/src/contact/presentation/pages/contact_page.dart';
 import 'package:larvixon_frontend/src/landing/presentation/pages/landing_page.dart';
 import 'package:larvixon_frontend/src/settings/presentation/pages/settings_page.dart';
-import 'package:larvixon_frontend/src/simulation/presentation/pages/simulation_page.dart';
+import 'package:larvixon_frontend/src/simulation/presentation/pages/simulation_page_loader.dart';
 import 'package:larvixon_frontend/src/user/presentation/pages/account_page.dart';
 
 class GoRouterAuthNotifier extends ChangeNotifier {

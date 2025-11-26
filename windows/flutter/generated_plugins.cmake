@@ -4,7 +4,6 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   flutter_secure_storage_windows
-  flutter_unity_widget
   url_launcher_windows
 )
 

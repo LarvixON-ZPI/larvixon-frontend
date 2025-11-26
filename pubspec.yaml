@@ -51,3 +51,7 @@ flutter:
     - assets/images/logo/
     - assets/images/team/
     - assets/legal/
+
+dependency_overrides:
+  flutter_unity_widget:
+    path: plugins/flutter_unity_widget-2022.2.1
