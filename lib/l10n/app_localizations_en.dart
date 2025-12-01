@@ -170,8 +170,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get messageSentAcknowledgment => 'Message sent — thank you!';
 
   @override
-  String get contactDescription =>
-      'Have a question or want to collaborate? Drop us a message.';
+  String contactDescription(String email) {
+    return 'Have a question or something not working? Send us a message using the form or write directly to $email.';
+  }
+
+  @override
+  String get contactType => 'Contact type';
+
+  @override
+  String get featureRequest => 'Feature request';
+
+  @override
+  String get bug => 'Bug report';
+
+  @override
+  String get question => 'Question';
 
   @override
   String get uploadNewVideo => 'Upload new video';

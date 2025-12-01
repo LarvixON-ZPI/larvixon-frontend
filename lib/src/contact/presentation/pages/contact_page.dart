@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:larvixon_frontend/core/constants/contact.dart';
 import 'package:larvixon_frontend/core/constants/page.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/layout/header_section_base.dart';
@@ -18,9 +19,13 @@ class ContactPage extends StatelessWidget {
             constraints: kDefaultPageWidthConstraitns,
             child: Column(
               children: [
-                HeaderSectionBase(
-                  title: context.translate.contact,
-                  subtitle: context.translate.contactDescription,
+                SelectionArea(
+                  child: HeaderSectionBase(
+                    title: context.translate.contact,
+                    subtitle: context.translate.contactDescription(
+                      ContactConstants.email,
+                    ),
+                  ),
                 ),
                 const ContactSection(),
               ],

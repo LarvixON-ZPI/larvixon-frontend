@@ -12,7 +12,7 @@ zbieramy, wykorzystujemy, przechowujemy i chronimy Twoje dane osobowe.
 **Administrator danych:**
 - Organizacja: TBD
 - Adres: TBD
-- Email: TBD
+- Email: larvixonhelp@gmail.com
 - IOD (Inspektor Ochrony Danych): TBD
 
 ---
@@ -35,7 +35,7 @@ Podczas przesyłania analizy zbieramy:
 - **Metadane analizy:** data przesłania, nazwa, status
 - **Wyniki AI:** wykryte substancje, współczynniki pewności
 
-⚠️ **Ważne:** Nagrania mogą pośrednio zawierać dane zdrowotne pacjentów (poprzez 
+**Ważne:** Nagrania mogą pośrednio zawierać dane zdrowotne pacjentów (poprzez 
 ekspozycję na osocze). NIE zbieramy bezpośrednich identyfikatorów pacjenta (imię, 
 numer PESEL, numer dokumentacji medycznej).
 
@@ -63,10 +63,10 @@ numer PESEL, numer dokumentacji medycznej).
 - **Wsparcie:** Odpowiedzi na zapytania i problemy techniczne
 
 ### 3.2 NIE:
-- ❌ Sprzedajemy danych osobom trzecim
-- ❌ Wykorzystujemy danych pacjentów do celów innych niż analiza
-- ❌ Udostępniamy danych medycznych bez wyraźnej zgody
-- ❌ Trenujemy modeli AI na danych z możliwością identyfikacji
+- Sprzedajemy danych osobom trzecim
+- Wykorzystujemy danych pacjentów do celów innych niż analiza
+- Udostępniamy danych medycznych bez wyraźnej zgody
+- Trenujemy modeli AI na danych z możliwością identyfikacji
 
 ---
 
@@ -78,13 +78,13 @@ numer PESEL, numer dokumentacji medycznej).
 - **Pliki wideo:** Szyfrowanie po stronie serwera
 
 ### 4.2 Środki Bezpieczeństwa
-- ✅ **Szyfrowanie w tranzycie:** TLS 1.3 (HTTPS)
-- ✅ **Szyfrowanie w spoczynku:** AES-256
-- ✅ **Hashowanie haseł:** Argon2 z unikalną solą
-- ✅ **Kontrola dostępu:** RBAC (kontrola dostępu oparta na rolach)
-- ✅ **Uwierzytelnianie:** Tokeny JWT z 24-godzinnym wygaśnięciem
-- ✅ **Limitowanie żądań:** Maksymalnie 100 żądań/minutę
-- ✅ **Regularne kopie zapasowe:** TBD
+- **Szyfrowanie w tranzycie:** TLS 1.3 (HTTPS)
+- **Szyfrowanie w spoczynku:** AES-256
+- **Hashowanie haseł:** Argon2 z unikalną solą
+- **Kontrola dostępu:** RBAC (kontrola dostępu oparta na rolach)
+- **Uwierzytelnianie:** Tokeny JWT z 24-godzinnym wygaśnięciem
+- **Limitowanie żądań:** Maksymalnie 100 żądań/minutę
+- **Regularne kopie zapasowe:** TBD
 
 ### 4.3 Retencja Danych
 - **Dane konta:** Przechowywane podczas aktywności konta + 30 dni po usunięciu
@@ -101,10 +101,10 @@ numer PESEL, numer dokumentacji medycznej).
 - **Usługa email:** Tylko emaile transakcyjne
 
 ### 5.2 NIE Udostępniamy:
-- ❌ Firmom marketingowym
-- ❌ Platformom społecznościowym
-- ❌ Firmom ubezpieczeniowym
-- ❌ Osobom trzecim bez Twojej wyraźnej zgody
+- Firmom marketingowym
+- Platformom społecznościowym
+- Firmom ubezpieczeniowym
+- Osobom trzecim bez Twojej wyraźnej zgody
 
 ---
 
@@ -129,7 +129,7 @@ Sprzeciw wobec przetwarzania na podstawie prawnie uzasadnionego interesu.
 Złóż skargę do krajowego organu ochrony danych.  
 **Polska:** UODO (Urząd Ochrony Danych Osobowych) - uodo.gov.pl
 
-**Jak skorzystać z praw:** Skontaktuj się TBD
+**Jak skorzystać z praw:** Skontaktuj się larvixonhelp@gmail.com
 
 ---
 
@@ -157,8 +157,8 @@ Poinformujemy Cię o istotnych zmianach przez email i banner w aplikacji.
 ## 10. Dane Kontaktowe
 
 **Inspektor Ochrony Danych (IOD):**  
-Email: TBD
+Email: larvixonhelp@gmail.com
 Adres: TBD
 
 **Ogólne Zapytania:**  
-Email: TBD
+Email: larvixonhelp@gmail.com

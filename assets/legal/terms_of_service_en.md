@@ -35,17 +35,17 @@ The Service includes:
 ### 2.2 Academic/Research Use Only
 
 This platform is intended for:
-- ✅ Academic research and educational purposes
-- ✅ Laboratory testing and experimentation
-- ✅ Demonstration of AI/ML capabilities
-- ✅ Proof-of-concept validation
+- Academic research and educational purposes
+- Laboratory testing and experimentation
+- Demonstration of AI/ML capabilities
+- Proof-of-concept validation
 
 ### 2.3 NOT Intended For
 
-- ❌ **Clinical diagnosis or medical treatment** decisions
-- ❌ **Commercial or production use** without proper validation
-- ❌ **Emergency medical situations** requiring immediate decisions
-- ❌ **Processing real patient data** without appropriate ethical approval
+- **Clinical diagnosis or medical treatment** decisions
+- **Commercial or production use** without proper validation
+- **Emergency medical situations** requiring immediate decisions
+- **Processing real patient data** without appropriate ethical approval
 
 **IMPORTANT:** This is a research prototype. Results should not be used for actual medical decisions without further validation and regulatory approval.
 
@@ -64,21 +64,21 @@ To use the Service, you must:
 ### 3.2 Account Security
 
 You are responsible for:
-- ✅ Maintaining the confidentiality of your password
-- ✅ All activities that occur under your account
-- ✅ Notifying us immediately of any unauthorized access
-- ✅ Using a strong password (minimum 8 characters)
+- Maintaining the confidentiality of your password
+- All activities that occur under your account
+- Notifying us immediately of any unauthorized access
+- Using a strong password (minimum 8 characters)
 
 ### 3.3 Prohibited Activities
 
 You agree NOT to:
-- ❌ Use automated tools, bots, or scrapers to overwhelm the service
-- ❌ Upload files containing malicious code, viruses, or malware
-- ❌ Attempt to reverse-engineer or extract the AI models
-- ❌ Upload videos containing identifiable patient data (faces, names, medical record numbers)
-- ❌ Use the Service for any illegal or harmful purposes
-- ❌ Attempt to gain unauthorized access to the system
-- ❌ Share your account credentials with others
+- Use automated tools, bots, or scrapers to overwhelm the service
+- Upload files containing malicious code, viruses, or malware
+- Attempt to reverse-engineer or extract the AI models
+- Upload videos containing identifiable patient data (faces, names, medical record numbers)
+- Use the Service for any illegal or harmful purposes
+- Attempt to gain unauthorized access to the system
+- Share your account credentials with others
 
 **Consequences:** Violation may result in account suspension or termination.
 
@@ -104,10 +104,10 @@ By uploading video files, you confirm that:
 ### 4.3 Prohibited Content
 
 Do NOT upload videos containing:
-- ❌ Identifiable patient information (faces, names, birthdates, ID numbers)
-- ❌ Inappropriate, illegal, or harmful content
-- ❌ Spam or irrelevant test files
-- ❌ Protected health information (PHI) without proper de-identification
+- Identifiable patient information (faces, names, birthdates, ID numbers)
+- Inappropriate, illegal, or harmful content
+- Spam or irrelevant test files
+- Protected health information (PHI) without proper de-identification
 
 ---
 
@@ -145,7 +145,7 @@ Analysis results are provided "as-is" for research purposes:
 
 ### 6.1 Experimental Nature
 
-⚠️ **IMPORTANT DISCLAIMER:**
+ **IMPORTANT DISCLAIMER:**
 
 Larvixon is an **experimental research prototype** developed for academic purposes. It is **NOT**:
 - A medical device approved for clinical use
@@ -182,9 +182,9 @@ We make **NO WARRANTY** that:
 ### 7.1 Best Effort Service
 
 As an academic project with limited resources, we provide the Service on a **"best effort" basis**:
-- ⚠️ Service may be **unavailable** due to maintenance, server issues, or resource limitations
-- ⚠️ We do **NOT guarantee** specific uptime or response times
-- ⚠️ Service may be **discontinued** when the academic project ends
+- Service may be **unavailable** due to maintenance, server issues, or resource limitations
+- We do **NOT guarantee** specific uptime or response times
+- Service may be **discontinued** when the academic project ends
 
 ### 7.2 No Service Level Agreement (SLA)
 
@@ -226,7 +226,7 @@ Under GDPR, you have the right to:
 - Object to data processing
 - Lodge a complaint with your data protection authority (Poland: UODO - uodo.gov.pl)
 
-**Contact:** TBD
+**Contact:** larvixonhelp@gmail.com
 
 ---
 
@@ -238,21 +238,21 @@ Under GDPR, you have the right to:
 
 This is a **free academic research project** provided "as-is" without any warranties.
 
-We (the project team and Poznan University of Technology) are **NOT LIABLE** for:
-- ❌ Any damages arising from use of the Service
-- ❌ Loss of data, time, or research results
-- ❌ Inaccurate or misleading analysis results
-- ❌ Service downtime or interruptions
-- ❌ Medical decisions made based on this experimental tool
+We (the project team and Wroclaw University of Technology) are **NOT LIABLE** for:
+- Any damages arising from use of the Service
+- Loss of data, time, or research results
+- Inaccurate or misleading analysis results
+- Service downtime or interruptions
+- Medical decisions made based on this experimental tool
 
 **USE AT YOUR OWN RISK.**
 
 ### 9.2 No Commercial Relationship
 
 This is a **non-commercial academic project**:
-- ✅ **Free to use** for research and educational purposes
-- ✅ **No paid features or subscriptions**
-- ✅ **No commercial support** (community/academic support only)
+- **Free to use** for research and educational purposes
+- **No paid features or subscriptions**
+- **No commercial support** (community/academic support only)
 
 ---
 
@@ -270,9 +270,9 @@ We may suspend or terminate accounts that:
 ### 10.2 Project Discontinuation
 
 This research project may be discontinued at any time:
-- ⚠️ We will provide **at least 30 days' notice** before shutting down
-- ⚠️ You will be able to download your data before service closure
-- ⚠️ After closure, all user data will be deleted (except anonymized research data)
+-  We will provide **at least 30 days' notice** before shutting down
+-  You will be able to download your data before service closure
+-  After closure, all user data will be deleted (except anonymized research data)
 
 ---
 
@@ -281,7 +281,7 @@ This research project may be discontinued at any time:
 These Terms are governed by the laws of **Poland**.
 
 For disputes:
-- **Informal resolution:** Contact us first at TBD
+- **Informal resolution:** Contact us first at larvixonhelp@gmail.com
 - **Jurisdiction:** Courts of Wroclaw, Poland
 
 ---
@@ -297,15 +297,15 @@ We may update these Terms to reflect changes in the project scope or legal requi
 ## 13. Contact Information
 
 ### Project Team
-**Email:** TBD  
+**Email:** larvixonhelp@gmail.com  
 **Institution:** Wroclaw University of Technology  
-**Department:** TBD
+**Department:** W4N
 
 ### Data Privacy
-**Email:** TBD
+**Email:** larvixonhelp@gmail.com
 
 ### Technical Issues
-**Email:** TBD
+**Email:** larvixonhelp@gmail.com
 
 ---
 
@@ -313,12 +313,12 @@ We may update these Terms to reflect changes in the project scope or legal requi
 
 TBD
 
-## ⚠️ Research Ethics Notice
+##  Research Ethics Notice
 
 If you plan to use this platform with real patient samples, ensure you have:
-- ✅ Institutional Review Board (IRB) or Ethics Committee approval
-- ✅ Informed consent from patients
-- ✅ Compliance with your institution's research data policies
-- ✅ Proper de-identification of patient data
+- Institutional Review Board (IRB) or Ethics Committee approval
+- Informed consent from patients
+- Compliance with your institution's research data policies
+- Proper de-identification of patient data
 
 **This platform does not provide ethics approval or compliance certification.**
