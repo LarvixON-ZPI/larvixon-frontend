@@ -266,6 +266,7 @@
   "peselMustBe11Digits": "PESEL must contain exactly 11 digits",
   "invalidPeselNumber": "Invalid PESEL number",
   "patientsNotFound": "Patients not found",
+  "fullName": "Full name",
   "name": "Name",
   "birthDate": "Birth date",
   "gender": "Gender",

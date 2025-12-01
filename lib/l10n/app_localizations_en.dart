@@ -546,6 +546,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get patientsNotFound => 'Patients not found';
 
   @override
+  String get fullName => 'Full name';
+
+  @override
   String get name => 'Name';
 
   @override

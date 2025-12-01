@@ -1064,6 +1064,12 @@ abstract class AppLocalizations {
   /// **'Patients not found'**
   String get patientsNotFound;
 
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get fullName;
+
   /// No description provided for @name.
   ///
   /// In en, this message translates to:

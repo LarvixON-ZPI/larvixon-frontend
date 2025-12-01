@@ -543,7 +543,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get invalidPeselNumber => 'Nieprawidłowy numer PESEL';
 
   @override
-  String get patientsNotFound => 'Nie znalezniono pacjentów';
+  String get patientsNotFound => 'Nie znaleziono pacjentów';
+
+  @override
+  String get fullName => 'Imię i nazwisko';
 
   @override
   String get name => 'Imię i nazwisko';

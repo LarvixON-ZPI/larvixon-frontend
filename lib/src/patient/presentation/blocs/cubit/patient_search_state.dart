@@ -8,7 +8,7 @@ enum PatientSearchByMode {
 
   String translate(BuildContext context) => switch (this) {
     PatientSearchByMode.pesel => "PESEL",
-    PatientSearchByMode.name => context.translate.firstName,
+    PatientSearchByMode.name => context.translate.fullName,
   };
 }
 
