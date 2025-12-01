@@ -2,26 +2,28 @@
 import 'package:equatable/equatable.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_progress_status.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_results.dart';
+import 'package:larvixon_frontend/src/patient/domain/entities/patient.dart';
 
 class Analysis extends Equatable {
   final int id;
   final DateTime uploadedAt;
   final AnalysisProgressStatus status;
   final String? errorMessage;
-  final String? name;
+  final String? description;
   final DateTime? analysedAt;
   final String? thumbnailUrl;
+  final Patient? patient;
   final AnalysisResults? results;
 
   const Analysis({
     required this.id,
     required this.uploadedAt,
-    this.name,
+    this.description,
     this.status = AnalysisProgressStatus.pending,
     this.analysedAt,
     this.thumbnailUrl,
     this.results,
-
+    this.patient,
     this.errorMessage,
   });
 
@@ -31,20 +33,23 @@ class Analysis extends Equatable {
     AnalysisProgressStatus? status,
     double? progress,
     String? errorMessage,
-    String? name,
+    String? description,
     DateTime? analysedAt,
     AnalysisResults? results,
+    String? patientId,
     String? thumbnailUrl,
+    Patient? patient,
   }) {
     return Analysis(
       id: id ?? this.id,
       uploadedAt: uploadedAt ?? this.uploadedAt,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
-      name: name ?? this.name,
+      description: description ?? this.description,
       analysedAt: analysedAt ?? this.analysedAt,
       results: results ?? this.results,
       thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
+      patient: patient ?? this.patient,
     );
   }
 
@@ -54,9 +59,10 @@ class Analysis extends Equatable {
     uploadedAt,
     status,
     errorMessage,
-    name,
+    description,
     analysedAt,
     results,
     thumbnailUrl,
+    patient,
   ];
 }

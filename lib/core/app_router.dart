@@ -8,6 +8,7 @@ import 'package:larvixon_frontend/core/transitions.dart';
 import 'package:larvixon_frontend/src/about_us/presentation/pages/about_page.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/pages/analyses_page.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/pages/analysis_create_page.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/pages/analysis_details_page.dart';
 import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
 import 'package:larvixon_frontend/src/authentication/presentation/auth_form.dart';
@@ -132,6 +133,15 @@ class AppRouter {
               ).withoutTransition(state: state);
             },
             routes: [
+              GoRoute(
+                path: AnalysisCreatePage.route,
+                name: AnalysisCreatePage.name,
+                pageBuilder: (context, state) {
+                  return const AnalysisCreatePage().withoutTransition(
+                    state: state,
+                  );
+                },
+              ),
               GoRoute(
                 path: AnalysisDetailsPage.route,
                 name: AnalysisDetailsPage.name,

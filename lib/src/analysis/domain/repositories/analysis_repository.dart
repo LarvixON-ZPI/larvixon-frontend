@@ -28,9 +28,10 @@ abstract class AnalysisRepository {
   });
   TaskEither<Failure, AnalysisUploadResponse> uploadVideo({
     required FilePickResult fileResult,
-    required String title,
+    String? description,
     void Function(double progress)? onProgress,
     CancelToken? cancelToken,
+    String? patientId,
   });
   TaskEither<Failure, bool> deleteAnalysis({required int id});
   TaskEither<Failure, Analysis> retryAnalysis({required int id});

@@ -114,6 +114,7 @@
   "cancel": "Cancel",
   "upload": "Upload",
   "selectVideo": "Select Video",
+  "fileSelection": "File selection",
   "selectedFile": "Selected: {fileName}",
   "@selectedFile": {
     "placeholders": {
@@ -125,6 +126,7 @@
   },
   "unknownError": "An unknown error occurred",
   "enterTitle": "Enter title",
+  "enterDescription": "Enter description",
   "@@_VideoStatuses": {},
   "uploading": "Uploading",
   "uploaded": "Uploaded",
@@ -178,6 +180,7 @@
   "analyses": "Analyses",
   "loadingAnalysesError": "An error occurred while loading analyses.",
   "addYourFirstAnalysis": "Add your first analysis by uploading a video.",
+  "createAnalysis": "Create analysis",
   "clickToUpload": "Click to upload a video",
   "filter": "Filter",
   "sort": "Sort",
@@ -257,5 +260,23 @@
   "privacy": "Privacy",
   "privacyPolicy": "Privacy policy",
   "terms": "Terms",
-  "termsOfUse": "Terms of use"
+  "termsOfUse": "Terms of use",
+  "patient": "Patient",
+  "selectedPatient": "Selected patient",
+  "patientSearchDescription": "Associate patient with the analysis. Search them with PESEL or name.",
+  "peselMustBe11Digits": "PESEL must contain exactly 11 digits",
+  "invalidPeselNumber": "Invalid PESEL number",
+  "patientsNotFound": "Patients not found",
+  "fullName": "Full name",
+  "name": "Name",
+  "birthDate": "Birth date",
+  "gender": "Gender",
+  "phone": "Phone",
+  "address": "Address",
+  "city": "City",
+  "postalCode": "Postal code",
+  "country": "Country",
+  "male": "Male",
+  "female": "Female",
+  "other": "Other"
 }

@@ -190,6 +190,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectVideo => 'Select Video';
 
   @override
+  String get fileSelection => 'File selection';
+
+  @override
   String selectedFile(String fileName) {
     return 'Selected: $fileName';
   }
@@ -199,6 +202,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enterTitle => 'Enter title';
+
+  @override
+  String get enterDescription => 'Enter description';
 
   @override
   String get uploading => 'Uploading';
@@ -341,6 +347,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get addYourFirstAnalysis =>
       'Add your first analysis by uploading a video.';
+
+  @override
+  String get createAnalysis => 'Create analysis';
 
   @override
   String get clickToUpload => 'Click to upload a video';
@@ -519,4 +528,59 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get termsOfUse => 'Terms of use';
+
+  @override
+  String get patient => 'Patient';
+
+  @override
+  String get selectedPatient => 'Selected patient';
+
+  @override
+  String get patientSearchDescription =>
+      'Associate patient with the analysis. Search them with PESEL or name.';
+
+  @override
+  String get peselMustBe11Digits => 'PESEL must contain exactly 11 digits';
+
+  @override
+  String get invalidPeselNumber => 'Invalid PESEL number';
+
+  @override
+  String get patientsNotFound => 'Patients not found';
+
+  @override
+  String get fullName => 'Full name';
+
+  @override
+  String get name => 'Name';
+
+  @override
+  String get birthDate => 'Birth date';
+
+  @override
+  String get gender => 'Gender';
+
+  @override
+  String get phone => 'Phone';
+
+  @override
+  String get address => 'Address';
+
+  @override
+  String get city => 'City';
+
+  @override
+  String get postalCode => 'Postal code';
+
+  @override
+  String get country => 'Country';
+
+  @override
+  String get male => 'Male';
+
+  @override
+  String get female => 'Female';
+
+  @override
+  String get other => 'Other';
 }

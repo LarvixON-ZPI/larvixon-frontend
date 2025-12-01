@@ -15,6 +15,8 @@ import 'package:larvixon_frontend/src/analysis/domain/failures/failures.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 import 'package:larvixon_frontend/src/common/services/file_picker/file_pick_result.dart';
 import 'package:larvixon_frontend/src/common/enums/sort_order.dart';
+import 'package:larvixon_frontend/src/patient/domain/entities/patient.dart';
+import 'package:larvixon_frontend/src/patient/domain/repositories/pateint_repository_fake.dart';
 
 class AnalysisRepositoryFake implements AnalysisRepository {
   int nextPage = 1;
@@ -58,7 +60,8 @@ class AnalysisRepositoryFake implements AnalysisRepository {
 
     for (var i = 0; i < count; i++) {
       final id = random.nextInt(100000);
-      final name = "Larva experiment ${getRandomString(random.nextInt(20))}";
+      final description =
+          "Larva experiment ${getRandomString(random.nextInt(5000))}";
       final status = AnalysisProgressStatus
           .values[random.nextInt(AnalysisProgressStatus.values.length)];
       final thumbnail = "https://picsum.photos/seed/$id/640/360";
@@ -66,9 +69,13 @@ class AnalysisRepositoryFake implements AnalysisRepository {
       var analysis = Analysis(
         id: id,
         uploadedAt: now.subtract(Duration(minutes: random.nextInt(10000))),
-        name: name,
+        description: description,
         thumbnailUrl: thumbnail,
         status: status,
+        patient:
+            PatientRepositoryFake.mockPatients[random.nextInt(
+              PatientRepositoryFake.mockPatients.length,
+            )],
         analysedAt: status == AnalysisProgressStatus.completed ? now : null,
       );
 
@@ -210,9 +217,10 @@ class AnalysisRepositoryFake implements AnalysisRepository {
   @override
   TaskEither<Failure, AnalysisUploadResponse> uploadVideo({
     required FilePickResult fileResult,
-    required String title,
+    String? description,
     void Function(double progress)? onProgress,
     CancelToken? cancelToken,
+    String? patientId,
   }) {
     return TaskEither.tryCatch(
       () async {
@@ -237,12 +245,18 @@ class AnalysisRepositoryFake implements AnalysisRepository {
         final nextId =
             (_analyses.isEmpty ? 0 : _analyses.map((e) => e.id).reduce(max)) +
             1;
+        final patient = PatientRepositoryFake.mockPatients.firstWhere(
+          (p) => p.id == patientId,
+          orElse: () => const Patient.empty(),
+        );
+
         _analyses.insert(
           0,
           Analysis(
             id: nextId,
             uploadedAt: DateTime.now(),
-            name: title,
+            description: description,
+            patient: patient == const Patient.empty() ? null : patient,
             thumbnailUrl: "https://picsum.photos/seed/$nextId/640/360",
           ),
         );
@@ -262,7 +276,10 @@ class AnalysisRepositoryFake implements AnalysisRepository {
 
   int _compareByField(Analysis a, Analysis b, AnalysisField field) {
     return switch (field) {
-      AnalysisField.title => _compareNullableStrings(a.name, b.name),
+      AnalysisField.title => _compareNullableStrings(
+        a.description,
+        b.description,
+      ),
       AnalysisField.createdAt => a.uploadedAt.compareTo(b.uploadedAt),
       AnalysisField.status => a.status.index.compareTo(b.status.index),
     };

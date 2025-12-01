@@ -114,6 +114,7 @@
   "cancel": "Anuluj",
   "upload": "Prześlij",
   "selectVideo": "Wybierz film",
+  "fileSelection": "Wybór pliku",
   "selectedFile": "Wybrany: {fileName}",
   "@selectedFile": {
     "placeholders": {
@@ -125,6 +126,7 @@
   },
   "unknownError": "Wystąpił nieznany błąd",
   "enterTitle": "Wprowadź tytuł",
+  "enterDescription": "Wprowadź opis",
   "@@_VideoStatuses": {},
   "uploading": "Przesyłanie",
   "uploaded": "Przesłano",
@@ -178,6 +180,7 @@
   "analyses": "Analizy",
   "loadingAnalysesError": "Wystąpił błąd podczas ładowania analiz.",
   "addYourFirstAnalysis": "Dodaj swoją pierwszą analizę.",
+  "createAnalysis": "Nowa analiza",
   "clickToUpload": "Kliknij, aby przesłać nagranie.",
   "filter": "Filtruj",
   "sort": "Sortuj",
@@ -257,5 +260,23 @@
   "privacy": "Prywatność",
   "privacyPolicy": "Polityka prywatności",
   "terms": "Regulamin",
-  "termsOfUse": "Warunki użytkowania"
+  "termsOfUse": "Warunki użytkowania",
+  "patient": "Pacjent",
+  "selectedPatient": "Wybrany pacjent",
+  "patientSearchDescription": "Powiąż pacjenta z analizą. Wyszukaj go używając numeru PESEL lub imienia i nazwiska.",
+  "peselMustBe11Digits": "PESEL musi zawierać dokładnie 11 cyfr",
+  "invalidPeselNumber": "Nieprawidłowy numer PESEL",
+  "patientsNotFound": "Nie znaleziono pacjentów",
+  "fullName": "Imię i nazwisko",
+  "name": "Imię i nazwisko",
+  "birthDate": "Data urodzenia",
+  "gender": "Płeć",
+  "phone": "Telefon",
+  "address": "Adres",
+  "city": "Miasto",
+  "postalCode": "Kod pocztowy",
+  "country": "Kraj",
+  "male": "Mężczyzna",
+  "female": "Kobieta",
+  "other": "Inna"
 }

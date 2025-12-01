@@ -10,6 +10,8 @@ import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repo
 import 'package:larvixon_frontend/src/authentication/bloc/auth_bloc.dart';
 import 'package:larvixon_frontend/src/authentication/domain/repositories/auth_repository.dart';
 import 'package:larvixon_frontend/src/authentication/domain/repositories/auth_repository_fake.dart';
+import 'package:larvixon_frontend/src/patient/domain/repositories/pateint_repository_fake.dart';
+import 'package:larvixon_frontend/src/patient/domain/repositories/patient_repository.dart';
 import 'package:larvixon_frontend/src/settings/domain/repositories/settings_repository.dart';
 import 'package:larvixon_frontend/src/settings/domain/repositories/settings_repository_impl.dart';
 import 'package:larvixon_frontend/src/settings/presentation/blocs/cubit/settings_cubit.dart';
@@ -38,6 +40,7 @@ class _MainAppState extends State<MainApp> {
   late final UserRepository _userRepository;
   late final AnalysisRepository _larvaVideoRepository;
   late final SettingsRepository _settingsRepository;
+  late final PatientRepository _patientRepository;
   late final SettingsCubit _settingsCubit;
   late final ApiClient _apiClient;
 
@@ -56,6 +59,7 @@ class _MainAppState extends State<MainApp> {
       repository: _settingsRepository,
       supportedLocales: AppLocalizations.supportedLocales,
     )..loadSettings();
+    _patientRepository = PatientRepositoryFake();
   }
 
   @override
@@ -109,6 +113,7 @@ class _MainAppState extends State<MainApp> {
         RepositoryProvider<AnalysisRepository>.value(
           value: _larvaVideoRepository,
         ),
+        RepositoryProvider<PatientRepository>.value(value: _patientRepository),
       ],
       child: _buildBlocProviders(),
     );

@@ -45,16 +45,16 @@ class AnalysisCard extends StatelessWidget {
                     children: [
                       _HeaderRow(analysis: analysis),
                       const Divider(),
-                      if (state.analysis?.name case final name?) ...[
-                        Text(
-                          name,
-                          style: Theme.of(context).textTheme.titleLarge,
-                          textAlign: TextAlign.center,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const Divider(),
-                      ],
+                      // if (state.analysis?.name case final name?) ...[
+                      //   Text(
+                      //     name,
+                      //     style: Theme.of(context).textTheme.titleLarge,
+                      //     textAlign: TextAlign.center,
+                      //     maxLines: 2,
+                      //     overflow: TextOverflow.ellipsis,
+                      //   ),
+                      //   const Divider(),
+                      // ],
                       Expanded(
                         child: Skeleton.ignore(
                           child: AnimatedSwitcher(

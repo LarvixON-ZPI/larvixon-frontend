@@ -18,7 +18,7 @@ class AllResultsSection extends StatelessWidget {
         children: [
           Text(
             "${context.translate.detectedSubstances(results.length)} (${results.length})",
-            style: theme.textTheme.titleLarge,
+            style: theme.textTheme.headlineMedium,
           ),
           const SizedBox(height: 8),
           Container(
@@ -44,14 +44,14 @@ class AllResultsSection extends StatelessWidget {
                       padding: const EdgeInsets.all(12),
                       child: Text(
                         context.translate.substance,
-                        style: Theme.of(context).textTheme.bodyLarge,
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12),
                       child: Text(
                         context.translate.confidence,
-                        style: Theme.of(context).textTheme.bodyLarge,
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ),
                     const Padding(padding: EdgeInsets.all(12), child: Text("")),
@@ -81,7 +81,7 @@ class AllResultsSection extends StatelessWidget {
                           horizontal: 12,
                           vertical: 16,
                         ),
-                        child: Text(
+                        child: SelectableText(
                           substance,
                           style: theme.textTheme.bodyLarge,
                         ),
@@ -91,7 +91,7 @@ class AllResultsSection extends StatelessWidget {
                           horizontal: 12,
                           vertical: 16,
                         ),
-                        child: Text(
+                        child: SelectableText(
                           "${(confidence * 100).toStringAsFixed(1)}%",
                           style: theme.textTheme.bodyLarge?.copyWith(
                             fontWeight: FontWeight.w500,
