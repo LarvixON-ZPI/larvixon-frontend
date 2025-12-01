@@ -15,7 +15,8 @@ class AnalysisUploadCubit extends Cubit<AnalysisUploadState> {
 
   Future<void> uploadVideo({
     required FilePickResult fileResult,
-    required String title,
+    String? description,
+    String? patientId,
   }) async {
     _cancelToken = CancelToken();
     emit(
@@ -25,8 +26,9 @@ class AnalysisUploadCubit extends Cubit<AnalysisUploadState> {
     final result = await repository
         .uploadVideo(
           fileResult: fileResult,
-          title: title,
+          description: description,
           cancelToken: _cancelToken,
+          patientId: patientId,
           onProgress: (progress) {
             final now = DateTime.now().millisecondsSinceEpoch;
             if (now - lastUpdateTime < 100) return;

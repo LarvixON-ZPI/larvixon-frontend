@@ -13,8 +13,9 @@ class AnalysisDataSourceImpl extends AnalysisDataSource {
     streamFactory,
     required dynamic file,
     required String filename,
-    required String title,
+    String? description,
     required int totalBytes,
+    String? patientId,
     ProgressCallback? onProgress,
     CancelToken? cancelToken,
   }) async {
@@ -29,9 +30,9 @@ class AnalysisDataSourceImpl extends AnalysisDataSource {
         totalBytes,
         filename: filename,
       ),
-      'title': title,
+      if (description != null) 'description': description,
+      if (patientId != null) 'patient_guid': patientId,
     });
-
     final response = await apiClient.dio.post(
       AnalysisEndpoints.uploadVideo,
       cancelToken: cancelToken,

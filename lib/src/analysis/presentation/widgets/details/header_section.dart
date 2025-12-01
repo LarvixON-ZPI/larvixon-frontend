@@ -131,8 +131,7 @@ class HeaderSection extends StatelessWidget {
                   ),
                   description: Text(
                     context.translate.confirmDeleteAnalysisText(
-                      analysis.name ??
-                          "${context.translate.analysis} #${analysis.id}",
+                      "${context.translate.analysis} #${analysis.id}",
                     ),
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),

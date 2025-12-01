@@ -32,9 +32,10 @@ class AnalysisRepositoryImpl implements AnalysisRepository {
   @override
   TaskEither<Failure, AnalysisUploadResponse> uploadVideo({
     required FilePickResult fileResult,
-    required String title,
+    String? description,
     void Function(double progress)? onProgress,
     CancelToken? cancelToken,
+    String? patientId,
   }) {
     return TaskEither.tryCatch(
       () async {
@@ -42,7 +43,8 @@ class AnalysisRepositoryImpl implements AnalysisRepository {
           streamFactory: fileResult.streamFactory,
           totalBytes: fileResult.size ?? 0,
           filename: fileResult.name,
-          title: title,
+          description: description,
+          patientId: patientId,
           onProgress: (sent, total) {
             if (total > 0) onProgress?.call(sent / total);
           },

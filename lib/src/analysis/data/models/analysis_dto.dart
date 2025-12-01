@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:larvixon_frontend/src/patient/data/models/patient_dto.dart';
+
 // ignore_for_file: non_constant_identifier_names
 
 class AnalysisDTO {
@@ -12,7 +14,9 @@ class AnalysisDTO {
   final List<dynamic>? confidence_scores;
   final String? user_feedback;
   final String? thumbnailUrl;
-  final String? title;
+  final String? description;
+  final String? patient_guid;
+  final PatientDTO? patient_details;
 
   const AnalysisDTO({
     required this.id,
@@ -23,7 +27,9 @@ class AnalysisDTO {
     this.confidence_scores,
     this.user_feedback,
     this.thumbnailUrl,
-    this.title,
+    this.description,
+    this.patient_guid,
+    this.patient_details,
   });
 
   Map<String, dynamic> toMap() {
@@ -36,7 +42,7 @@ class AnalysisDTO {
       'analysis_results': confidence_scores,
       'user_feedback': user_feedback,
       'thumbnail': thumbnailUrl,
-      'title': title,
+      'description': description,
     };
   }
 
@@ -50,7 +56,11 @@ class AnalysisDTO {
       confidence_scores: map['analysis_results'] as List<dynamic>?,
       user_feedback: map['user_feedback'] as String?,
       thumbnailUrl: map['thumbnail'] as String?,
-      title: map['title'] as String?,
+      description: map['description'] as String?,
+      patient_guid: map['patient_guid'] as String?,
+      patient_details: map['patient_details'] != null
+          ? PatientDTO.fromMap(map['patient_details'])
+          : null,
     );
   }
 

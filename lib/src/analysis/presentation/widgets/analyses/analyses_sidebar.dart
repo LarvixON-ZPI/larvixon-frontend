@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_filter.dart';
 import 'package:larvixon_frontend/src/analysis/domain/entities/analysis_sort.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/widgets/add_dialog/analysis_add_dialog.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/pages/analysis_create_page.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/analyses/filter_popup_menu.dart';
 import 'package:larvixon_frontend/src/analysis/presentation/widgets/analyses/sort_popup_menu.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
@@ -30,12 +31,7 @@ class _UploadButton extends StatelessWidget {
     return IconTextButton(
       icon: FontAwesomeIcons.circlePlus,
       text: context.translate.upload,
-      onPressed: () async {
-        await LarvaVideoAddForm.showUploadLarvaVideoDialog(
-          context,
-          context.read<AnalysisListCubit>(),
-        );
-      },
+      onPressed: () => {context.push(AnalysisCreatePage.fullRoute)},
     );
   }
 }

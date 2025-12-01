@@ -21,11 +21,7 @@ void main() {
     // Provide dummies for Mockito
     provideDummy<TaskEither<Failure, Analysis>>(
       TaskEither<Failure, Analysis>.right(
-        Analysis(
-          id: 1,
-          uploadedAt: DateTime.now(),
-          status: AnalysisProgressStatus.pending,
-        ),
+        Analysis(id: 1, uploadedAt: DateTime.now()),
       ),
     );
     provideDummy<TaskEither<Failure, bool>>(
@@ -34,11 +30,7 @@ void main() {
     provideDummy<Stream<Either<Failure, Analysis>>>(
       Stream.value(
         Either<Failure, Analysis>.right(
-          Analysis(
-            id: 1,
-            uploadedAt: DateTime.now(),
-            status: AnalysisProgressStatus.pending,
-          ),
+          Analysis(id: 1, uploadedAt: DateTime.now()),
         ),
       ),
     );
@@ -73,8 +65,7 @@ void main() {
           final retriedAnalysis = Analysis(
             id: 123,
             uploadedAt: DateTime.now(),
-            status: AnalysisProgressStatus.pending,
-            name: 'Test Analysis',
+            description: 'Test Analysis',
           );
 
           when(
@@ -104,11 +95,7 @@ void main() {
       blocTest<AnalysisBloc, AnalysisState>(
         'updates progress value correctly when analysis status is pending',
         build: () {
-          final retriedAnalysis = Analysis(
-            id: 456,
-            uploadedAt: DateTime.now(),
-            status: AnalysisProgressStatus.pending,
-          );
+          final retriedAnalysis = Analysis(id: 456, uploadedAt: DateTime.now());
 
           when(
             mockRepository.retryAnalysis(id: 456),
@@ -160,8 +147,8 @@ void main() {
         build: () {
           when(mockRepository.retryAnalysis(id: 123)).thenReturn(
             TaskEither<Failure, Analysis>.left(
-              AnalysisApiFailure(
-                apiFailure: const BadRequestFailure(
+              const AnalysisApiFailure(
+                apiFailure: BadRequestFailure(
                   message: 'Analysis cannot be retried',
                 ),
                 message: 'Analysis cannot be retried',
@@ -189,10 +176,8 @@ void main() {
         build: () {
           when(mockRepository.retryAnalysis(id: 789)).thenReturn(
             TaskEither<Failure, Analysis>.left(
-              AnalysisApiFailure(
-                apiFailure: const RequestTimeoutFailure(
-                  message: 'Request timeout',
-                ),
+              const AnalysisApiFailure(
+                apiFailure: RequestTimeoutFailure(message: 'Request timeout'),
                 message: 'Request timeout',
               ),
             ),
@@ -214,8 +199,8 @@ void main() {
         build: () {
           when(mockRepository.retryAnalysis(id: 123)).thenReturn(
             TaskEither<Failure, Analysis>.left(
-              AnalysisApiFailure(
-                apiFailure: const InternalServerErrorFailure(
+              const AnalysisApiFailure(
+                apiFailure: InternalServerErrorFailure(
                   message: 'Internal server error',
                 ),
                 message: 'Internal server error',
@@ -272,8 +257,7 @@ void main() {
           final recentAnalysis = Analysis(
             id: 123,
             uploadedAt: DateTime.now().subtract(const Duration(days: 13)),
-            status: AnalysisProgressStatus.pending,
-            name: 'Recent Analysis',
+            description: 'Recent Analysis',
           );
 
           when(
@@ -296,8 +280,8 @@ void main() {
         build: () {
           when(mockRepository.retryAnalysis(id: 123)).thenReturn(
             TaskEither<Failure, Analysis>.left(
-              AnalysisApiFailure(
-                apiFailure: const BadRequestFailure(
+              const AnalysisApiFailure(
+                apiFailure: BadRequestFailure(
                   message: 'Analysis must have a video file',
                 ),
                 message: 'Analysis must have a video file',
@@ -325,8 +309,8 @@ void main() {
         build: () {
           when(mockRepository.retryAnalysis(id: 123)).thenReturn(
             TaskEither<Failure, Analysis>.left(
-              AnalysisApiFailure(
-                apiFailure: const BadRequestFailure(
+              const AnalysisApiFailure(
+                apiFailure: BadRequestFailure(
                   message: 'Analysis is not in failed state',
                 ),
                 message: 'Analysis is not in failed state',
@@ -352,11 +336,7 @@ void main() {
       blocTest<AnalysisBloc, AnalysisState>(
         'handles multiple rapid retry attempts',
         build: () {
-          final retriedAnalysis = Analysis(
-            id: 123,
-            uploadedAt: DateTime.now(),
-            status: AnalysisProgressStatus.pending,
-          );
+          final retriedAnalysis = Analysis(id: 123, uploadedAt: DateTime.now());
 
           when(
             mockRepository.retryAnalysis(id: 123),
@@ -403,13 +383,12 @@ void main() {
       );
 
       blocTest<AnalysisBloc, AnalysisState>(
-        'handles retry with null analysis name',
+        'handles retry with null analysis description',
         build: () {
           final retriedAnalysis = Analysis(
             id: 123,
             uploadedAt: DateTime.now(),
-            status: AnalysisProgressStatus.pending,
-            name: null, // Edge case: no name
+            description: null, // Edge case: no description
           );
 
           when(
@@ -423,7 +402,7 @@ void main() {
           const AnalysisState(status: AnalysisStatus.loading),
           isA<AnalysisState>()
               .having((s) => s.status, 'status', AnalysisStatus.success)
-              .having((s) => s.analysis?.name, 'analysis.name', null),
+              .having((s) => s.analysis?.description, 'analysis.description', null),
         ],
       );
     });
@@ -437,11 +416,7 @@ void main() {
       blocTest<AnalysisBloc, AnalysisState>(
         'bloc successfully processes retry and reaches success state',
         build: () {
-          final retriedAnalysis = Analysis(
-            id: 123,
-            uploadedAt: DateTime.now(),
-            status: AnalysisProgressStatus.pending,
-          );
+          final retriedAnalysis = Analysis(id: 123, uploadedAt: DateTime.now());
 
           when(
             mockRepository.retryAnalysis(id: 123),

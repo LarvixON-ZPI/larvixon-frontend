@@ -1,50 +1,35 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
+import 'package:larvixon_frontend/core/constants/page.dart';
 import 'package:larvixon_frontend/src/analysis/blocs/analysis_upload_cubit/analysis_upload_cubit.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/pages/analyses_page.dart';
+import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 import 'package:larvixon_frontend/src/common/services/file_picker/file_pick_result.dart';
 import 'package:larvixon_frontend/src/common/services/file_picker/file_picker.dart';
-import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
-import 'package:larvixon_frontend/src/common/utils/dialog_utils.dart';
+import 'package:larvixon_frontend/src/common/widgets/layout/header_section_base.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
+import 'package:larvixon_frontend/src/common/widgets/ui/step_card.dart';
+import 'package:larvixon_frontend/src/patient/presentation/blocs/cubit/patient_search_cubit.dart';
+import 'package:larvixon_frontend/src/patient/presentation/widgets/patient_search.dart';
 
-class LarvaVideoAddForm extends StatefulWidget {
-  const LarvaVideoAddForm({super.key});
-
-  static Future<void> showUploadLarvaVideoDialog(
-    BuildContext context,
-    AnalysisListCubit videoListCubit,
-  ) {
-    return DialogUtils.showScaleDialog(
-      barrierLabel: "Upload video dialog",
-      context: context,
-      title: Text(
-        context.translate.uploadNewVideo,
-        style: Theme.of(context).textTheme.headlineMedium,
-      ),
-      description: Text(
-        context.translate.uploadVideoDescription,
-        style: Theme.of(context).textTheme.bodyLarge,
-      ),
-      child: BlocProvider.value(
-        value: videoListCubit,
-        child: const LarvaVideoAddForm(),
-      ),
-    );
-  }
+class AnalysisCreatePage extends StatefulWidget {
+  static const String route = '/create';
+  static const String name = 'analysis-create';
+  static String get fullRoute => '${AnalysesOverviewPage.route}/create';
+  const AnalysisCreatePage({super.key});
 
   @override
-  State<LarvaVideoAddForm> createState() => _LarvaVideoAddFormState();
+  State<AnalysisCreatePage> createState() => _AnalysisCreatePageState();
 }
 
-class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
+class _AnalysisCreatePageState extends State<AnalysisCreatePage> {
   FilePickResult? _fileResult;
   String? _fileName;
   String? _filePath;
   int? _fileSize;
   bool _fileSizeError = false;
 
-  final _titleController = TextEditingController();
+  final _descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   late final AdaptiveFilePicker _filePicker;
 
@@ -59,7 +44,7 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
 
   @override
   void dispose() {
-    _titleController.dispose();
+    _descriptionController.dispose();
     _filePicker.cancel();
     super.dispose();
   }
@@ -143,83 +128,146 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
       return;
     }
 
+    final description = _descriptionController.text.trim();
+
     context.read<AnalysisUploadCubit>().uploadVideo(
       fileResult: _fileResult!,
-      description: _titleController.text,
+      description: description.isNotEmpty ? description : null,
+      patientId: context.read<PatientSearchCubit>().state.selectedPatient?.id,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AnalysisUploadCubit(repository: context.read()),
-      child: BlocListener<AnalysisUploadCubit, AnalysisUploadState>(
-        listenWhen: (previous, current) => previous.status != current.status,
-        listener: _onUploadStateChange,
-        child: Form(
-          key: _formKey,
-          child: Column(
-            spacing: 16,
-            children: [
-              _TitleField(
-                controller: _titleController,
-                maximumFileSizeString: _formatMaximumFileSize(
-                  _maxFileSizeBytes,
+    return SingleChildScrollView(
+      child: Center(
+        child: SafeArea(
+          child: ConstrainedBox(
+            constraints: kDefaultPageWidthConstraitns,
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) =>
+                      AnalysisUploadCubit(repository: context.read()),
+                ),
+                BlocProvider(
+                  create: (context) =>
+                      PatientSearchCubit(repository: context.read()),
+                ),
+              ],
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    HeaderSectionBase(
+                      title: context.translate.createAnalysis,
+                      subtitle: context.translate.uploadVideoDescription,
+                    ),
+
+                    StepCard(
+                      stepNumber: 1,
+                      title: "File selection",
+                      subtitle: context.translate.maximumFileSize(
+                        _formatMaximumFileSize(_maxFileSizeBytes),
+                      ),
+                      child:
+                          BlocListener<
+                            AnalysisUploadCubit,
+                            AnalysisUploadState
+                          >(
+                            listenWhen: (previous, current) =>
+                                previous.status != current.status,
+                            listener: _onUploadStateChange,
+                            child:
+                                BlocSelector<
+                                  AnalysisUploadCubit,
+                                  AnalysisUploadState,
+                                  ({VideoUploadStatus status, double progress})
+                                >(
+                                  selector: (state) => (
+                                    status: state.status,
+                                    progress: state.uploadProgress,
+                                  ),
+                                  builder: (context, state) {
+                                    final (status: status, progress: progress) =
+                                        state;
+                                    final isUploading =
+                                        status == VideoUploadStatus.uploading;
+
+                                    return AnimatedSwitcher(
+                                      duration: const Duration(
+                                        milliseconds: 300,
+                                      ),
+                                      switchInCurve: Curves.easeOut,
+                                      switchOutCurve: Curves.easeIn,
+                                      child: SizedBox(
+                                        key: ValueKey(isUploading),
+                                        height: 48,
+                                        child: isUploading
+                                            ? _UploadProgressSection(
+                                                progress: progress,
+                                              )
+                                            : _FilePickerButton(
+                                                fileName: _fileName,
+                                                filePath: _filePath,
+                                                fileSizeError: _fileSizeError,
+                                                onPickFile: _pickFile,
+                                              ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                          ),
+                    ),
+                    StepCard(
+                      stepNumber: 2,
+                      title: context.translate.description,
+                      isOptional: true,
+                      child: _DescriptionField(
+                        controller: _descriptionController,
+                      ),
+                    ),
+                    StepCard(
+                      stepNumber: 3,
+                      title: context.translate.patient,
+                      subtitle: context.translate.patientSearchDescription,
+                      isOptional: true,
+                      child: const PatientSearch(),
+                    ),
+
+                    BlocSelector<
+                      AnalysisUploadCubit,
+                      AnalysisUploadState,
+                      String?
+                    >(
+                      selector: (state) => state.errorMessage,
+                      builder: (context, message) {
+                        return _ErrorSection(message: message);
+                      },
+                    ),
+                    CustomCard(
+                      child:
+                          BlocSelector<
+                            AnalysisUploadCubit,
+                            AnalysisUploadState,
+                            VideoUploadStatus
+                          >(
+                            selector: (state) => state.status,
+                            builder: (context, status) {
+                              final canUpload = _canUpload(status);
+                              return _ActionButtons(
+                                status: status,
+                                canUpload: canUpload,
+                                onCancelUploading: _cancelUploading,
+                                onUpload: () => _uploadFile(context),
+                              );
+                            },
+                          ),
+                    ),
+                  ],
                 ),
               ),
-              BlocSelector<
-                AnalysisUploadCubit,
-                AnalysisUploadState,
-                ({VideoUploadStatus status, double progress})
-              >(
-                selector: (state) =>
-                    (status: state.status, progress: state.uploadProgress),
-                builder: (context, state) {
-                  final (status: status, progress: progress) = state;
-                  final isUploading = status == VideoUploadStatus.uploading;
-
-                  return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    switchInCurve: Curves.easeOut,
-                    switchOutCurve: Curves.easeIn,
-                    child: SizedBox(
-                      key: ValueKey(isUploading),
-                      height: 48,
-                      child: isUploading
-                          ? _UploadProgressSection(progress: progress)
-                          : _FilePickerButton(
-                              fileName: _fileName,
-                              filePath: _filePath,
-                              fileSizeError: _fileSizeError,
-                              onPickFile: _pickFile,
-                            ),
-                    ),
-                  );
-                },
-              ),
-              BlocSelector<AnalysisUploadCubit, AnalysisUploadState, String?>(
-                selector: (state) => state.errorMessage,
-                builder: (context, message) {
-                  return _ErrorSection(message: message);
-                },
-              ),
-              BlocSelector<
-                AnalysisUploadCubit,
-                AnalysisUploadState,
-                VideoUploadStatus
-              >(
-                selector: (state) => state.status,
-                builder: (context, status) {
-                  final canUpload = _canUpload(status);
-                  return _ActionButtons(
-                    status: status,
-                    canUpload: canUpload,
-                    onCancelUploading: _cancelUploading,
-                    onUpload: () => _uploadFile(context),
-                  );
-                },
-              ),
-            ],
+            ),
           ),
         ),
       ),
@@ -227,10 +275,8 @@ class _LarvaVideoAddFormState extends State<LarvaVideoAddForm> {
   }
 
   void _onUploadStateChange(BuildContext context, AnalysisUploadState state) {
-    if (state.status == VideoUploadStatus.success) {
-      context.read<AnalysisListCubit>().fetchNewlyUploadedAnalysis(
-        id: state.uploadedVideoId!,
-      );
+    if (state.status == VideoUploadStatus.success &&
+        state.uploadedVideoId != null) {
       Future.delayed(const Duration(milliseconds: 1500), () {
         if (mounted) Navigator.of(context).pop();
       });
@@ -250,13 +296,11 @@ class _ErrorSection extends StatelessWidget {
       switchOutCurve: Curves.easeIn,
       child: message == null
           ? const SizedBox.shrink()
-          : Container(
+          : CustomCard(
               key: ValueKey(message),
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.errorContainer,
-                borderRadius: BorderRadius.circular(12),
-              ),
+              color: Theme.of(context).colorScheme.errorContainer,
+              shadowColor: Colors.transparent,
+
               child: Row(
                 children: [
                   Icon(
@@ -280,33 +324,24 @@ class _ErrorSection extends StatelessWidget {
   }
 }
 
-class _TitleField extends StatelessWidget {
-  const _TitleField({
-    required this.controller,
-    required this.maximumFileSizeString,
-  });
+class _DescriptionField extends StatelessWidget {
+  const _DescriptionField({required this.controller});
   final TextEditingController controller;
-  final String maximumFileSizeString;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       spacing: 8,
       children: [
-        Text(
-          context.translate.maximumFileSize(maximumFileSizeString),
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
         TextFormField(
           controller: controller,
           decoration: InputDecoration(
-            hintText: context.translate.enterTitle,
+            hintText: context.translate.enterDescription,
             fillColor: Theme.of(context).colorScheme.secondaryContainer,
             filled: true,
           ),
-          validator: (value) => (value == null || value.isEmpty)
-              ? context.translate.fieldIsRequired
-              : null,
+          maxLength: 1024,
+          maxLines: 3,
         ),
       ],
     );

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:larvixon_frontend/src/analysis/blocs/analysis_list_cubit/analysis_list_cubit.dart';
-import 'package:larvixon_frontend/src/analysis/presentation/widgets/add_dialog/analysis_add_dialog.dart';
+import 'package:go_router/go_router.dart';
+import 'package:larvixon_frontend/src/analysis/presentation/pages/analysis_create_page.dart';
 import 'package:larvixon_frontend/src/common/extensions/translate_extension.dart';
 import 'package:larvixon_frontend/src/common/widgets/ui/custom_card.dart';
 
@@ -18,10 +17,7 @@ class EmptyView extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         child: ElevatedButton(
-          onPressed: () => LarvaVideoAddForm.showUploadLarvaVideoDialog(
-            context,
-            context.read<AnalysisListCubit>(),
-          ),
+          onPressed: () => {context.push(AnalysisCreatePage.fullRoute)},
           child: Text(context.translate.clickToUpload),
         ),
       ),
