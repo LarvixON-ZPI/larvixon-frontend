@@ -80,8 +80,13 @@ class _ContactSectionState extends State<ContactSection>
       'LarvixonApp/${_contactType.translate(context)} - ${_titleController.text}',
     );
     final versionLine = version != null ? 'Version: $version\n' : '';
-    final buildLine = build != null ? 'Build: $build\n' : '';
-    final languageLine = "${Localizations.localeOf(context).languageCode}\n";
+    final buildLine = build != null
+        ? build.trim().isNotEmpty
+              ? 'Build: $build\n'
+              : ''
+        : '';
+    final languageLine =
+        "Language: ${Localizations.localeOf(context).languageCode}\n";
     final body = Uri.encodeComponent(
       'Type: ${_contactType.translate(context)}\n'
       'Platform: $platform\n'

@@ -1,7 +1,7 @@
 name: larvixon_frontend
 description: "A new Flutter project."
 publish_to: "none"
-version: 0.1.0
+version: 1.1.1
 
 environment:
   sdk: ^3.8.1
