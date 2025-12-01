@@ -236,18 +236,29 @@ class _PatientList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: state.foundPatients.length,
-      itemBuilder: (context, index) {
-        final patient = state.foundPatients[index];
-        final selected = patient == state.selectedPatient;
-        return _PatientEntry(
-          selected: selected,
-          patient: patient,
-          colors: colors,
-        );
-      },
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: colors.outlineVariant),
+      ),
+
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: state.foundPatients.length,
+
+        itemBuilder: (context, index) {
+          final patient = state.foundPatients[index];
+          final selected = patient == state.selectedPatient;
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+            child: _PatientEntry(
+              selected: selected,
+              patient: patient,
+              colors: colors,
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -276,48 +287,49 @@ class _PatientEntry extends StatelessWidget {
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: selected
               ? colors.primaryContainer
               : colors.surfaceContainerHighest,
-          border: Border.all(
-            color: selected ? colors.primary : colors.outlineVariant,
-          ),
         ),
         child: Row(
           children: [
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 4,
+                spacing: 2,
                 children: [
-                  Text(
-                    "${context.translate.patient} ${patient.id}",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: selected ? colors.onPrimaryContainer : null,
-                    ),
-                  ),
                   Text(
                     "${patient.firstName} ${patient.lastName}",
                     style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
                       color: selected
                           ? colors.onPrimaryContainer
-                          : colors.onSurfaceVariant,
+                          : colors.onSurface,
                     ),
                   ),
                   if (patient.pesel != null)
                     Text(
                       "PESEL: ${patient.pesel}",
                       style: TextStyle(
+                        fontSize: 14,
                         color: selected
-                            ? colors.onPrimaryContainer
+                            ? colors.onPrimaryContainer.withValues(alpha: 0.8)
                             : colors.onSurfaceVariant,
                       ),
                     ),
+                  Text(
+                    "ID: ${patient.id}",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: selected
+                          ? colors.onPrimaryContainer.withValues(alpha: 0.8)
+                          : colors.onSurfaceVariant,
+                    ),
+                  ),
                 ],
               ),
             ),
