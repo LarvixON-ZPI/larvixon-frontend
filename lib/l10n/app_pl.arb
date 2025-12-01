@@ -114,6 +114,7 @@
   "cancel": "Anuluj",
   "upload": "Prześlij",
   "selectVideo": "Wybierz film",
+  "fileSelection": "Wybór pliku",
   "selectedFile": "Wybrany: {fileName}",
   "@selectedFile": {
     "placeholders": {

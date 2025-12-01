@@ -166,7 +166,7 @@ class _AnalysisCreatePageState extends State<AnalysisCreatePage> {
 
                     StepCard(
                       stepNumber: 1,
-                      title: "File selection",
+                      title: context.translate.fileSelection,
                       subtitle: context.translate.maximumFileSize(
                         _formatMaximumFileSize(_maxFileSizeBytes),
                       ),

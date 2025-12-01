@@ -192,6 +192,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get selectVideo => 'Wybierz film';
 
   @override
+  String get fileSelection => 'Wybór pliku';
+
+  @override
   String selectedFile(String fileName) {
     return 'Wybrany: $fileName';
   }

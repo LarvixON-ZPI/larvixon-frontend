@@ -402,7 +402,11 @@ void main() {
           const AnalysisState(status: AnalysisStatus.loading),
           isA<AnalysisState>()
               .having((s) => s.status, 'status', AnalysisStatus.success)
-              .having((s) => s.analysis?.description, 'analysis.description', null),
+              .having(
+                (s) => s.analysis?.description,
+                'analysis.description',
+                null,
+              ),
         ],
       );
     });

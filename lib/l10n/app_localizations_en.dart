@@ -190,6 +190,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectVideo => 'Select Video';
 
   @override
+  String get fileSelection => 'File selection';
+
+  @override
   String selectedFile(String fileName) {
     return 'Selected: $fileName';
   }

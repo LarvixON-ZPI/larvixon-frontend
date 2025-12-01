@@ -114,6 +114,7 @@
   "cancel": "Cancel",
   "upload": "Upload",
   "selectVideo": "Select Video",
+  "fileSelection": "File selection",
   "selectedFile": "Selected: {fileName}",
   "@selectedFile": {
     "placeholders": {

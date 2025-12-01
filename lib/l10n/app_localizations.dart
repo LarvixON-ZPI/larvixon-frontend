@@ -422,6 +422,12 @@ abstract class AppLocalizations {
   /// **'Select Video'**
   String get selectVideo;
 
+  /// No description provided for @fileSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'File selection'**
+  String get fileSelection;
+
   /// No description provided for @selectedFile.
   ///
   /// In en, this message translates to:
