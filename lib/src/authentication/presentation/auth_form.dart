@@ -78,209 +78,221 @@ class _AuthFormState extends State<AuthForm>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Form(
-      key: _formKey,
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 4.0,
-          children: [
-            BlocListener<AuthBloc, AuthState>(
-              listener: (context, state) {
-                if (state.status == AuthStatus.loading) {
-                  _logoController.repeat(reverse: true);
-                } else {
-                  _logoController.stop();
-                  _logoController.value = 0.0;
-                }
-
-                if (_hasErrors(state)) {
-                  final error = state.error!;
-                  if (error is ValidationFailure &&
-                      error.fieldErrors.isNotEmpty) {
-                    setFieldErrors(error.fieldErrors);
-                    _formKey.currentState?.validate();
+    return AutofillGroup(
+      child: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 4.0,
+            children: [
+              BlocListener<AuthBloc, AuthState>(
+                listener: (context, state) {
+                  if (state.status == AuthStatus.loading) {
+                    _logoController.repeat(reverse: true);
                   } else {
-                    AuthErrorDialog.show(
-                      context,
-                      error: error,
-                      onRetry: _submitForm,
-                      onMfaRequired: _showMfaDialog,
-                    );
+                    _logoController.stop();
+                    _logoController.value = 0.0;
                   }
-                } else if (_hasMfaError(state)) {
-                  _showMfaDialog();
-                } else if (state.status != AuthStatus.error &&
-                    fieldErrors.isNotEmpty) {
-                  clearAllErrors();
-                }
-              },
-              child: AnimatedLogo(logoController: _logoController),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              spacing: 16,
-              children: [
-                _buildModeButton(context, AuthFormMode.signIn),
-                _buildModeButton(context, AuthFormMode.signUp),
-              ],
-            ),
-            TextFormField(
-              controller: _emailController,
-              decoration: InputDecoration(hintText: context.translate.email),
-              autofillHints: const [AutofillHints.email],
-              autovalidateMode: getAutovalidateMode('email'),
-              validator: (value) => validateField(
-                context,
-                'email',
-                (context, value) => emailValidator(context, value),
-                value,
+
+                  if (_hasErrors(state)) {
+                    final error = state.error!;
+                    if (error is ValidationFailure &&
+                        error.fieldErrors.isNotEmpty) {
+                      setFieldErrors(error.fieldErrors);
+                      _formKey.currentState?.validate();
+                    } else {
+                      AuthErrorDialog.show(
+                        context,
+                        error: error,
+                        onRetry: _submitForm,
+                        onMfaRequired: _showMfaDialog,
+                      );
+                    }
+                  } else if (_hasMfaError(state)) {
+                    _showMfaDialog();
+                  } else if (state.status != AuthStatus.error &&
+                      fieldErrors.isNotEmpty) {
+                    clearAllErrors();
+                  }
+                },
+                child: AnimatedLogo(logoController: _logoController),
               ),
-            ),
-            TextFormField(
-              controller: _passwordController,
-              decoration: InputDecoration(
-                hintText: context.translate.password,
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                  ),
-                  onPressed: () =>
-                      setState(() => _obscurePassword = !_obscurePassword),
-                ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                spacing: 16,
+                children: [
+                  _buildModeButton(context, AuthFormMode.signIn),
+                  _buildModeButton(context, AuthFormMode.signUp),
+                ],
               ),
-              obscureText: _obscurePassword,
-              autofillHints: const [AutofillHints.password],
-              autovalidateMode: getAutovalidateMode('password'),
-              validator: (value) => validateField(
-                context,
-                'password',
-                (context, value) => passwordValidator(
+              TextFormField(
+                controller: _emailController,
+                decoration: InputDecoration(hintText: context.translate.email),
+                autofillHints: const [AutofillHints.email],
+                autovalidateMode: getAutovalidateMode('email'),
+                validator: (value) => validateField(
                   context,
+                  'email',
+                  (context, value) => emailValidator(context, value),
                   value,
-                  onlyCheckEmpty: _formMode == AuthFormMode.signIn,
                 ),
-                value,
               ),
-              onFieldSubmitted: _formMode == AuthFormMode.signIn
-                  ? (_) => _submitForm()
-                  : null,
-            ),
-            AnimatedSize(
-              duration: const Duration(milliseconds: 600),
-              curve: Curves.ease,
-              alignment: Alignment.topCenter,
-              child: ClipRect(
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    spacing: 6.0,
-                    children: [
-                      if (_formMode == AuthFormMode.signUp) ...[
-                        Column(
-                          spacing: 6.0,
-                          children: [
-                            TextFormField(
-                              controller: _confirmPasswordController,
-                              decoration: InputDecoration(
-                                hintText: context.translate.confirmPassword,
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    _obscureConfirmPassword
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
-                                  ),
-                                  onPressed: () => setState(
-                                    () => _obscureConfirmPassword =
-                                        !_obscureConfirmPassword,
+              TextFormField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  hintText: context.translate.password,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                    ),
+                    onPressed: () =>
+                        setState(() => _obscurePassword = !_obscurePassword),
+                  ),
+                ),
+                obscureText: _obscurePassword,
+                autofillHints: const [AutofillHints.password],
+                autovalidateMode: getAutovalidateMode('password'),
+                validator: (value) => validateField(
+                  context,
+                  'password',
+                  (context, value) => passwordValidator(
+                    context,
+                    value,
+                    onlyCheckEmpty: _formMode == AuthFormMode.signIn,
+                  ),
+                  value,
+                ),
+                onFieldSubmitted: _formMode == AuthFormMode.signIn
+                    ? (_) => _submitForm()
+                    : null,
+              ),
+              AnimatedSize(
+                duration: const Duration(milliseconds: 600),
+                curve: Curves.ease,
+                alignment: Alignment.topCenter,
+                child: ClipRect(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      spacing: 6.0,
+                      children: [
+                        if (_formMode == AuthFormMode.signUp) ...[
+                          Column(
+                            spacing: 6.0,
+                            children: [
+                              TextFormField(
+                                controller: _confirmPasswordController,
+                                decoration: InputDecoration(
+                                  hintText: context.translate.confirmPassword,
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _obscureConfirmPassword
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                    ),
+                                    onPressed: () => setState(
+                                      () => _obscureConfirmPassword =
+                                          !_obscureConfirmPassword,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              obscureText: _obscureConfirmPassword,
-                              autovalidateMode: getAutovalidateMode(
-                                'confirm_password',
-                              ),
-                              validator: (value) => validateField(
-                                context,
-                                'confirm_password',
-                                (context, value) => confirmPasswordValidator(
+                                obscureText: _obscureConfirmPassword,
+                                autofillHints: const [
+                                  AutofillHints.newPassword,
+                                ],
+                                autovalidateMode: getAutovalidateMode(
+                                  'confirm_password',
+                                ),
+                                validator: (value) => validateField(
                                   context,
-                                  _passwordController.text,
+                                  'confirm_password',
+                                  (context, value) => confirmPasswordValidator(
+                                    context,
+                                    _passwordController.text,
+                                    value,
+                                  ),
                                   value,
                                 ),
-                                value,
                               ),
-                            ),
-                            TextFormField(
-                              controller: _usernameController,
-                              decoration: InputDecoration(
-                                hintText: context.translate.username,
+                              TextFormField(
+                                controller: _usernameController,
+                                decoration: InputDecoration(
+                                  hintText: context.translate.username,
+                                ),
+                                autofillHints: const [AutofillHints.username],
+                                autovalidateMode: getAutovalidateMode(
+                                  'username',
+                                ),
+                                validator: (value) => validateField(
+                                  context,
+                                  'username',
+                                  (context, value) =>
+                                      usernameValidator(context, value),
+                                  value,
+                                ),
                               ),
-                              autovalidateMode: getAutovalidateMode('username'),
-                              validator: (value) => validateField(
-                                context,
-                                'username',
-                                (context, value) =>
-                                    usernameValidator(context, value),
-                                value,
+                              TextFormField(
+                                controller: _firstNameController,
+                                decoration: InputDecoration(
+                                  hintText: context.translate.firstName,
+                                ),
+                                autofillHints: const [AutofillHints.givenName],
+                                autovalidateMode: getAutovalidateMode(
+                                  'first_name',
+                                ),
+                                validator: (value) => validateField(
+                                  context,
+                                  'first_name',
+                                  (context, value) =>
+                                      firstNameValidator(context, value),
+                                  value,
+                                ),
                               ),
-                            ),
-                            TextFormField(
-                              controller: _firstNameController,
-                              decoration: InputDecoration(
-                                hintText: context.translate.firstName,
+                              TextFormField(
+                                controller: _lastNameController,
+                                decoration: InputDecoration(
+                                  hintText: context.translate.lastName,
+                                ),
+                                autofillHints: const [AutofillHints.familyName],
+                                autovalidateMode: getAutovalidateMode(
+                                  'last_name',
+                                ),
+                                validator: (value) => validateField(
+                                  context,
+                                  'last_name',
+                                  (context, value) =>
+                                      lastNameValidator(context, value),
+                                  value,
+                                ),
                               ),
-                              autovalidateMode: getAutovalidateMode(
-                                'first_name',
-                              ),
-                              validator: (value) => validateField(
-                                context,
-                                'first_name',
-                                (context, value) =>
-                                    firstNameValidator(context, value),
-                                value,
-                              ),
-                            ),
-                            TextFormField(
-                              controller: _lastNameController,
-                              decoration: InputDecoration(
-                                hintText: context.translate.lastName,
-                              ),
-                              autovalidateMode: getAutovalidateMode(
-                                'last_name',
-                              ),
-                              validator: (value) => validateField(
-                                context,
-                                'last_name',
-                                (context, value) =>
-                                    lastNameValidator(context, value),
-                                value,
-                              ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
+                        ],
                       ],
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
 
-            Align(
-              alignment: Alignment.centerRight,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 200),
-                child: IconButton(
-                  color: Theme.of(context).colorScheme.primary,
-                  key: ValueKey(_formMode),
-                  onPressed: _submitForm,
-                  icon: const Icon(Icons.arrow_forward),
+              Align(
+                alignment: Alignment.centerRight,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 200),
+                  child: IconButton(
+                    color: Theme.of(context).colorScheme.primary,
+                    key: ValueKey(_formMode),
+                    onPressed: _submitForm,
+                    icon: const Icon(Icons.arrow_forward),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
