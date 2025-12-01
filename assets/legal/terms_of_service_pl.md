@@ -35,17 +35,17 @@ Usługa obejmuje:
 ### 2.2 Wyłącznie Użytek Akademicki/Badawczy
 
 Platforma jest przeznaczona dla:
-- ✅ Celów badań akademickich i edukacyjnych
-- ✅ Testowania i eksperymentów laboratoryjnych
-- ✅ Demonstracji możliwości AI/ML
-- ✅ Walidacji koncepcji (proof-of-concept)
+- Celów badań akademickich i edukacyjnych
+- Testowania i eksperymentów laboratoryjnych
+- Demonstracji możliwości AI/ML
+- Walidacji koncepcji (proof-of-concept)
 
 ### 2.3 NIE Jest Przeznaczona Do
 
-- ❌ **Diagnostyki klinicznej lub decyzji o leczeniu** medycznym
-- ❌ **Użytku komercyjnego lub produkcyjnego** bez odpowiedniej walidacji
-- ❌ **Sytuacji medycznych wymagających natychmiastowych** decyzji
-- ❌ **Przetwarzania rzeczywistych danych pacjentów** bez odpowiedniej zgody etycznej
+- **Diagnostyki klinicznej lub decyzji o leczeniu** medycznym
+- **Użytku komercyjnego lub produkcyjnego** bez odpowiedniej walidacji
+- **Sytuacji medycznych wymagających natychmiastowych** decyzji
+- **Przetwarzania rzeczywistych danych pacjentów** bez odpowiedniej zgody etycznej
 
 **WAŻNE:** To prototyp badawczy. Wyniki nie powinny być wykorzystywane do rzeczywistych decyzji medycznych bez dalszej walidacji i zatwierdzenia regulacyjnego.
 
@@ -64,21 +64,21 @@ Aby korzystać z Usługi, musisz:
 ### 3.2 Bezpieczeństwo Konta
 
 Jesteś odpowiedzialny za:
-- ✅ Utrzymanie poufności hasła
-- ✅ Wszystkie działania wykonywane na Twoim koncie
-- ✅ Natychmiastowe powiadomienie nas o nieautoryzowanym dostępie
-- ✅ Używanie silnego hasła (minimum 8 znaków)
+- Utrzymanie poufności hasła
+- Wszystkie działania wykonywane na Twoim koncie
+- Natychmiastowe powiadomienie nas o nieautoryzowanym dostępie
+- Używanie silnego hasła (minimum 8 znaków)
 
 ### 3.3 Zabronione Działania
 
 Zgadzasz się NIE:
-- ❌ Używać zautomatyzowanych narzędzi, botów lub scraperów do przeciążania usługi
-- ❌ Przesyłać plików zawierających złośliwy kod, wirusy lub malware
-- ❌ Próbować odwrotnej inżynierii lub wyodrębniania modeli AI
-- ❌ Przesyłać nagrań wideo zawierających dane identyfikujące pacjenta (twarze, nazwiska, numery dokumentacji medycznej)
-- ❌ Używać Usługi do nielegalnych lub szkodliwych celów
-- ❌ Próbować uzyskać nieautoryzowany dostęp do systemu
-- ❌ Udostępniać danych logowania innym osobom
+- Używać zautomatyzowanych narzędzi, botów lub scraperów do przeciążania usługi
+- Przesyłać plików zawierających złośliwy kod, wirusy lub malware
+- Próbować odwrotnej inżynierii lub wyodrębniania modeli AI
+- Przesyłać nagrań wideo zawierających dane identyfikujące pacjenta (twarze, nazwiska, numery dokumentacji medycznej)
+- Używać Usługi do nielegalnych lub szkodliwych celów
+- Próbować uzyskać nieautoryzowany dostęp do systemu
+- Udostępniać danych logowania innym osobom
 
 **Konsekwencje:** Naruszenie może skutkować zawieszeniem lub usunięciem konta.
 
@@ -104,10 +104,10 @@ Przesyłając pliki wideo, potwierdzasz, że:
 ### 4.3 Zabroniona Zawartość
 
 NIE przesyłaj nagrań wideo zawierających:
-- ❌ Informacje identyfikujące pacjenta (twarze, nazwiska, daty urodzenia, numery ID)
-- ❌ Nieodpowiednią, nielegalną lub szkodliwą zawartość
-- ❌ Spam lub nieistotne pliki testowe
-- ❌ Chronione informacje zdrowotne (PHI) bez odpowiedniej anonimizacji
+- Informacje identyfikujące pacjenta (twarze, nazwiska, daty urodzenia, numery ID)
+- Nieodpowiednią, nielegalną lub szkodliwą zawartość
+- Spam lub nieistotne pliki testowe
+- Chronione informacje zdrowotne (PHI) bez odpowiedniej anonimizacji
 
 ---
 
@@ -145,7 +145,7 @@ Wyniki analizy są dostarczane "tak jak są" do celów badawczych:
 
 ### 6.1 Charakter Eksperymentalny
 
-⚠️ **WAŻNE ZASTRZEŻENIE:**
+ **WAŻNE ZASTRZEŻENIE:**
 
 Larvixon to **eksperymentalny prototyp badawczy** opracowany do celów akademickich. NIE JEST:
 - Urządzeniem medycznym zatwierdzonym do użytku klinicznego
@@ -182,9 +182,9 @@ NIE gwarantujemy, że:
 ### 7.1 Usługa typu "Best Effort"
 
 Jako projekt akademicki o ograniczonych zasobach, świadczymy Usługę na zasadzie **"najlepszych starań"**:
-- ⚠️ Usługa może być **niedostępna** z powodu konserwacji, problemów z serwerem lub ograniczeń zasobów
-- ⚠️ NIE gwarantujemy konkretnego czasu pracy ani czasów odpowiedzi
-- ⚠️ Usługa może zostać **przerwana** po zakończeniu projektu akademickiego
+-  Usługa może być **niedostępna** z powodu konserwacji, problemów z serwerem lub ograniczeń zasobów
+-  NIE gwarantujemy konkretnego czasu pracy ani czasów odpowiedzi
+-  Usługa może zostać **przerwana** po zakończeniu projektu akademickiego
 
 ### 7.2 Brak Umowy o Poziomie Usług (SLA)
 
@@ -226,7 +226,7 @@ Zgodnie z RODO masz prawo do:
 - Sprzeciwu wobec przetwarzania danych
 - Wniesienia skargi do organu ochrony danych (Polska: UODO - uodo.gov.pl)
 
-**Kontakt:** TBD
+**Kontakt:** larvixonhelp@gmail.com
 
 ---
 
@@ -239,20 +239,20 @@ Zgodnie z RODO masz prawo do:
 To **bezpłatny projekt badawczy akademicki** dostarczany "tak jak jest" bez żadnych gwarancji.
 
 My (zespół projektowy i Politechnika Wrocławska) NIE ponosimy odpowiedzialności za:
-- ❌ Jakiekolwiek szkody wynikające z korzystania z Usługi
-- ❌ Utratę danych, czasu lub wyników badań
-- ❌ Niedokładne lub mylące wyniki analizy
-- ❌ Przestoje lub przerwy w działaniu usługi
-- ❌ Decyzje medyczne podjęte na podstawie tego eksperymentalnego narzędzia
+- Jakiekolwiek szkody wynikające z korzystania z Usługi
+- Utratę danych, czasu lub wyników badań
+- Niedokładne lub mylące wyniki analizy
+- Przestoje lub przerwy w działaniu usługi
+- Decyzje medyczne podjęte na podstawie tego eksperymentalnego narzędzia
 
 **UŻYWASZ NA WŁASNE RYZYKO.**
 
 ### 9.2 Brak Relacji Komercyjnej
 
 To **niekomercyjny projekt akademicki**:
-- ✅ **Bezpłatny** do użytku w celach badawczych i edukacyjnych
-- ✅ **Brak płatnych funkcji lub subskrypcji**
-- ✅ **Brak komercyjnego wsparcia** (tylko wsparcie społecznościowe/akademickie)
+- **Bezpłatny** do użytku w celach badawczych i edukacyjnych
+- **Brak płatnych funkcji lub subskrypcji**
+- **Brak komercyjnego wsparcia** (tylko wsparcie społecznościowe/akademickie)
 
 ---
 
@@ -270,9 +270,9 @@ Możemy zawiesić lub usunąć konta, które:
 ### 10.2 Zakończenie Projektu
 
 Ten projekt badawczy może zostać zakończony w dowolnym momencie:
-- ⚠️ Zapewnimy **co najmniej 30 dni wyprzedzenia** przed zamknięciem
-- ⚠️ Będziesz mógł pobrać swoje dane przed zamknięciem usługi
-- ⚠️ Po zamknięciu wszystkie dane użytkowników zostaną usunięte (z wyjątkiem zanonimizowanych danych badawczych)
+-  Zapewnimy **co najmniej 30 dni wyprzedzenia** przed zamknięciem
+-  Będziesz mógł pobrać swoje dane przed zamknięciem usługi
+-  Po zamknięciu wszystkie dane użytkowników zostaną usunięte (z wyjątkiem zanonimizowanych danych badawczych)
 
 ---
 
@@ -281,7 +281,7 @@ Ten projekt badawczy może zostać zakończony w dowolnym momencie:
 Niniejszy Regulamin podlega prawu **Polski**.
 
 W przypadku sporów:
-- **Nieformalne rozwiązanie:** Skontaktuj się z nami najpierw pod adresem TBD
+- **Nieformalne rozwiązanie:** Skontaktuj się z nami najpierw pod adresem larvixonhelp@gmail.com
 - **Jurysdykcja:** Sądy we Wrocławiu, Polska
 
 ---
@@ -297,15 +297,15 @@ Możemy aktualizować niniejszy Regulamin, aby odzwierciedlić zmiany w zakresie
 ## 13. Informacje Kontaktowe
 
 ### Zespół Projektowy
-**E-mail:** TBD  
+**E-mail:** larvixonhelp@gmail.com  
 **Instytucja:** Politechnika Wrocławska  
-**Wydział:** TBD
+**Wydział:** W4N
 
 ### Prywatność Danych
-**E-mail:** TBD
+**E-mail:** larvixonhelp@gmail.com
 
 ### Problemy Techniczne
-**E-mail:** TBD
+**E-mail:** larvixonhelp@gmail.com
 
 ---
 
@@ -313,12 +313,12 @@ Możemy aktualizować niniejszy Regulamin, aby odzwierciedlić zmiany w zakresie
 
 TBD
 
-## ⚠️ Uwaga dotycząca Etyki Badawczej
+##  Uwaga dotycząca Etyki Badawczej
 
 Jeśli planujesz używać tej platformy z rzeczywistymi próbkami pacjentów, upewnij się, że masz:
-- ✅ Zatwierdzenie Komisji Bioetycznej lub Komitetu Etycznego
-- ✅ Świadomą zgodę od pacjentów
-- ✅ Zgodność z polityką danych badawczych Twojej instytucji
-- ✅ Odpowiednią anonimizację danych pacjentów
+- Zatwierdzenie Komisji Bioetycznej lub Komitetu Etycznego
+- Świadomą zgodę od pacjentów
+- Zgodność z polityką danych badawczych Twojej instytucji
+- Odpowiednią anonimizację danych pacjentów
 
 **Platforma nie zapewnia zatwierdzenia etycznego ani certyfikacji zgodności.**

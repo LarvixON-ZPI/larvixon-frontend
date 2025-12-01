@@ -389,8 +389,32 @@ abstract class AppLocalizations {
   /// No description provided for @contactDescription.
   ///
   /// In en, this message translates to:
-  /// **'Have a question or want to collaborate? Drop us a message.'**
-  String get contactDescription;
+  /// **'Have a question or something not working? Send us a message using the form or write directly to {email}.'**
+  String contactDescription(String email);
+
+  /// No description provided for @contactType.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact type'**
+  String get contactType;
+
+  /// No description provided for @featureRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Feature request'**
+  String get featureRequest;
+
+  /// No description provided for @bug.
+  ///
+  /// In en, this message translates to:
+  /// **'Bug report'**
+  String get bug;
+
+  /// No description provided for @question.
+  ///
+  /// In en, this message translates to:
+  /// **'Question'**
+  String get question;
 
   /// No description provided for @uploadNewVideo.
   ///

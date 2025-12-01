@@ -172,8 +172,21 @@ class AppLocalizationsPl extends AppLocalizations {
       'Wiadomość została wysłana — dziękujemy!';
 
   @override
-  String get contactDescription =>
-      'Masz pytanie lub chcesz współpracować? Napisz do nas wiadomość.';
+  String contactDescription(String email) {
+    return 'Masz pytanie lub coś działa nie tak? Napisz do nas wiadomość używając formularza lub napisz bezpośrednio na $email.';
+  }
+
+  @override
+  String get contactType => 'Typ wiadomości';
+
+  @override
+  String get featureRequest => 'Prośba o funkcję';
+
+  @override
+  String get bug => 'Zgłoszenie błędu';
+
+  @override
+  String get question => 'Pytanie';
 
   @override
   String get uploadNewVideo => 'Prześlij nowy film do analizy';

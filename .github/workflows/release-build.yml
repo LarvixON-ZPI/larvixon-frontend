@@ -160,11 +160,11 @@ jobs:
 
   create-release:
     name: Create GitHub Release
-    needs: [build-android, build-windows, build-linux, build-web, check-main-branch]
+    needs: [build-android, build-windows, build-linux, build-web, check-main-branch, prepare-tag]
     runs-on: ubuntu-latest
     steps:
       - name: Set tag from earlier job
-        run: echo "TAG=${{ needs.check-main-branch.needs.prepare-tag.outputs.RELEASE_TAG }}" >> $GITHUB_ENV
+        run: echo "TAG=${{ needs.prepare-tag.outputs.RELEASE_TAG }}" >> $GITHUB_ENV
 
       - uses: actions/download-artifact@v4
         with:

@@ -108,7 +108,19 @@
   "ourTeam": "Nasz zespół",
   "@@_AboutUs": {},
   "messageSentAcknowledgment": "Wiadomość została wysłana — dziękujemy!",
-  "contactDescription": "Masz pytanie lub chcesz współpracować? Napisz do nas wiadomość.",
+  "contactDescription": "Masz pytanie lub coś działa nie tak? Napisz do nas wiadomość używając formularza lub napisz bezpośrednio na {email}.",
+  "@contactDescription": {
+    "placeholders": {
+      "email": {
+        "type": "String",
+        "example": "contact@example.com"
+      }
+    }
+  },
+  "contactType": "Typ wiadomości",
+  "featureRequest": "Prośba o funkcję",
+  "bug": "Zgłoszenie błędu",
+  "question": "Pytanie",
   "uploadNewVideo": "Prześlij nowy film do analizy",
   "uploadVideoDescription": "Prześlij nowy film na platformę, aby przeanalizować ruchy larw.",
   "cancel": "Anuluj",

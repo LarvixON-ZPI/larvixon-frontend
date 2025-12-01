@@ -12,7 +12,7 @@ use, store, and protect your personal data.
 **Data Controller:**
 - Organization: TBD
 - Address: TBD
-- Email: TBD
+- Email: larvixonhelp@gmail.com
 - DPO (Data Protection Officer): TBD
 
 ---
@@ -61,10 +61,10 @@ When you upload an analysis, we collect:
 - **Support:** Respond to your inquiries and technical issues
 
 ### 3.2 We Do NOT:
-- ❌ Sell your data to third parties
-- ❌ Use patient data for purposes other than analysis
-- ❌ Share medical data without explicit consent
-- ❌ Train AI models on identifiable patient data
+- Sell your data to third parties
+- Use patient data for purposes other than analysis
+- Share medical data without explicit consent
+- Train AI models on identifiable patient data
 
 ---
 
@@ -76,12 +76,12 @@ When you upload an analysis, we collect:
 - **Video files:** Server-side encryption
 
 ### 4.2 Security Measures
-- ✅ **Encryption in transit:** TLS 1.3 (HTTPS)
-- ✅ **Encryption at rest:** AES-256
-- ✅ **Password hashing:** Argon2 with unique salt
-- ✅ **Access control:** Role-based access (RBAC)
-- ✅ **Authentication:** JWT tokens with 24-hour expiry
-- ✅ **Regular backups:** TBD
+- **Encryption in transit:** TLS 1.3 (HTTPS)
+- **Encryption at rest:** AES-256
+- **Password hashing:** Argon2 with unique salt
+- **Access control:** Role-based access (RBAC)
+- **Authentication:** JWT tokens with 24-hour expiry
+- **Regular backups:** TBD
 
 ### 4.3 Data Retention
 - **Account data:** Retained while active + 30 days after deletion
@@ -98,10 +98,10 @@ When you upload an analysis, we collect:
 - **Email service:** Transactional emails only
 
 ### 5.2 We Do NOT Share With:
-- ❌ Marketing companies
-- ❌ Social media platforms
-- ❌ Insurance companies
-- ❌ Third parties without your explicit consent
+- Marketing companies
+- Social media platforms
+- Insurance companies
+- Third parties without your explicit consent
 
 ---
 
@@ -126,7 +126,7 @@ Object to processing based on legitimate interest.
 File a complaint with your national Data Protection Authority.  
 **Poland:** UODO (Urząd Ochrony Danych Osobowych) - uodo.gov.pl
 
-**How to exercise rights:** TBD
+**How to exercise rights:** Contact larvixonhelp@gmail.com
 
 ---
 
@@ -155,8 +155,8 @@ We will notify you of material changes via email and in-app banner.
 ## 10. Contact Information
 
 **Data Protection Officer (DPO):**  
-Email: TBD
+Email: larvixonhelp@gmail.com
 Address: TBD
 
 **General Inquiries:**  
-Email: TBD
+Email: larvixonhelp@gmail.com

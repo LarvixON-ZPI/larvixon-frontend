@@ -107,7 +107,19 @@
   "ourVisionDescription": "To innovate continuously and provide seamless digital experiences.",
   "ourTeam": "Our Team",
   "messageSentAcknowledgment": "Message sent — thank you!",
-  "contactDescription": "Have a question or want to collaborate? Drop us a message.",
+  "contactDescription": "Have a question or something not working? Send us a message using the form or write directly to {email}.",
+  "@contactDescription": {
+    "placeholders": {
+      "email": {
+        "type": "String",
+        "example": "contact@example.com"
+      }
+    }
+  },
+  "contactType": "Contact type",
+  "featureRequest": "Feature request",
+  "bug": "Bug report",
+  "question": "Question",
   "@@_AboutUs": {},
   "uploadNewVideo": "Upload new video",
   "uploadVideoDescription": "Upload a new video to the platform to analyze larval movements.",
