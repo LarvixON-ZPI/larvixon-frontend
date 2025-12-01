@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:larvixon_frontend/src/analysis/data/datasources/analysis_datasource.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository.dart';
 import 'package:larvixon_frontend/src/analysis/domain/repositories/analysis_repository_impl.dart';
+import 'package:larvixon_frontend/src/patient/data/datasources/patients_datasource.dart';
+import 'package:larvixon_frontend/src/patient/domain/repositories/patient_repository.dart';
+import 'package:larvixon_frontend/src/patient/domain/repositories/patient_repository_impl.dart';
 import 'package:larvixon_frontend/src/settings/domain/repositories/settings_repository.dart';
 import 'package:larvixon_frontend/src/settings/domain/repositories/settings_repository_impl.dart';
 import 'package:larvixon_frontend/src/settings/presentation/blocs/cubit/settings_cubit.dart';
@@ -45,8 +48,10 @@ class _MainAppState extends State<MainApp> {
   late final UserDataSource _userDataSource;
   late final AnalysisRepository _analysesRepository;
   late final AnalysisDataSource _larvaVideoDataSource;
+  late final PatientsDatasource _patientDataSource;
   late final SettingsRepository _settingsRepository;
   late final SettingsCubit _settingsCubit;
+  late final PatientRepository _patientRepository;
 
   @override
   void initState() {
@@ -55,6 +60,7 @@ class _MainAppState extends State<MainApp> {
     _apiClient = ApiClient(_tokenStorage);
     _authDataSource = AuthDataSource(_apiClient);
     _userDataSource = UserDataSource(_apiClient);
+    _patientDataSource = PatientsDatasource(_apiClient);
     _larvaVideoDataSource = AnalysisDataSource.getImplementation(_apiClient);
     _authRepository = AuthRepositoryImpl(
       dataSource: _authDataSource,
@@ -72,6 +78,7 @@ class _MainAppState extends State<MainApp> {
       repository: _settingsRepository,
       supportedLocales: AppLocalizations.supportedLocales,
     )..loadSettings();
+    _patientRepository = PatientRepositoryImpl(dataSource: _patientDataSource);
   }
 
   @override
@@ -95,9 +102,7 @@ class _MainAppState extends State<MainApp> {
         RepositoryProvider<AnalysisRepository>.value(
           value: _analysesRepository,
         ),
-        RepositoryProvider<SettingsRepository>.value(
-          value: _settingsRepository,
-        ),
+        RepositoryProvider<PatientRepository>.value(value: _patientRepository),
       ],
       child: _buildBlocProviders(),
     );

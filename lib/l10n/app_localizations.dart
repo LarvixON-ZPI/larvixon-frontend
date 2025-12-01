@@ -440,6 +440,12 @@ abstract class AppLocalizations {
   /// **'Enter title'**
   String get enterTitle;
 
+  /// No description provided for @enterDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter description'**
+  String get enterDescription;
+
   /// No description provided for @uploading.
   ///
   /// In en, this message translates to:
@@ -697,6 +703,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add your first analysis by uploading a video.'**
   String get addYourFirstAnalysis;
+
+  /// No description provided for @createAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Create analysis'**
+  String get createAnalysis;
 
   /// No description provided for @clickToUpload.
   ///
@@ -1015,6 +1027,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Terms of use'**
   String get termsOfUse;
+
+  /// No description provided for @patient.
+  ///
+  /// In en, this message translates to:
+  /// **'Patient'**
+  String get patient;
+
+  /// No description provided for @selectedPatient.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected patient'**
+  String get selectedPatient;
+
+  /// No description provided for @patientSearchDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Associate patient with the analysis. Search them with PESEL or name.'**
+  String get patientSearchDescription;
+
+  /// No description provided for @peselMustBe11Digits.
+  ///
+  /// In en, this message translates to:
+  /// **'PESEL must contain exactly 11 digits'**
+  String get peselMustBe11Digits;
+
+  /// No description provided for @invalidPeselNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid PESEL number'**
+  String get invalidPeselNumber;
+
+  /// No description provided for @patientsNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Patients not found'**
+  String get patientsNotFound;
+
+  /// No description provided for @name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name;
+
+  /// No description provided for @birthDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth date'**
+  String get birthDate;
+
+  /// No description provided for @gender.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get gender;
+
+  /// No description provided for @phone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get phone;
+
+  /// No description provided for @address.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get address;
+
+  /// No description provided for @city.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get city;
+
+  /// No description provided for @postalCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Postal code'**
+  String get postalCode;
+
+  /// No description provided for @country.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get country;
+
+  /// No description provided for @male.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get male;
+
+  /// No description provided for @female.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get female;
+
+  /// No description provided for @other.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get other;
 }
 
 class _AppLocalizationsDelegate

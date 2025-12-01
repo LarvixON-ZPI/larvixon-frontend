@@ -97,4 +97,34 @@ mixin FormValidatorsMixin {
     }
     return null;
   }
+
+  String? peselValidator(
+    BuildContext context,
+    String? value, [
+    bool allowDirty = false,
+  ]) {
+    if (value == null || value.isEmpty) {
+      return context.translate.fieldIsRequired;
+    }
+
+    final pesel = value.replaceAll(RegExp(r'\s'), '');
+
+    if (pesel.length != 11 || !RegExp(r'^\d{11}$').hasMatch(pesel)) {
+      return context.translate.peselMustBe11Digits;
+    }
+    if (allowDirty) return null;
+    final weights = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3];
+    int sum = 0;
+    for (int i = 0; i < 10; i++) {
+      sum += int.parse(pesel[i]) * weights[i];
+    }
+    final checksum = (10 - (sum % 10)) % 10;
+    final lastDigit = int.parse(pesel[10]);
+
+    if (checksum != lastDigit) {
+      return context.translate.invalidPeselNumber;
+    }
+
+    return null;
+  }
 }

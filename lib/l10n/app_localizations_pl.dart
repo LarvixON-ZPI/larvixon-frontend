@@ -203,6 +203,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get enterTitle => 'Wprowadź tytuł';
 
   @override
+  String get enterDescription => 'Wprowadź opis';
+
+  @override
   String get uploading => 'Przesyłanie';
 
   @override
@@ -342,6 +345,9 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get addYourFirstAnalysis => 'Dodaj swoją pierwszą analizę.';
+
+  @override
+  String get createAnalysis => 'Nowa analiza';
 
   @override
   String get clickToUpload => 'Kliknij, aby przesłać nagranie.';
@@ -519,4 +525,56 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get termsOfUse => 'Warunki użytkowania';
+
+  @override
+  String get patient => 'Pacjent';
+
+  @override
+  String get selectedPatient => 'Wybrany pacjent';
+
+  @override
+  String get patientSearchDescription =>
+      'Powiąż pacjenta z analizą. Wyszukaj go używając numeru PESEL lub imienia i nazwiska.';
+
+  @override
+  String get peselMustBe11Digits => 'PESEL musi zawierać dokładnie 11 cyfr';
+
+  @override
+  String get invalidPeselNumber => 'Nieprawidłowy numer PESEL';
+
+  @override
+  String get patientsNotFound => 'Nie znalezniono pacjentów';
+
+  @override
+  String get name => 'Imię i nazwisko';
+
+  @override
+  String get birthDate => 'Data urodzenia';
+
+  @override
+  String get gender => 'Płeć';
+
+  @override
+  String get phone => 'Telefon';
+
+  @override
+  String get address => 'Adres';
+
+  @override
+  String get city => 'Miasto';
+
+  @override
+  String get postalCode => 'Kod pocztowy';
+
+  @override
+  String get country => 'Kraj';
+
+  @override
+  String get male => 'Mężczyzna';
+
+  @override
+  String get female => 'Kobieta';
+
+  @override
+  String get other => 'Inna';
 }
