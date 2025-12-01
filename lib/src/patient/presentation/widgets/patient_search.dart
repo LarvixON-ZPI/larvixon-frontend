@@ -168,7 +168,7 @@ class _SearchResults extends StatelessWidget {
       _ =>
         state.foundPatients.isNotEmpty
             ? _PatientList(key: const ValueKey('patient-list'), state: state)
-            : SizedBox.shrink(),
+            : const SizedBox.shrink(),
     };
   }
 }

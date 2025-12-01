@@ -385,11 +385,7 @@ void main() {
       blocTest<AnalysisBloc, AnalysisState>(
         'handles retry with null analysis description',
         build: () {
-          final retriedAnalysis = Analysis(
-            id: 123,
-            uploadedAt: DateTime.now(),
-            description: null, // Edge case: no description
-          );
+          final retriedAnalysis = Analysis(id: 123, uploadedAt: DateTime.now());
 
           when(
             mockRepository.retryAnalysis(id: 123),

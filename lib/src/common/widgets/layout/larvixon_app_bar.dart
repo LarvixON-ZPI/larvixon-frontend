@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:larvixon_frontend/core/constants/common_icons.dart';
 import 'package:larvixon_frontend/src/about_us/presentation/pages/about_page.dart';
@@ -15,7 +14,6 @@ import 'package:larvixon_frontend/src/common/widgets/ui/larvixon_logo.dart';
 import 'package:larvixon_frontend/src/contact/presentation/pages/contact_page.dart';
 import 'package:larvixon_frontend/src/settings/presentation/pages/settings_page.dart';
 import 'package:larvixon_frontend/src/simulation/presentation/pages/simulation_page_loader.dart';
-import 'package:larvixon_frontend/src/user/bloc/user_bloc.dart';
 import 'package:larvixon_frontend/src/user/presentation/pages/account_page.dart';
 
 class LarvixonAppBar extends StatelessWidget implements PreferredSizeWidget {
