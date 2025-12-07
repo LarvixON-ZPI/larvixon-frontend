@@ -206,10 +206,11 @@ class _PatientSectionExpandedState extends State<_PatientSectionExpanded> {
             ),
           ],
         ),
-        SelectableText(
-          "ID: ${widget.patient.id}",
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
+        if (widget.patient.pesel case final pesel?)
+          SelectableText(
+            "PESEL: $pesel",
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
         if (widget.patient.firstName case final firstName?)
           SelectableText(
             "${context.translate.firstName}: $firstName",
@@ -221,11 +222,6 @@ class _PatientSectionExpandedState extends State<_PatientSectionExpanded> {
             style: Theme.of(context).textTheme.headlineSmall,
           ),
         if (_isExpanded) ...[
-          if (widget.patient.pesel case final pesel?)
-            SelectableText(
-              "PESEL: $pesel",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
           if (widget.patient.birthDate case final birthDate?)
             SelectableText(
               "${context.translate.birthDate}: ${birthDate.formattedDateOnly}",
