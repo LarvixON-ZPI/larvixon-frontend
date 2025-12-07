@@ -52,8 +52,8 @@ class LarvaeManager {
           random.nextDouble() * width,
           random.nextDouble() * height,
         ),
-        segments: 32,
-        segmentLength: 2,
+        segments: 10,
+        segmentLength: 8.0,
       ),
     );
   }
