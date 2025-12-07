@@ -596,4 +596,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get other => 'Other';
+
+  @override
+  String get copiedToClipboard => 'Copied to clipboard';
+
+  @override
+  String get copySubstanceHeaderRow => 'Substance\tConfidence';
+
+  @override
+  String get copyToClipboardExcel =>
+      'Copy to clipboard (Excel-compatible format)';
 }

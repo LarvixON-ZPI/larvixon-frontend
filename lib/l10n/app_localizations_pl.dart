@@ -596,4 +596,14 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get other => 'Inna';
+
+  @override
+  String get copiedToClipboard => 'Skopiowano do schowka';
+
+  @override
+  String get copySubstanceHeaderRow => 'Substancja\tPewność';
+
+  @override
+  String get copyToClipboardExcel =>
+      'Kopiuj do schowka (format kompatybilny z Excelem)';
 }

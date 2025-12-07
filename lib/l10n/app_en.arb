@@ -290,5 +290,8 @@
   "country": "Country",
   "male": "Male",
   "female": "Female",
-  "other": "Other"
+  "other": "Other",
+  "copiedToClipboard": "Copied to clipboard",
+  "copySubstanceHeaderRow": "Substance\tConfidence",
+  "copyToClipboardExcel": "Copy to clipboard (Excel-compatible format)"
 }
