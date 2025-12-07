@@ -16,11 +16,13 @@ class AboutPage extends StatelessWidget {
         child: Center(
           child: ConstrainedBox(
             constraints: kDefaultPageWidthConstraitns,
-            child: Column(
-              children: [
-                HeaderSectionBase(title: context.translate.about),
-                const AboutSection(),
-              ],
+            child: SelectionArea(
+              child: Column(
+                children: [
+                  HeaderSectionBase(title: context.translate.about),
+                  const AboutSection(),
+                ],
+              ),
             ),
           ),
         ),
