@@ -15,24 +15,26 @@ class LandingContent extends StatelessWidget {
       spacing: 32,
       children: [
         Flexible(
-          child: Column(
-            spacing: 16,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: SelectionArea(
+            child: Column(
+              spacing: 16,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
 
-            children: [
-              Text(
-                context.translate.larvixonHeader,
-                style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                  fontWeight: FontWeight.bold,
+              children: [
+                Text(
+                  context.translate.larvixonHeader,
+                  style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Text(
-                context.translate.larvixonDescription,
-                style: Theme.of(context).textTheme.headlineMedium!,
-              ),
-              const LandingEmailForm(),
-            ],
+                Text(
+                  context.translate.larvixonDescription,
+                  style: Theme.of(context).textTheme.headlineMedium!,
+                ),
+                const LandingEmailForm(),
+              ],
+            ),
           ),
         ),
         if (showPetriDishes)

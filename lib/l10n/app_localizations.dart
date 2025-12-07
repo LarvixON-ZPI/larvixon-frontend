@@ -1165,6 +1165,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Other'**
   String get other;
+
+  /// No description provided for @copiedToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied to clipboard'**
+  String get copiedToClipboard;
+
+  /// No description provided for @copySubstanceHeaderRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Substance\tConfidence'**
+  String get copySubstanceHeaderRow;
+
+  /// No description provided for @copyToClipboardExcel.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy to clipboard (Excel-compatible format)'**
+  String get copyToClipboardExcel;
 }
 
 class _AppLocalizationsDelegate

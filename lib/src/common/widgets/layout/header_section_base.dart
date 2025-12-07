@@ -30,18 +30,16 @@ class HeaderSectionBase extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 4,
               children: [
-                Text(
+                SelectableText(
                   title,
                   style: Theme.of(context).textTheme.headlineSmall,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
                 if (subtitle != null)
-                  Text(
+                  SelectableText(
                     subtitle!,
                     style: Theme.of(context).textTheme.bodyLarge,
-                    maxLines: 4,
-                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
               ],
             ),

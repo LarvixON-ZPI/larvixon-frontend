@@ -57,56 +57,58 @@ class _MetaSectionState extends State<MetaSection>
   @override
   Widget build(BuildContext context) {
     return CustomCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                "${context.translate.status}: ",
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              StatusRow(analysis: widget.analysis, showPercent: true),
-            ],
-          ),
-          const Divider(),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: Text(
-                  "${context.translate.createdAt}: ${widget.analysis.uploadedAt.formattedDateTime}",
+      child: SelectionArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "${context.translate.status}: ",
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-              ),
-            ],
-          ),
-          SizeTransition(
-            sizeFactor: _expandAnimation,
-            axisAlignment: -1.0,
-            child: Row(
+                StatusRow(analysis: widget.analysis, showPercent: true),
+              ],
+            ),
+            const Divider(),
+            Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Expanded(
                   child: Text(
-                    "${context.translate.analysed}: ${widget.analysis.analysedAt?.formattedDateTime ?? ''}",
+                    "${context.translate.createdAt}: ${widget.analysis.uploadedAt.formattedDateTime}",
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ),
               ],
             ),
-          ),
-          if (widget.analysis.patient case final patient?) ...[
-            const Divider(),
-            _PatientSection(patient: patient),
+            SizeTransition(
+              sizeFactor: _expandAnimation,
+              axisAlignment: -1.0,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: Text(
+                      "${context.translate.analysed}: ${widget.analysis.analysedAt?.formattedDateTime ?? ''}",
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (widget.analysis.patient case final patient?) ...[
+              const Divider(),
+              _PatientSection(patient: patient),
+            ],
+            if (widget.analysis.description != null &&
+                widget.analysis.description!.isNotEmpty) ...[
+              const Divider(),
+              _DescriptionSection(description: widget.analysis.description!),
+            ],
           ],
-          if (widget.analysis.description != null &&
-              widget.analysis.description!.isNotEmpty) ...[
-            const Divider(),
-            _DescriptionSection(description: widget.analysis.description!),
-          ],
-        ],
+        ),
       ),
     );
   }
@@ -154,10 +156,7 @@ class _DescriptionSectionState extends State<_DescriptionSection> {
               ),
           ],
         ),
-        SelectableText(
-          _displayText,
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
+        Text(_displayText, style: Theme.of(context).textTheme.headlineSmall),
       ],
     );
   }
@@ -206,63 +205,59 @@ class _PatientSectionExpandedState extends State<_PatientSectionExpanded> {
             ),
           ],
         ),
-        SelectableText(
-          "ID: ${widget.patient.id}",
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
+        if (widget.patient.pesel case final pesel?)
+          Text(
+            "PESEL: $pesel",
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
         if (widget.patient.firstName case final firstName?)
-          SelectableText(
+          Text(
             "${context.translate.firstName}: $firstName",
             style: Theme.of(context).textTheme.headlineSmall,
           ),
         if (widget.patient.lastName case final lastName?)
-          SelectableText(
+          Text(
             "${context.translate.lastName}: $lastName",
             style: Theme.of(context).textTheme.headlineSmall,
           ),
         if (_isExpanded) ...[
-          if (widget.patient.pesel case final pesel?)
-            SelectableText(
-              "PESEL: $pesel",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
           if (widget.patient.birthDate case final birthDate?)
-            SelectableText(
+            Text(
               "${context.translate.birthDate}: ${birthDate.formattedDateOnly}",
               style: Theme.of(context).textTheme.headlineSmall,
             ),
           if (widget.patient.gender case final gender?)
-            SelectableText(
+            Text(
               "${context.translate.gender}: ${gender.translate(context)}",
               style: Theme.of(context).textTheme.headlineSmall,
             ),
           if (widget.patient.phone case final phone?)
-            SelectableText(
+            Text(
               "${context.translate.phone}: $phone",
               style: Theme.of(context).textTheme.headlineSmall,
             ),
           if (widget.patient.email case final email?)
-            SelectableText(
+            Text(
               "${context.translate.email}: $email",
               style: Theme.of(context).textTheme.headlineSmall,
             ),
           if (widget.patient.address case final address?)
-            SelectableText(
+            Text(
               "${context.translate.address}: $address",
               style: Theme.of(context).textTheme.headlineSmall,
             ),
           if (widget.patient.city case final city?)
-            SelectableText(
+            Text(
               "${context.translate.city}: $city",
               style: Theme.of(context).textTheme.headlineSmall,
             ),
           if (widget.patient.postalCode case final postalCode?)
-            SelectableText(
+            Text(
               "${context.translate.postalCode}: $postalCode",
               style: Theme.of(context).textTheme.headlineSmall,
             ),
           if (widget.patient.country case final country?)
-            SelectableText(
+            Text(
               "${context.translate.country}: $country",
               style: Theme.of(context).textTheme.headlineSmall,
             ),

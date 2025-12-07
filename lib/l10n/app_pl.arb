@@ -290,5 +290,8 @@
   "country": "Kraj",
   "male": "Mężczyzna",
   "female": "Kobieta",
-  "other": "Inna"
+  "other": "Inna",
+  "copiedToClipboard": "Skopiowano do schowka",
+  "copySubstanceHeaderRow": "Substancja\tPewność",
+  "copyToClipboardExcel": "Kopiuj do schowka (format kompatybilny z Excelem)"
 }

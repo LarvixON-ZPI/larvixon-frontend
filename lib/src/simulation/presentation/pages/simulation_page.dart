@@ -40,23 +40,25 @@ class _SimulationPageState extends State<SimulationPage> {
                           title: context.translate.simulation,
                           subtitle: context.translate.simulationDescription,
                         ),
-                        CustomCard(
-                          child: Column(
-                            spacing: 6,
-                            children: [
-                              _HowToStep(
-                                number: 1,
-                                text: context.translate.simulation_how_to_1,
-                              ),
-                              _HowToStep(
-                                number: 2,
-                                text: context.translate.simulation_how_to_2,
-                              ),
-                              _HowToStep(
-                                number: 3,
-                                text: context.translate.simulation_how_to_3,
-                              ),
-                            ],
+                        SelectionArea(
+                          child: CustomCard(
+                            child: Column(
+                              spacing: 6,
+                              children: [
+                                _HowToStep(
+                                  number: 1,
+                                  text: context.translate.simulation_how_to_1,
+                                ),
+                                _HowToStep(
+                                  number: 2,
+                                  text: context.translate.simulation_how_to_2,
+                                ),
+                                _HowToStep(
+                                  number: 3,
+                                  text: context.translate.simulation_how_to_3,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
