@@ -189,81 +189,83 @@ class _PatientSectionExpandedState extends State<_PatientSectionExpanded> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      spacing: 4,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
+    return SelectionArea(
+      child: Column(
+        spacing: 4,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                context.translate.patient,
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              IconButton(
+                icon: Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
+                onPressed: () => setState(() => _isExpanded = !_isExpanded),
+              ),
+            ],
+          ),
+          if (widget.patient.pesel case final pesel?)
             Text(
-              context.translate.patient,
-              style: Theme.of(context).textTheme.headlineMedium,
+              "PESEL: $pesel",
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
-            IconButton(
-              icon: Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
-              onPressed: () => setState(() => _isExpanded = !_isExpanded),
+          if (widget.patient.firstName case final firstName?)
+            Text(
+              "${context.translate.firstName}: $firstName",
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
+          if (widget.patient.lastName case final lastName?)
+            Text(
+              "${context.translate.lastName}: $lastName",
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+          if (_isExpanded) ...[
+            if (widget.patient.birthDate case final birthDate?)
+              Text(
+                "${context.translate.birthDate}: ${birthDate.formattedDateOnly}",
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            if (widget.patient.gender case final gender?)
+              Text(
+                "${context.translate.gender}: ${gender.translate(context)}",
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            if (widget.patient.phone case final phone?)
+              Text(
+                "${context.translate.phone}: $phone",
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            if (widget.patient.email case final email?)
+              Text(
+                "${context.translate.email}: $email",
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            if (widget.patient.address case final address?)
+              Text(
+                "${context.translate.address}: $address",
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            if (widget.patient.city case final city?)
+              Text(
+                "${context.translate.city}: $city",
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            if (widget.patient.postalCode case final postalCode?)
+              Text(
+                "${context.translate.postalCode}: $postalCode",
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            if (widget.patient.country case final country?)
+              Text(
+                "${context.translate.country}: $country",
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
           ],
-        ),
-        if (widget.patient.pesel case final pesel?)
-          SelectableText(
-            "PESEL: $pesel",
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-        if (widget.patient.firstName case final firstName?)
-          SelectableText(
-            "${context.translate.firstName}: $firstName",
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-        if (widget.patient.lastName case final lastName?)
-          SelectableText(
-            "${context.translate.lastName}: $lastName",
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-        if (_isExpanded) ...[
-          if (widget.patient.birthDate case final birthDate?)
-            SelectableText(
-              "${context.translate.birthDate}: ${birthDate.formattedDateOnly}",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-          if (widget.patient.gender case final gender?)
-            SelectableText(
-              "${context.translate.gender}: ${gender.translate(context)}",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-          if (widget.patient.phone case final phone?)
-            SelectableText(
-              "${context.translate.phone}: $phone",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-          if (widget.patient.email case final email?)
-            SelectableText(
-              "${context.translate.email}: $email",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-          if (widget.patient.address case final address?)
-            SelectableText(
-              "${context.translate.address}: $address",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-          if (widget.patient.city case final city?)
-            SelectableText(
-              "${context.translate.city}: $city",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-          if (widget.patient.postalCode case final postalCode?)
-            SelectableText(
-              "${context.translate.postalCode}: $postalCode",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-          if (widget.patient.country case final country?)
-            SelectableText(
-              "${context.translate.country}: $country",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
         ],
-      ],
+      ),
     );
   }
 }
