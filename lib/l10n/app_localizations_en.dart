@@ -606,4 +606,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get copyToClipboardExcel =>
       'Copy to clipboard (Excel-compatible format)';
+
+  @override
+  String get mockModeNotification =>
+      'Demo Mode: This app now uses mock data and backend for demonstration purposes. Feel free to log in and explore!';
 }

@@ -18,6 +18,7 @@ import 'package:larvixon_frontend/src/settings/presentation/blocs/cubit/settings
 import 'package:larvixon_frontend/src/user/bloc/user_bloc.dart';
 import 'package:larvixon_frontend/src/user/domain/repositories/user_repository.dart';
 import 'package:larvixon_frontend/src/user/domain/repositories/user_repository_fake.dart';
+import 'package:larvixon_frontend/src/common/widgets/mock_mode_banner.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -97,6 +98,9 @@ class _MainAppState extends State<MainApp> {
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
               debugShowCheckedModeBanner: false,
+              builder: (context, child) {
+                return MockModeBanner(child: child ?? const SizedBox.shrink());
+              },
             );
           },
         ),

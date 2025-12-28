@@ -293,5 +293,6 @@
   "other": "Inna",
   "copiedToClipboard": "Skopiowano do schowka",
   "copySubstanceHeaderRow": "Substancja\tPewność",
-  "copyToClipboardExcel": "Kopiuj do schowka (format kompatybilny z Excelem)"
+  "copyToClipboardExcel": "Kopiuj do schowka (format kompatybilny z Excelem)",
+  "mockModeNotification": "Tryb demo: Aplikacja używa teraz danych testowych i mockowanego backendu w celach demonstracyjnych. Zaloguj się, aby wypróbować!"
 }

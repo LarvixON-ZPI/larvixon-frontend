@@ -1183,6 +1183,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Copy to clipboard (Excel-compatible format)'**
   String get copyToClipboardExcel;
+
+  /// No description provided for @mockModeNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo Mode: This app now uses mock data and backend for demonstration purposes. Feel free to log in and explore!'**
+  String get mockModeNotification;
 }
 
 class _AppLocalizationsDelegate

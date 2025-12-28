@@ -606,4 +606,8 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get copyToClipboardExcel =>
       'Kopiuj do schowka (format kompatybilny z Excelem)';
+
+  @override
+  String get mockModeNotification =>
+      'Tryb demo: Aplikacja używa teraz danych testowych i mockowanego backendu w celach demonstracyjnych. Zaloguj się, aby wypróbować!';
 }

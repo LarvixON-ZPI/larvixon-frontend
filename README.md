@@ -45,6 +45,14 @@ flutter run --dart-define=API_BASE_URL=http://127.0.0.1:8000/api --web-port=3000
 
 If you don't specify the API_BASE_URL, it will fallback to default value *<http://127.0.0.1:8000/api>*
 
+### Run with mock backend
+
+To run the app with a mock backend, use the following command:
+
+```bash
+flutter run -t lib/main_dev.dart --web-port=3000
+```
+
 ### Running with VS Code (launch.json)
 
 If you're using VS Code, you can preconfigure `--dart-define` values in `.vscode/launch.json`.  
@@ -68,11 +76,48 @@ Here’s an example configuration:
 }
 ```
 
-### 🚀 Creating New Features
+### Generate translations
+
+To generate localization files, run the following command:
+
+```bash
+flutter gen-l10n
+```
+
+## Development
+
+### Creating new releases
+
+Release builds are automatically created via GitHub Actions when a version tag (e.g., `v1.0.0`) is pushed. The workflow builds for:
+
+- **Android**
+- **Windows**
+- **Linux**
+- **Web** (deployed to GitHub Pages)
+
+To create a release:
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+Or trigger manually via the GitHub Actions "workflow_dispatch" with a version tag input.
+
+#### Creating offline releases
+
+To create an "offline" release (using mock backend), use a tag pattern like `v1.0.0-offline`.
+
+```bash
+git tag v1.0.0-offline
+git push origin v1.0.0-offline
+```
+
+### 🚀 Creating new features
 
 We provide automated scripts to scaffold new features with proper Clean Architecture structure:
 
-#### Create a New Feature
+#### Create a new feature
 
 ```bash
 # Create a complete feature structure
@@ -85,7 +130,7 @@ dart scripts/new_feature.dart "Feature Name"
 # - Template files (repository interface, implementation, page)
 ```
 
-#### Clean Up Feature Folders
+#### Clean up feature folders
 
 ```bash
 # List all features
@@ -99,5 +144,4 @@ dart scripts/cleanup_features.dart feature_name
 
 # Interactive cleanup (asks for confirmation)
 dart scripts/cleanup_features.dart feature_name --interactive
-
 ```
