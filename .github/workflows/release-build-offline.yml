@@ -1,14 +1,13 @@
-name: Flutter Release Build
+name: Flutter Offline Release Build
 
 on:
   push:
     tags:
-      - "v*"
-      - "!v*-offline"
+      - "v*-offline"
   workflow_dispatch:
     inputs:
       version_tag:
-        description: "Version tag (e.g., v1.0.0)"
+        description: "Version tag (e.g., v1.0.0-offline)"
         required: true
         type: string
 
@@ -86,10 +85,10 @@ jobs:
           channel: "stable"
           cache: true
       - run: flutter pub get
-      - run: flutter build apk --release --target=lib/main.dart --dart-define=API_BASE_URL=${{ secrets.API_BASE_URL }}
+      - run: flutter build apk --release --target=lib/main_dev.dart
       - uses: actions/upload-artifact@v4
         with:
-          name: android-release
+          name: android-offline-release
           path: build/app/outputs/flutter-apk/app-release.apk
 
   build-windows:
@@ -106,10 +105,10 @@ jobs:
           channel: "stable"
           cache: true
       - run: flutter pub get
-      - run: flutter build windows --release --target=lib/main.dart --dart-define=API_BASE_URL=${{ secrets.API_BASE_URL }}
+      - run: flutter build windows --release --target=lib/main_dev.dart
       - uses: actions/upload-artifact@v4
         with:
-          name: windows-release
+          name: windows-offline-release
           path: build/windows/x64/runner/Release/
 
   build-linux:
@@ -129,10 +128,10 @@ jobs:
           channel: "stable"
           cache: true
       - run: flutter pub get
-      - run: flutter build linux --release --target=lib/main.dart --dart-define=API_BASE_URL=${{ secrets.API_BASE_URL }}
+      - run: flutter build linux --release --target=lib/main_dev.dart
       - uses: actions/upload-artifact@v4
         with:
-          name: linux-release
+          name: linux-offline-release
           path: build/linux/x64/release/bundle/
 
   build-web:
@@ -149,10 +148,10 @@ jobs:
           channel: "stable"
           cache: true
       - run: flutter pub get
-      - run: flutter build web --release --target=lib/main.dart --base-href="/larvixon-frontend/" --dart-define=API_BASE_URL=${{ secrets.API_BASE_URL }}
+      - run: flutter build web --release --target=lib/main_dev.dart --base-href="/larvixon-frontend/"
       - uses: actions/upload-artifact@v4
         with:
-          name: web-release
+          name: web-offline-release
           path: build/web
       - uses: peaceiris/actions-gh-pages@v3
         with:
@@ -177,35 +176,35 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: android-release
+          name: android-offline-release
           path: artifacts/android
 
       - uses: actions/download-artifact@v4
         with:
-          name: windows-release
+          name: windows-offline-release
           path: artifacts/windows
 
       - uses: actions/download-artifact@v4
         with:
-          name: linux-release
+          name: linux-offline-release
           path: artifacts/linux
 
       - name: Create archives
         run: |
           cd artifacts/windows
-          zip -r ../../larvixon-windows-${TAG}.zip .
+          zip -r ../../larvixon-windows-offline-${TAG}.zip .
           cd ../linux
-          tar -czf ../../larvixon-linux-${TAG}.tar.gz .
+          tar -czf ../../larvixon-linux-offline-${TAG}.tar.gz .
           cd ../android
-          cp app-release.apk ../../larvixon-android-${TAG}.apk
+          cp app-release.apk ../../larvixon-android-offline-${TAG}.apk
 
       - uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ env.TAG }}
           files: |
-            larvixon-android-${{ env.TAG }}.apk
-            larvixon-windows-${{ env.TAG }}.zip
-            larvixon-linux-${{ env.TAG }}.tar.gz
+            larvixon-android-offline-${{ env.TAG }}.apk
+            larvixon-windows-offline-${{ env.TAG }}.zip
+            larvixon-linux-offline-${{ env.TAG }}.tar.gz
           draft: true
           prerelease: false
           generate_release_notes: true
