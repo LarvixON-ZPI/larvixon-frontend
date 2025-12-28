@@ -293,5 +293,6 @@
   "other": "Other",
   "copiedToClipboard": "Copied to clipboard",
   "copySubstanceHeaderRow": "Substance\tConfidence",
-  "copyToClipboardExcel": "Copy to clipboard (Excel-compatible format)"
+  "copyToClipboardExcel": "Copy to clipboard (Excel-compatible format)",
+  "mockModeNotification": "Demo Mode: This app now uses mock data and backend for demonstration purposes. Feel free to log in and explore!"
 }

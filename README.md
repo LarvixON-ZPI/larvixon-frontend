@@ -45,6 +45,14 @@ flutter run --dart-define=API_BASE_URL=http://127.0.0.1:8000/api --web-port=3000
 
 If you don't specify the API_BASE_URL, it will fallback to default value *<http://127.0.0.1:8000/api>*
 
+### Run with mock backend
+
+To run the app with a mock backend, use the following command:
+
+```bash
+flutter run -t lib/main_dev.dart --web-port=3000
+```
+
 ### Running with VS Code (launch.json)
 
 If you're using VS Code, you can preconfigure `--dart-define` values in `.vscode/launch.json`.  
@@ -99,5 +107,4 @@ dart scripts/cleanup_features.dart feature_name
 
 # Interactive cleanup (asks for confirmation)
 dart scripts/cleanup_features.dart feature_name --interactive
-
 ```
