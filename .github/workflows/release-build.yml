@@ -54,12 +54,15 @@ jobs:
     name: Verify Tag is on Main
     runs-on: ubuntu-latest
     needs: prepare-tag
+    outputs:
+      should_build: ${{ steps.check.outputs.should_build }}
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
       - name: Ensure tag commit is in main
+        id: check
         run: |
           TAG=${{ needs.prepare-tag.outputs.RELEASE_TAG }}
           TAG_COMMIT=$(git rev-list -n 1 "$TAG")
@@ -67,14 +70,16 @@ jobs:
 
           if echo "$MAIN_COMMITS" | grep -q "$TAG_COMMIT"; then
             echo "Tag $TAG is on main ✓"
+            echo "should_build=true" >> $GITHUB_OUTPUT
           else
-            echo "Error: Tag $TAG is not on main."
-            exit 1
+            echo "Tag $TAG is not on main - skipping build"
+            echo "should_build=false" >> $GITHUB_OUTPUT
           fi
 
   build-android:
     name: Build Android APK
     needs: check-main-branch
+    if: needs.check-main-branch.outputs.should_build == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -95,6 +100,7 @@ jobs:
   build-windows:
     name: Build Windows EXE
     needs: check-main-branch
+    if: needs.check-main-branch.outputs.should_build == 'true'
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
@@ -115,6 +121,7 @@ jobs:
   build-linux:
     name: Build Linux App
     needs: check-main-branch
+    if: needs.check-main-branch.outputs.should_build == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -138,6 +145,7 @@ jobs:
   build-web:
     name: Build and Deploy Web
     needs: check-main-branch
+    if: needs.check-main-branch.outputs.should_build == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -170,6 +178,7 @@ jobs:
         check-main-branch,
         prepare-tag,
       ]
+    if: needs.check-main-branch.outputs.should_build == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Set tag from earlier job
